@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DetectorInfo /> spec renders the component 1`] = `
+<div>
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small"
+        >
+          Define detector
+        </h3>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFormRow"
+        id="random_id-row"
+      >
+        <div
+          class="euiText euiText--small"
+          id="random_id"
+        >
+          To define a detector, you start by providing a name and description.
+        </div>
+      </div>
+      <div
+        class="euiFormRow"
+        id="random_id-row"
+      >
+        <label
+          aria-invalid="false"
+          class="euiFormLabel"
+          for="random_id"
+        >
+           Detector name
+        </label>
+        <div
+          class="euiFormControlLayout"
+        >
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <input
+              class="euiFieldText"
+              id="random_id"
+              name="detectorName"
+              placeholder="sample detector"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFormRow"
+        id="random_id-row"
+      >
+        <label
+          aria-invalid="false"
+          class="euiFormLabel"
+          for="random_id"
+        >
+          Description
+        </label>
+        <textarea
+          class="euiTextArea euiTextArea--resizeVertical"
+          id="random_id"
+          name="detectorDescription"
+          placeholder="Description for detector"
+          rows="3"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

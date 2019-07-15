@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ContentPanel /> spec renders the component 1`] = `
+<div
+  class="euiPanel euiPanel--paddingMedium"
+  style="padding-left: 0px; padding-right: 0px;"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px 10px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <h3
+        class="euiTitle euiTitle--large"
+      >
+        Testing
+      </h3>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div>
+            Hello
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div>
+            World
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr
+    class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+  />
+  <div
+    style="padding: 0px 10px;"
+  >
+    <div>
+      Testing ContentPanel
+    </div>
+  </div>
+</div>
+`;

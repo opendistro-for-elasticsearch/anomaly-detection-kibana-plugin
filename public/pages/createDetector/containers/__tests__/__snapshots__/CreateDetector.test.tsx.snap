@@ -1,0 +1,579 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateDetector /> spec create detector renders the component 1`] = `
+<div
+  class="euiPage"
+>
+  <div
+    class="euiPageBody"
+  >
+    <div
+      class="euiPageHeader euiPageHeader--responsive"
+    >
+      <div
+        class="euiPageHeaderSection"
+      >
+        <h1
+          class="euiTitle euiTitle--large"
+        >
+          Create detector
+           
+        </h1>
+      </div>
+    </div>
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding-left: 0px; padding-right: 0px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px 10px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Define detector
+          </h3>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 0px 10px;"
+      >
+        <div
+          class="euiFormRow"
+          id="random_id-row"
+        >
+          <div
+            class="euiText euiText--small"
+            id="random_id"
+          >
+            To define a detector, you start by providing a name and description.
+          </div>
+        </div>
+        <div
+          class="euiFormRow"
+          id="random_id-row"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel"
+            for="random_id"
+          >
+             Detector name
+          </label>
+          <div
+            class="euiFormControlLayout"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldText"
+                id="random_id"
+                name="detectorName"
+                placeholder="sample detector"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFormRow"
+          id="random_id-row"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel"
+            for="random_id"
+          >
+            Description
+          </label>
+          <textarea
+            class="euiTextArea euiTextArea--resizeVertical"
+            id="random_id"
+            name="detectorDescription"
+            placeholder="Description for detector"
+            rows="3"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding-left: 0px; padding-right: 0px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px 10px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Datasource
+          </h3>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 0px 10px;"
+      >
+        <div
+          class="euiFormRow"
+          id="random_id-row"
+        >
+          <div
+            class="euiText euiText--small"
+            id="random_id"
+          >
+            Anomaly detector uses an index or an index pattern as the datasource.
+          </div>
+        </div>
+        <div
+          class="euiFormRow"
+          id="random_id-row"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel"
+            for="random_id"
+          >
+            Index
+          </label>
+          <div
+            aria-describedby="random_id-help"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            class="euiComboBox"
+            role="combobox"
+          >
+            <div
+              class="euiFormControlLayout"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <div
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap"
+                  data-test-subj="comboBoxInput"
+                  tabindex="-1"
+                >
+                  <p
+                    class="euiComboBoxPlaceholder"
+                  >
+                    Find indices
+                  </p>
+                  <div
+                    class="euiComboBox__input"
+                    style="font-size: 14px; display: inline-block;"
+                  >
+                    <input
+                      data-test-subj="comboBoxSearchInput"
+                      id="random_id"
+                      role="textbox"
+                      style="box-sizing: content-box; width: 2px;"
+                      value=""
+                    />
+                    <div
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                >
+                  <button
+                    aria-label="Open list of options"
+                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                    data-test-subj="comboBoxToggleListButton"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                      focusable="false"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <defs>
+                        <path
+                          d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.552.552 0 0 0-.771 0 .53.53 0 0 0 0 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76.552.552 0 0 0-.771 0z"
+                          id="arrow_down-a"
+                        />
+                      </defs>
+                      <use
+                        fill-rule="nonzero"
+                        xlink:href="#arrow_down-a"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            id="random_id-help"
+          >
+            You can use a wildcard (*) in your index pattern
+          </div>
+        </div>
+        <div
+          class="euiFormRow"
+          id="random_id-row"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel"
+            for="random_id"
+          >
+            Timestamp field
+          </label>
+          <div
+            class="euiFormControlLayout"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <select
+                aria-describedby="random_id-help"
+                class="euiSelect"
+                id="random_id"
+                name="timeField"
+                placeholder="Choose timestamp field"
+              >
+                <option
+                  value=""
+                />
+              </select>
+              <div
+                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              >
+                <span
+                  class="euiFormControlLayoutCustomIcon"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                    focusable="false"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <defs>
+                      <path
+                        d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.552.552 0 0 0-.771 0 .53.53 0 0 0 0 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76.552.552 0 0 0-.771 0z"
+                        id="arrow_down-a"
+                      />
+                    </defs>
+                    <use
+                      fill-rule="nonzero"
+                      xlink:href="#arrow_down-a"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            id="random_id-help"
+          >
+            Choose the time field you want to use for time filter
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding-left: 0px; padding-right: 0px; padding-bottom: 0px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px 10px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Data filter
+          </h3>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall filters-panel"
+      />
+      <div
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+          style="padding: 10px;"
+        >
+          <div
+            class="euiFlexItem"
+            style="margin-bottom: 0px;"
+          >
+            <div
+              class="euiFormRow"
+              id="random_id-row"
+            >
+              <div
+                class="euiText euiText--small"
+                id="random_id"
+              >
+                Filters let you choose a subset of data from your data source. Make a simple filter, or use the Elasticsearch Query DSL for advanced filters.
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiFormRow"
+              id="random_id-row"
+            >
+              <label
+                aria-invalid="false"
+                class="euiFormLabel"
+                for="random_id"
+              >
+                Filter type
+              </label>
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <select
+                    class="euiSelect"
+                    id="random_id"
+                    name="filterType"
+                  >
+                    <option
+                      value="simple_filter"
+                    >
+                      Visual editor
+                    </option>
+                    <option
+                      value="custom_filter"
+                    >
+                      Custom expression
+                    </option>
+                  </select>
+                  <div
+                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                  >
+                    <span
+                      class="euiFormControlLayoutCustomIcon"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                        focusable="false"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                      >
+                        <defs>
+                          <path
+                            d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.552.552 0 0 0-.771 0 .53.53 0 0 0 0 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76.552.552 0 0 0-.771 0z"
+                            id="arrow_down-a"
+                          />
+                        </defs>
+                        <use
+                          fill-rule="nonzero"
+                          xlink:href="#arrow_down-a"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr
+          class="euiHorizontalRule euiHorizontalRule--full"
+        />
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="padding: 10px;"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <button
+              class="euiButton euiButton--primary"
+              type="button"
+            >
+              <span
+                class="euiButton__content"
+              >
+                <span
+                  class="euiButton__text"
+                >
+                  Add filter
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+        <hr
+          class="euiHorizontalRule euiHorizontalRule--full"
+        />
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="background-color: rgb(246, 246, 246);"
+        >
+          <div
+            class="euiEmptyPrompt"
+          >
+            <span
+              class="euiTextColor euiTextColor--subdued"
+            >
+              <div
+                class="euiText euiText--medium"
+              >
+                <p>
+                  You can optionally create filters to focus your data stream and reduce noisy data.
+                </p>
+              </div>
+            </span>
+            <div
+              class="euiSpacer euiSpacer--l"
+            />
+            <div
+              class="euiSpacer euiSpacer--s"
+            />
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem euiFlexItem--flexGrowZero"
+              >
+                <button
+                  class="euiButton euiButton--primary"
+                  type="button"
+                >
+                  <span
+                    class="euiButton__content"
+                  >
+                    <span
+                      class="euiButton__text"
+                    >
+                      Add filter
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <button
+          class="euiButtonEmpty euiButtonEmpty--primary"
+          type="button"
+        >
+          <span
+            class="euiButtonEmpty__content"
+          >
+            <span
+              class="euiButtonEmpty__text"
+            >
+              Cancel
+            </span>
+          </span>
+        </button>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <button
+          class="euiButton euiButton--primary euiButton--fill"
+          type="submit"
+        >
+          <span
+            class="euiButton__content"
+          >
+            <span
+              class="euiButton__text"
+            >
+              Create
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

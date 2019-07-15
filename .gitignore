@@ -1,0 +1,16 @@
+npm-debug.log*
+node_modules
+/build/
+build
+*.iml
+*.ipr
+*.iws
+.idea/
+.DS_Store
+*.sublime*
+.kibana-plugin-helpers.dev.json
+coverage
+.vscode
+*.code-workspace
+offline-module-cache/v2/*
+offline-module-cache/v1/*
