@@ -9,7 +9,11 @@ Anomaly detection is using Random Cut Forest (RCF) algorithm for detecting anoma
 You should use anomaly detection kibana plugin with Open Distro Alerting kibana plugin [1.2-alpha](https://github.com/opendistro-for-elasticsearch/alerting-kibana-plugin/tree/opendistro-1.2-alpha). You can also create monitor based on anomaly detector. Scheduled monitor run will trigger anomaly detector and get anomaly result to check if should trigger alert or not based on custom trigger conditions.
 
 ## Current Limitations
-* We are actively working on and invite contributions to... security support, ES / Kibana versions supported, etc. Not in this section, but we need to mention what AD writes to ES (list of indices)
+* This is alpha code.
+* We inherit security features from Open Distro for Elasticsearch Alerting.
+* We use Alerting alpha code branch.
+* We will continuously add new unit test cases, but we don't have 100% unit test coverage for now. This is a great area for developers from the community to contribute and help improve test coverage.
+* Please see documentation links and GitHub issues for other details.
 
 ## Documentation
 
