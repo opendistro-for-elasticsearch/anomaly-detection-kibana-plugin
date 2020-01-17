@@ -34,6 +34,11 @@ export const validatePositiveInteger = (value: any) => {
     return 'Must be a positive integer';
 };
 
+export const validateNonNegativeInteger = (value: any) => {
+  if (!Number.isInteger(value) || value < 0)
+    return 'Must be a non-negative integer';
+};
+
 export const getErrorMessage = (err: any, defaultMessage: string) => {
   if (typeof err === 'string') return err;
   if (err && err.message) return err.message;

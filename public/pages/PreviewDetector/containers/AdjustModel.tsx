@@ -44,6 +44,7 @@ import {
   isInvalid,
   getError,
   validatePositiveInteger,
+  validateNonNegativeInteger,
   getErrorMessage,
 } from '../../../utils/utils';
 import { Detector } from '../../../models/interfaces';
@@ -65,11 +66,13 @@ type AdjustModelProps = {
 export type AdjustModelFormikValues = {
   formikFeatures: FeaturesFormikValues[];
   detectionInterval: number;
+  windowDelay: number;
 };
 
 const getInitialValues = (detector: Detector) => ({
   formikFeatures: Object.values(featuresToFormik(detector)),
   detectionInterval: get(detector, 'detectionInterval.period.interval', 10),
+  windowDelay: get(detector, 'windowDelay.period.interval', 0),
 });
 
 export function AdjustModel(props: AdjustModelProps) {
@@ -172,6 +175,27 @@ export function AdjustModel(props: AdjustModelProps) {
                       id="detectionInterval"
                       placeholder="Detector interval"
                       data-test-subj="detectionInterval"
+                      {...field}
+                    />
+                  </EuiFormRow>
+                )}
+              </Field>
+              <Field
+                name="windowDelay"
+                validate={validateNonNegativeInteger}
+              >
+                {({ field, form }: FieldProps) => (
+                  <EuiFormRow
+                    label="Window delay"
+                    helpText="Specify data delay in minutes"
+                    isInvalid={isInvalid(field.name, form)}
+                    error={getError(field.name, form)}
+                  >
+                    <EuiFieldNumber
+                      name="windowDelay"
+                      id="windowDelay"
+                      placeholder="Window delay"
+                      data-test-subj="windowDelay"
                       {...field}
                     />
                   </EuiFormRow>

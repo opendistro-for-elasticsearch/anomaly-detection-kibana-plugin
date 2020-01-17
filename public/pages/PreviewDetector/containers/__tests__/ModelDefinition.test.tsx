@@ -362,6 +362,12 @@ describe('<ModelDefinition /> spec', () => {
                 unit: UNITS.MINUTES,
               },
             },
+            windowDelay: {
+              period: {
+                interval: 1,
+                unit: UNITS.MINUTES,
+              },
+            },
           },
         },
       });
@@ -369,6 +375,7 @@ describe('<ModelDefinition /> spec', () => {
       fireEvent.click(getByTestId('adjustModel'));
       await wait();
       userEvent.type(getByTestId('detectionInterval'), '20');
+      userEvent.type(getByTestId('windowDelay'), '2');
       fireEvent.click(getByTestId('updateAdjustModel'));
       await wait();
       expect(httpClientMock.put).toHaveBeenCalledTimes(1);

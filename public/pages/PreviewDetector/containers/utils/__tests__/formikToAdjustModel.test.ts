@@ -24,11 +24,15 @@ describe('prepareTunedDetector', () => {
     const randomDetector = getRandomDetector(false);
     const tuneValue: AdjustModelFormikValues = {
       detectionInterval: 20,
+      windowDelay: 3,
       formikFeatures: Object.values(featuresToFormik(randomDetector)),
     };
     const apiRequest = prepareTunedDetector(tuneValue, randomDetector);
     expect(apiRequest.detectionInterval).toEqual({
       period: { interval: 20, unit: UNITS.MINUTES },
+    });
+    expect(apiRequest.windowDelay).toEqual({
+      period: { interval: 3, unit: UNITS.MINUTES },
     });
   });
   test('should able to update state of a feature interval', () => {
@@ -45,11 +49,15 @@ describe('prepareTunedDetector', () => {
     const formikFeatures = Object.values(updatedFeatures);
     const tuneValue: AdjustModelFormikValues = {
       detectionInterval: 20,
+      windowDelay: 3,
       formikFeatures: formikFeatures,
     };
     const apiRequest = prepareTunedDetector(tuneValue, randomDetector);
     expect(apiRequest.detectionInterval).toEqual({
       period: { interval: 20, unit: UNITS.MINUTES },
+    });
+    expect(apiRequest.windowDelay).toEqual({
+      period: { interval: 3, unit: UNITS.MINUTES },
     });
     expect(apiRequest.featureAttributes[0].featureEnabled).toBe(
       !formikFeaturesMap[editFeatureId].enabled

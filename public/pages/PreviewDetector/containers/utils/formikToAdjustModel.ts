@@ -29,6 +29,9 @@ export function prepareTunedDetector(
     detectionInterval: {
       period: { interval: values.detectionInterval, unit: UNITS.MINUTES },
     },
+    windowDelay: {
+      period: { interval: values.windowDelay, unit: UNITS.MINUTES },
+    },
     featureAttributes: featureAttributes,
   };
 }
