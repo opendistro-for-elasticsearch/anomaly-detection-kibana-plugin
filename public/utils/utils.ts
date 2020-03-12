@@ -17,7 +17,7 @@ import { get } from 'lodash';
 //@ts-ignore
 import { isAngularHttpError } from 'ui/notify/lib/format_angular_http_error';
 //@ts-ignore
-import { getNewPlatform } from 'ui/new_platform';
+import { npStart } from 'ui/new_platform';
 import { ALERTING_PLUGIN_NAME } from './constants';
 
 export const isInvalid = (name: string, form: any) =>
@@ -48,8 +48,8 @@ export const getErrorMessage = (err: any, defaultMessage: string) => {
 
 export const isAlertingInstalled = (): boolean => {
   const navLinks = get(
-    getNewPlatform(),
-    'start.core.chrome.navLinks',
+    npStart,
+    'core.chrome.navLinks',
     undefined
   );
   if (navLinks) {
@@ -64,8 +64,8 @@ export const getAlertingCreateMonitorLink = (
 ): string => {
   try {
     const navLinks = get(
-      getNewPlatform(),
-      'start.core.chrome.navLinks',
+      npStart,
+      'core.chrome.navLinks',
       undefined
     );
     return `${
@@ -81,8 +81,8 @@ export const getAlertingCreateMonitorLink = (
 export const getAlertingMonitorListLink = (): string => {
   try {
     const navLinks = get(
-      getNewPlatform(),
-      'start.core.chrome.navLinks',
+      npStart,
+      'core.chrome.navLinks',
       undefined
     );
     return `${navLinks.get(ALERTING_PLUGIN_NAME).url}#/monitors`;

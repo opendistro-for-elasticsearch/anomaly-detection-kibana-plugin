@@ -161,6 +161,12 @@ export function CreateFeature(props: CreateFeatureProps) {
       formikBag.setSubmitting(false);
     }
   };
+  const flyoutStyleTop = props.isSticky ? '111px' : `${224 - props.topOffset}px`;
+  const flyoutStyle = {
+    top: flyoutStyleTop,
+    borderTop: '0px',
+    height: `calc(100% - ${flyoutStyleTop})`,
+  };
   return (
     <React.Fragment>
       <Formik
@@ -177,10 +183,7 @@ export function CreateFeature(props: CreateFeatureProps) {
               maxWidth={424}
               onClose={props.onClose}
               // @ts-ignore
-              style={{
-                top: props.isSticky ? '111px' : `${224 - props.topOffset}px`,
-                borderTop: '0px',
-              }}
+              style={flyoutStyle}
               className={'feature-flyout'}
             >
               <EuiFlyoutHeader hasBorder className="flyout">
@@ -188,7 +191,7 @@ export function CreateFeature(props: CreateFeatureProps) {
                   <h5>{values.featureName || 'New feature'}</h5>
                 </EuiTitle>
               </EuiFlyoutHeader>
-              <EuiFlyoutBody className="flyout">
+              <EuiFlyoutBody style={{ overflowY: 'auto' }} className="flyout">
                 <Field name="enabled">
                   {({ field, form }: FieldProps) => (
                     <EuiFormRow
