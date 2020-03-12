@@ -90,6 +90,12 @@ export function AdjustModel(props: AdjustModelProps) {
       );
     }
   };
+  const flyoutStyleTop = props.isSticky ? '111px' : `${224 - props.topOffset}px`;
+  const flyoutStyle = {
+    top: flyoutStyleTop,
+    borderTop: '0px',
+    height: `calc(100% - ${flyoutStyleTop})`,
+  };
   return (
     <Formik
       initialValues={getInitialValues(props.detector)}
@@ -104,10 +110,7 @@ export function AdjustModel(props: AdjustModelProps) {
             maxWidth={424}
             onClose={props.onClose}
             // @ts-ignore
-            style={{
-              top: props.isSticky ? '111px' : `${224 - props.topOffset}px`,
-              borderTop: '0px',
-            }}
+            style={flyoutStyle}
             className="feature-flyout"
           >
             <EuiFlyoutHeader hasBorder className="flyout">
@@ -115,7 +118,7 @@ export function AdjustModel(props: AdjustModelProps) {
                 <h2> Adjust model </h2>
               </EuiText>
             </EuiFlyoutHeader>
-            <EuiFlyoutBody className="flyout">
+            <EuiFlyoutBody style={{ overflowY: 'auto' }} className="flyout">
               <FieldArray name="formikFeatures">
                 {({
                   unshift,
