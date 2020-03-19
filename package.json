@@ -27,6 +27,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
@@ -71,7 +72,6 @@
     "typescript": "3.0.3"
   },
   "dependencies": {
-    "@elastic/charts": "^8.1.3",
     "formik": "^1.5.8",
     "query-string": "^6.8.2",
     "react-redux": "^7.1.0",
