@@ -20,6 +20,8 @@ import { CreateDetector } from '../createDetector';
 import { DetectorList } from '../DetectorsList';
 import { ListRouterParams } from '../DetectorsList/List/List';
 import { PreviewDetector } from '../PreviewDetector/containers/PreviewDetector';
+import { Dashboard } from '../Dashboard/Container/Dashboard';
+import { APP_PATH } from '../../utils/constants';
 
 interface MainProps {}
 
@@ -51,7 +53,12 @@ export function Main(mainProps: MainProps) {
         path="/detectors/:detectorId/features/"
         render={(props: RouteComponentProps) => <PreviewDetector {...props} />}
       />
-      <Redirect to="/detectors" />
+      <Route
+        exact
+        path={APP_PATH.DASHBOARD}
+        render={(props: RouteComponentProps) => <Dashboard />}
+      />
+      <Redirect to="/dashboard" />
     </Switch>
   );
 }

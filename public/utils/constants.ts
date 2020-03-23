@@ -32,6 +32,8 @@ export const BREADCRUMBS = Object.freeze({
 
 export const APP_PATH = {
   CREATE_DETECTOR: '/create-ad',
+  DASHBOARD: '/dashboard',
+  LIST_DETECTORS: '/list-detectors',
 };
 export const PLUGIN_NAME = 'opendistro-anomaly-detection';
 
