@@ -19,77 +19,21 @@ import {
   EuiLink,
   EuiIcon,
   EuiPage,
-  EuiTitle,
-  EuiPageSideBar,
   EuiPageBody,
-  EuiPageHeader,
-  EuiSideNav,
 } from '@elastic/eui';
 import React, { Component, Fragment } from 'react';
 import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
-
-type EmptyDashboardState = {
-  selectedItemName: string;
-};
+import { SideBar, DashboardHeader } from '../utils/common';
 
 export class EmptyDashboard extends Component<{}, EmptyDashboardState> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      selectedItemName: 'Lion stuff',
-    };
-  }
-
-  selectItem = (name: string) => {
-    this.setState({
-      selectedItemName: name,
-    });
-  };
-
-  createItem = (name: string, id: number, data = {}) => {
-    // NOTE: Duplicate `name` values will cause `id` collisions.
-    return {
-      ...data,
-      id: name,
-      name,
-      isSelected: this.state.selectedItemName === name,
-      onClick: () => this.selectItem(name),
-    };
-  };
-
   render() {
-    const sideNav = [
-      {
-        name: 'Anomaly detection',
-        id: 0,
-        items: [
-          this.createItem('Dashboard', 1, { href: `#${APP_PATH.DASHBOARD}` }),
-          this.createItem('Detectors', 2, {
-            href: `#${APP_PATH.LIST_DETECTORS}`,
-          }),
-        ],
-      },
-    ];
-
     return (
       <EuiPage style={{ flex: 1 }}>
-        <EuiPageSideBar
-          style={{
-            flex: 1,
-            backgroundColor: '#F5F7FA',
-          }}
-        >
-          <EuiSideNav style={{ width: 150 }} items={sideNav} />
-        </EuiPageSideBar>
+        <SideBar />
         <EuiPageBody>
-          <EuiPageHeader>
-            <EuiTitle size="l">
-              <h1>Dashboard</h1>
-            </EuiTitle>
-          </EuiPageHeader>
+          <DashboardHeader />
           <EuiEmptyPrompt
             title={<h2>You have no detectors</h2>}
-            // style={{ maxWidth: '45em' }}
             body={
               <Fragment>
                 <p>Create detector first to detect anomalies in your data.</p>
