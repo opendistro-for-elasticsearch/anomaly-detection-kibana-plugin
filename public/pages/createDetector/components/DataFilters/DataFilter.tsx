@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -13,17 +13,9 @@
  * permissions and limitations under the License.
  */
 
-import {
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiFormRow,
-  EuiHorizontalRule,
-  EuiSelect,
-  EuiText,
-} from '@elastic/eui';
+import { EuiFormRow, EuiHorizontalRule, EuiSelect } from '@elastic/eui';
 import { Field, FieldProps, FormikProps } from 'formik';
 import React, { Fragment } from 'react';
-import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
 import { getError, isInvalid, required } from '../../../../utils/utils';
 import { ADFormikValues } from '../../containers/models/interfaces';
 import { FILTER_TYPES_OPTIONS } from './utils/constant';
@@ -36,53 +28,46 @@ interface DataFilterProps {
 
 function DataFilter(props: DataFilterProps) {
   return (
-    <ContentPanel
-      title="Data filter"
-      titleSize="s"
-      panelStyles={{ paddingBottom: '0px' }}
-      bodyStyles={{ padding: '0px' }}
-      horizontalRuleClassName={'filters-panel'}
-    >
-      <Fragment>
-        <Field name={`filterType`} validate={required}>
-          {({ field, form }: FieldProps) => (
-            <Fragment>
-              <EuiFlexGroup direction="column" style={{ padding: '10px' }}>
-                <EuiFlexItem style={{ marginBottom: '0' }}>
-                  <EuiFormRow>
-                    <EuiText size="s">
-                      Filters let you choose a subset of data from your data
-                      source. Make a simple filter, or use the Elasticsearch
-                      Query DSL for advanced filters.
-                    </EuiText>
-                  </EuiFormRow>
-                </EuiFlexItem>
-                <EuiFlexItem>
-                  <EuiFormRow
-                    label="Filter type"
-                    isInvalid={isInvalid(field.name, form)}
-                    error={getError(field.name, form)}
-                  >
-                    <EuiSelect
-                      {...field}
-                      options={FILTER_TYPES_OPTIONS}
-                      isInvalid={isInvalid(field.name, form)}
-                    />
-                  </EuiFormRow>
-                </EuiFlexItem>
-              </EuiFlexGroup>
-              <EuiHorizontalRule margin="none" />
-              {field.value === FILTER_TYPES.SIMPLE ? (
-                <SimpleFilter formikProps={props.formikProps} />
-              ) : (
-                <QueryDataFilter />
-              )}
-            </Fragment>
+    <Field name={`filterType`} validate={required}>
+      {({ field, form }: FieldProps) => (
+        <Fragment>
+          <EuiFormRow
+            fullWidth
+            label={
+              <div>
+                <p>
+                  Data fiter
+                  <span className="optional">- optional</span>
+                </p>
+                <p className="sublabel">
+                  Choose a subset of your data source to focus your data stream
+                  and reduce noisy data.
+                </p>
+                <p className="sublabel">
+                  Use the visual editor to create a simple filter, or use the
+                  Elasticsearch query DSL to create more advanced filters.
+                </p>
+              </div>
+            }
+            isInvalid={isInvalid(field.name, form)}
+            error={getError(field.name, form)}
+          >
+            <EuiSelect
+              {...field}
+              options={FILTER_TYPES_OPTIONS}
+              isInvalid={isInvalid(field.name, form)}
+            />
+          </EuiFormRow>
+          <EuiHorizontalRule margin="none" />
+          {field.value === FILTER_TYPES.SIMPLE ? (
+            <SimpleFilter formikProps={props.formikProps} />
+          ) : (
+            <QueryDataFilter />
           )}
-        </Field>
-      </Fragment>
-    </ContentPanel>
+        </Fragment>
+      )}
+    </Field>
   );
 }
 
-export { DataFilter };
+export { DataFilter, DataFilterProps };

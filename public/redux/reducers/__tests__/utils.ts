@@ -82,6 +82,7 @@ export const getRandomDetector = (isCreate: boolean = true): Detector => {
     indices: ['logstash-*'],
     featureAttributes: features,
     filterQuery: randomQuery(),
+    uiMetadata: getUIMetadata(features),
     detectionInterval: {
       period: {
         interval: detectorFaker.integer({ min: 1, max: 10 }),
@@ -94,6 +95,5 @@ export const getRandomDetector = (isCreate: boolean = true): Detector => {
         unit: UNITS.MINUTES,
       },
     },
-    uiMetadata: getUIMetadata(features),
   };
 };

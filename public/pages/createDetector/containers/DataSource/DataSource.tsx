@@ -13,10 +13,10 @@
  * permissions and limitations under the License.
  */
 
-import { EuiComboBox, EuiFormRow, EuiSelect, EuiText } from '@elastic/eui';
+import { EuiComboBox, EuiFormRow, EuiSelect } from '@elastic/eui';
 import { Field, FieldProps } from 'formik';
 import { debounce, get } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CatIndex, IndexAlias } from '../../../../../server/models/types';
 import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
@@ -30,8 +30,12 @@ import { getError, isInvalid, required } from '../../../../utils/utils';
 import { IndexOption } from '../../components/Datasource/IndexOption';
 import { getVisibleOptions, sanitizeSearchText } from './utils/helpers';
 import { validateIndex } from './utils/validate';
+import {
+  DataFilterProps,
+  DataFilter,
+} from '../../components/DataFilters/DataFilter';
 
-function DataSource() {
+function DataSource(props: DataFilterProps) {
   const dispatch = useDispatch();
   const [queryText, setQueryText] = useState('');
   const elasticsearchState = useSelector(
@@ -71,17 +75,19 @@ function DataSource() {
   const visibleAliases = get(elasticsearchState, 'aliases', []) as IndexAlias[];
 
   return (
-    <ContentPanel title="Datasource" titleSize="s">
-      <EuiFormRow>
-        <EuiText size="s">
-          Anomaly detector uses an index or an index pattern as the datasource.
-        </EuiText>
-      </EuiFormRow>
+    <ContentPanel title="Data Source" titleSize="s">
       <Field name="index" validate={validateIndex}>
         {({ field, form }: FieldProps) => {
           return (
             <EuiFormRow
-              label="Index"
+              label={
+                <div>
+                  <p>Index</p>
+                  <p className="sublabel">
+                    Choose an index or index pattern as the data source.
+                  </p>
+                </div>
+              }
               isInvalid={isInvalid(field.name, form)}
               error={getError(field.name, form)}
               helpText="You can use a wildcard (*) in your index pattern"
@@ -125,20 +131,27 @@ function DataSource() {
       <Field name="timeField" validate={required}>
         {({ field, form }: FieldProps) => (
           <EuiFormRow
-            label="Timestamp field"
+            label={
+              <div>
+                <p>Timestamp field</p>
+                <p className="sublabel">
+                  Choose the time field you want to use for time filter.
+                </p>
+              </div>
+            }
             isInvalid={isInvalid(field.name, form)}
             error={getError(field.name, form)}
-            helpText="Choose the time field you want to use for time filter"
           >
             <EuiSelect
               {...field}
               id="timeField"
-              placeholder="Choose timestamp field"
+              placeholder="Find timestamp"
               options={timeStampFieldOptions}
             />
           </EuiFormRow>
         )}
       </Field>
+      <DataFilter formikProps={props.formikProps} />
     </ContentPanel>
   );
 }

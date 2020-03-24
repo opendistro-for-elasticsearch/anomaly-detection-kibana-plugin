@@ -35,6 +35,8 @@ describe('adToFormik', () => {
       filterQuery: JSON.stringify(randomDetector.filterQuery || {}, null, 4),
       index: [{ label: randomDetector.indices[0] }], // Currently we support only one index
       timeField: randomDetector.timeField,
+      detectionInterval: randomDetector.detectionInterval.period.interval,
+      windowDelay: randomDetector.windowDelay.period.interval,
     });
   });
   test('should return if detector does not have metadata', () => {
@@ -50,6 +52,8 @@ describe('adToFormik', () => {
       filterQuery: JSON.stringify(randomDetector.filterQuery || {}, null, 4),
       index: [{ label: randomDetector.indices[0] }], // Currently we support only one index
       timeField: randomDetector.timeField,
+      detectionInterval: randomDetector.detectionInterval.period.interval,
+      windowDelay: randomDetector.windowDelay.period.interval,
     });
   });
 });

@@ -17,13 +17,14 @@ import {
   EuiAccordion,
   EuiButton,
   EuiComboBox,
-  EuiEmptyPrompt,
   EuiFlexGroup,
   EuiFlexItem,
   EuiFormRow,
   EuiHorizontalRule,
   EuiSelect,
   EuiPanel,
+  EuiText,
+  EuiSpacer,
 } from '@elastic/eui';
 import {
   Field,
@@ -61,19 +62,16 @@ export const SimpleFilter = (props: DataFilterProps) => {
   const darkMode = darkModeEnabled();
   const selectedIndices = get(props, 'formikProps.values.index[0].label', '');
   //Reset, if selectedIndices change filter could become invalid
-  useEffect(
-    () => {
-      const initialIndex = get(
-        props,
-        'formikProps.initialValues.index[0].label',
-        undefined
-      );
-      if (initialIndex !== selectedIndices) {
-        props.formikProps.setFieldValue('filters', []);
-      }
-    },
-    [selectedIndices]
-  );
+  useEffect(() => {
+    const initialIndex = get(
+      props,
+      'formikProps.initialValues.index[0].label',
+      undefined
+    );
+    if (initialIndex !== selectedIndices) {
+      props.formikProps.setFieldValue('filters', []);
+    }
+  }, [selectedIndices]);
   const lightModeStyles = {
     backgroundColor: '#F6F6F6',
   };
@@ -209,15 +207,19 @@ export const SimpleFilter = (props: DataFilterProps) => {
               );
             })}
             {values.filters.length === 0 ? (
-              <EuiEmptyPrompt
-                body={
-                  <p>
-                    You can optionally create filters to focus your data stream
-                    and reduce noisy data.
+              <div className="no-data-filter-rectangle">
+                <EuiText>
+                  <p className="no-data-filter-title">No data filter</p>
+                </EuiText>
+                <EuiSpacer size="s" />
+                <EuiText>
+                  <p className="sublabel-center">
+                    Use data filter to reduce noisy data
                   </p>
-                }
-                actions={[<AddFilterButton unshift={unshift} />]}
-              />
+                </EuiText>
+                <EuiSpacer size="s" />
+                <AddFilterButton unshift={unshift} />
+              </div>
             ) : null}
           </EuiPanel>
         </Fragment>

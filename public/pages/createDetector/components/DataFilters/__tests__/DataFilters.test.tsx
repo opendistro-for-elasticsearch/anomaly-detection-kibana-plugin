@@ -53,9 +53,7 @@ const renderDataFilter = (initialValue: ADFormikValues) => ({
 describe('<DataFilter /> spec', () => {
   test('renders empty message if no filters are available', async () => {
     const { getByText, getAllByText } = renderDataFilter(INITIAL_VALUES);
-    getByText(
-      'You can optionally create filters to focus your data stream and reduce noisy data.'
-    );
+    getByText('Use data filter to reduce noisy data');
     expect(getAllByText('Add filter')).not.toBeNull();
     expect(getAllByText('Add filter').length).toBe(2);
   });

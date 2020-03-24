@@ -16,7 +16,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
         <h3
           class="euiTitle euiTitle--small"
         >
-          Define detector
+          Name and description
         </h3>
       </div>
       <div
@@ -41,23 +41,21 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
         class="euiFormRow"
         id="random_id-row"
       >
-        <div
-          class="euiText euiText--small"
-          id="random_id"
-        >
-          To define a detector, you start by providing a name and description.
-        </div>
-      </div>
-      <div
-        class="euiFormRow"
-        id="random_id-row"
-      >
         <label
           aria-invalid="false"
           class="euiFormLabel"
           for="random_id"
         >
-           Detector name
+          <div>
+            <p>
+              Name
+            </p>
+            <p
+              class="sublabel"
+            >
+              Specify a unique and descriptive name that is easy to recognize.
+            </p>
+          </div>
         </label>
         <div
           class="euiFormControlLayout"
@@ -69,7 +67,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
               class="euiFieldText"
               id="random_id"
               name="detectorName"
-              placeholder="sample detector"
+              placeholder="Enter detector name"
               type="text"
               value=""
             />
@@ -85,13 +83,27 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
           class="euiFormLabel"
           for="random_id"
         >
-          Description
+          <div>
+            <p>
+              Description 
+              <span
+                class="optional"
+              >
+                - optional
+              </span>
+            </p>
+            <p
+              class="sublabel"
+            >
+              Describe the purpose of the detector.
+            </p>
+          </div>
         </label>
         <textarea
           class="euiTextArea euiTextArea--resizeVertical"
           id="random_id"
           name="detectorDescription"
-          placeholder="Description for detector"
+          placeholder="Describe the detector"
           rows="3"
         />
       </div>

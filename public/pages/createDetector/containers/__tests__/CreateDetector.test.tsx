@@ -29,6 +29,7 @@ import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
 import configureStore from '../../../../redux/configureStore';
 import { httpClientMock } from '../../../../../test/mocks';
 import userEvent from '@testing-library/user-event';
+import { UNITS } from '../../../../models/interfaces';
 
 const renderWithRouter = (isEdit: boolean = false) => ({
   ...render(
@@ -96,12 +97,12 @@ describe('<CreateDetector /> spec', () => {
         },
       });
       const { getByPlaceholderText, getByText } = renderWithRouter();
-      fireEvent.focus(getByPlaceholderText('sample detector'));
+      fireEvent.focus(getByPlaceholderText('Enter detector name'));
       userEvent.type(
-        getByPlaceholderText('sample detector'),
+        getByPlaceholderText('Enter detector name'),
         randomDetector.name
       );
-      fireEvent.blur(getByPlaceholderText('sample detector'));
+      fireEvent.blur(getByPlaceholderText('Enter detector name'));
       await wait(() => {
         getByText('Duplicate detector name');
       });
