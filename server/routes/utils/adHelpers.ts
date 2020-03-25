@@ -45,6 +45,7 @@ export const convertDetectorKeysToCamelCase = (response: object) => {
         'ui_metadata',
         'feature_query',
         'feature_attributes',
+        'adJob',
       ]),
       toCamel
     ),
@@ -56,6 +57,13 @@ export const convertDetectorKeysToCamelCase = (response: object) => {
       })
     ),
     uiMetadata: get(response, 'ui_metadata', {}),
+    enabled: get(response, 'adJob.enabled', false),
+    enabledTime: get(response, 'adJob.enabled_time')
+      ? new Date(get(response, 'adJob.enabled_time'))
+      : undefined,
+    disabledTime: get(response, 'adJob.disabled_time')
+      ? new Date(get(response, 'adJob.disabled_time'))
+      : undefined,
   };
 };
 

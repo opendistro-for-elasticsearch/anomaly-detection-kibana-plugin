@@ -99,6 +99,8 @@ export type Detector = {
   detectionInterval: { period: Schedule };
   uiMetadata: UiMetaData;
   enabled?: boolean;
+  enabledTime?: Date;
+  disabledTime?: Date;
 };
 
 export type DetectorListItem = {
