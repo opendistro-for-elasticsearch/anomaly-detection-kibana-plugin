@@ -13,58 +13,44 @@
  * permissions and limitations under the License.
  */
 
-import {
-  EuiButton,
-  EuiEmptyPrompt,
-  EuiLink,
-  EuiIcon,
-  EuiPage,
-  EuiPageBody,
-} from '@elastic/eui';
+import { EuiButton, EuiEmptyPrompt, EuiLink, EuiIcon } from '@elastic/eui';
 import React, { Component, Fragment } from 'react';
 import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
-import { SideBar, DashboardHeader } from '../utils/common';
 
-export class EmptyDashboard extends Component<{}, EmptyDashboardState> {
+export class EmptyDashboard extends Component<{}, {}> {
   render() {
     return (
-      <EuiPage style={{ flex: 1 }}>
-        <SideBar />
-        <EuiPageBody>
-          <DashboardHeader />
-          <EuiEmptyPrompt
-            title={<h2>You have no detectors</h2>}
-            body={
-              <Fragment>
-                <p>Create detector first to detect anomalies in your data.</p>
-                <p>
-                  Dashboard will generate insights on the anomalies across all
-                  of your detectors
-                </p>
-                <p>
-                  Read about{' '}
-                  <EuiLink
-                    href="https://github.com/opendistro-for-elasticsearch/anomaly-detection"
-                    target="_blank"
-                  >
-                    Get started with Anomaly detection &nbsp;
-                    <EuiIcon size="s" type="popout" />
-                  </EuiLink>{' '}
-                </p>
-              </Fragment>
-            }
-            actions={
-              <EuiButton
-                fill
-                href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-                data-test-subj="add_detector"
+      <EuiEmptyPrompt
+        title={<h2>You have no detectors</h2>}
+        body={
+          <Fragment>
+            <p>Create detector first to detect anomalies in your data.</p>
+            <p>
+              Dashboard will generate insights on the anomalies across all of
+              your detectors
+            </p>
+            <p>
+              Read about{' '}
+              <EuiLink
+                href="https://github.com/opendistro-for-elasticsearch/anomaly-detection"
+                target="_blank"
               >
-                Create detector
-              </EuiButton>
-            }
-          />
-        </EuiPageBody>
-      </EuiPage>
+                Get started with Anomaly detection &nbsp;
+                <EuiIcon size="s" type="popout" />
+              </EuiLink>{' '}
+            </p>
+          </Fragment>
+        }
+        actions={
+          <EuiButton
+            fill
+            href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
+            data-test-subj="add_detector"
+          >
+            Create detector
+          </EuiButton>
+        }
+      />
     );
   }
 }

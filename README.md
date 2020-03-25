@@ -9,11 +9,12 @@ Anomaly detection is using Random Cut Forest (RCF) algorithm for detecting anoma
 You should use anomaly detection kibana plugin with Open Distro Alerting kibana plugin [1.2-alpha](https://github.com/opendistro-for-elasticsearch/alerting-kibana-plugin/tree/opendistro-1.2-alpha). You can also create monitor based on anomaly detector. Scheduled monitor run will trigger anomaly detector and get anomaly result to check if should trigger alert or not based on custom trigger conditions.
 
 ## Current Limitations
-* This is alpha code.
-* We inherit security features from Open Distro for Elasticsearch Alerting.
-* We use Alerting alpha code branch.
-* We will continuously add new unit test cases, but we don't have 100% unit test coverage for now. This is a great area for developers from the community to contribute and help improve test coverage.
-* Please see documentation links and GitHub issues for other details.
+
+- This is alpha code.
+- We inherit security features from Open Distro for Elasticsearch Alerting.
+- We use Alerting alpha code branch.
+- We will continuously add new unit test cases, but we don't have 100% unit test coverage for now. This is a great area for developers from the community to contribute and help improve test coverage.
+- Please see documentation links and GitHub issues for other details.
 
 ## Documentation
 
@@ -34,13 +35,13 @@ Please see our [documentation](https://opendistro.github.io/for-elasticsearch-do
 
 Ultimately, your directory structure should look like this:
 
+<!-- prettier-ignore -->
 ```md
 .
 ├── kibana
 │   └──plugins
 │      └── anomaly-detection-kibana-plugin
 ```
-
 
 ## Build
 
@@ -58,7 +59,6 @@ Example output: `./build/opendistro-anomaly-detection-1.4.2.0.zip`
 
   Runs the plugin tests.
 
-
 ## Contributing to Open Distro for Elasticsearch Anomaly detection Kibana
 
 We welcome you to get involved in development, documentation, testing the anomaly detection plugin. See our [CONTRIBUTING.md](./CONTRIBUTING.md) and join in.
@@ -68,7 +68,6 @@ Since this is a Kibana plugin, it can be useful to review the [Kibana contributi
 ## Code of Conduct
 
 This project has adopted an [Open Source Code of Conduct](https://opendistro.github.io/for-elasticsearch/codeofconduct.html).
-
 
 ## Security issue notifications
 
@@ -80,4 +79,4 @@ See the [LICENSE](./LICENSE.txt) file for our project's licensing. We will ask y
 
 ## Copyright
 
-Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.

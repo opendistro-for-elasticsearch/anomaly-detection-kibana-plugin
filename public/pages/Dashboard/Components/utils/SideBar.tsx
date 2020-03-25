@@ -1,11 +1,6 @@
 import { APP_PATH } from '../../../../utils/constants';
 import React, { Component } from 'react';
-import {
-  EuiSideNav,
-  EuiPageSideBar,
-  EuiPageHeader,
-  EuiTitle,
-} from '@elastic/eui';
+import { EuiSideNav, EuiPageSideBar } from '@elastic/eui';
 
 type SideBarState = {
   selectedItemName: string;
@@ -62,13 +57,3 @@ export class SideBar extends Component<{}, SideBarState> {
     );
   }
 }
-
-export const DashboardHeader = () => {
-  return (
-    <EuiPageHeader>
-      <EuiTitle size="l">
-        <h1>Dashboard</h1>
-      </EuiTitle>
-    </EuiPageHeader>
-  );
-};

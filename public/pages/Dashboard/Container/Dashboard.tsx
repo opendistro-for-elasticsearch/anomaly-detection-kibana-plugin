@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
 import { getDetectorList } from '../../../redux/reducers/ad';
@@ -24,10 +24,16 @@ import {
   EuiTitle,
   EuiPageHeader,
   EuiPage,
+  EuiPageBody,
+  EuiLoadingSpinner,
 } from '@elastic/eui';
+import { SideBar } from '../Components/utils/SideBar';
+import { DashboardHeader } from '../Components/utils/DashboardHeader';
 
 export const Dashboard = () => {
   const dispatch = useDispatch();
+
+  const isLoading = useSelector((state: AppState) => state.ad.requesting);
 
   // useCallBack ensures we don't recreate the funciton
   const onRefreshPage = useCallback(
@@ -48,21 +54,38 @@ export const Dashboard = () => {
     (state: AppState) => state.ad.totalDetectors
   );
 
+  // onRefreshPage is called whenever onRefreshPage funciton is recreated
   useEffect(() => {
     onRefreshPage();
-  });
+  }, [onRefreshPage]);
 
-  return totalDetectors == 0 ? (
-    <EmptyDashboard />
-  ) : (
-    <EuiPage>
-      <EuiPageHeader>
-        <EuiPageHeaderSection>
-          <EuiTitle size="l">
-            <h1>Page under construction</h1>
-          </EuiTitle>
-        </EuiPageHeaderSection>
-      </EuiPageHeader>
+  return (
+    <EuiPage style={{ flex: 1 }}>
+      <SideBar />
+      <EuiPageBody>
+        <DashboardHeader />
+        {isLoading == true ? (
+          <div>
+            <EuiLoadingSpinner size="s" />
+            &nbsp;&nbsp;
+            <EuiLoadingSpinner size="m" />
+            &nbsp;&nbsp;
+            <EuiLoadingSpinner size="l" />
+            &nbsp;&nbsp;
+            <EuiLoadingSpinner size="xl" />
+          </div>
+        ) : totalDetectors == 0 ? (
+          <EmptyDashboard />
+        ) : (
+          <EuiPageHeader>
+            <EuiPageHeaderSection>
+              <EuiTitle size="l">
+                <h1>Page under construction</h1>
+              </EuiTitle>
+            </EuiPageHeaderSection>
+          </EuiPageHeader>
+        )}
+      </EuiPageBody>
     </EuiPage>
   );
 };
