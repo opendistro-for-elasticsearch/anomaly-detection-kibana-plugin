@@ -100,4 +100,30 @@ export default function adPlugin(Client: any, config: any, components: any) {
     needBody: true,
     method: 'POST',
   });
+
+  ad.startDetector = ca({
+    url: {
+      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/_start`,
+      req: {
+        detectorId: {
+          type: 'string',
+          required: true,
+        },
+      },
+    },
+    method: 'POST',
+  });
+
+  ad.stopDetector = ca({
+    url: {
+      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/_stop`,
+      req: {
+        detectorId: {
+          type: 'string',
+          required: true,
+        },
+      },
+    },
+    method: 'POST',
+  });
 }

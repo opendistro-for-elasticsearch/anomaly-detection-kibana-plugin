@@ -55,6 +55,8 @@ export default function (apiRouter: Router) {
   apiRouter.post('/detectors/{detectorId}/preview', previewDetector);
   apiRouter.get('/detectors/{detectorId}/results', getAnomalyResults);
   apiRouter.delete('/detectors/{detectorId}', deleteDetector);
+  apiRouter.post('/detectors/{detectorId}/_start', startDetector);
+  apiRouter.post('/detectors/{detectorId}/_stop', stopDetector);
 }
 
 const deleteDetector = async (
@@ -173,6 +175,46 @@ const getDetector = async (
   } catch (err) {
     console.log('Anomaly detector - Unable to get detector', err);
     return { ok: false, error: err.message };
+  }
+};
+
+const startDetector = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<AnomalyResults>> => {
+  try {
+    const { detectorId } = req.params;
+    const response = await callWithRequest(req, 'ad.startDetector', {
+      detectorId,
+    });
+    return {
+      ok: true,
+      response: response,
+    };
+  } catch (err) {
+    console.log('Anomaly detector - strartDetector', err);
+    return { ok: false, error: err.body || err.message };
+  }
+};
+
+const stopDetector = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<AnomalyResults>> => {
+  try {
+    const { detectorId } = req.params;
+    const response = await callWithRequest(req, 'ad.stopDetector', {
+      detectorId,
+    });
+    return {
+      ok: true,
+      response: response,
+    };
+  } catch (err) {
+    console.log('Anomaly detector - stopDetector', err);
+    return { ok: false, error: err.body || err.message };
   }
 };
 

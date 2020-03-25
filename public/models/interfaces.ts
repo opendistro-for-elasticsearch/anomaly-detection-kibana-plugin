@@ -98,6 +98,7 @@ export type Detector = {
   windowDelay: { period: Schedule };
   detectionInterval: { period: Schedule };
   uiMetadata: UiMetaData;
+  enabled?: boolean;
 };
 
 export type DetectorListItem = {
