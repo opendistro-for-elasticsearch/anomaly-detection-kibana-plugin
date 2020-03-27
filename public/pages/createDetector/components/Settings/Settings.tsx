@@ -35,42 +35,46 @@ export const Settings = () => {
     <ContentPanel title="Detector operation settings" titleSize="s">
       <Field name="detectionInterval" validate={validatePositiveInteger}>
         {({ field, form }: FieldProps) => (
-          <EuiFormRow
-            fullWidth
-            label={
-              <div>
-                <p>Detector interval</p>
-                <p className="sublabel">
-                  Define how often the detector collects data to generate
-                  anomalies. The shorter the interval is, the more real time the
-                  detector results will be. The detector interval, together with
-                  data ingestion speed, also determines the preparation time of
-                  the detector. Long intervals and slow ingestion speed means
-                  the detector takes longer time to collect sufficient data to
-                  generate anomalies.
-                </p>
-              </div>
-            }
-            isInvalid={isInvalid(field.name, form)}
-            error={getError(field.name, form)}
-          >
-            <EuiFlexGroup gutterSize="s" alignItems="center">
-              <EuiFlexItem grow={false}>
-                <EuiFieldNumber
-                  name="detectionInterval"
-                  id="detectionInterval"
-                  placeholder="Detector interval"
-                  data-test-subj="detectionInterval"
-                  {...field}
-                />
-              </EuiFlexItem>
-              <EuiFlexItem>
-                <EuiText>
-                  <p className="minutes">minutes</p>
-                </EuiText>
-              </EuiFlexItem>
-            </EuiFlexGroup>
-          </EuiFormRow>
+          <EuiFlexGroup>
+            <EuiFlexItem style={{ maxWidth: '70%' }}>
+              <EuiFormRow
+                fullWidth
+                label={
+                  <div>
+                    <p>Detector interval</p>
+                    <p className="sublabel">
+                      Define how often the detector collects data to generate
+                      anomalies. The shorter the interval is, the more real time
+                      the detector results will be. The detector interval,
+                      together with data ingestion speed, also determines the
+                      preparation time of the detector. Long intervals and slow
+                      ingestion speed means the detector takes longer time to
+                      collect sufficient data to generate anomalies.
+                    </p>
+                  </div>
+                }
+                isInvalid={isInvalid(field.name, form)}
+                error={getError(field.name, form)}
+              >
+                <EuiFlexGroup gutterSize="s" alignItems="center">
+                  <EuiFlexItem grow={false}>
+                    <EuiFieldNumber
+                      name="detectionInterval"
+                      id="detectionInterval"
+                      placeholder="Detector interval"
+                      data-test-subj="detectionInterval"
+                      {...field}
+                    />
+                  </EuiFlexItem>
+                  <EuiFlexItem>
+                    <EuiText>
+                      <p className="minutes">minutes</p>
+                    </EuiText>
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+              </EuiFormRow>
+            </EuiFlexItem>
+          </EuiFlexGroup>
         )}
       </Field>
       <Field name="windowDelay" validate={validateNonNegativeInteger}>

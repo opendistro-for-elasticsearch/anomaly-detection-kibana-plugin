@@ -535,61 +535,70 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
         style="padding: 0px 10px;"
       >
         <div
-          class="euiFormRow euiFormRow--fullWidth"
-          id="random_id-row"
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel"
-            for="random_id"
-          >
-            <div>
-              <p>
-                Detector interval
-              </p>
-              <p
-                class="sublabel"
-              >
-                Define how often the detector collects data to generate anomalies. The shorter the interval is, the more real time the detector results will be. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies.
-              </p>
-            </div>
-          </label>
           <div
-            class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
-            id="random_id"
+            class="euiFlexItem"
+            style="max-width: 70%;"
           >
             <div
-              class="euiFlexItem euiFlexItem--flexGrowZero"
+              class="euiFormRow euiFormRow--fullWidth"
+              id="random_id-row"
             >
+              <label
+                aria-invalid="false"
+                class="euiFormLabel"
+                for="random_id"
+              >
+                <div>
+                  <p>
+                    Detector interval
+                  </p>
+                  <p
+                    class="sublabel"
+                  >
+                    Define how often the detector collects data to generate anomalies. The shorter the interval is, the more real time the detector results will be. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies.
+                  </p>
+                </div>
+              </label>
               <div
-                class="euiFormControlLayout"
+                class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                id="random_id"
               >
                 <div
-                  class="euiFormControlLayout__childrenWrapper"
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
                 >
-                  <input
-                    class="euiFieldNumber"
-                    data-test-subj="detectionInterval"
-                    id="detectionInterval"
-                    name="detectionInterval"
-                    placeholder="Detector interval"
-                    type="number"
-                    value="10"
-                  />
+                  <div
+                    class="euiFormControlLayout"
+                  >
+                    <div
+                      class="euiFormControlLayout__childrenWrapper"
+                    >
+                      <input
+                        class="euiFieldNumber"
+                        data-test-subj="detectionInterval"
+                        id="detectionInterval"
+                        name="detectionInterval"
+                        placeholder="Detector interval"
+                        type="number"
+                        value="10"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div
-              class="euiFlexItem"
-            >
-              <div
-                class="euiText euiText--medium"
-              >
-                <p
-                  class="minutes"
+                <div
+                  class="euiFlexItem"
                 >
-                  minutes
-                </p>
+                  <div
+                    class="euiText euiText--medium"
+                  >
+                    <p
+                      class="minutes"
+                    >
+                      minutes
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
