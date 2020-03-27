@@ -105,9 +105,9 @@ export const getResultAggregationQuery = (
         },
         aggs: {
           total_anomalies_in_24hr: {
-            filter: { range: { start_time: { gte: 'now-24h', lte: 'now' } } },
+            filter: { range: { data_start_time: { gte: 'now-24h', lte: 'now' } } },
           },
-          latest_anomaly_time: { max: { field: 'start_time' } },
+          latest_anomaly_time: { max: { field: 'data_start_time' } },
         },
       },
     },
@@ -126,8 +126,9 @@ export const anomalyResultMapper = (anomalyResults: any[]): AnomalyResults => {
     resultData.featureData[feature.featureId] = [];
   });
   anomalyResults.forEach(({ featureData, ...rest }) => {
+    const { dataStartTime, dataEndTime, ...others } = rest;
     resultData.anomalies.push({
-      ...rest,
+      ...others,
       anomalyGrade:
         rest.anomalyGrade != null && rest.anomalyGrade > 0
           ? Number.parseFloat(rest.anomalyGrade).toFixed(3)
@@ -136,15 +137,17 @@ export const anomalyResultMapper = (anomalyResults: any[]): AnomalyResults => {
         rest.anomalyGrade != null && rest.anomalyGrade > 0
           ? Number.parseFloat(rest.confidence).toFixed(3)
           : 0,
+      startTime: rest.dataStartTime,
+      endTime: rest.dataEndTime,
       plotTime:
-        rest.startTime + Math.floor((rest.endTime - rest.startTime) / 2),
+        rest.dataStartTime + Math.floor((rest.dataEndTime - rest.dataStartTime) / 2),
     });
     featureData.forEach((feature: any) => {
       resultData.featureData[feature.featureId].push({
-        startTime: rest.startTime,
-        endTime: rest.endTime,
+        startTime: rest.dataStartTime,
+        endTime: rest.dataEndTime,
         plotTime:
-          rest.startTime + Math.floor((rest.endTime - rest.startTime) / 2),
+          rest.dataStartTime + Math.floor((rest.dataEndTime - rest.dataStartTime) / 2),
         data: feature.data,
       });
     });

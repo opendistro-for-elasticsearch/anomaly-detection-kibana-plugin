@@ -218,10 +218,10 @@ describe('adHelpers', () => {
             aggs: {
               total_anomalies_in_24hr: {
                 filter: {
-                  range: { start_time: { gte: 'now-24h', lte: 'now' } },
+                  range: { data_start_time: { gte: 'now-24h', lte: 'now' } },
                 },
               },
-              latest_anomaly_time: { max: { field: 'start_time' } },
+              latest_anomaly_time: { max: { field: 'data_start_time' } },
             },
           },
         },
@@ -261,10 +261,10 @@ describe('adHelpers', () => {
             aggs: {
               total_anomalies_in_24hr: {
                 filter: {
-                  range: { start_time: { gte: 'now-24h', lte: 'now' } },
+                  range: { data_start_time: { gte: 'now-24h', lte: 'now' } },
                 },
               },
-              latest_anomaly_time: { max: { field: 'start_time' } },
+              latest_anomaly_time: { max: { field: 'data_start_time' } },
             },
           },
         },
@@ -301,10 +301,10 @@ describe('adHelpers', () => {
             aggs: {
               total_anomalies_in_24hr: {
                 filter: {
-                  range: { start_time: { gte: 'now-24h', lte: 'now' } },
+                  range: { data_start_time: { gte: 'now-24h', lte: 'now' } },
                 },
               },
-              latest_anomaly_time: { max: { field: 'start_time' } },
+              latest_anomaly_time: { max: { field: 'data_start_time' } },
             },
           },
         },
@@ -341,10 +341,10 @@ describe('adHelpers', () => {
             aggs: {
               total_anomalies_in_24hr: {
                 filter: {
-                  range: { start_time: { gte: 'now-24h', lte: 'now' } },
+                  range: { data_start_time: { gte: 'now-24h', lte: 'now' } },
                 },
               },
-              latest_anomaly_time: { max: { field: 'start_time' } },
+              latest_anomaly_time: { max: { field: 'data_start_time' } },
             },
           },
         },

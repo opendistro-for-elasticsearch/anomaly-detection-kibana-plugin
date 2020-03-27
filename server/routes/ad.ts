@@ -409,8 +409,8 @@ const getAnomalyResults = async (
     const sortQueryMap = {
       anomalyGrade: { anomaly_grade: sortDirection },
       confidence: { confidence: sortDirection },
-      startTime: { start_time: sortDirection },
-      endTime: { end_time: sortDirection },
+      startTime: { data_start_time: sortDirection },
+      endTime: { data_end_time: sortDirection },
     } as { [key: string]: object };
     let sort = {};
     const sortQuery = sortQueryMap[sortField];
@@ -439,8 +439,8 @@ const getAnomalyResults = async (
     // Get all detectors from search detector API
     const detectorResults: AnomalyResult[] = get(response, 'hits.hits', []).map(
       (result: any) => ({
-        startTime: result._source.start_time,
-        endTime: result._source.end_time,
+        startTime: result._source.data_start_time,
+        endTime: result._source.data_end_time,
         confidence: result._source.confidence != null && result._source.confidence > 0 ? Number.parseFloat(result._source.confidence).toFixed(3) : 0,
         anomalyGrade: result._source.anomaly_grade != null && result._source.anomaly_grade > 0 ? Number.parseFloat(result._source.anomaly_grade).toFixed(3) : 0
       })
