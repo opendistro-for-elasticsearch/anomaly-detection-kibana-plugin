@@ -283,7 +283,7 @@ export const deleteDetector = (detectorId: string): APIAction => ({
 export const startDetector = (detectorId: string): APIAction => ({
   type: START_DETECTOR,
   request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/_start`, {
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/start`, {
       detectorId: detectorId,
     }),
   detectorId,
@@ -292,7 +292,7 @@ export const startDetector = (detectorId: string): APIAction => ({
 export const stopDetector = (detectorId: string): APIAction => ({
   type: STOP_DETECTOR,
   request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/_stop`, {
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/stop`, {
       detectorId: detectorId,
     }),
   detectorId,

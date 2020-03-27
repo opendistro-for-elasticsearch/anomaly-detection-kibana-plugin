@@ -55,8 +55,8 @@ export default function (apiRouter: Router) {
   apiRouter.post('/detectors/{detectorId}/preview', previewDetector);
   apiRouter.get('/detectors/{detectorId}/results', getAnomalyResults);
   apiRouter.delete('/detectors/{detectorId}', deleteDetector);
-  apiRouter.post('/detectors/{detectorId}/_start', startDetector);
-  apiRouter.post('/detectors/{detectorId}/_stop', stopDetector);
+  apiRouter.post('/detectors/{detectorId}/start', startDetector);
+  apiRouter.post('/detectors/{detectorId}/stop', stopDetector);
 }
 
 const deleteDetector = async (
