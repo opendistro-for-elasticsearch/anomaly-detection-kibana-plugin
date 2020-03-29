@@ -31,6 +31,8 @@ const GET_DETECTOR_LIST = 'ad/GET_DETECTOR_LIST';
 const UPDATE_DETECTOR = 'ad/UPDATE_DETECTOR';
 const SEARCH_DETECTOR = 'ad/SEARCH_DETECTOR';
 const DELETE_DETECTOR = 'ad/DELETE_DETECTOR';
+const START_DETECTOR = 'ad/START_DETECTOR';
+const STOP_DETECTOR = 'ad/STOP_DETECTOR';
 
 export interface Detectors {
   requesting: boolean;
@@ -90,6 +92,51 @@ const reducer = handleActions<Detectors>(
         ...state,
         requesting: false,
         errorMessage: action.error.data.error,
+      }),
+    },
+    [START_DETECTOR]: {
+      REQUEST: (state: Detectors): Detectors => {
+        const newState = { ...state, requesting: true, errorMessage: '' };
+        return newState;
+      },
+      SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
+        ...state,
+        requesting: false,
+        detectors: {
+          ...state.detectors,
+          [action.detectorId]: {
+            ...[action.detectorId],
+            enabled: true,
+          },
+        },
+      }),
+      FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
+      }),
+    },
+
+    [STOP_DETECTOR]: {
+      REQUEST: (state: Detectors): Detectors => {
+        const newState = { ...state, requesting: true, errorMessage: '' };
+        return newState;
+      },
+      SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
+        ...state,
+        requesting: false,
+        detectors: {
+          ...state.detectors,
+          [action.detectorId]: {
+            ...[action.detectorId],
+            enabled: false,
+          },
+        },
+      }),
+      FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
       }),
     },
     [SEARCH_DETECTOR]: {
@@ -230,6 +277,24 @@ export const deleteDetector = (detectorId: string): APIAction => ({
   type: DELETE_DETECTOR,
   request: (client: IHttpService) =>
     client.delete(`..${AD_NODE_API.DETECTOR}/${detectorId}`),
+  detectorId,
+});
+
+export const startDetector = (detectorId: string): APIAction => ({
+  type: START_DETECTOR,
+  request: (client: IHttpService) =>
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/start`, {
+      detectorId: detectorId,
+    }),
+  detectorId,
+});
+
+export const stopDetector = (detectorId: string): APIAction => ({
+  type: STOP_DETECTOR,
+  request: (client: IHttpService) =>
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/stop`, {
+      detectorId: detectorId,
+    }),
   detectorId,
 });
 

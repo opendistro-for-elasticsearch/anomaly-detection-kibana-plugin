@@ -55,6 +55,8 @@ export default function (apiRouter: Router) {
   apiRouter.post('/detectors/{detectorId}/preview', previewDetector);
   apiRouter.get('/detectors/{detectorId}/results', getAnomalyResults);
   apiRouter.delete('/detectors/{detectorId}', deleteDetector);
+  apiRouter.post('/detectors/{detectorId}/start', startDetector);
+  apiRouter.post('/detectors/{detectorId}/stop', stopDetector);
 }
 
 const deleteDetector = async (
@@ -165,6 +167,7 @@ const getDetector = async (
       id: response._id,
       primaryTerm: response._primary_term,
       seqNo: response._seq_no,
+      adJob: { ...response.anomaly_detector_job },
     };
     return {
       ok: true,
@@ -173,6 +176,46 @@ const getDetector = async (
   } catch (err) {
     console.log('Anomaly detector - Unable to get detector', err);
     return { ok: false, error: err.message };
+  }
+};
+
+const startDetector = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<AnomalyResults>> => {
+  try {
+    const { detectorId } = req.params;
+    const response = await callWithRequest(req, 'ad.startDetector', {
+      detectorId,
+    });
+    return {
+      ok: true,
+      response: response,
+    };
+  } catch (err) {
+    console.log('Anomaly detector - strartDetector', err);
+    return { ok: false, error: err.body || err.message };
+  }
+};
+
+const stopDetector = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<AnomalyResults>> => {
+  try {
+    const { detectorId } = req.params;
+    const response = await callWithRequest(req, 'ad.stopDetector', {
+      detectorId,
+    });
+    return {
+      ok: true,
+      response: response,
+    };
+  } catch (err) {
+    console.log('Anomaly detector - stopDetector', err);
+    return { ok: false, error: err.body || err.message };
   }
 };
 
@@ -366,8 +409,8 @@ const getAnomalyResults = async (
     const sortQueryMap = {
       anomalyGrade: { anomaly_grade: sortDirection },
       confidence: { confidence: sortDirection },
-      startTime: { start_time: sortDirection },
-      endTime: { end_time: sortDirection },
+      startTime: { data_start_time: sortDirection },
+      endTime: { data_end_time: sortDirection },
     } as { [key: string]: object };
     let sort = {};
     const sortQuery = sortQueryMap[sortField];
@@ -396,8 +439,8 @@ const getAnomalyResults = async (
     // Get all detectors from search detector API
     const detectorResults: AnomalyResult[] = get(response, 'hits.hits', []).map(
       (result: any) => ({
-        startTime: result._source.start_time,
-        endTime: result._source.end_time,
+        startTime: result._source.data_start_time,
+        endTime: result._source.data_end_time,
         confidence: result._source.confidence != null && result._source.confidence > 0 ? Number.parseFloat(result._source.confidence).toFixed(3) : 0,
         anomalyGrade: result._source.anomaly_grade != null && result._source.anomaly_grade > 0 ? Number.parseFloat(result._source.anomaly_grade).toFixed(3) : 0
       })

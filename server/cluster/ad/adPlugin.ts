@@ -83,7 +83,7 @@ export default function adPlugin(Client: any, config: any, components: any) {
   });
   ad.getDetector = ca({
     url: {
-      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>`,
+      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>?job=true`,
       req: {
         detectorId: {
           type: 'string',
@@ -98,6 +98,32 @@ export default function adPlugin(Client: any, config: any, components: any) {
       fmt: `${API.DETECTOR_BASE}/results/_search`,
     },
     needBody: true,
+    method: 'POST',
+  });
+
+  ad.startDetector = ca({
+    url: {
+      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/_start`,
+      req: {
+        detectorId: {
+          type: 'string',
+          required: true,
+        },
+      },
+    },
+    method: 'POST',
+  });
+
+  ad.stopDetector = ca({
+    url: {
+      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/_stop`,
+      req: {
+        detectorId: {
+          type: 'string',
+          required: true,
+        },
+      },
+    },
     method: 'POST',
   });
 }
