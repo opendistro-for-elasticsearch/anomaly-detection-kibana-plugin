@@ -103,7 +103,7 @@ export default function adPlugin(Client: any, config: any, components: any) {
 
   ad.startDetector = ca({
     url: {
-      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/start`,
+      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/_start`,
       req: {
         detectorId: {
           type: 'string',
@@ -116,7 +116,7 @@ export default function adPlugin(Client: any, config: any, components: any) {
 
   ad.stopDetector = ca({
     url: {
-      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/stop`,
+      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/_stop`,
       req: {
         detectorId: {
           type: 'string',
