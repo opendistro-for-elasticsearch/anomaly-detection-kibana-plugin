@@ -13,6 +13,7 @@
  * permissions and limitations under the License.
  */
 
+import 'babel-polyfill';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { ADPlugin } from './server/plugin';
@@ -24,7 +25,8 @@ export default kibana => {
     uiExports: {
       app: {
         title: 'Open Distro for Elasticsearch Anomaly Detection Kibana plugin',
-        description: 'Open Distro for Elasticsearch Anomaly Detection Kibana plugin',
+        description:
+          'Open Distro for Elasticsearch Anomaly Detection Kibana plugin',
         main: 'plugins/opendistro-anomaly-detection/app',
         icon:
           'plugins/opendistro-anomaly-detection/images/anomaly_detection_icon.svg',
