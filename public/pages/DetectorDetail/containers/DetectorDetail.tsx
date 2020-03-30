@@ -51,7 +51,7 @@ import { useFetchMonitorInfo } from '../hooks/useFetchMonitorInfo';
 import { MonitorCallout } from '../components/MonitorCallout/MonitorCallout';
 import { DETECTOR_DETAIL_TABS } from '../utils/constants';
 import { DetectorConfig } from '../../DetectorConfig/containers/DetectorConfig';
-import { AnomalyResults } from '../../DetectorResults/containers/AnomalyResults';
+//import { AnomalyResults } from '../../DetectorResults/containers/AnomalyResults';
 
 export interface DetectorRouterProps {
   detectorId?: string;
@@ -445,12 +445,14 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
           exact
           path="/detectors/:detectorId/results"
           render={props => (
-            <AnomalyResults
-              {...props}
-              detectorId={detectorId}
-              onStartDetector={() => handleStartAdJob(detectorId)}
-              onSwitchToConfiguration={handleSwitchToConfigurationTab}
-            />
+            // TODO: add Yaliang's changes back when he checks in AnomalyResults
+            // <AnomalyResults
+            //   {...props}
+            //   detectorId={detectorId}
+            //   onStartDetector={() => handleStartAdJob(detectorId)}
+            //   onSwitchToConfiguration={handleSwitchToConfigurationTab}
+            // />
+            <div></div>
           )}
         />
         <Route

@@ -18,7 +18,7 @@ import moment from 'moment';
 
 export const DEFAULT_EMPTY_DATA = '-';
 
-const renderTime = (time: number) => {
+export const renderTime = (time: number) => {
   const momentTime = moment(time);
   if (time && momentTime.isValid()) return momentTime.format('MM/DD/YY h:mm a');
   return DEFAULT_EMPTY_DATA;

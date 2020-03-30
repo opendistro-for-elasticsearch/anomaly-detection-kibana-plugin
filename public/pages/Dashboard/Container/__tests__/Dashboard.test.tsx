@@ -20,7 +20,6 @@ import { Provider } from 'react-redux';
 import { MemoryRouter as Router, Route, Switch } from 'react-router-dom';
 import configureStore from '../../../../redux/configureStore';
 import { httpClientMock } from '../../../../../test/mocks';
-import moment from 'moment';
 
 const renderWithRouter = () => ({
   ...render(

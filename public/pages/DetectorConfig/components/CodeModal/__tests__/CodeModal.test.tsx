@@ -13,7 +13,24 @@
  * permissions and limitations under the License.
  */
 
-@import 'components/ContentPanel/index.scss';
-@import 'pages/createDetector/index.scss';
-@import 'pages/Dashboard/index.scss';
-@import 'pages/DetectorConfig/index.scss';
+import React from 'react';
+import { render } from '@testing-library/react';
+import { CodeModal } from '../CodeModal';
+
+describe('CodeMOdal spec', () => {
+  const onVisibilityChange = jest.fn(() => true);
+  const onCloseModal = jest.fn();
+
+  test('renders the component', () => {
+    const { container } = render(
+      <CodeModal
+        code="xyz"
+        title="123"
+        subtitle="abc"
+        getModalVisibilityChange={onVisibilityChange}
+        closeModal={onCloseModal}
+      />
+    );
+    expect(container).toMatchSnapshot();
+  });
+});

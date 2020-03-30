@@ -13,8 +13,8 @@
  * permissions and limitations under the License.
  */
 
-import React from 'react';
-
+import React, { ReactElement } from 'react';
+//@ts-ignore
 import {
   //@ts-ignore
   EuiTitleSize,
@@ -105,6 +105,7 @@ const ContentPanel = (props: ContentPanelProps) => (
         </EuiFlexGroup>
       </EuiFlexItem>
     </EuiFlexGroup>
+
     {props.title != '' && (
       <EuiHorizontalRule
         margin="xs"

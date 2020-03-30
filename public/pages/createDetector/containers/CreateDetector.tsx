@@ -51,6 +51,7 @@ import { detectorToFormik } from './utils/detectorToFormik';
 import { formikToDetector } from './utils/formikToDetector';
 import { Detector } from '../../../models/interfaces';
 import { Settings } from '../components/Settings/Settings';
+import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
 
 interface CreateRouterProps {
   detectorId?: string;
@@ -61,6 +62,7 @@ interface CreateADProps extends RouteComponentProps<CreateRouterProps> {
 }
 
 export function CreateDetector(props: CreateADProps) {
+  useHideSideNavBar(true, false);
   const dispatch = useDispatch<Dispatch<APIAction>>();
   const detectorId: string = get(props, 'match.params.detectorId', '');
   //In case user is refreshing Edit detector page, we'll lose existing detector state
@@ -91,7 +93,7 @@ export function CreateDetector(props: CreateADProps) {
       toastNotifications.addSuccess(
         `Detector updated: ${detectorToBeUpdated.name}`
       );
-      props.history.push(`/detectors/${detectorId}/features/`);
+      props.history.push(`/detectors/${detectorId}/configurations/`);
     } catch (err) {
       toastNotifications.addDanger(
         getErrorMessage(err, 'There was a problem updating detector')
@@ -105,7 +107,7 @@ export function CreateDetector(props: CreateADProps) {
         `Detector created: ${detectorResp.data.response.name}`
       );
       props.history.push(
-        `/detectors/${detectorResp.data.response.id}/features/`
+        `/detectors/${detectorResp.data.response.id}/configurations/`
       );
     } catch (err) {
       toastNotifications.addDanger(
