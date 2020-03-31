@@ -16,7 +16,6 @@
 import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
 import {
   EuiFieldNumber,
-  EuiFormRow,
   EuiFlexGroup,
   EuiFlexItem,
   EuiText,
@@ -29,6 +28,7 @@ import {
   validatePositiveInteger,
   validateNonNegativeInteger,
 } from '../../../../utils/utils';
+import { FormattedFormRow } from '../FormattedFormRow/FormattedFormRow';
 
 export const Settings = () => {
   return (
@@ -37,22 +37,16 @@ export const Settings = () => {
         {({ field, form }: FieldProps) => (
           <EuiFlexGroup>
             <EuiFlexItem style={{ maxWidth: '70%' }}>
-              <EuiFormRow
+              <FormattedFormRow
                 fullWidth
-                label={
-                  <div>
-                    <p>Detector interval</p>
-                    <p className="sublabel">
-                      Define how often the detector collects data to generate
-                      anomalies. The shorter the interval is, the more real time
-                      the detector results will be. The detector interval,
-                      together with data ingestion speed, also determines the
-                      preparation time of the detector. Long intervals and slow
-                      ingestion speed means the detector takes longer time to
-                      collect sufficient data to generate anomalies.
-                    </p>
-                  </div>
-                }
+                title="Detector interval"
+                hint="Define how often the detector collects data to generate
+                anomalies. The shorter the interval is, the more real time
+                the detector results will be. The detector interval,
+                together with data ingestion speed, also determines the
+                preparation time of the detector. Long intervals and slow
+                ingestion speed means the detector takes longer time to
+                collect sufficient data to generate anomalies."
                 isInvalid={isInvalid(field.name, form)}
                 error={getError(field.name, form)}
               >
@@ -72,24 +66,18 @@ export const Settings = () => {
                     </EuiText>
                   </EuiFlexItem>
                 </EuiFlexGroup>
-              </EuiFormRow>
+              </FormattedFormRow>
             </EuiFlexItem>
           </EuiFlexGroup>
         )}
       </Field>
       <Field name="windowDelay" validate={validateNonNegativeInteger}>
         {({ field, form }: FieldProps) => (
-          <EuiFormRow
+          <FormattedFormRow
             fullWidth
-            label={
-              <div>
-                <p>Window delay</p>
-                <p className="sublabel">
-                  Specify a window of delay for a detector to fetch data, if you
-                  need to account for extra processing time.
-                </p>
-              </div>
-            }
+            title="Window delay"
+            hint="Specify a window of delay for a detector to fetch data, if you
+            need to account for extra processing time."
             isInvalid={isInvalid(field.name, form)}
             error={getError(field.name, form)}
           >
@@ -109,7 +97,7 @@ export const Settings = () => {
                 </EuiText>
               </EuiFlexItem>
             </EuiFlexGroup>
-          </EuiFormRow>
+          </FormattedFormRow>
         )}
       </Field>
     </ContentPanel>

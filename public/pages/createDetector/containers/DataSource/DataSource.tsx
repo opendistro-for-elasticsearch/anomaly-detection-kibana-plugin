@@ -34,6 +34,7 @@ import {
   DataFilterProps,
   DataFilter,
 } from '../../components/DataFilters/DataFilter';
+import { FormattedFormRow } from '../../components/FormattedFormRow/FormattedFormRow';
 
 function DataSource(props: DataFilterProps) {
   const dispatch = useDispatch();
@@ -79,15 +80,9 @@ function DataSource(props: DataFilterProps) {
       <Field name="index" validate={validateIndex}>
         {({ field, form }: FieldProps) => {
           return (
-            <EuiFormRow
-              label={
-                <div>
-                  <p>Index</p>
-                  <p className="sublabel">
-                    Choose an index or index pattern as the data source.
-                  </p>
-                </div>
-              }
+            <FormattedFormRow
+              title="Index"
+              hint="Choose an index or index pattern as the data source."
               isInvalid={isInvalid(field.name, form)}
               error={getError(field.name, form)}
               helpText="You can use a wildcard (*) in your index pattern"
@@ -124,21 +119,15 @@ function DataSource(props: DataFilterProps) {
                   />
                 )}
               />
-            </EuiFormRow>
+            </FormattedFormRow>
           );
         }}
       </Field>
       <Field name="timeField" validate={required}>
         {({ field, form }: FieldProps) => (
-          <EuiFormRow
-            label={
-              <div>
-                <p>Timestamp field</p>
-                <p className="sublabel">
-                  Choose the time field you want to use for time filter.
-                </p>
-              </div>
-            }
+          <FormattedFormRow
+            title="Timestamp field"
+            hint="Choose the time field you want to use for time filter."
             isInvalid={isInvalid(field.name, form)}
             error={getError(field.name, form)}
           >
@@ -148,7 +137,7 @@ function DataSource(props: DataFilterProps) {
               placeholder="Find timestamp"
               options={timeStampFieldOptions}
             />
-          </EuiFormRow>
+          </FormattedFormRow>
         )}
       </Field>
       <DataFilter formikProps={props.formikProps} />

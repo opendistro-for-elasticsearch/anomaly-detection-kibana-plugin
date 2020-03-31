@@ -22,6 +22,7 @@ import { FILTER_TYPES_OPTIONS } from './utils/constant';
 import { SimpleFilter } from './SimpleFilter';
 import { QueryDataFilter } from './QueryDataFilter';
 import { FILTER_TYPES } from '../../../../models/interfaces';
+import { FormattedFormRow } from '../FormattedFormRow/FormattedFormRow';
 interface DataFilterProps {
   formikProps: FormikProps<ADFormikValues>;
 }
@@ -31,24 +32,18 @@ function DataFilter(props: DataFilterProps) {
     <Field name={`filterType`} validate={required}>
       {({ field, form }: FieldProps) => (
         <Fragment>
-          <EuiFormRow
+          <FormattedFormRow
             fullWidth
-            label={
-              <div>
-                <p>
-                  Data fiter
-                  <span className="optional">- optional</span>
-                </p>
-                <p className="sublabel">
-                  Choose a subset of your data source to focus your data stream
-                  and reduce noisy data.
-                </p>
-                <p className="sublabel">
-                  Use the visual editor to create a simple filter, or use the
-                  Elasticsearch query DSL to create more advanced filters.
-                </p>
-              </div>
+            formattedTitle={
+              <p>
+                Data fiter
+                <span className="optional">- optional</span>
+              </p>
             }
+            hint={[
+              'Choose a subset of your data source to focus your data stream and reduce noisy data.',
+              'Use the visual editor to create a simple filter, or use the Elasticsearch query DSL to create more advanced filters.',
+            ]}
             isInvalid={isInvalid(field.name, form)}
             error={getError(field.name, form)}
           >
@@ -57,7 +52,7 @@ function DataFilter(props: DataFilterProps) {
               options={FILTER_TYPES_OPTIONS}
               isInvalid={isInvalid(field.name, form)}
             />
-          </EuiFormRow>
+          </FormattedFormRow>
           <EuiHorizontalRule margin="none" />
           {field.value === FILTER_TYPES.SIMPLE ? (
             <SimpleFilter formikProps={props.formikProps} />

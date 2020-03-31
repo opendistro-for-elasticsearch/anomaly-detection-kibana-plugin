@@ -13,12 +13,13 @@
  * permissions and limitations under the License.
  */
 
-import { EuiFieldText, EuiFormRow, EuiTextArea } from '@elastic/eui';
+import { EuiFieldText, EuiTextArea, EuiFormRow } from '@elastic/eui';
 import { Field, FieldProps } from 'formik';
 import React from 'react';
 import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
 import { getError, isInvalid } from '../../../../utils/utils';
 import { validateDetectorDesc } from './utils/validation';
+import { FormattedFormRow } from '../FormattedFormRow/FormattedFormRow';
 
 interface DetectorInfoProps {
   onValidateDetectorName: (detectorName: string) => Promise<any>;
@@ -28,16 +29,10 @@ function DetectorInfo(props: DetectorInfoProps) {
     <ContentPanel title="Name and description" titleSize="s">
       <Field name="detectorName" validate={props.onValidateDetectorName}>
         {({ field, form }: FieldProps) => (
-          <EuiFormRow
-            label={
-              <div>
-                <p>Name</p>
-                <p className="sublabel">
-                  Specify a unique and descriptive name that is easy to
-                  recognize.
-                </p>
-              </div>
-            }
+          <FormattedFormRow
+            title="Name"
+            hint="Specify a unique and descriptive name that is easy to
+          recognize."
             isInvalid={isInvalid(field.name, form)}
             error={getError(field.name, form)}
           >
@@ -48,22 +43,18 @@ function DetectorInfo(props: DetectorInfoProps) {
               isInvalid={isInvalid(field.name, form)}
               {...field}
             />
-          </EuiFormRow>
+          </FormattedFormRow>
         )}
       </Field>
       <Field name="detectorDescription" validate={validateDetectorDesc}>
         {({ field, form }: FieldProps) => (
-          <EuiFormRow
-            label={
-              <div>
-                <p>
-                  Description <span className="optional">- optional</span>
-                </p>
-                <p className="sublabel">
-                  Describe the purpose of the detector.
-                </p>
-              </div>
+          <FormattedFormRow
+            formattedTitle={
+              <p>
+                Description <span className="optional">- optional</span>
+              </p>
             }
+            hint="Describe the purpose of the detector."
             isInvalid={isInvalid(field.name, form)}
             error={getError(field.name, form)}
           >
@@ -75,7 +66,7 @@ function DetectorInfo(props: DetectorInfoProps) {
               {...field}
               isInvalid={isInvalid(field.name, form)}
             />
-          </EuiFormRow>
+          </FormattedFormRow>
         )}
       </Field>
     </ContentPanel>

@@ -58,17 +58,22 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
       >
         <div
           class="euiFormRow"
+          hint="Specify a unique and descriptive name that is easy to recognize."
           id="random_id-row"
+          title="Name"
         >
           <label
             aria-invalid="false"
             class="euiFormLabel"
             for="random_id"
           >
-            <div>
+            <div
+              style="line-height: 8px;"
+            >
               <p>
                 Name
               </p>
+              <br />
               <p
                 class="sublabel"
               >
@@ -95,6 +100,8 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
         </div>
         <div
           class="euiFormRow"
+          formattedtitle="[object Object]"
+          hint="Describe the purpose of the detector."
           id="random_id-row"
         >
           <label
@@ -102,7 +109,9 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
             class="euiFormLabel"
             for="random_id"
           >
-            <div>
+            <div
+              style="line-height: 8px;"
+            >
               <p>
                 Description 
                 <span
@@ -111,6 +120,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                   - optional
                 </span>
               </p>
+              <br />
               <p
                 class="sublabel"
               >
@@ -168,17 +178,22 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
       >
         <div
           class="euiFormRow"
+          hint="Choose an index or index pattern as the data source."
           id="random_id-row"
+          title="Index"
         >
           <label
             aria-invalid="false"
             class="euiFormLabel"
             for="random_id"
           >
-            <div>
+            <div
+              style="line-height: 8px;"
+            >
               <p>
                 Index
               </p>
+              <br />
               <p
                 class="sublabel"
               >
@@ -268,17 +283,22 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
         </div>
         <div
           class="euiFormRow"
+          hint="Choose the time field you want to use for time filter."
           id="random_id-row"
+          title="Timestamp field"
         >
           <label
             aria-invalid="false"
             class="euiFormLabel"
             for="random_id"
           >
-            <div>
+            <div
+              style="line-height: 8px;"
+            >
               <p>
                 Timestamp field
               </p>
+              <br />
               <p
                 class="sublabel"
               >
@@ -336,6 +356,8 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
         </div>
         <div
           class="euiFormRow euiFormRow--fullWidth"
+          formattedtitle="[object Object]"
+          hint="Choose a subset of your data source to focus your data stream and reduce noisy data.,Use the visual editor to create a simple filter, or use the Elasticsearch query DSL to create more advanced filters."
           id="random_id-row"
         >
           <label
@@ -343,7 +365,9 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
             class="euiFormLabel"
             for="random_id"
           >
-            <div>
+            <div
+              style="line-height: 8px;"
+            >
               <p>
                 Data fiter
                 <span
@@ -352,6 +376,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                   - optional
                 </span>
               </p>
+              <br />
               <p
                 class="sublabel"
               >
@@ -543,17 +568,22 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           >
             <div
               class="euiFormRow euiFormRow--fullWidth"
+              hint="Define how often the detector collects data to generate anomalies. The shorter the interval is, the more real time the detector results will be. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies."
               id="random_id-row"
+              title="Detector interval"
             >
               <label
                 aria-invalid="false"
                 class="euiFormLabel"
                 for="random_id"
               >
-                <div>
+                <div
+                  style="line-height: 8px;"
+                >
                   <p>
                     Detector interval
                   </p>
+                  <br />
                   <p
                     class="sublabel"
                   >
@@ -605,17 +635,22 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
         </div>
         <div
           class="euiFormRow euiFormRow--fullWidth"
+          hint="Specify a window of delay for a detector to fetch data, if you need to account for extra processing time."
           id="random_id-row"
+          title="Window delay"
         >
           <label
             aria-invalid="false"
             class="euiFormLabel"
             for="random_id"
           >
-            <div>
+            <div
+              style="line-height: 8px;"
+            >
               <p>
                 Window delay
               </p>
+              <br />
               <p
                 class="sublabel"
               >
