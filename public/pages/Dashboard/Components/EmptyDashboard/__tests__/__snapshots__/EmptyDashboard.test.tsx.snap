@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EmptyDetector /> spec Empty results renders component with empty message 1`] = `
+<div
+  class="euiEmptyPrompt"
+>
+  <span
+    class="euiTextColor euiTextColor--subdued"
+  >
+    <h2
+      class="euiTitle euiTitle--medium"
+    >
+      You have no detectors
+    </h2>
+    <div
+      class="euiSpacer euiSpacer--m"
+    />
+    <div
+      class="euiText euiText--medium"
+    >
+      <p>
+        Create detector first to detect anomalies in your data.
+      </p>
+      <p>
+        Dashboard will generate insights on the anomalies across all of your detectors
+      </p>
+      <p>
+        Read about
+         
+        <a
+          class="euiLink euiLink--primary"
+          href="https://github.com/opendistro-for-elasticsearch/anomaly-detection"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Get started with Anomaly detection  
+          <svg
+            class="euiIcon euiIcon--small"
+            focusable="false"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2 14.01h12.49a.5.5 0 1 1 0 1h-13a.5.5 0 0 1-.49-.597V1.5a.5.5 0 0 1 1 0v12.51zm2.354-1.656a.5.5 0 0 1-.708-.708l8-8a.5.5 0 0 1 .708.708l-8 8zM15 5.5a.5.5 0 1 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 1 1 0-1h3A1.5 1.5 0 0 1 15 2.5v3z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </a>
+         
+      </p>
+    </div>
+  </span>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <a
+    class="euiButton euiButton--primary euiButton--fill"
+    data-test-subj="add_detector"
+    href="opendistro-anomaly-detection#/create-ad"
+  >
+    <span
+      class="euiButton__content"
+    >
+      <span
+        class="euiButton__text"
+      >
+        Create detector
+      </span>
+    </span>
+  </a>
+</div>
+`;
