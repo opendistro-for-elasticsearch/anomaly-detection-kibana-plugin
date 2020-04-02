@@ -82,12 +82,15 @@ describe('<ListControls /> spec', () => {
         'Anomaly detectors take an input of information and discover patterns of anomalies. Create an anomaly detector to get started.'
       );
     });
+  });
+  describe('Populated results', () => {
     test('should sort / pagination the table', async () => {
       const randomDetectors = new Array(40).fill(null).map((_, index) => {
         const hasAnomaly = Math.random() > 0.5;
         return {
           id: `detector_id_${index}`,
           name: `detector_name_${index}`,
+          indices: [`index_${index}`],
           totalAnomalies: hasAnomaly ? Math.floor(Math.random() * 10) : 0,
           lastActiveAnomaly: hasAnomaly ? Date.now() + index : 0,
         };
@@ -107,7 +110,16 @@ describe('<ListControls /> spec', () => {
           data: {
             ok: true,
             response: {
-              detectorList: randomDetectors.slice(20),
+              detectorList: randomDetectors.slice(0, 20),
+              totalDetectors: randomDetectors.length,
+            },
+          },
+        })
+        .mockResolvedValueOnce({
+          data: {
+            ok: true,
+            response: {
+              detectorList: randomDetectors.slice(21, 40),
               totalDetectors: randomDetectors.length,
             },
           },
@@ -133,24 +145,31 @@ describe('<ListControls /> spec', () => {
       });
       // Default view 20 items per page
       await wait(() => getByText('detector_name_0'));
+      getByText('index_0');
       expect(queryByText('detector_name_30')).toBeNull();
+      expect(queryByText('index_30')).toBeNull();
 
       // Navigate to next page
       userEvent.click(getAllByTestId('pagination-button-next')[0]);
       await wait(() => getByText('detector_name_30'));
+      getByText('index_30');
       expect(queryByText('detector_name_0')).toBeNull();
+      expect(queryByText('index_0')).toBeNull();
       // Sort the detector name (String sorting)
       userEvent.click(getAllByTestId('tableHeaderSortButton')[0]);
       await wait(() => getByText('detector_name_22'));
       getByText('detector_name_2');
       expect(queryByText('detector_name_30')).toBeNull();
+      expect(queryByText('index_30')).toBeNull();
       expect(queryByText('detector_name_4')).toBeNull();
+      expect(queryByText('index_4')).toBeNull();
     });
-    test('should able to search', async () => {
+    test('should be able to search', async () => {
       const randomDetectors = new Array(40).fill(null).map((_, index) => {
         const hasAnomaly = Math.random() > 0.5;
         return {
           id: `detector_id_${index}`,
+          indices: [`index_${index}`],
           name: `detector_name_${index}`,
           totalAnomalies: hasAnomaly ? Math.floor(Math.random() * 10) : 0,
           lastActiveAnomaly: hasAnomaly ? Date.now() + index : 0,
@@ -158,6 +177,15 @@ describe('<ListControls /> spec', () => {
       });
       httpClientMock.get = jest
         .fn()
+        .mockResolvedValueOnce({
+          data: {
+            ok: true,
+            response: {
+              detectorList: randomDetectors.slice(0, 20),
+              totalDetectors: randomDetectors.length,
+            },
+          },
+        })
         .mockResolvedValueOnce({
           data: {
             ok: true,
@@ -185,13 +213,18 @@ describe('<ListControls /> spec', () => {
       );
       // Initial load, only first 20 items
       await wait(() => getByText('detector_name_0'));
+      getByText('index_0');
       expect(queryByText('detector_name_38')).toBeNull();
+      expect(queryByText('index_38')).toBeNull();
 
       //Input search event
       userEvent.type(getByPlaceholderText('Search'), 'detector_name_38');
       await wait(() => getByText('detector_name_38'));
+      getByText('index_38');
       expect(queryByText('detector_name_39')).toBeNull();
+      expect(queryByText('index_39')).toBeNull();
       expect(queryByText('detector_name_0')).toBeNull();
+      expect(queryByText('index_0')).toBeNull();
     });
     test('should display rows if there are data', async () => {
       const tempAnomalyTime = moment('2019-10-19T09:00:00');
@@ -199,18 +232,21 @@ describe('<ListControls /> spec', () => {
         {
           id: 1,
           name: 'Test1',
+          indices: ['index_1'],
           totalAnomalies: 5,
           lastActiveAnomaly: tempAnomalyTime.valueOf(),
         },
         {
           id: 2,
           name: 'Test2',
+          indices: ['index_2'],
           totalAnomalies: 10,
           lastActiveAnomaly: tempAnomalyTime.add(10, 'minutes').valueOf(),
         },
         {
           id: 3,
           name: 'Test3',
+          indices: ['index_3'],
           totalAnomalies: 0,
           lastActiveAnomaly: tempAnomalyTime.add(20, 'minutes').valueOf(),
         },
@@ -232,10 +268,12 @@ describe('<ListControls /> spec', () => {
       //Assert all visible text are available
       //Test1 Detector
       getByText(randomDetectors[0].name);
+      getByText(randomDetectors[0].indices[0]);
       getByText(randomDetectors[0].totalAnomalies.toString());
       getByText('10/19/19 9:00 am');
       //Test3 Detector
       getByText(randomDetectors[2].name);
+      getByText(randomDetectors[2].indices[0]);
       getByText(randomDetectors[2].totalAnomalies.toString());
       getByText('10/19/19 9:30 am');
     });

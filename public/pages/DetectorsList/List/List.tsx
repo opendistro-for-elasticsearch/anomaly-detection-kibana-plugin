@@ -12,37 +12,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 import {
   //@ts-ignore
   EuiBasicTable,
   EuiButton,
+  EuiComboBoxOptionProps,
   EuiHorizontalRule,
   EuiPage,
   EuiPageBody,
 } from '@elastic/eui';
-import { isEmpty } from 'lodash';
+import { debounce, get, isEmpty } from 'lodash';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 //@ts-ignore
 import chrome from 'ui/chrome';
-import { GetDetectorsQueryParams } from '../../../../server/models/types';
+import {
+  CatIndex,
+  GetDetectorsQueryParams,
+  IndexAlias,
+} from '../../../../server/models/types';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { AppState } from '../../../redux/reducers';
 import { getDetectorList } from '../../../redux/reducers/ad';
-import { APP_PATH, BREADCRUMBS, PLUGIN_NAME } from '../../../utils/constants';
+import {
+  getIndices,
+  getPrioritizedIndices,
+} from '../../../redux/reducers/elasticsearch';
+import { APP_PATH, PLUGIN_NAME } from '../../../utils/constants';
+import { getVisibleOptions, sanitizeSearchText } from '../../utils/helpers';
 import { EmptyDetectorMessage } from '../Components/EmptyMessage/EmptyMessage';
 import { ListControls } from '../Components/ListControls/ListControls';
+import {
+  ALL_DETECTOR_STATES,
+  MAX_DETECTORS,
+  MAX_DISPLAY_LEN,
+  MAX_SELECTED_INDICES,
+} from '../utils/constants';
 import { getURLQueryParams } from '../utils/helpers';
 import { staticColumn } from '../utils/tableUtils';
+import { SideBar } from '../../utils/SideBar';
 
 export interface ListRouterParams {
   from: string;
   size: string;
   search: string;
+  indices: string;
   sortDirection: SORT_DIRECTION;
   sortField: string;
 }
@@ -50,8 +67,9 @@ interface ListProps extends RouteComponentProps<ListRouterParams> {}
 interface ListState {
   page: number;
   queryParams: GetDetectorsQueryParams;
+  selectedDetectorState: string;
+  selectedIndices: string[];
 }
-const MAX_DETECTORS = 1000;
 
 export const DetectorList = (props: ListProps) => {
   const dispatch = useDispatch();
@@ -59,43 +77,67 @@ export const DetectorList = (props: ListProps) => {
   const totalDetectors = useSelector(
     (state: AppState) => state.ad.totalDetectors
   );
+  const elasticsearchState = useSelector(
+    (state: AppState) => state.elasticsearch
+  );
+
   const isLoading = useSelector((state: AppState) => state.ad.requesting);
+
+  // Getting all initial indices
+  const [indexQuery, setIndexQuery] = useState('');
+  useEffect(() => {
+    const getInitialIndices = async () => {
+      await dispatch(getIndices(indexQuery));
+    };
+    getInitialIndices();
+  }, []);
+
+  // Updating displayed indices (initializing to first 20 for now)
+  const visibleIndices = get(elasticsearchState, 'indices', []) as CatIndex[];
+  const visibleAliases = get(elasticsearchState, 'aliases', []) as IndexAlias[];
+  const indexOptions = getVisibleOptions(
+    visibleIndices,
+    visibleAliases,
+    MAX_DISPLAY_LEN
+  );
 
   const [state, setState] = useState<ListState>({
     page: 0,
     queryParams: getURLQueryParams(props.location),
+    selectedDetectorState: ALL_DETECTOR_STATES,
+    selectedIndices: [],
   });
 
-  // Set Breadcrumbs and initial queryParams
+  // Remove breadcrumbs on page initialization
   useEffect(() => {
-    chrome.breadcrumbs.set([
-      BREADCRUMBS.ANOMALY_DETECTOR,
-      BREADCRUMBS.DASHBOARD,
-    ]);
+    chrome.breadcrumbs.set(['']);
   }, []);
 
   // Refresh data if user change any parameters / filter / sort
-  useEffect(
-    () => {
-      const { history, location } = props;
-      const updatedParams = {
-        ...state.queryParams,
-        from: state.page * state.queryParams.size,
-      };
-      dispatch(getDetectorList(updatedParams));
-      history.replace({
-        ...location,
-        search: queryString.stringify(updatedParams),
-      });
-    },
-    [
-      state.page,
-      state.queryParams.search,
-      state.queryParams.size,
-      state.queryParams.sortDirection,
-      state.queryParams.sortField,
-    ]
-  );
+  useEffect(() => {
+    const { history, location } = props;
+    const updatedParams = {
+      ...state.queryParams,
+      indices: state.selectedIndices.join(' '),
+      from: state.page * state.queryParams.size,
+    };
+    dispatch(getDetectorList(updatedParams));
+    history.replace({
+      ...location,
+      search: queryString.stringify(updatedParams),
+    });
+
+    // TODO: probably have a helper fn here to filter detectors based on detector state
+  }, [
+    state.page,
+    state.queryParams.search,
+    state.queryParams.indices,
+    state.queryParams.size,
+    state.queryParams.sortDirection,
+    state.queryParams.sortField,
+    state.selectedDetectorState,
+    state.selectedIndices,
+  ]);
 
   const handlePageChange = (pageNumber: number) => {
     setState({ ...state, page: pageNumber });
@@ -105,6 +147,7 @@ export const DetectorList = (props: ListProps) => {
     const { index: page, size } = tablePage;
     const { field: sortField, direction: sortDirection } = sort;
     setState({
+      ...state,
       page,
       queryParams: {
         ...state.queryParams,
@@ -115,6 +158,7 @@ export const DetectorList = (props: ListProps) => {
     });
   };
 
+  // Refresh data is user is typing in the search bar
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const searchText = e.target.value;
     setState({
@@ -125,13 +169,52 @@ export const DetectorList = (props: ListProps) => {
       },
     });
   };
+
+  // Refresh data if user is typing in the index filter
+  const handleSearchIndexChange = debounce(async (searchValue: string) => {
+    if (searchValue !== indexQuery) {
+      const sanitizedQuery = sanitizeSearchText(searchValue);
+      setIndexQuery(sanitizedQuery);
+      await dispatch(getPrioritizedIndices(sanitizedQuery));
+    }
+  }, 300);
+
+  // Refresh data if user is selecting a detector state filter
+  const handleDetectorStateChange = (
+    options: EuiComboBoxOptionProps[]
+  ): void => {
+    const newState =
+      options.length > 0 ? options[0].label : ALL_DETECTOR_STATES;
+    setState(state => ({
+      ...state,
+      selectedDetectorState: newState,
+    }));
+  };
+
+  // Refresh data if user is selecting an index filter
+  const handleIndexChange = (options: EuiComboBoxOptionProps[]): void => {
+    let indices: string[];
+    indices = options.length > 0 ? [] : options.map(option => option.label);
+    if (options.length > 0) {
+      indices = options.map(option => option.label);
+    }
+
+    setState({
+      ...state,
+      selectedIndices: indices.slice(0, MAX_SELECTED_INDICES),
+    });
+  };
+
   const handleResetFilter = () => {
     setState(state => ({
       ...state,
       queryParams: {
         ...state.queryParams,
         search: '',
+        indices: '',
       },
+      selectedDetectorState: ALL_DETECTOR_STATES,
+      selectedIndices: [],
     }));
   };
 
@@ -143,20 +226,23 @@ export const DetectorList = (props: ListProps) => {
   };
 
   const isFilterApplied = !isEmpty(state.queryParams.search);
+
   const pagination = {
     pageIndex: state.page,
     pageSize: state.queryParams.size,
     totalItemCount: Math.min(MAX_DETECTORS, totalDetectors),
     pageSizeOptions: [5, 10, 20, 50],
   };
+
   return (
     <EuiPage>
+      <SideBar />
       <EuiPageBody>
         <ContentPanel
-          title="Detectors"
+          title={`Detectors (${totalDetectors})`}
           titleSize="s"
           actions={[
-            <EuiButton href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
+            <EuiButton fill href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
               Create detector
             </EuiButton>,
           ]}
@@ -165,7 +251,13 @@ export const DetectorList = (props: ListProps) => {
             activePage={state.page}
             pageCount={Math.ceil(totalDetectors / state.queryParams.size) || 1}
             search={state.queryParams.search}
-            onSearchChange={handleSearchChange}
+            selectedDetectorState={state.selectedDetectorState}
+            selectedIndices={state.selectedIndices}
+            indexOptions={indexOptions}
+            onDetectorStateChange={handleDetectorStateChange}
+            onIndexChange={handleIndexChange}
+            onSearchDetectorChange={handleSearchChange}
+            onSearchIndexChange={handleSearchIndexChange}
             onPageClick={handlePageChange}
           />
           <EuiHorizontalRule margin="xs" />

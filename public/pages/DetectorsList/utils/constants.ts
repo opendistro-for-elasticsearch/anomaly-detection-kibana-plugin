@@ -15,9 +15,22 @@
 
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 
+export const ALL_DETECTOR_STATES = '';
+export const MAX_DETECTORS = 1000;
+export const MAX_DISPLAY_LEN = 20;
+export const MAX_SELECTED_INDICES = 10;
+
+// TODO: finish when we know all possible detector states
+export enum DETECTOR_STATES {
+  RUNNING = 'Running',
+  STOPPED = 'Stopped',
+  INITIALIZING = 'Initializing',
+}
+
 export const DEFAULT_QUERY_PARAMS = {
   from: 0,
   search: '',
+  indices: '',
   size: 20,
   sortDirection: SORT_DIRECTION.ASC,
   sortField: 'name',

@@ -46,7 +46,7 @@ type PutDetectorParams = {
   body: string;
 };
 
-export default function (apiRouter: Router) {
+export default function(apiRouter: Router) {
   apiRouter.post('/detectors', putDetector);
   apiRouter.put('/detectors/{detectorId}', putDetector);
   apiRouter.post('/detectors/_search', searchDetector);
@@ -194,7 +194,7 @@ const startDetector = async (
       response: response,
     };
   } catch (err) {
-    console.log('Anomaly detector - strartDetector', err);
+    console.log('Anomaly detector - startDetector', err);
     return { ok: false, error: err.body || err.message };
   }
 };
@@ -268,6 +268,7 @@ const getDetectors = async (
       from = 0,
       size = 20,
       search = '',
+      indices = '',
       sortDirection = SORT_DIRECTION.DESC,
       sortField = 'name',
       //@ts-ignore
@@ -285,9 +286,25 @@ const getDetectors = async (
         },
       });
     }
+    if (indices.trim()) {
+      mustQueries.push({
+        query_string: {
+          fields: ['indices'],
+          default_operator: 'OR',
+          query: `*${indices
+            .trim()
+            .split(' ')
+            .join('* *')}*`,
+        },
+      });
+    }
     //Allowed sorting columns
     const sortQueryMap = {
       name: { 'name.keyword': sortDirection },
+      indices: { 'indices.keyword': sortDirection },
+      //totalAnomalies: { totalAnomalies: sortDirection },
+      //lastActiveAnomaly: { lastActiveAnomaly: sortDirection },
+      lastUpdateTime: { last_update_time: sortDirection },
     } as { [key: string]: object };
     let sort = {};
     const sortQuery = sortQueryMap[sortField];
@@ -318,19 +335,24 @@ const getDetectors = async (
         [detector._id]: {
           name: get(detector, '_source.name', ''),
           id: detector._id,
+          description: get(detector, '_source.description', ''),
+          indices: get(detector, '_source.indices', []),
+          lastUpdateTime: get(detector, '_source.last_update_time', 0),
+          // TODO: get the state of the detector once possible (enabled/disabled for now)
         },
       }),
       {}
     );
     //Given each detector from previous result, get aggregation to power list
     const allDetectorIds = Object.keys(allDetectors);
-    const aggregationResult = await callWithRequest(req, 'ad.searchDetector', {
+    const aggregationResult = await callWithRequest(req, 'ad.searchResults', {
       body: getResultAggregationQuery(allDetectorIds, {
         from,
         size,
         sortField,
         sortDirection,
         search,
+        indices,
       }),
     });
     const aggsDetectors = get(
@@ -441,8 +463,15 @@ const getAnomalyResults = async (
       (result: any) => ({
         startTime: result._source.data_start_time,
         endTime: result._source.data_end_time,
-        confidence: result._source.confidence != null && result._source.confidence > 0 ? Number.parseFloat(result._source.confidence).toFixed(3) : 0,
-        anomalyGrade: result._source.anomaly_grade != null && result._source.anomaly_grade > 0 ? Number.parseFloat(result._source.anomaly_grade).toFixed(3) : 0
+        confidence:
+          result._source.confidence != null && result._source.confidence > 0
+            ? Number.parseFloat(result._source.confidence).toFixed(3)
+            : 0,
+        anomalyGrade:
+          result._source.anomaly_grade != null &&
+          result._source.anomaly_grade > 0
+            ? Number.parseFloat(result._source.anomaly_grade).toFixed(3)
+            : 0,
       })
     );
     return {

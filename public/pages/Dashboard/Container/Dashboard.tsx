@@ -27,7 +27,7 @@ import {
   EuiPageBody,
   EuiLoadingSpinner,
 } from '@elastic/eui';
-import { SideBar } from '../Components/utils/SideBar';
+import { SideBar } from '../../utils/SideBar';
 import { DashboardHeader } from '../Components/utils/DashboardHeader';
 
 export const Dashboard = () => {

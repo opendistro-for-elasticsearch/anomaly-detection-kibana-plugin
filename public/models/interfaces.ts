@@ -107,8 +107,11 @@ export type Detector = {
 export type DetectorListItem = {
   id: string;
   name: string;
+  indices: string[];
+  curState: string;
   totalAnomalies: number;
   lastActiveAnomaly: number;
+  lastUpdateTime: number;
 };
 
 export type AnomalyData = {

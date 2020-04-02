@@ -13,12 +13,13 @@
  * permissions and limitations under the License.
  */
 
-import React from 'react';
-import { EuiLink, EuiIcon, EuiToolTip } from '@elastic/eui';
-import { PLUGIN_NAME } from '../../../utils/constants';
-import { Detector } from '../../../../server/models/types';
+import { EuiIcon, EuiLink, EuiToolTip } from '@elastic/eui';
 //@ts-ignore
 import moment from 'moment';
+import get from 'lodash/get';
+import React from 'react';
+import { Detector } from '../../../../server/models/types';
+import { PLUGIN_NAME } from '../../../utils/constants';
 
 export const DEFAULT_EMPTY_DATA = '-';
 
@@ -28,26 +29,30 @@ const renderTime = (time: number) => {
   return DEFAULT_EMPTY_DATA;
 };
 
+const renderLastUpdateTime = (lastUpdateTime: number, detector: Detector) => {
+  const momentTime = moment(detector.lastUpdateTime);
+  if (detector.lastUpdateTime && momentTime.isValid()) {
+    return momentTime.format('MM/DD/YY h:mm A');
+  }
+  return DEFAULT_EMPTY_DATA;
+};
+
+const renderIndices = (indices: string[]) => {
+  return get(indices, '0', DEFAULT_EMPTY_DATA);
+};
+
+// TODO: may not need a separate render fn since it will probably just be a value
+const renderState = (state: string, detector: Detector) => {
+  return '<state placeholder>';
+};
+
 export const staticColumn = [
   {
     field: 'name',
-    name: 'Detector name',
-    sortable: true,
-    truncateText: true,
-    textOnly: true,
-    width: '150px',
-    render: (name: string, detector: Detector) => (
-      <EuiLink href={`${PLUGIN_NAME}#/detectors/${detector.id}`}>
-        {name}
-      </EuiLink>
-    ),
-  },
-  {
-    field: 'totalAnomalies',
     name: (
-      <EuiToolTip content="Total anomalies in last 24 hours">
+      <EuiToolTip content="The name of the detector">
         <span>
-          Total anomalies{' '}
+          Detector{' '}
           <EuiIcon
             size="s"
             color="subdued"
@@ -58,16 +63,106 @@ export const staticColumn = [
       </EuiToolTip>
     ),
     sortable: true,
+    truncateText: true,
+    textOnly: true,
+    align: 'left',
+    width: '150px',
+    render: (name: string, detector: Detector) => (
+      <EuiLink href={`${PLUGIN_NAME}#/detectors/${detector.id}`}>
+        {name}
+      </EuiLink>
+    ),
+  },
+  {
+    field: 'indices',
+    name: (
+      <EuiToolTip content="The index or index pattern the detector is detecting over">
+        <span>
+          Indices{' '}
+          <EuiIcon
+            size="s"
+            color="subdued"
+            type="questionInCircle"
+            className="eui-alignTop"
+          />
+        </span>
+      </EuiToolTip>
+    ),
+    sortable: true,
+    truncateText: true,
+    textOnly: true,
+    align: 'left',
+    width: '150px',
+    render: renderIndices,
+  },
+  {
+    field: 'curState',
+    name: (
+      <EuiToolTip content="The current state of the detector">
+        <span>
+          Detector state{' '}
+          <EuiIcon
+            size="s"
+            color="subdued"
+            type="questionInCircle"
+            className="eui-alignTop"
+          />
+        </span>
+      </EuiToolTip>
+    ),
+    sortable: false,
+    dataType: 'string',
+    align: 'left',
+    width: '100px',
+    render: renderState,
+  },
+  {
+    field: 'totalAnomalies',
+    name: (
+      <EuiToolTip content="Total anomalies with a grade > 0 in last 24 hours">
+        <span>
+          Anomalies last 24 hours{' '}
+          <EuiIcon
+            size="s"
+            color="subdued"
+            type="questionInCircle"
+            className="eui-alignTop"
+          />
+        </span>
+      </EuiToolTip>
+    ),
+    sortable: false,
     dataType: 'number',
-    align: 'center',
+    align: 'right',
     width: '100px',
   },
   {
     field: 'lastActiveAnomaly',
     name: (
-      <EuiToolTip content="Last active anomaly time">
+      <EuiToolTip content="Time of the last active anomaly with a grade > 0">
         <span>
-          Last active anomaly{' '}
+          Last anomaly occurrence{' '}
+          <EuiIcon
+            size="s"
+            color="subdued"
+            type="questionInCircle"
+            className="eui-alignTop"
+          />
+        </span>
+      </EuiToolTip>
+    ),
+    sortable: false,
+    dataType: 'date',
+    width: '100px',
+    align: 'left',
+    render: renderTime,
+  },
+  {
+    field: 'lastUpdateTime',
+    name: (
+      <EuiToolTip content="Time of the last detector update">
+        <span>
+          Last updated{' '}
           <EuiIcon
             size="s"
             color="subdued"
@@ -80,7 +175,7 @@ export const staticColumn = [
     sortable: true,
     dataType: 'date',
     width: '100px',
-    align: 'center',
-    render: renderTime,
+    align: 'left',
+    render: renderLastUpdateTime,
   },
 ];

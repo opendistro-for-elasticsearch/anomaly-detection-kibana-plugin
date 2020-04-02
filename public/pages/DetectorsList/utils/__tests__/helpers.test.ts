@@ -23,17 +23,19 @@ describe('helpers spec', () => {
         from: 0,
         size: 20,
         search: '',
+        indices: '',
         sortField: 'name',
         sortDirection: SORT_DIRECTION.ASC,
       });
     });
     test('should  default values if missing from queryParams', () => {
       expect(
-        getURLQueryParams({ search: 'from=100&size=20&search=test' })
+        getURLQueryParams({ search: 'from=100&size=20&indices=&search=test' })
       ).toEqual({
         from: 100,
         size: 20,
         search: 'test',
+        indices: '',
         sortField: 'name',
         sortDirection: SORT_DIRECTION.ASC,
       });
@@ -42,12 +44,13 @@ describe('helpers spec', () => {
       expect(
         getURLQueryParams({
           search:
-            'from=100&size=5&search=test&sortField=name&sortDirection=desc',
+            'from=100&size=5&indices=someIndex&search=test&sortField=name&sortDirection=desc',
         })
       ).toEqual({
         from: 100,
         size: 5,
         search: 'test',
+        indices: 'someIndex',
         sortField: 'name',
         sortDirection: SORT_DIRECTION.DESC,
       });

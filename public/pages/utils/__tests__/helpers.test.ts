@@ -26,7 +26,8 @@ describe('helpers', () => {
           [
             { alias: 'hello', index: 'world' },
             { alias: '.system', index: 'kibana' },
-          ]
+          ],
+          20
         )
       ).toEqual([
         {
@@ -46,7 +47,8 @@ describe('helpers', () => {
             { index: '.hello', health: 'green' },
             { index: '.world', health: 'green' },
           ],
-          [{ alias: '.system', index: 'kibana' }]
+          [{ alias: '.system', index: 'kibana' }],
+          20
         )
       ).toEqual([
         {
@@ -65,11 +67,9 @@ describe('helpers', () => {
       expect(sanitizeSearchText('*')).toBe('');
       expect(sanitizeSearchText('')).toBe('');
     });
-    test('should append wildcard', () => {
-      expect(sanitizeSearchText('h')).toBe('h*');
-    });
-    test('should not append wildcard', () => {
-      expect(sanitizeSearchText('hello')).toBe('hello');
+    test('should prepend and append wildcard on valid input', () => {
+      expect(sanitizeSearchText('h')).toBe('*h*');
+      expect(sanitizeSearchText('hello')).toBe('*hello*');
     });
   });
 });
