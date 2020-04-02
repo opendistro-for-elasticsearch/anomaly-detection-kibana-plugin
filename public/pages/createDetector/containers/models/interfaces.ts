@@ -23,4 +23,6 @@ export interface ADFormikValues {
   filters: UIFilter[];
   filterType: FILTER_TYPES;
   filterQuery: string;
+  detectionInterval: number;
+  windowDelay: number;
 }

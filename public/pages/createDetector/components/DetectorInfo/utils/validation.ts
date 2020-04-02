@@ -19,9 +19,6 @@ import { isEmpty } from 'lodash';
 export const validateDetectorDesc = (
   description: string
 ): Error | undefined => {
-  if (isEmpty(description)) {
-    throw 'Detector description can not be empty';
-  }
   if (description.length > 400) {
     throw 'Description Should not exceed 400 characters';
   }

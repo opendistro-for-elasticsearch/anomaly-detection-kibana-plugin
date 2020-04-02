@@ -17,6 +17,7 @@ import {
   Detector,
   UIFilter,
   FILTER_TYPES,
+  UNITS,
 } from '../../../../models/interfaces';
 import { ADFormikValues } from '../models/interfaces';
 import { OPERATORS_QUERY_MAP } from './whereFilters';
@@ -48,6 +49,12 @@ export function formikToDetector(
       ...filterQuery,
     },
     uiMetadata: uiMetaData,
+    detectionInterval: {
+      period: { interval: values.detectionInterval, unit: UNITS.MINUTES },
+    },
+    windowDelay: {
+      period: { interval: values.windowDelay, unit: UNITS.MINUTES },
+    },
   } as Detector;
 
   return apiRequest;

@@ -22,6 +22,7 @@ import {
   OPERATORS_MAP,
   UIFilter,
   FILTER_TYPES,
+  UNITS,
 } from '../../../../../models/interfaces';
 import { DATA_TYPES } from '../../../../../utils/constants';
 
@@ -35,9 +36,13 @@ describe('formikToAd', () => {
         detectorDescription: randomDetector.description,
         index: [{ label: randomDetector.indices[0] }],
         timeField: randomDetector.timeField,
+        detectionInterval: randomDetector.detectionInterval.period.interval,
+        windowDelay: randomDetector.windowDelay.period.interval,
       },
       {} as Detector
     );
+    console.log(ad);
+    console.log(randomDetector);
     expect(ad).toEqual({
       name: randomDetector.name,
       description: randomDetector.description,
@@ -49,6 +54,18 @@ describe('formikToAd', () => {
         filters: [],
       },
       timeField: randomDetector.timeField,
+      detectionInterval: {
+        period: {
+          interval: randomDetector.detectionInterval.period.interval,
+          unit: UNITS.MINUTES,
+        },
+      },
+      windowDelay: {
+        period: {
+          interval: randomDetector.windowDelay.period.interval,
+          unit: UNITS.MINUTES,
+        },
+      },
     });
   });
   test('should convert formikValues to API call with filters', () => {
@@ -66,6 +83,8 @@ describe('formikToAd', () => {
             operator: OPERATORS_MAP.IS_NOT_NULL,
           },
         ],
+        detectionInterval: randomDetector.detectionInterval.period.interval,
+        windowDelay: randomDetector.windowDelay.period.interval,
       },
       {} as Detector
     );
@@ -95,6 +114,18 @@ describe('formikToAd', () => {
         ],
       },
       timeField: randomDetector.timeField,
+      detectionInterval: {
+        period: {
+          interval: randomDetector.detectionInterval.period.interval,
+          unit: UNITS.MINUTES,
+        },
+      },
+      windowDelay: {
+        period: {
+          interval: randomDetector.windowDelay.period.interval,
+          unit: UNITS.MINUTES,
+        },
+      },
     });
   });
 });

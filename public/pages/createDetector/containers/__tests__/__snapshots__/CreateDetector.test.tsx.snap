@@ -35,7 +35,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           <h3
             class="euiTitle euiTitle--small"
           >
-            Define detector
+            Name and description
           </h3>
         </div>
         <div
@@ -58,25 +58,28 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
       >
         <div
           class="euiFormRow"
+          hint="Specify a unique and descriptive name that is easy to recognize."
           id="random_id-row"
-        >
-          <div
-            class="euiText euiText--small"
-            id="random_id"
-          >
-            To define a detector, you start by providing a name and description.
-          </div>
-        </div>
-        <div
-          class="euiFormRow"
-          id="random_id-row"
+          title="Name"
         >
           <label
             aria-invalid="false"
             class="euiFormLabel"
             for="random_id"
           >
-             Detector name
+            <div
+              style="line-height: 8px;"
+            >
+              <p>
+                Name
+              </p>
+              <br />
+              <p
+                class="sublabel"
+              >
+                Specify a unique and descriptive name that is easy to recognize.
+              </p>
+            </div>
           </label>
           <div
             class="euiFormControlLayout"
@@ -88,7 +91,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                 class="euiFieldText"
                 id="random_id"
                 name="detectorName"
-                placeholder="sample detector"
+                placeholder="Enter detector name"
                 type="text"
                 value=""
               />
@@ -97,6 +100,8 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
         </div>
         <div
           class="euiFormRow"
+          formattedtitle="[object Object]"
+          hint="Describe the purpose of the detector."
           id="random_id-row"
         >
           <label
@@ -104,13 +109,30 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
             class="euiFormLabel"
             for="random_id"
           >
-            Description
+            <div
+              style="line-height: 8px;"
+            >
+              <p>
+                Description 
+                <span
+                  class="optional"
+                >
+                  - optional
+                </span>
+              </p>
+              <br />
+              <p
+                class="sublabel"
+              >
+                Describe the purpose of the detector.
+              </p>
+            </div>
           </label>
           <textarea
             class="euiTextArea euiTextArea--resizeVertical"
             id="random_id"
             name="detectorDescription"
-            placeholder="Description for detector"
+            placeholder="Describe the detector"
             rows="3"
           />
         </div>
@@ -133,7 +155,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           <h3
             class="euiTitle euiTitle--small"
           >
-            Datasource
+            Data Source
           </h3>
         </div>
         <div
@@ -156,25 +178,28 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
       >
         <div
           class="euiFormRow"
+          hint="Choose an index or index pattern as the data source."
           id="random_id-row"
-        >
-          <div
-            class="euiText euiText--small"
-            id="random_id"
-          >
-            Anomaly detector uses an index or an index pattern as the datasource.
-          </div>
-        </div>
-        <div
-          class="euiFormRow"
-          id="random_id-row"
+          title="Index"
         >
           <label
             aria-invalid="false"
             class="euiFormLabel"
             for="random_id"
           >
-            Index
+            <div
+              style="line-height: 8px;"
+            >
+              <p>
+                Index
+              </p>
+              <br />
+              <p
+                class="sublabel"
+              >
+                Choose an index or index pattern as the data source.
+              </p>
+            </div>
           </label>
           <div
             aria-describedby="random_id-help"
@@ -258,14 +283,28 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
         </div>
         <div
           class="euiFormRow"
+          hint="Choose the time field you want to use for time filter."
           id="random_id-row"
+          title="Timestamp field"
         >
           <label
             aria-invalid="false"
             class="euiFormLabel"
             for="random_id"
           >
-            Timestamp field
+            <div
+              style="line-height: 8px;"
+            >
+              <p>
+                Timestamp field
+              </p>
+              <br />
+              <p
+                class="sublabel"
+              >
+                Choose the time field you want to use for time filter.
+              </p>
+            </div>
           </label>
           <div
             class="euiFormControlLayout"
@@ -274,11 +313,10 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
               class="euiFormControlLayout__childrenWrapper"
             >
               <select
-                aria-describedby="random_id-help"
                 class="euiSelect"
                 id="random_id"
                 name="timeField"
-                placeholder="Choose timestamp field"
+                placeholder="Find timestamp"
               >
                 <option
                   value=""
@@ -315,139 +353,92 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
               </div>
             </div>
           </div>
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            id="random_id-help"
-          >
-            Choose the time field you want to use for time filter
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="euiSpacer euiSpacer--l"
-    />
-    <div
-      class="euiPanel euiPanel--paddingMedium"
-      style="padding-left: 0px; padding-right: 0px; padding-bottom: 0px;"
-    >
-      <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="padding: 0px 10px;"
-      >
-        <div
-          class="euiFlexItem"
-        >
-          <h3
-            class="euiTitle euiTitle--small"
-          >
-            Data filter
-          </h3>
         </div>
         <div
-          class="euiFlexItem euiFlexItem--flexGrowZero"
+          class="euiFormRow euiFormRow--fullWidth"
+          formattedtitle="[object Object]"
+          hint="Choose a subset of your data source to focus your data stream and reduce noisy data.,Use the visual editor to create a simple filter, or use the Elasticsearch query DSL to create more advanced filters."
+          id="random_id-row"
         >
-          <div
-            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          <label
+            aria-invalid="false"
+            class="euiFormLabel"
+            for="random_id"
           >
             <div
-              class="euiFlexItem"
-            />
-          </div>
-        </div>
-      </div>
-      <hr
-        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall filters-panel"
-      />
-      <div
-        style="padding: 0px;"
-      >
-        <div
-          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
-          style="padding: 10px;"
-        >
-          <div
-            class="euiFlexItem"
-            style="margin-bottom: 0px;"
-          >
-            <div
-              class="euiFormRow"
-              id="random_id-row"
+              style="line-height: 8px;"
             >
-              <div
-                class="euiText euiText--small"
-                id="random_id"
-              >
-                Filters let you choose a subset of data from your data source. Make a simple filter, or use the Elasticsearch Query DSL for advanced filters.
-              </div>
-            </div>
-          </div>
-          <div
-            class="euiFlexItem"
-          >
-            <div
-              class="euiFormRow"
-              id="random_id-row"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel"
-                for="random_id"
-              >
-                Filter type
-              </label>
-              <div
-                class="euiFormControlLayout"
-              >
-                <div
-                  class="euiFormControlLayout__childrenWrapper"
+              <p>
+                Data fiter
+                <span
+                  class="optional"
                 >
-                  <select
-                    class="euiSelect"
-                    id="random_id"
-                    name="filterType"
+                  - optional
+                </span>
+              </p>
+              <br />
+              <p
+                class="sublabel"
+              >
+                Choose a subset of your data source to focus your data stream and reduce noisy data.
+              </p>
+              <p
+                class="sublabel"
+              >
+                Use the visual editor to create a simple filter, or use the Elasticsearch query DSL to create more advanced filters.
+              </p>
+            </div>
+          </label>
+          <div
+            class="euiFormControlLayout"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <select
+                class="euiSelect"
+                id="random_id"
+                name="filterType"
+              >
+                <option
+                  value="simple_filter"
+                >
+                  Visual editor
+                </option>
+                <option
+                  value="custom_filter"
+                >
+                  Custom expression
+                </option>
+              </select>
+              <div
+                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              >
+                <span
+                  class="euiFormControlLayoutCustomIcon"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                    focusable="false"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
                   >
-                    <option
-                      value="simple_filter"
-                    >
-                      Visual editor
-                    </option>
-                    <option
-                      value="custom_filter"
-                    >
-                      Custom expression
-                    </option>
-                  </select>
-                  <div
-                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                  >
-                    <span
-                      class="euiFormControlLayoutCustomIcon"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
-                        focusable="false"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        width="16"
-                        xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink"
-                      >
-                        <defs>
-                          <path
-                            d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.552.552 0 0 0-.771 0 .53.53 0 0 0 0 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76.552.552 0 0 0-.771 0z"
-                            id="arrow_down-a"
-                          />
-                        </defs>
-                        <use
-                          fill-rule="nonzero"
-                          xlink:href="#arrow_down-a"
-                        />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
+                    <defs>
+                      <path
+                        d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.552.552 0 0 0-.771 0 .53.53 0 0 0 0 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76.552.552 0 0 0-.771 0z"
+                        id="arrow_down-a"
+                      />
+                    </defs>
+                    <use
+                      fill-rule="nonzero"
+                      xlink:href="#arrow_down-a"
+                    />
+                  </svg>
+                </span>
               </div>
             </div>
           </div>
@@ -486,45 +477,223 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           style="background-color: rgb(246, 246, 246);"
         >
           <div
-            class="euiEmptyPrompt"
+            class="no-data-filter-rectangle"
           >
-            <span
-              class="euiTextColor euiTextColor--subdued"
-            >
-              <div
-                class="euiText euiText--medium"
-              >
-                <p>
-                  You can optionally create filters to focus your data stream and reduce noisy data.
-                </p>
-              </div>
-            </span>
             <div
-              class="euiSpacer euiSpacer--l"
-            />
+              class="euiText euiText--medium"
+            >
+              <p
+                class="no-data-filter-title"
+              >
+                No data filter
+              </p>
+            </div>
             <div
               class="euiSpacer euiSpacer--s"
             />
             <div
-              class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+              class="euiText euiText--medium"
+            >
+              <p
+                class="sublabel-center"
+              >
+                Use data filter to reduce noisy data
+              </p>
+            </div>
+            <div
+              class="euiSpacer euiSpacer--s"
+            />
+            <button
+              class="euiButton euiButton--primary"
+              type="button"
+            >
+              <span
+                class="euiButton__content"
+              >
+                <span
+                  class="euiButton__text"
+                >
+                  Add filter
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding-left: 0px; padding-right: 0px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px 10px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Detector operation settings
+          </h3>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 0px 10px;"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+            style="max-width: 70%;"
+          >
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              hint="Define how often the detector collects data to generate anomalies. The shorter the interval is, the more real time the detector results will be. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies."
+              id="random_id-row"
+              title="Detector interval"
+            >
+              <label
+                aria-invalid="false"
+                class="euiFormLabel"
+                for="random_id"
+              >
+                <div
+                  style="line-height: 8px;"
+                >
+                  <p>
+                    Detector interval
+                  </p>
+                  <br />
+                  <p
+                    class="sublabel"
+                  >
+                    Define how often the detector collects data to generate anomalies. The shorter the interval is, the more real time the detector results will be. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies.
+                  </p>
+                </div>
+              </label>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                id="random_id"
+              >
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <div
+                    class="euiFormControlLayout"
+                  >
+                    <div
+                      class="euiFormControlLayout__childrenWrapper"
+                    >
+                      <input
+                        class="euiFieldNumber"
+                        data-test-subj="detectionInterval"
+                        id="detectionInterval"
+                        name="detectionInterval"
+                        placeholder="Detector interval"
+                        type="number"
+                        value="10"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium"
+                  >
+                    <p
+                      class="minutes"
+                    >
+                      minutes
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFormRow euiFormRow--fullWidth"
+          hint="Specify a window of delay for a detector to fetch data, if you need to account for extra processing time."
+          id="random_id-row"
+          title="Window delay"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel"
+            for="random_id"
+          >
+            <div
+              style="line-height: 8px;"
+            >
+              <p>
+                Window delay
+              </p>
+              <br />
+              <p
+                class="sublabel"
+              >
+                Specify a window of delay for a detector to fetch data, if you need to account for extra processing time.
+              </p>
+            </div>
+          </label>
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+            id="random_id"
+          >
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
             >
               <div
-                class="euiFlexItem euiFlexItem--flexGrowZero"
+                class="euiFormControlLayout"
               >
-                <button
-                  class="euiButton euiButton--primary"
-                  type="button"
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
                 >
-                  <span
-                    class="euiButton__content"
-                  >
-                    <span
-                      class="euiButton__text"
-                    >
-                      Add filter
-                    </span>
-                  </span>
-                </button>
+                  <input
+                    class="euiFieldNumber"
+                    data-test-subj="windowDelay"
+                    id="windowDelay"
+                    name="windowDelay"
+                    placeholder="Window delay"
+                    type="number"
+                    value="0"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiText euiText--medium"
+              >
+                <p
+                  class="minutes"
+                >
+                  minutes
+                </p>
               </div>
             </div>
           </div>

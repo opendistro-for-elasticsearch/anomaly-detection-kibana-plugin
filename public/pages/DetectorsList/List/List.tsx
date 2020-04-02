@@ -88,7 +88,7 @@ export const DetectorList = (props: ListProps) => {
 
   // Remove breadcrumbs on page initialization
   useEffect(() => {
-    chrome.breadcrumbs.set([]);
+    chrome.breadcrumbs.set(['']);
   }, []);
 
   // Refresh data if user change any parameters / filter / sort

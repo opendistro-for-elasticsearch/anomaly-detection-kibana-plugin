@@ -4,11 +4,6 @@ import { validateDetectorDesc } from '../validation';
 describe('validations', () => {
   describe('validateDetectorDesc', () => {
     const descriptionGenerator = new chance('seed');
-    test('should throw if empty', () => {
-      expect(() => validateDetectorDesc('')).toThrowError(
-        'Detector description can not be empty'
-      );
-    });
     test('should throw size limit if exceed  400', () => {
       expect(() =>
         validateDetectorDesc(descriptionGenerator.paragraph({ length: 500 }))
