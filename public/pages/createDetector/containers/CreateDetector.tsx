@@ -43,7 +43,6 @@ import {
 } from '../../../redux/reducers/ad';
 import { BREADCRUMBS } from '../../../utils/constants';
 import { getErrorMessage } from '../../../utils/utils';
-import { DataFilter } from '../components/DataFilters';
 import { DetectorInfo } from '../components/DetectorInfo';
 import { useFetchDetectorInfo } from '../hooks/useFetchDetectorInfo';
 import { DataSource } from './DataSource/index';
@@ -51,6 +50,7 @@ import { ADFormikValues } from './models/interfaces';
 import { detectorToFormik } from './utils/detectorToFormik';
 import { formikToDetector } from './utils/formikToDetector';
 import { Detector } from '../../../models/interfaces';
+import { Settings } from '../components/Settings/Settings';
 
 interface CreateRouterProps {
   detectorId?: string;
@@ -78,15 +78,12 @@ export function CreateDetector(props: CreateADProps) {
     ]);
   });
   // If no detector found with ID, redirect it to list
-  useEffect(
-    () => {
-      if (props.isEdit && hasError) {
-        toastNotifications.addDanger('Unable to find detector for edit');
-        props.history.push(`/detectors`);
-      }
-    },
-    [props.isEdit]
-  );
+  useEffect(() => {
+    if (props.isEdit && hasError) {
+      toastNotifications.addDanger('Unable to find detector for edit');
+      props.history.push(`/detectors`);
+    }
+  }, [props.isEdit]);
 
   const handleUpdate = async (detectorToBeUpdated: Detector) => {
     try {
@@ -187,9 +184,9 @@ export function CreateDetector(props: CreateADProps) {
             <Fragment>
               <DetectorInfo onValidateDetectorName={handleValidateName} />
               <EuiSpacer />
-              <DataSource />
+              <DataSource formikProps={formikProps} />
               <EuiSpacer />
-              <DataFilter formikProps={formikProps} />
+              <Settings />
               <EuiSpacer />
               <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
                 <EuiFlexItem grow={false}>
@@ -205,7 +202,7 @@ export function CreateDetector(props: CreateADProps) {
                     //@ts-ignore
                     onClick={formikProps.handleSubmit}
                   >
-                    {props.isEdit ? 'Update' : 'Create'}
+                    {props.isEdit ? 'Save change' : 'Create'}
                   </EuiButton>
                 </EuiFlexItem>
               </EuiFlexGroup>

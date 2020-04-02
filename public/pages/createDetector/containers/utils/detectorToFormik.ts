@@ -38,5 +38,7 @@ export function detectorToFormik(ad: Detector): ADFormikValues {
     filterQuery,
     index: [{ label: ad.indices[0] }], // Currently we support only one index
     timeField: ad.timeField,
+    detectionInterval: get(ad, 'detectionInterval.period.interval', 10),
+    windowDelay: get(ad, 'windowDelay.period.interval', 0),
   };
 }

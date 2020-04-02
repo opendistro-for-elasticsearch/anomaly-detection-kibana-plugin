@@ -46,9 +46,9 @@ describe('<DetectorInfo /> spec', () => {
       </Formik>
     );
     expect(queryByText('Required')).toBeNull();
-    fireEvent.focus(getByPlaceholderText('sample detector'));
+    fireEvent.focus(getByPlaceholderText('Enter detector name'));
 
-    fireEvent.blur(getByPlaceholderText('sample detector'));
+    fireEvent.blur(getByPlaceholderText('Enter detector name'));
     expect(handleValidateName).toHaveBeenCalledWith('');
     expect(handleValidateName).toHaveBeenCalledTimes(1);
     expect(findByText('Required')).not.toBeNull();
@@ -67,8 +67,8 @@ describe('<DetectorInfo /> spec', () => {
       </Formik>
     );
     expect(queryByText('Required')).toBeNull();
-    fireEvent.focus(getByPlaceholderText('Description for detector'));
-    fireEvent.blur(getByPlaceholderText('Description for detector'));
+    fireEvent.focus(getByPlaceholderText('Describe the detector'));
+    fireEvent.blur(getByPlaceholderText('Describe the detector'));
     expect(findByText('Required')).not.toBeNull();
   });
 });
