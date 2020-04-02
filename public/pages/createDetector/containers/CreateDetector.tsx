@@ -115,8 +115,6 @@ export function CreateDetector(props: CreateADProps) {
   };
 
   const handleSubmit = async (values: ADFormikValues, formikBag: any) => {
-    console.log('hello');
-    console.log(values);
     const apiRequest = formikToDetector(values, detector);
     try {
       if (props.isEdit) {
