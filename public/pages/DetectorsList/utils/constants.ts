@@ -13,14 +13,25 @@
  * permissions and limitations under the License.
  */
 
-module.exports = {
-  presets: [
-    require('@babel/preset-env'),
-    require('@babel/preset-react'),
-    require('@babel/preset-typescript'),
-  ],
-  plugins: [
-    require('@babel/plugin-proposal-class-properties'),
-    require('@babel/plugin-proposal-object-rest-spread'),
-  ],
+import { SORT_DIRECTION } from '../../../../server/utils/constants';
+
+export const ALL_DETECTOR_STATES = '';
+export const ALL_INDICES = '';
+export const MAX_DETECTORS = 1000;
+export const MAX_DISPLAY_LEN = 20;
+
+// TODO: finish when we know all possible detector states
+export enum DETECTOR_STATES {
+  RUNNING = 'Running',
+  STOPPED = 'Stopped',
+  INITIALIZING = 'Initializing',
+}
+
+export const DEFAULT_QUERY_PARAMS = {
+  from: 0,
+  search: '',
+  indices: '',
+  size: 20,
+  sortDirection: SORT_DIRECTION.ASC,
+  sortField: 'name',
 };

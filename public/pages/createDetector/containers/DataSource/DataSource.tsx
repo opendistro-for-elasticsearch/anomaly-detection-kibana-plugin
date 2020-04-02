@@ -28,8 +28,9 @@ import {
 } from '../../../../redux/reducers/elasticsearch';
 import { getError, isInvalid, required } from '../../../../utils/utils';
 import { IndexOption } from '../../components/Datasource/IndexOption';
-import { getVisibleOptions, sanitizeSearchText } from './utils/helpers';
-import { validateIndex } from './utils/validate';
+import { getVisibleOptions, sanitizeSearchText } from '../../../utils/helpers';
+import { validateIndex } from '../../../utils/validate';
+import { MAX_DISPLAY_LEN } from './utils/constants'
 
 function DataSource() {
   const dispatch = useDispatch();
@@ -91,7 +92,7 @@ function DataSource() {
                 placeholder="Find indices"
                 async
                 isLoading={elasticsearchState.requesting}
-                options={getVisibleOptions(visibleIndices, visibleAliases)}
+                options={getVisibleOptions(visibleIndices, visibleAliases, MAX_DISPLAY_LEN)}
                 onSearchChange={handleSearchChange}
                 onCreateOption={(createdOption: string) => {
                   const normalizedOptions = createdOption.trim().toLowerCase();

@@ -113,6 +113,9 @@ describe('adHelpers', () => {
         filterQuery: {},
         uiMetadata: {},
         featureAttributes: [],
+        enabled: false,
+        disabledTime: undefined,
+        enabledTime: undefined,
       });
     });
     test('should not convert keys to camelCase for filterQuery', () => {
@@ -161,6 +164,9 @@ describe('adHelpers', () => {
           },
         },
         uiMetadata: {},
+        enabled: false,
+        disabledTime: undefined,
+        enabledTime: undefined,
       });
     });
 
@@ -183,6 +189,9 @@ describe('adHelpers', () => {
         },
         uiMetadata: { newFeatures: [{ featureName: 'Name' }] },
         featureAttributes: [],
+        enabled: false,
+        disabledTime: undefined,
+        enabledTime: undefined,
       });
     });
   });
@@ -194,6 +203,7 @@ describe('adHelpers', () => {
           from: 0,
           size: 20,
           search: '',
+          indices: '',
           sortField: 'name',
           sortDirection: SORT_DIRECTION.ASC,
         }
@@ -202,11 +212,10 @@ describe('adHelpers', () => {
         size: 0,
         query: {
           bool: {
-            must: {
-              terms: {
-                detector_id: ['detector_1', 'detector_2'],
-              },
-            },
+            must: [
+              { terms: { detector_id: ['detector_1', 'detector_2'] } },
+              { range: { anomaly_grade: { gt: 0 } } },
+            ],
           },
         },
         aggs: {
@@ -234,6 +243,7 @@ describe('adHelpers', () => {
           from: 0,
           size: 20,
           search: '',
+          indices: '',
           sortField: 'totalAnomalies',
           sortDirection: SORT_DIRECTION.ASC,
         }
@@ -242,11 +252,10 @@ describe('adHelpers', () => {
         size: 0,
         query: {
           bool: {
-            must: {
-              terms: {
-                detector_id: ['detector_1', 'detector_2'],
-              },
-            },
+            must: [
+              { terms: { detector_id: ['detector_1', 'detector_2'] } },
+              { range: { anomaly_grade: { gt: 0 } } },
+            ],
           },
         },
         aggs: {
@@ -275,6 +284,7 @@ describe('adHelpers', () => {
         from: 0,
         size: 20,
         search: '',
+        indices: '',
         sortField: 'latestAnomalyTime',
         sortDirection: SORT_DIRECTION.DESC,
       });
@@ -282,11 +292,10 @@ describe('adHelpers', () => {
         size: 0,
         query: {
           bool: {
-            must: {
-              terms: {
-                detector_id: ['detector_1'],
-              },
-            },
+            must: [
+              { terms: { detector_id: ['detector_1'] } },
+              { range: { anomaly_grade: { gt: 0 } } },
+            ],
           },
         },
         aggs: {
@@ -315,6 +324,7 @@ describe('adHelpers', () => {
         from: 10,
         size: 20,
         search: '',
+        indices: '',
         sortField: 'latestAnomalyTime',
         sortDirection: SORT_DIRECTION.DESC,
       });
@@ -322,11 +332,10 @@ describe('adHelpers', () => {
         size: 0,
         query: {
           bool: {
-            must: {
-              terms: {
-                detector_id: ['detector_1'],
-              },
-            },
+            must: [
+              { terms: { detector_id: ['detector_1'] } },
+              { range: { anomaly_grade: { gt: 0 } } },
+            ],
           },
         },
         aggs: {

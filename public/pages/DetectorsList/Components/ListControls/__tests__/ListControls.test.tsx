@@ -13,17 +13,25 @@
  * permissions and limitations under the License.
  */
 
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { ListControls } from '../ListControls';
+import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
+import { ALL_DETECTOR_STATES, ALL_INDICES } from '../../../utils/constants';
+import { ListControls } from '../ListControls';
 
 describe('<ListControls /> spec', () => {
   const defaultProps = {
     activePage: 1,
     pageCount: 10,
     search: '',
-    onSearchChange: jest.fn(),
+    selectedDetectorState: ALL_DETECTOR_STATES,
+    selectedIndex: ALL_INDICES,
+    detectorStateOptions: [],
+    indexOptions: [],
+    onDetectorStateChange: jest.fn(),
+    onIndexChange: jest.fn(),
+    onSearchDetectorChange: jest.fn(),
+    onSearchIndexChange: jest.fn(),
     onPageClick: jest.fn(),
   };
   beforeEach(() => {
@@ -34,12 +42,12 @@ describe('<ListControls /> spec', () => {
       const { container } = render(<ListControls {...defaultProps} />);
       expect(container.firstChild).toMatchSnapshot();
     });
-    test('should call onSearchChange callback when user inputs text', () => {
+    test('should call onSearchDetectorChange callback when user inputs text', () => {
       const { getByPlaceholderText } = render(
         <ListControls {...defaultProps} />
       );
       userEvent.type(getByPlaceholderText('Search'), 'Testing');
-      expect(defaultProps.onSearchChange).toHaveBeenCalledTimes(7);
+      expect(defaultProps.onSearchDetectorChange).toHaveBeenCalledTimes(7);
     });
     test('pagination should be hidden if pages count is 1', async () => {
       const { queryByTestId } = render(
@@ -57,6 +65,34 @@ describe('<ListControls /> spec', () => {
       const { getByTestId } = render(<ListControls {...defaultProps} />);
       fireEvent.click(getByTestId('pagination-button-3'));
       expect(defaultProps.onPageClick).toHaveBeenCalledTimes(1);
+    });
+    test('should display default detector state and index options', () => {
+      const { getByText } = render(
+        <ListControls {...defaultProps} />
+      );
+      expect(getByText('All detector states')).toBeInTheDocument();
+      expect(getByText('All indices')).toBeInTheDocument();
+    });
+    test('should display selected detector state and index options', () => {
+      const updatedProps = {
+        ...defaultProps,
+        selectedDetectorState: "test_state",
+        selectedIndex: "test_index"
+      }
+      const { getByText } = render(
+        <ListControls {
+          ...updatedProps
+        } />
+      );
+      expect(getByText('test_state')).toBeInTheDocument();
+      expect(getByText('test_index')).toBeInTheDocument();
+    });
+    test('should call onIndexSearchChange when searching in index filter', () => {
+      const { getAllByTestId } = render(
+        <ListControls {...defaultProps} />
+      );
+      userEvent.type(getAllByTestId('comboBoxSearchInput')[1], 'Testing');
+      expect(defaultProps.onSearchIndexChange).toHaveBeenCalledTimes(7);
     });
   });
 });

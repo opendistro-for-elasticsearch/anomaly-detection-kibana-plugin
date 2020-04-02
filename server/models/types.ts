@@ -62,6 +62,7 @@ export type Detector = {
   windowDelay?: { period: Schedule };
   detectionInterval?: { period: Schedule };
   uiMetadata?: { [key: string]: any };
+  lastUpdateTime: number;
   enabled: boolean;
   enabledTime?: Date;
   disabledTime?: Date;
@@ -71,6 +72,7 @@ export type GetDetectorsQueryParams = {
   from: number;
   size: number;
   search: string;
+  indices: string;
   sortDirection: SORT_DIRECTION;
   sortField: string;
 };

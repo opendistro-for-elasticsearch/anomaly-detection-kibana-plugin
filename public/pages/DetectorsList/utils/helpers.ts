@@ -14,14 +14,14 @@
  */
 
 import queryString from 'query-string';
-import { DEFAULT_QUERY_PARAMS } from './constatnts';
 import { GetDetectorsQueryParams } from '../../../../server/models/types';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
+import { DEFAULT_QUERY_PARAMS, DETECTOR_STATES } from './constants';
 
 export const getURLQueryParams = (location: {
   search: string;
 }): GetDetectorsQueryParams => {
-  const { from, size, search, sortField, sortDirection } = queryString.parse(
+  const { from, size, search, indices, sortField, sortDirection } = queryString.parse(
     location.search
   ) as { [key: string]: string };
   return {
@@ -34,6 +34,7 @@ export const getURLQueryParams = (location: {
       ? DEFAULT_QUERY_PARAMS.size
       : parseInt(size, 10),
     search: typeof search !== 'string' ? DEFAULT_QUERY_PARAMS.search : search,
+    indices: typeof indices !== 'string' ? DEFAULT_QUERY_PARAMS.indices : indices,
     sortField: typeof sortField !== 'string' ? 'name' : sortField,
     sortDirection:
       typeof sortDirection !== 'string'
@@ -41,3 +42,8 @@ export const getURLQueryParams = (location: {
         : (sortDirection as SORT_DIRECTION),
   };
 };
+
+export const getDetectorStateOptions = () => {
+  return Object.values(DETECTOR_STATES)
+  .map(detectorState => ({ label: detectorState, text: detectorState }));
+}

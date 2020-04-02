@@ -194,7 +194,7 @@ const startDetector = async (
       response: response,
     };
   } catch (err) {
-    console.log('Anomaly detector - strartDetector', err);
+    console.log('Anomaly detector - startDetector', err);
     return { ok: false, error: err.body || err.message };
   }
 };
@@ -268,6 +268,7 @@ const getDetectors = async (
       from = 0,
       size = 20,
       search = '',
+      indices = '',
       sortDirection = SORT_DIRECTION.DESC,
       sortField = 'name',
       //@ts-ignore
@@ -279,6 +280,18 @@ const getDetectors = async (
           fields: ['name', 'description'],
           default_operator: 'AND',
           query: `*${search
+            .trim()
+            .split(' ')
+            .join('* *')}*`,
+        },
+      });
+    }
+    if (indices.trim()) {
+      mustQueries.push({
+        query_string: {
+          fields: ['indices'],
+          default_operator: 'AND',
+          query: `*${indices
             .trim()
             .split(' ')
             .join('* *')}*`,
@@ -318,19 +331,24 @@ const getDetectors = async (
         [detector._id]: {
           name: get(detector, '_source.name', ''),
           id: detector._id,
+          description: get(detector, '_source.description', ''),
+          indices: get(detector, '_source.indices', []),
+          lastUpdateTime: get(detector, '_source.last_update_time', 0)
+          // TODO: get the state of the detector once possible (enabled/disabled for now)
         },
       }),
       {}
     );
     //Given each detector from previous result, get aggregation to power list
     const allDetectorIds = Object.keys(allDetectors);
-    const aggregationResult = await callWithRequest(req, 'ad.searchDetector', {
+    const aggregationResult = await callWithRequest(req, 'ad.searchResults', {
       body: getResultAggregationQuery(allDetectorIds, {
         from,
         size,
         sortField,
         sortDirection,
         search,
+        indices,
       }),
     });
     const aggsDetectors = get(

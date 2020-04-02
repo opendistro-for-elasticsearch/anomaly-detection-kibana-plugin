@@ -26,7 +26,8 @@ describe('helpers', () => {
           [
             { alias: 'hello', index: 'world' },
             { alias: '.system', index: 'kibana' },
-          ]
+          ],
+          20
         )
       ).toEqual([
         {
@@ -46,7 +47,8 @@ describe('helpers', () => {
             { index: '.hello', health: 'green' },
             { index: '.world', health: 'green' },
           ],
-          [{ alias: '.system', index: 'kibana' }]
+          [{ alias: '.system', index: 'kibana' }],
+          20
         )
       ).toEqual([
         {

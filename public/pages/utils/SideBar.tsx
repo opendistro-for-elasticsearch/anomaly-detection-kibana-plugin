@@ -1,5 +1,6 @@
-import { APP_PATH } from '../../../../utils/constants';
+import { APP_PATH } from '../../utils/constants';
 import React, { Component } from 'react';
+//@ts-ignore
 import { EuiSideNav, EuiPageSideBar } from '@elastic/eui';
 
 type SideBarState = {

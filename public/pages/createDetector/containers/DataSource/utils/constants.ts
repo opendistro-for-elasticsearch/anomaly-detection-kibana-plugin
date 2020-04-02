@@ -13,12 +13,4 @@
  * permissions and limitations under the License.
  */
 
-import { SORT_DIRECTION } from '../../../../server/utils/constants';
-
-export const DEFAULT_QUERY_PARAMS = {
-  from: 0,
-  search: '',
-  size: 20,
-  sortDirection: SORT_DIRECTION.ASC,
-  sortField: 'name',
-};
+export const MAX_DISPLAY_LEN = 20;

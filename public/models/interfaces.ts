@@ -98,6 +98,7 @@ export type Detector = {
   windowDelay: { period: Schedule };
   detectionInterval: { period: Schedule };
   uiMetadata: UiMetaData;
+  lastUpdateTime: number;
   enabled?: boolean;
   enabledTime?: Date;
   disabledTime?: Date;
@@ -106,8 +107,11 @@ export type Detector = {
 export type DetectorListItem = {
   id: string;
   name: string;
+  indices: string[];
+  curState: string;
   totalAnomalies: number;
   lastActiveAnomaly: number;
+  lastUpdated: number;
 };
 
 export type AnomalyData = {
