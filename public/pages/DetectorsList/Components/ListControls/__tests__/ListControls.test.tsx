@@ -16,7 +16,7 @@
 import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { ALL_DETECTOR_STATES } from '../../../utils/constants';
+import { ALL_DETECTOR_STATES, ALL_INDICES } from '../../../../utils/constants';
 import { ListControls } from '../ListControls';
 
 describe('<ListControls /> spec', () => {
@@ -24,8 +24,8 @@ describe('<ListControls /> spec', () => {
     activePage: 1,
     pageCount: 10,
     search: '',
-    selectedDetectorState: ALL_DETECTOR_STATES,
-    selectedIndices: [],
+    selectedDetectorStates: ALL_DETECTOR_STATES,
+    selectedIndices: ALL_INDICES,
     detectorStateOptions: [],
     indexOptions: [],
     onDetectorStateChange: jest.fn(),
@@ -74,7 +74,7 @@ describe('<ListControls /> spec', () => {
     test('should display selected detector state and index options', () => {
       const updatedProps = {
         ...defaultProps,
-        selectedDetectorState: 'test_state',
+        selectedDetectorStates: ['test_state'],
         selectedIndices: ['test_index'],
       };
       const { getByText } = render(<ListControls {...updatedProps} />);

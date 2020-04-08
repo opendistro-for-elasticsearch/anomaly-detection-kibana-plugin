@@ -95,49 +95,15 @@ describe('<ListControls /> spec', () => {
           lastActiveAnomaly: hasAnomaly ? Date.now() + index : 0,
         };
       });
-      httpClientMock.get = jest
-        .fn()
-        .mockResolvedValueOnce({
-          data: {
-            ok: true,
-            response: {
-              detectorList: randomDetectors.slice(0, 20),
-              totalDetectors: randomDetectors.length,
-            },
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        data: {
+          ok: true,
+          response: {
+            detectorList: randomDetectors,
+            totalDetectors: randomDetectors.length,
           },
-        })
-        .mockResolvedValueOnce({
-          data: {
-            ok: true,
-            response: {
-              detectorList: randomDetectors.slice(0, 20),
-              totalDetectors: randomDetectors.length,
-            },
-          },
-        })
-        .mockResolvedValueOnce({
-          data: {
-            ok: true,
-            response: {
-              detectorList: randomDetectors.slice(21, 40),
-              totalDetectors: randomDetectors.length,
-            },
-          },
-        })
-        .mockResolvedValue({
-          data: {
-            ok: true,
-            response: {
-              detectorList: randomDetectors
-                .slice()
-                .sort((a, b) =>
-                  a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-                .slice(0, 20),
-              totalDetectors: randomDetectors.length,
-            },
-          },
-        });
+        },
+      });
 
       const { getByText, getAllByTestId, queryByText } = renderWithRouter({
         ...initialDetectorsState,
@@ -151,18 +117,23 @@ describe('<ListControls /> spec', () => {
 
       // Navigate to next page
       userEvent.click(getAllByTestId('pagination-button-next')[0]);
-      await wait(() => getByText('detector_name_30'));
+      await wait();
+      getByText('detector_name_30');
       getByText('index_30');
       expect(queryByText('detector_name_0')).toBeNull();
       expect(queryByText('index_0')).toBeNull();
+
+      // Navigate to previous page
+      userEvent.click(getAllByTestId('pagination-button-previous')[0]);
+      await wait();
+
       // Sort the detector name (String sorting)
       userEvent.click(getAllByTestId('tableHeaderSortButton')[0]);
-      await wait(() => getByText('detector_name_22'));
-      getByText('detector_name_2');
-      expect(queryByText('detector_name_30')).toBeNull();
-      expect(queryByText('index_30')).toBeNull();
-      expect(queryByText('detector_name_4')).toBeNull();
-      expect(queryByText('index_4')).toBeNull();
+      await wait();
+      expect(queryByText('detector_name_0')).toBeNull();
+      expect(queryByText('index_0')).toBeNull();
+      getByText('detector_name_30');
+      getByText('index_30');
     });
     test('should be able to search', async () => {
       const randomDetectors = new Array(40).fill(null).map((_, index) => {
@@ -175,35 +146,15 @@ describe('<ListControls /> spec', () => {
           lastActiveAnomaly: hasAnomaly ? Date.now() + index : 0,
         };
       });
-      httpClientMock.get = jest
-        .fn()
-        .mockResolvedValueOnce({
-          data: {
-            ok: true,
-            response: {
-              detectorList: randomDetectors.slice(0, 20),
-              totalDetectors: randomDetectors.length,
-            },
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        data: {
+          ok: true,
+          response: {
+            detectorList: randomDetectors,
+            totalDetectors: randomDetectors.length,
           },
-        })
-        .mockResolvedValueOnce({
-          data: {
-            ok: true,
-            response: {
-              detectorList: randomDetectors.slice(0, 20),
-              totalDetectors: randomDetectors.length,
-            },
-          },
-        })
-        .mockResolvedValue({
-          data: {
-            ok: true,
-            response: {
-              detectorList: randomDetectors.slice(38, 39),
-              totalDetectors: 1,
-            },
-          },
-        });
+        },
+      });
 
       const { getByText, getByPlaceholderText, queryByText } = renderWithRouter(
         {

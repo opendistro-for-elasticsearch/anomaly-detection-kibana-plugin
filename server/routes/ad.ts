@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -57,6 +57,7 @@ export default function(apiRouter: Router) {
   apiRouter.delete('/detectors/{detectorId}', deleteDetector);
   apiRouter.post('/detectors/{detectorId}/start', startDetector);
   apiRouter.post('/detectors/{detectorId}/stop', stopDetector);
+  apiRouter.get('/detectors/{detectorId}/_profile', getDetectorProfile);
 }
 
 const deleteDetector = async (
@@ -219,6 +220,26 @@ const stopDetector = async (
   }
 };
 
+const getDetectorProfile = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<any>> => {
+  try {
+    const { detectorId } = req.params;
+    const response = await callWithRequest(req, 'ad.detectorProfile', {
+      detectorId,
+    });
+    return {
+      ok: true,
+      response,
+    };
+  } catch (err) {
+    console.log('Anomaly detector - detectorProfile', err);
+    return { ok: false, error: err.body || err.message };
+  }
+};
+
 const searchDetector = async (
   req: Request,
   h: ResponseToolkit,
@@ -303,7 +324,7 @@ const getDetectors = async (
       name: { 'name.keyword': sortDirection },
       indices: { 'indices.keyword': sortDirection },
       //totalAnomalies: { totalAnomalies: sortDirection },
-      //lastActiveAnomaly: { lastActiveAnomaly: sortDirection },
+      //lastActiveAnomaly: { data_start_time: sortDirection },
       lastUpdateTime: { last_update_time: sortDirection },
     } as { [key: string]: object };
     let sort = {};
@@ -399,6 +420,51 @@ const getDetectors = async (
           {}
         );
     }
+
+    // Get detector state as well: loop through the ids to get each detector's state using profile api
+    const allIds = finalDetectors.map(detector => detector.id);
+
+    const detectorStatePromises = allIds.map(async (id: string) => {
+      try {
+        const detectorStateResp = await callWithRequest(
+          req,
+          'ad.detectorProfile',
+          {
+            detectorId: id,
+          }
+        );
+        return detectorStateResp;
+      } catch (err) {
+        console.log(
+          'Anomaly detector - Unable to retrieve detector state',
+          err
+        );
+      }
+    });
+    const detectorStates = await Promise.all(detectorStatePromises);
+
+    // check if there was any failures
+    detectorStates.forEach(detectorState => {
+      /*
+        If the error starts with 'Stopped detector', then an EndRunException was thrown.
+        All EndRunExceptions are related to initialization failures except for the
+        unknown prediction error which contains the message "We might have bugs".
+      */
+      if (
+        detectorState.state == 'DISABLED' &&
+        detectorState.error.includes('Stopped detector')
+      ) {
+        detectorState.state = detectorState.error.includes('We might have bugs')
+          ? 'UNKNOWN_FAILURE'
+          : 'INIT_FAILURE';
+      }
+    });
+
+    // update the final detectors to include the detector state
+    finalDetectors.forEach((detector, i) => {
+      detector.curState = detectorStates[i].state;
+    });
+
     return {
       ok: true,
       response: {
@@ -407,7 +473,7 @@ const getDetectors = async (
       },
     };
   } catch (err) {
-    console.log('Anomaly detector - Unable list detectors', err);
+    console.log('Anomaly detector - Unable to list detectors', err);
     return { ok: false, error: err.message };
   }
 };

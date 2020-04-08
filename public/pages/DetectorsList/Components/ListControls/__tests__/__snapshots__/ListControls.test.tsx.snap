@@ -68,7 +68,7 @@ exports[`<ListControls /> spec Empty results renders component with empty messag
           class="euiFormControlLayout__childrenWrapper"
         >
           <div
-            class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+            class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
             data-test-subj="comboBoxInput"
             tabindex="-1"
           >

@@ -22,14 +22,13 @@ import {
   EuiPagination,
 } from '@elastic/eui';
 import React from 'react';
-import { ALL_DETECTOR_STATES } from '../../utils/constants';
 import { getDetectorStateOptions } from '../../utils/helpers';
 
 interface ListControlsProps {
   activePage: number;
   pageCount: number;
   search: string;
-  selectedDetectorState: string;
+  selectedDetectorStates: string[];
   selectedIndices: string[];
   indexOptions: EuiComboBoxOptionProps[];
   onDetectorStateChange: (options: EuiComboBoxOptionProps[]) => void;
@@ -54,14 +53,14 @@ export const ListControls = (props: ListControlsProps) => (
         id="selectedDetectorStates"
         placeholder="All detector states"
         isClearable={true}
-        singleSelection={true}
+        singleSelection={false}
         async
         options={getDetectorStateOptions()}
         onChange={props.onDetectorStateChange}
         selectedOptions={
-          props.selectedDetectorState == ALL_DETECTOR_STATES
-            ? []
-            : [{ label: props.selectedDetectorState }]
+          props.selectedDetectorStates.length > 0
+            ? props.selectedDetectorStates.map(index => ({ label: index }))
+            : []
         }
       />
     </EuiFlexItem>
@@ -69,6 +68,7 @@ export const ListControls = (props: ListControlsProps) => (
       <EuiComboBox
         id="selectedIndices"
         placeholder="All indices"
+        isClearable={true}
         singleSelection={false}
         async
         options={props.indexOptions}
