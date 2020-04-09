@@ -17,6 +17,7 @@
 import { Legacy } from 'kibana';
 import { CLUSTER, DEFAULT_HEADERS } from '../../utils/constants';
 import adPlugin from './adPlugin';
+import alertingPlugin from './alertingPlugin';
 
 export default function createAdCluster(
   elasticsearch: Legacy.Plugins.elasticsearch.Plugin.ESPlugin,
@@ -25,7 +26,7 @@ export default function createAdCluster(
   // Ideally this is kibanaConfig just acting weird
   const { customHeaders, ...rest } = config().get('elasticsearch');
   elasticsearch.createCluster(CLUSTER.AES_AD, {
-    plugins: [adPlugin],
+    plugins: [adPlugin, alertingPlugin],
     customHeaders: { ...customHeaders, ...DEFAULT_HEADERS },
     ...rest,
   });
