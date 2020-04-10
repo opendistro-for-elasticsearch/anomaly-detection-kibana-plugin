@@ -22,6 +22,7 @@ import { ListRouterParams } from '../DetectorsList/List/List';
 // @ts-ignore
 import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from '@elastic/eui';
 import { useSelector } from 'react-redux';
+import { APP_PATH } from '../../utils/constants';
 
 enum Navigation {
   AnomalyDetection = 'Anomaly detection',
@@ -70,7 +71,7 @@ export function Main(props: MainProps) {
       <EuiPageBody>
         <Switch>
           <Route
-            path="/dashboard"
+            path={APP_PATH.DASHBOARD}
             render={(props: RouteComponentProps) => (
               // place holder for DashboardOverview, please replace with your page
               <div>place holder for DashboardOverview</div>
@@ -78,35 +79,35 @@ export function Main(props: MainProps) {
           />
           <Route
             exact
-            path="/detectors"
+            path={APP_PATH.LIST_DETECTORS}
             render={(props: RouteComponentProps<ListRouterParams>) => (
               <DetectorList {...props} />
             )}
           />
           <Route
             exact
-            path="/create-ad/"
+            path={APP_PATH.CREATE_DETECTOR}
             render={(props: RouteComponentProps) => (
               <CreateDetector {...props} isEdit={false} />
             )}
           />
           <Route
             exact
-            path="/detectors/:detectorId/edit"
+            path={APP_PATH.EDIT_DETECTOR}
             render={(props: RouteComponentProps) => (
               <CreateDetector {...props} isEdit={true} />
             )}
           />
           <Route
             exact
-            path="/detectors/:detectorId/features/"
+            path={APP_PATH.EDIT_FEATURES}
             render={(props: RouteComponentProps) => (
               // place holder for EditFeatures, please replace with your page
               <div>place holder for EditFeatures</div>
             )}
           />
           <Route
-            path="/detectors/:detectorId/"
+            path={APP_PATH.DETECTOR_DETAIL}
             render={(props: RouteComponentProps) => (
               // place holder for DetectorDetail, please replace with your page
               <div>place holder for DetectorDetail</div>
