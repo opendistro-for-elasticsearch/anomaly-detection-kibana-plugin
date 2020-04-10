@@ -47,17 +47,37 @@ const executeSearch = async (
   callWithRequest: CallClusterWithRequest
 ): Promise<ServerResponse<SearchResponse<any>>> => {
   try {
-    const { query, index, size = 0 } = req.payload as {
-      query: object;
+    const {
+      index,
+      query,
+      size = 0,
+      sort = undefined,
+      collapse = undefined,
+      rawQuery = undefined,
+    } = req.payload as {
       index: string;
+      query?: object;
       size?: number;
+      sort?: object;
+      collapse?: object;
+      rawQuery: object;
     };
-    const params: SearchParams = { index, size, body: query };
+    const requestBody = rawQuery
+      ? rawQuery
+      : {
+          query: query,
+          ...(sort !== undefined && { sort: sort }),
+          ...(collapse !== undefined && { collapse: collapse }),
+        };
+
+    const params: SearchParams = { index, size, body: requestBody };
+
     const results: SearchResponse<any> = await callWithRequest(
       req,
       'search',
       params
     );
+
     return { ok: true, response: results };
   } catch (err) {
     console.error('Anomaly detector - Unable to execute search', err);

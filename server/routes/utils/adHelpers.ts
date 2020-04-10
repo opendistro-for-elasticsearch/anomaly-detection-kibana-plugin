@@ -58,12 +58,8 @@ export const convertDetectorKeysToCamelCase = (response: object) => {
     ),
     uiMetadata: get(response, 'ui_metadata', {}),
     enabled: get(response, 'adJob.enabled', false),
-    enabledTime: get(response, 'adJob.enabled_time')
-      ? new Date(get(response, 'adJob.enabled_time'))
-      : undefined,
-    disabledTime: get(response, 'adJob.disabled_time')
-      ? new Date(get(response, 'adJob.disabled_time'))
-      : undefined,
+    enabledTime: get(response, 'adJob.enabled_time'),
+    disabledTime: get(response, 'adJob.disabled_time'),
   };
 };
 

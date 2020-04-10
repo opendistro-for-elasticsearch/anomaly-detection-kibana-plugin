@@ -15,10 +15,12 @@
 
 import { ADApis, DefaultHeaders } from '../models/interfaces';
 
-export const API_ROUTE_PREFIX = '/_opendistro/_anomaly_detection';
+export const AD_API_ROUTE_PREFIX = '/_opendistro/_anomaly_detection';
+export const ALERTING_API_ROUTE_PREFIX = '/_opendistro/_alerting';
 
 export const API: ADApis = {
-  DETECTOR_BASE: `${API_ROUTE_PREFIX}/detectors`,
+  DETECTOR_BASE: `${AD_API_ROUTE_PREFIX}/detectors`,
+  ALERTING_BASE: `${ALERTING_API_ROUTE_PREFIX}/monitors`,
 };
 
 export const DEFAULT_HEADERS: DefaultHeaders = {

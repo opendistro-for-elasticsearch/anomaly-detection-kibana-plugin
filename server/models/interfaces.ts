@@ -36,6 +36,11 @@ export interface ADApis {
   readonly DETECTOR_BASE: string;
 }
 
+export interface AlertingApis {
+  [API_ROUTE: string]: string;
+  readonly ALERTING_BASE: string;
+}
+
 export type Anomaly = {
   anomalyGrade: number;
   confidence: number;
