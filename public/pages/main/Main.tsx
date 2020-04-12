@@ -15,50 +15,107 @@
 
 import { Switch, Route, RouteComponentProps, Redirect } from 'react-router-dom';
 import React from 'react';
+import { AppState } from '../../redux/reducers';
 import { CreateDetector } from '../createDetector';
-
 import { DetectorList } from '../DetectorsList';
 import { ListRouterParams } from '../DetectorsList/List/List';
-import { PreviewDetector } from '../PreviewDetector/containers/PreviewDetector';
-import { Dashboard } from '../Dashboard/Container/Dashboard';
+// @ts-ignore
+import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from '@elastic/eui';
+import { useSelector } from 'react-redux';
 import { APP_PATH } from '../../utils/constants';
 
-interface MainProps {}
+enum Navigation {
+  AnomalyDetection = 'Anomaly detection',
+  Dashboard = 'Dashboard',
+  Detectors = 'Detectors',
+}
 
-export function Main(mainProps: MainProps) {
+enum Pathname {
+  Dashboard = '/dashboard',
+  Detectors = '/detectors',
+}
+
+interface MainProps extends RouteComponentProps {}
+
+export function Main(props: MainProps) {
+  const hideSideNavBar = useSelector(
+    (state: AppState) => state.adApp.hideSideNavBar
+  );
+  const sideNav = [
+    {
+      name: Navigation.AnomalyDetection,
+      id: 0,
+      href: `#${Pathname.Dashboard}`,
+      items: [
+        {
+          name: Navigation.Dashboard,
+          id: 1,
+          href: `#${Pathname.Dashboard}`,
+          isSelected: props.location.pathname === Pathname.Dashboard,
+        },
+        {
+          name: Navigation.Detectors,
+          id: 2,
+          href: `#${Pathname.Detectors}`,
+          isSelected: props.location.pathname === Pathname.Detectors,
+        },
+      ],
+    },
+  ];
+
   return (
-    <Switch>
-      <Route
-        exact
-        path="/detectors"
-        render={(props: RouteComponentProps<ListRouterParams>) => (
-          <DetectorList {...props} />
-        )}
-      />
-      <Route
-        exact
-        path="/create-ad/"
-        render={(props: RouteComponentProps) => (
-          <CreateDetector {...props} isEdit={false} />
-        )}
-      />
-      <Route
-        exact
-        path="/detectors/:detectorId/edit"
-        render={(props: RouteComponentProps) => (
-          <CreateDetector {...props} isEdit={true} />
-        )}
-      />
-      <Route
-        path="/detectors/:detectorId/features/"
-        render={(props: RouteComponentProps) => <PreviewDetector {...props} />}
-      />
-      <Route
-        exact
-        path={APP_PATH.DASHBOARD}
-        render={(props: RouteComponentProps) => <Dashboard />}
-      />
-      <Redirect to="/dashboard" />
-    </Switch>
+    <EuiPage>
+      <EuiPageSideBar style={{ minWidth: 150 }} hidden={hideSideNavBar}>
+        <EuiSideNav style={{ width: 150 }} items={sideNav} />
+      </EuiPageSideBar>
+      <EuiPageBody>
+        <Switch>
+          <Route
+            path={APP_PATH.DASHBOARD}
+            render={(props: RouteComponentProps) => (
+              // place holder for DashboardOverview, please replace with your page
+              <div>place holder for DashboardOverview</div>
+            )}
+          />
+          <Route
+            exact
+            path={APP_PATH.LIST_DETECTORS}
+            render={(props: RouteComponentProps<ListRouterParams>) => (
+              <DetectorList {...props} />
+            )}
+          />
+          <Route
+            exact
+            path={APP_PATH.CREATE_DETECTOR}
+            render={(props: RouteComponentProps) => (
+              <CreateDetector {...props} isEdit={false} />
+            )}
+          />
+          <Route
+            exact
+            path={APP_PATH.EDIT_DETECTOR}
+            render={(props: RouteComponentProps) => (
+              <CreateDetector {...props} isEdit={true} />
+            )}
+          />
+          <Route
+            exact
+            path={APP_PATH.EDIT_FEATURES}
+            render={(props: RouteComponentProps) => (
+              // place holder for EditFeatures, please replace with your page
+              <div>place holder for EditFeatures</div>
+            )}
+          />
+          <Route
+            path={APP_PATH.DETECTOR_DETAIL}
+            render={(props: RouteComponentProps) => (
+              // place holder for DetectorDetail, please replace with your page
+              <div>place holder for DetectorDetail</div>
+            )}
+          />
+          <Redirect from="/" to="/dashboard" />
+        </Switch>
+      </EuiPageBody>
+    </EuiPage>
   );
 }
