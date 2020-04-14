@@ -20,7 +20,7 @@ import get from 'lodash/get';
 import React from 'react';
 import { Detector } from '../../../../server/models/types';
 import { PLUGIN_NAME } from '../../../utils/constants';
-import { DETECTOR_STATES, DETECTOR_STATES_COLORS } from '../../utils/constants';
+import { DETECTOR_STATE, mapToColor } from '../../utils/constants';
 
 export const DEFAULT_EMPTY_DATA = '-';
 
@@ -42,15 +42,10 @@ const renderIndices = (indices: string[]) => {
   return get(indices, '0', DEFAULT_EMPTY_DATA);
 };
 
-const renderState = (state: string) => {
+const renderState = (state: DETECTOR_STATE) => {
   return (
     //@ts-ignore
-    <EuiHealth color={DETECTOR_STATES_COLORS[state]}>
-      {
-        //@ts-ignore
-        DETECTOR_STATES[state]
-      }
-    </EuiHealth>
+    <EuiHealth color={mapToColor(state)}>{state}</EuiHealth>
   );
 };
 

@@ -16,7 +16,11 @@
 import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { ALL_DETECTOR_STATES, ALL_INDICES } from '../../../../utils/constants';
+import {
+  ALL_DETECTOR_STATES,
+  ALL_INDICES,
+  DETECTOR_STATE,
+} from '../../../../utils/constants';
 import { ListControls } from '../ListControls';
 
 describe('<ListControls /> spec', () => {
@@ -74,11 +78,11 @@ describe('<ListControls /> spec', () => {
     test('should display selected detector state and index options', () => {
       const updatedProps = {
         ...defaultProps,
-        selectedDetectorStates: ['test_state'],
+        selectedDetectorStates: [DETECTOR_STATE.DISABLED],
         selectedIndices: ['test_index'],
       };
       const { getByText } = render(<ListControls {...updatedProps} />);
-      expect(getByText('test_state')).toBeInTheDocument();
+      expect(getByText(DETECTOR_STATE.DISABLED)).toBeInTheDocument();
       expect(getByText('test_index')).toBeInTheDocument();
     });
     test('should call onIndexSearchChange when searching in index filter', () => {

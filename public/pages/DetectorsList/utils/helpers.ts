@@ -16,7 +16,7 @@
 import queryString from 'query-string';
 import { GetDetectorsQueryParams } from '../../../../server/models/types';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
-import { DEFAULT_QUERY_PARAMS, DETECTOR_STATES } from '../../utils/constants';
+import { DEFAULT_QUERY_PARAMS, DETECTOR_STATE } from '../../utils/constants';
 
 export const getURLQueryParams = (location: {
   search: string;
@@ -50,7 +50,7 @@ export const getURLQueryParams = (location: {
 };
 
 export const getDetectorStateOptions = () => {
-  return Object.values(DETECTOR_STATES).map(detectorState => ({
+  return Object.values(DETECTOR_STATE).map(detectorState => ({
     label: detectorState,
     text: detectorState,
   }));

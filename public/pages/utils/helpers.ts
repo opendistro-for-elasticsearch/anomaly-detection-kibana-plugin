@@ -17,7 +17,7 @@ import { CatIndex, IndexAlias } from '../../../server/models/types';
 import sortBy from 'lodash/sortBy';
 import { DetectorListItem } from '../../models/interfaces';
 import { SORT_DIRECTION } from '../../../server/utils/constants';
-import { ALL_INDICES, ALL_DETECTOR_STATES, DETECTOR_STATES } from './constants';
+import { ALL_INDICES, ALL_DETECTOR_STATES, DETECTOR_STATE } from './constants';
 
 export function sanitizeSearchText(searchValue: string): string {
   if (!searchValue || searchValue == '*') {
@@ -37,19 +37,19 @@ function canAppendWildcard(searchValue: string): boolean {
   return true;
 }
 
-const isSystemIndices = (index: string) => {
+const isUserIndex = (index: string) => {
   if (!index) {
-    return index;
+    return false;
   }
   return !index.startsWith('.');
 };
 
 export function getVisibleOptions(indices: CatIndex[], aliases: IndexAlias[]) {
   const visibleIndices = indices
-    .filter(value => isSystemIndices(value.index))
+    .filter(value => isUserIndex(value.index))
     .map(value => ({ label: value.index, health: value.health }));
   const visibleAliases = aliases
-    .filter(value => isSystemIndices(value.alias))
+    .filter(value => isUserIndex(value.alias))
     .map(value => ({ label: value.alias }));
 
   return [
@@ -68,7 +68,7 @@ export const filterAndSortDetectors = (
   detectors: DetectorListItem[],
   search: string,
   selectedIndices: string[],
-  selectedDetectorStates: string[],
+  selectedDetectorStates: DETECTOR_STATE[],
   sortField: string,
   sortDirection: string,
   size: number,
@@ -80,8 +80,7 @@ export const filterAndSortDetectors = (
   let filteredByState = filteredBySearch.filter(detector => {
     return (
       selectedDetectorStates == ALL_DETECTOR_STATES ||
-      //@ts-ignore
-      selectedDetectorStates.includes(DETECTOR_STATES[detector.curState])
+      selectedDetectorStates.includes(detector.curState)
     );
   });
   let filteredByIndex = filteredByState.filter(detector => {

@@ -23,12 +23,13 @@ import {
 } from '@elastic/eui';
 import React from 'react';
 import { getDetectorStateOptions } from '../../utils/helpers';
+import { DETECTOR_STATE } from 'public/pages/utils/constants';
 
 interface ListControlsProps {
   activePage: number;
   pageCount: number;
   search: string;
-  selectedDetectorStates: string[];
+  selectedDetectorStates: DETECTOR_STATE[];
   selectedIndices: string[];
   indexOptions: EuiComboBoxOptionProps[];
   onDetectorStateChange: (options: EuiComboBoxOptionProps[]) => void;

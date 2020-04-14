@@ -52,6 +52,7 @@ import {
   GET_ALL_DETECTORS_QUERY_PARAMS,
   ALL_DETECTOR_STATES,
   ALL_INDICES,
+  DETECTOR_STATE,
 } from '../../utils/constants';
 import { getURLQueryParams } from '../utils/helpers';
 import {
@@ -72,7 +73,7 @@ interface ListProps extends RouteComponentProps<ListRouterParams> {}
 interface ListState {
   page: number;
   queryParams: GetDetectorsQueryParams;
-  selectedDetectorStates: string[];
+  selectedDetectorStates: DETECTOR_STATE[];
   selectedIndices: string[];
 }
 
@@ -184,12 +185,11 @@ export const DetectorList = (props: ListProps) => {
   const handleDetectorStateChange = (
     options: EuiComboBoxOptionProps[]
   ): void => {
-    let states: string[];
+    let states: DETECTOR_STATE[];
     states =
       options.length == 0
         ? ALL_DETECTOR_STATES
-        : options.map(option => option.label);
-
+        : options.map(option => option.label as DETECTOR_STATE);
     setState(state => ({
       ...state,
       selectedDetectorStates: states,

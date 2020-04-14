@@ -15,7 +15,7 @@
 
 import { SORT_DIRECTION } from '../../../server/utils/constants';
 
-export enum DETECTOR_STATES {
+export enum DETECTOR_STATE {
   DISABLED = 'Disabled',
   INIT = 'Initializing',
   RUNNING = 'Running',
@@ -23,13 +23,33 @@ export enum DETECTOR_STATES {
   UNKNOWN_FAILURE = 'Unknown failure',
 }
 
-export enum DETECTOR_STATES_COLORS {
+export enum DETECTOR_STATE_COLORS {
   DISABLED = 'subdued',
   INIT = '#0000cc',
   RUNNING = 'success',
   INIT_FAILURE = 'danger',
   UNKNOWN_FAILURE = 'danger',
 }
+
+export const mapToColor = (state: string) => {
+  switch (state) {
+    case DETECTOR_STATE.DISABLED: {
+      return DETECTOR_STATE_COLORS.DISABLED;
+    }
+    case DETECTOR_STATE.INIT: {
+      return DETECTOR_STATE_COLORS.INIT;
+    }
+    case DETECTOR_STATE.RUNNING: {
+      return DETECTOR_STATE_COLORS.RUNNING;
+    }
+    case DETECTOR_STATE.INIT_FAILURE: {
+      return DETECTOR_STATE_COLORS.INIT_FAILURE;
+    }
+    case DETECTOR_STATE.UNKNOWN_FAILURE: {
+      return DETECTOR_STATE_COLORS.UNKNOWN_FAILURE;
+    }
+  }
+};
 
 export const ALL_DETECTOR_STATES = [];
 export const ALL_INDICES = [];

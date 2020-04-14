@@ -38,6 +38,7 @@ import {
   convertDetectorKeysToSnakeCase,
   getResultAggregationQuery,
 } from './utils/adHelpers';
+import { DETECTOR_STATE } from '../../public/pages/utils/constants';
 
 type PutDetectorParams = {
   detectorId: string;
@@ -442,6 +443,10 @@ const getDetectors = async (
       }
     });
     const detectorStates = await Promise.all(detectorStatePromises);
+    detectorStates.forEach(detectorState => {
+      //@ts-ignore
+      detectorState.state = DETECTOR_STATE[detectorState.state];
+    });
 
     // check if there was any failures
     detectorStates.forEach(detectorState => {
@@ -451,12 +456,12 @@ const getDetectors = async (
         unknown prediction error which contains the message "We might have bugs".
       */
       if (
-        detectorState.state == 'DISABLED' &&
+        detectorState.state === DETECTOR_STATE.DISABLED &&
         detectorState.error.includes('Stopped detector')
       ) {
         detectorState.state = detectorState.error.includes('We might have bugs')
-          ? 'UNKNOWN_FAILURE'
-          : 'INIT_FAILURE';
+          ? DETECTOR_STATE.UNKNOWN_FAILURE
+          : DETECTOR_STATE.INIT_FAILURE;
       }
     });
 
