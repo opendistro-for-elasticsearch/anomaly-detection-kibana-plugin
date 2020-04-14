@@ -13,16 +13,14 @@
  * permissions and limitations under the License.
  */
 
-export const BASE_NODE_API_PATH = '/api/anomaly_detectors';
+import { Detector } from '../../../../models/interfaces';
+import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
 
-export const AD_NODE_API = Object.freeze({
-  _SEARCH: `${BASE_NODE_API_PATH}/_search`,
-  _INDICES: `${BASE_NODE_API_PATH}/_indices`,
-  _ALIASES: `${BASE_NODE_API_PATH}/_aliases`,
-  _MAPPINGS: `${BASE_NODE_API_PATH}/_mappings`,
-  DETECTOR: `${BASE_NODE_API_PATH}/detectors`,
-});
-export const ALERTING_NODE_API = Object.freeze({
-  _SEARCH: `${BASE_NODE_API_PATH}/monitors/_search`,
-  MONITORS: `${BASE_NODE_API_PATH}/monitors`,
-});
+export const useFetchDetectorInfo = (
+  detectorId: string
+): { detector: Detector; hasError: boolean } => {
+  return {
+    detector: getRandomDetector(),
+    hasError: undefined,
+  };
+};

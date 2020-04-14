@@ -7,7 +7,9 @@ import {
   FILTER_TYPES,
   UiMetaData,
   UNITS,
+  Monitor,
 } from '../../../models/interfaces';
+import moment from 'moment';
 
 const detectorFaker = new chance('seed');
 
@@ -95,5 +97,88 @@ export const getRandomDetector = (isCreate: boolean = true): Detector => {
         unit: UNITS.MINUTES,
       },
     },
+    lastUpdateTime: 1586823218000,
+    enabled: true,
+    enabledTime: 1586823218000,
+    disabledTime: moment(1586823218000)
+      .subtract(1, 'days')
+      .valueOf(),
+  };
+};
+
+export const getRandomMonitor = (detectorId: string, enabled: boolean = true): Monitor => {
+  return {
+    id: detectorFaker.guid().slice(0, 20),
+    name: detectorFaker.word({ length: 10 }),
+    enabled: enabled,
+    enabledTime: moment(1586823218000)
+      .subtract(1, 'days')
+      .valueOf(),
+    schedule: {
+      period: {
+        interval: detectorFaker.integer({ min: 1, max: 10 }),
+        unit: UNITS.MINUTES,
+      },
+    },
+    inputs: [
+      {
+        search: {
+          indices: ['.opendistro-anomaly-results*'],
+          query: {
+            size: 1,
+            query: {
+              bool: {
+                filter: [
+                  {
+                    range: {
+                      data_end_time: {
+                        from: '{{period_end}}||-2m',
+                        to: '{{period_end}}',
+                        include_lower: true,
+                        include_upper: true,
+                        boost: 1.0,
+                      },
+                    },
+                  },
+                  {
+                    term: {
+                      detector_id: {
+                        value: detectorId,
+                        boost: 1.0,
+                      },
+                    },
+                  },
+                ],
+                adjust_pure_negative: true,
+                boost: 1.0,
+              },
+            },
+            sort: [
+              {
+                anomaly_grade: {
+                  order: 'desc',
+                },
+              },
+              {
+                confidence: {
+                  order: 'desc',
+                },
+              },
+            ],
+            aggregations: {
+              max_anomaly_grade: {
+                max: {
+                  field: 'anomaly_grade',
+                },
+              },
+            },
+          },
+        },
+      },
+    ],
+    triggers: [], //We don't need triggger for AD testing
+    lastUpdateTime: moment(1586823218000)
+      .subtract(1, 'days')
+      .valueOf(),
   };
 };
