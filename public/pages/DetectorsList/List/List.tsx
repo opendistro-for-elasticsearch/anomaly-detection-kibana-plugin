@@ -263,11 +263,14 @@ export const DetectorList = (props: ListProps) => {
 
   const pageTitle = (
     <EuiTitle size={'s'} className={''}>
-      <h3>
-        {`Detectors `}
-        <text
-          style={{ color: '#535966' }}
-        >{`(${selectedDetectors.length})`}</text>
+      <h3
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <p>{'Detectors'}&nbsp;</p>
+        <p style={{ color: '#535966' }}>{`(${selectedDetectors.length})`}</p>
       </h3>
     </EuiTitle>
   );
