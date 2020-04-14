@@ -77,19 +77,19 @@ export const filterAndSortDetectors = (
   let filteredBySearch = detectors.filter(detector => {
     return search == '' || detector.name.includes(search);
   });
-  let filteredByState = filteredBySearch.filter(detector => {
-    return (
-      selectedDetectorStates == ALL_DETECTOR_STATES ||
-      selectedDetectorStates.includes(detector.curState)
-    );
-  });
-  let filteredByIndex = filteredByState.filter(detector => {
-    return (
-      selectedIndices == ALL_INDICES ||
-      selectedIndices.includes(detector.indices[0])
-    );
-  });
-  let sorted = sortBy(filteredByIndex, sortField);
+  let filteredBySearchAndState =
+    selectedDetectorStates == ALL_DETECTOR_STATES
+      ? filteredBySearch
+      : filteredBySearch.filter(detector =>
+          selectedDetectorStates.includes(detector.curState)
+        );
+  let filteredBySearchAndStateAndIndex =
+    selectedIndices == ALL_INDICES
+      ? filteredBySearchAndState
+      : filteredBySearchAndState.filter(detector =>
+          selectedIndices.includes(detector.indices[0])
+        );
+  let sorted = sortBy(filteredBySearchAndStateAndIndex, sortField);
   if (sortDirection == SORT_DIRECTION.DESC) {
     sorted = sorted.reverse();
   }
