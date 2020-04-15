@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Monitor } from '../../../models/interfaces';
 import { AppState } from '../../../redux/reducers';
-import { getAdMonitors } from '../../../redux/reducers/alerting';
+import { searchMonitors } from '../../../redux/reducers/alerting';
 
 //A hook which gets AD monitor.
 export const useFetchMonitorInfo = (
@@ -27,7 +27,7 @@ export const useFetchMonitorInfo = (
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchAdMonitors = async () => {
-      await dispatch(getAdMonitors());
+      await dispatch(searchMonitors());
     };
     fetchAdMonitors();
   }, []);

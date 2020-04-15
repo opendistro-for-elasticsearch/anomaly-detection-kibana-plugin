@@ -20,9 +20,7 @@ import {
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { ALERTING_NODE_API } from '../../../utils/constants';
-import {
-  Monitor,
-} from '../../../server/models/types';
+import { Monitor } from '../../../server/models/types';
 import { get } from 'lodash';
 
 const SEARCH_MONITORS = 'alerting/SEARCH_MONITORS';
@@ -75,7 +73,7 @@ const reducer = handleActions<Monitors>(
         return {
           ...state,
           requesting: false,
-          totalMonitors: action.result.data.response.totalMonitors,
+          totalMonitors: get(action, 'result.data.response.totalMonitors', 0),
           totalAdMonitors: totalAdMonitors,
           monitors: monitors,
         };
@@ -90,7 +88,7 @@ const reducer = handleActions<Monitors>(
   initialDetectorsState
 );
 
-export const getAdMonitors = (): APIAction => ({
+export const searchMonitors = (): APIAction => ({
   type: SEARCH_MONITORS,
   request: (client: IHttpService) =>
     client.post(`..${ALERTING_NODE_API._SEARCH}`, {}),

@@ -45,6 +45,7 @@ import moment from 'moment';
 import { ConfirmModal } from '../components/ConfirmModal/ConfirmModal';
 import { useFetchMonitorInfo } from '../hooks/useFetchMonitorInfo';
 import { MonitorCallout } from '../components/MonitorCallout/MonitorCallout';
+import { DETECTOR_DETAIL_TABS } from '../utils/constants';
 
 export interface DetectorRouterProps {
   detectorId?: string;
@@ -54,40 +55,48 @@ interface DetectorDetailProps
 
 const tabs = [
   {
-    id: 'results',
+    id: DETECTOR_DETAIL_TABS.RESULTS,
     name: 'Anomaly Results',
-    route: 'results',
+    route: DETECTOR_DETAIL_TABS.RESULTS,
   },
   {
-    id: 'configurations',
+    id: DETECTOR_DETAIL_TABS.CONFIGURATIONS,
     name: 'Detector configuration',
-    route: 'configurations',
+    route: DETECTOR_DETAIL_TABS.CONFIGURATIONS,
   },
 ];
 
 const getSelectedTabId = (pathname: string) => {
-  if (pathname.includes('configurations')) return 'configurations';
-  return 'results';
+  return pathname.includes(DETECTOR_DETAIL_TABS.CONFIGURATIONS)
+    ? DETECTOR_DETAIL_TABS.CONFIGURATIONS
+    : DETECTOR_DETAIL_TABS.RESULTS;
 };
+
+interface DetectorDetailModel {
+  selectedTab: DETECTOR_DETAIL_TABS;
+  showDeleteDetectorModal: boolean;
+  showStopDetectorModalFor: string | undefined;
+  showMonitorCalloutModal: boolean;
+}
 
 export const DetectorDetail = (props: DetectorDetailProps) => {
   const dispatch = useDispatch();
-  const [selectedTab, setSelectedTab] = useState(
-    getSelectedTabId(props.location.pathname)
-  );
   const detectorId = get(props, 'match.params.detectorId', '') as string;
   const { monitor, fetchMonitorError } = useFetchMonitorInfo(detectorId);
   const { detector, hasError } = useFetchDetectorInfo(detectorId);
+  //TODO: test dark mode once detector configuration and AD result page merged
   const isDark = darkModeEnabled();
-  const [showDeleteDetectorModal, setShowDeleteDetectorModal] = useState<
-    boolean
-  >(false);
-  const [showStopDetectorModalFor, setShowStopDetectorModalFor] = useState<
-    string | undefined
-  >(undefined);
-  const [showMonitorCalloutModal, setShowMonitorCalloutModal] = useState<
-    boolean
-  >(false);
+
+  const [detecorDetailModel, setDetecorDetailModel] = useState<
+    DetectorDetailModel
+  >({
+    selectedTab: getSelectedTabId(
+      props.location.pathname
+    ) as DETECTOR_DETAIL_TABS,
+    showDeleteDetectorModal: false,
+    showStopDetectorModalFor: undefined,
+    showMonitorCalloutModal: false,
+  });
 
   useHideSideNavBar(true, false);
 
@@ -108,22 +117,46 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     }
   }, [detector]);
 
-  const handleTabChange = (route: string) => {
-    setSelectedTab(route);
+  const handleTabChange = (route: DETECTOR_DETAIL_TABS) => {
+    setDetecorDetailModel({
+      ...detecorDetailModel,
+      selectedTab: route,
+    });
     props.history.push(route);
+  };
+
+  const hideMonitorCalloutModal = () => {
+    setDetecorDetailModel({
+      ...detecorDetailModel,
+      showMonitorCalloutModal: false,
+    });
+  };
+
+  const hideStopDetectorModal = () => {
+    setDetecorDetailModel({
+      ...detecorDetailModel,
+      showStopDetectorModalFor: undefined,
+    });
+  };
+
+  const hideDeleteDetectorModal = () => {
+    setDetecorDetailModel({
+      ...detecorDetailModel,
+      showDeleteDetectorModal: false,
+    });
   };
 
   const handleStopDetectorForEditing = (detectorId: string) => {
     const listener: Listener = {
       onSuccess: () => {
-        if (showStopDetectorModalFor === 'detector') {
+        if (detecorDetailModel.showStopDetectorModalFor === 'detector') {
           props.history.push(`/detectors/${detectorId}/edit`);
         } else {
           props.history.push(`/detectors/${detectorId}/features`);
         }
-        setShowStopDetectorModalFor(undefined);
+        hideStopDetectorModal();
       },
-      onException: () => setShowStopDetectorModalFor(undefined),
+      onException: hideStopDetectorModal,
     };
     handleStopAdJob(detectorId, listener);
   };
@@ -160,13 +193,13 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     try {
       await dispatch(deleteDetector(detectorId));
       toastNotifications.addSuccess(`Detector has been deleted successfully`);
-      setShowDeleteDetectorModal(false);
+      hideDeleteDetectorModal();
       props.history.push('/detectors');
     } catch (err) {
       toastNotifications.addDanger(
         getErrorMessage(err, 'There was a problem deleting detector')
       );
-      setShowDeleteDetectorModal(false);
+      hideDeleteDetectorModal();
     }
   }, []);
 
@@ -176,6 +209,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const monitorCallout = monitor ? (
     <MonitorCallout monitorId={monitor.id} monitorName={monitor.name} />
   ) : null;
+
   return (
     <React.Fragment>
       <EuiFlexGroup
@@ -218,19 +252,33 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
             <DetectorControls
               onEditDetector={() => {
                 detector.enabled
-                  ? setShowStopDetectorModalFor('detector')
+                  ? setDetecorDetailModel({
+                      ...detecorDetailModel,
+                      showStopDetectorModalFor: 'detector',
+                    })
                   : props.history.push(`/detectors/${detectorId}/edit`);
               }}
-              onDelete={() => setShowDeleteDetectorModal(true)}
+              onDelete={() =>
+                setDetecorDetailModel({
+                  ...detecorDetailModel,
+                  showDeleteDetectorModal: true,
+                })
+              }
               onStartDetector={() => handleStartAdJob(detectorId)}
               onStopDetector={() =>
                 monitor
-                  ? setShowMonitorCalloutModal(true)
+                  ? setDetecorDetailModel({
+                      ...detecorDetailModel,
+                      showMonitorCalloutModal: true,
+                    })
                   : handleStopAdJob(detectorId)
               }
               onEditFeatures={() => {
                 detector.enabled
-                  ? setShowStopDetectorModalFor('features')
+                  ? setDetecorDetailModel({
+                      ...detecorDetailModel,
+                      showStopDetectorModalFor: 'features',
+                    })
                   : props.history.push(`/detectors/${detectorId}/features`);
               }}
               detector={detector}
@@ -246,7 +294,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                   onClick={() => {
                     handleTabChange(tab.route);
                   }}
-                  isSelected={tab.id === selectedTab}
+                  isSelected={tab.id === detecorDetailModel.selectedTab}
                   key={tab.id}
                 >
                   {tab.name}
@@ -256,7 +304,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexGroup>
-      {showDeleteDetectorModal ? (
+      {detecorDetailModel.showDeleteDetectorModal ? (
         <EuiOverlayMask>
           <ConfirmModal
             title="Delete detector?"
@@ -264,14 +312,14 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
             callout={monitorCallout}
             confirmButtonText="Delete"
             confirmButtonColor="danger"
-            onClose={() => setShowDeleteDetectorModal(false)}
-            onCancel={() => setShowDeleteDetectorModal(false)}
+            onClose={hideDeleteDetectorModal}
+            onCancel={hideDeleteDetectorModal}
             onConfirm={handleDelete}
           />
         </EuiOverlayMask>
       ) : null}
 
-      {showStopDetectorModalFor ? (
+      {detecorDetailModel.showStopDetectorModalFor ? (
         <EuiOverlayMask>
           <ConfirmModal
             title="Stop detector to proceed?"
@@ -281,14 +329,14 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
             callout={monitorCallout}
             confirmButtonText="Stop and proceed to edit"
             confirmButtonColor="primary"
-            onClose={() => setShowStopDetectorModalFor(undefined)}
-            onCancel={() => setShowStopDetectorModalFor(undefined)}
+            onClose={hideStopDetectorModal}
+            onCancel={hideStopDetectorModal}
             onConfirm={() => handleStopDetectorForEditing(detectorId)}
           />
         </EuiOverlayMask>
       ) : null}
 
-      {showMonitorCalloutModal ? (
+      {detecorDetailModel.showMonitorCalloutModal ? (
         <EuiOverlayMask>
           <ConfirmModal
             title="Stop detector will impact associated monitor"
@@ -296,11 +344,11 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
             callout={monitorCallout}
             confirmButtonText="Stop detector"
             confirmButtonColor="primary"
-            onClose={() => setShowMonitorCalloutModal(false)}
-            onCancel={() => setShowMonitorCalloutModal(false)}
+            onClose={hideMonitorCalloutModal}
+            onCancel={hideMonitorCalloutModal}
             onConfirm={() => {
               handleStopAdJob(detectorId);
-              setShowMonitorCalloutModal(false);
+              hideMonitorCalloutModal();
             }}
           />
         </EuiOverlayMask>
