@@ -32,6 +32,7 @@ import {
   initialDetectorsState,
 } from '../../../../redux/reducers/ad';
 import { DetectorList, ListRouterParams } from '../List';
+import { DETECTOR_STATE } from '../../../utils/constants';
 
 const renderWithRouter = (
   initialAdState: Detectors = initialDetectorsState
@@ -84,7 +85,7 @@ describe('<ListControls /> spec', () => {
     });
   });
   describe('Populated results', () => {
-    test('should sort / pagination the table', async () => {
+    test('pagination functionality', async () => {
       const randomDetectors = new Array(40).fill(null).map((_, index) => {
         const hasAnomaly = Math.random() > 0.5;
         return {
@@ -126,14 +127,111 @@ describe('<ListControls /> spec', () => {
       // Navigate to previous page
       userEvent.click(getAllByTestId('pagination-button-previous')[0]);
       await wait();
+      getByText('detector_name_0');
+      expect(queryByText('detector_name_30')).toBeNull();
+    });
+    test('sorting functionality', async () => {
+      const randomDetectors = new Array(40).fill(null).map((_, index) => {
+        return {
+          id: `detector_id_${index}`,
+          name: `detector_name_${index}`,
+          indices: [`index_${index}`],
+          curState: DETECTOR_STATE.DISABLED,
+          totalAnomalies: index,
+          lastActiveAnomaly: moment('2020-04-15T09:00:00')
+            .add(index, 'minutes')
+            .valueOf(),
+          lastUpdateTime: moment('2020-04-15T07:00:00')
+            .add(index, 'minutes')
+            .valueOf(),
+        };
+      });
 
-      // Sort the detector name (String sorting)
+      // Set the first detector to be in a running state
+      randomDetectors[0].curState = DETECTOR_STATE.RUNNING;
+
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        data: {
+          ok: true,
+          response: {
+            detectorList: randomDetectors,
+            totalDetectors: randomDetectors.length,
+          },
+        },
+      });
+
+      const {
+        getByText,
+        getAllByTestId,
+        queryByText,
+        getAllByText,
+      } = renderWithRouter({
+        ...initialDetectorsState,
+        requesting: true,
+      });
+      // Default view 20 items per page
+      await wait();
+      getByText('detector_name_0');
+      expect(queryByText('detector_name_30')).toBeNull();
+
+      // Sort by name (string sorting)
       userEvent.click(getAllByTestId('tableHeaderSortButton')[0]);
       await wait();
-      expect(queryByText('detector_name_0')).toBeNull();
-      expect(queryByText('index_0')).toBeNull();
       getByText('detector_name_30');
+      expect(queryByText('detector_name_0')).toBeNull();
+
+      // Sort by indices (string sorting)
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[1]);
+      await wait();
+      getByText('index_0');
+      expect(queryByText('index_30')).toBeNull();
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[1]);
+      await wait();
       getByText('index_30');
+      expect(queryByText('index_0')).toBeNull();
+
+      // Sort by detector state (enum sorting)
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[2]);
+      await wait();
+      getAllByText(DETECTOR_STATE.DISABLED);
+      expect(queryByText(DETECTOR_STATE.RUNNING)).toBeNull();
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[2]);
+      await wait();
+      expect(queryByText(DETECTOR_STATE.RUNNING)).not.toBeNull();
+
+      // Sort by totalAnomalies (numeric sorting)
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[3]);
+      await wait();
+      getByText('0');
+      getByText('19');
+      expect(queryByText('30')).toBeNull();
+      expect(queryByText('39')).toBeNull();
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[3]);
+      await wait();
+      getByText('30');
+      getByText('39');
+      expect(queryByText('0')).toBeNull();
+      expect(queryByText('19')).toBeNull();
+
+      // Sort by last anomaly occurrence (date sorting)
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[4]);
+      await wait();
+      getByText('04/15/2020 9:00 am');
+      expect(queryByText('04/15/2020 9:30 am')).toBeNull();
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[4]);
+      await wait();
+      getByText('04/15/2020 9:30 am');
+      expect(queryByText('04/15/2020 9:00 am')).toBeNull();
+
+      // Sort by last updated (date sorting)
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[5]);
+      await wait();
+      getByText('04/15/2020 7:00 am');
+      expect(queryByText('04/15/2020 7:30 am')).toBeNull();
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[5]);
+      await wait();
+      getByText('04/15/2020 7:30 am');
+      expect(queryByText('04/15/2020 7:00 am')).toBeNull();
     });
     test('should be able to search', async () => {
       const randomDetectors = new Array(40).fill(null).map((_, index) => {
@@ -170,7 +268,8 @@ describe('<ListControls /> spec', () => {
 
       //Input search event
       userEvent.type(getByPlaceholderText('Search'), 'detector_name_38');
-      await wait(() => getByText('detector_name_38'));
+      await wait();
+      getByText('detector_name_38');
       getByText('index_38');
       expect(queryByText('detector_name_39')).toBeNull();
       expect(queryByText('index_39')).toBeNull();
@@ -179,27 +278,34 @@ describe('<ListControls /> spec', () => {
     });
     test('should display rows if there are data', async () => {
       const tempAnomalyTime = moment('2019-10-19T09:00:00');
+      const tempLastUpdateTime = moment('2019-10-19T07:00:00');
       const randomDetectors = [
         {
           id: 1,
           name: 'Test1',
           indices: ['index_1'],
+          curState: DETECTOR_STATE.INIT,
           totalAnomalies: 5,
           lastActiveAnomaly: tempAnomalyTime.valueOf(),
+          lastUpdateTime: tempLastUpdateTime.valueOf(),
         },
         {
           id: 2,
           name: 'Test2',
           indices: ['index_2'],
+          curState: DETECTOR_STATE.DISABLED,
           totalAnomalies: 10,
           lastActiveAnomaly: tempAnomalyTime.add(10, 'minutes').valueOf(),
+          lastUpdateTime: tempLastUpdateTime.add(10, 'minutes').valueOf(),
         },
         {
           id: 3,
           name: 'Test3',
           indices: ['index_3'],
+          curState: DETECTOR_STATE.RUNNING,
           totalAnomalies: 0,
           lastActiveAnomaly: tempAnomalyTime.add(20, 'minutes').valueOf(),
+          lastUpdateTime: tempLastUpdateTime.add(20, 'minutes').valueOf(),
         },
       ];
       httpClientMock.get = jest.fn().mockResolvedValue({
@@ -220,13 +326,17 @@ describe('<ListControls /> spec', () => {
       //Test1 Detector
       getByText(randomDetectors[0].name);
       getByText(randomDetectors[0].indices[0]);
+      getByText(randomDetectors[0].curState);
       getByText(randomDetectors[0].totalAnomalies.toString());
       getByText('10/19/2019 9:00 am');
+      getByText('10/19/2019 7:00 am');
       //Test3 Detector
       getByText(randomDetectors[2].name);
       getByText(randomDetectors[2].indices[0]);
+      getByText(randomDetectors[2].curState);
       getByText(randomDetectors[2].totalAnomalies.toString());
       getByText('10/19/2019 9:30 am');
+      getByText('10/19/2019 7:30 am');
     });
   });
 });

@@ -90,5 +90,17 @@ describe('<ListControls /> spec', () => {
       userEvent.type(getAllByTestId('comboBoxSearchInput')[1], 'Testing');
       expect(defaultProps.onSearchIndexChange).toHaveBeenCalledTimes(7);
     });
+    test('should display multiple selected detector state and index options', () => {
+      const updatedProps = {
+        ...defaultProps,
+        selectedDetectorStates: [DETECTOR_STATE.DISABLED, DETECTOR_STATE.INIT],
+        selectedIndices: ['test_index_1', 'test_index_2'],
+      };
+      const { getByText } = render(<ListControls {...updatedProps} />);
+      expect(getByText(DETECTOR_STATE.DISABLED)).toBeInTheDocument();
+      expect(getByText(DETECTOR_STATE.INIT)).toBeInTheDocument();
+      expect(getByText('test_index_1')).toBeInTheDocument();
+      expect(getByText('test_index_2')).toBeInTheDocument();
+    });
   });
 });
