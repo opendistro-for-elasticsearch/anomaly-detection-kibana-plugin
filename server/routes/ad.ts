@@ -455,6 +455,7 @@ const getDetectors = async (
       */
       if (
         detectorState.state === DETECTOR_STATE.DISABLED &&
+        detectorState.error !== undefined &&
         detectorState.error.includes('Stopped detector')
       ) {
         detectorState.state = detectorState.error.includes('We might have bugs')
