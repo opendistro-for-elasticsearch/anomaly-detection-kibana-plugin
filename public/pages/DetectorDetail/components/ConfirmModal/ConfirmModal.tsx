@@ -34,7 +34,6 @@ interface ConfirmModalProps {
   callout?: any;
   confirmButtonText: string;
   confirmButtonColor: ButtonColor;
-  otherComponents?: any;
   onClose(): void;
   onCancel(): void;
   onConfirm(): void;
@@ -56,7 +55,6 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
               <p>{props.description}</p>
             </EuiText>
           </EuiFlexItem>
-          {props.otherComponents}
         </EuiFlexGroup>
       </EuiModalBody>
 

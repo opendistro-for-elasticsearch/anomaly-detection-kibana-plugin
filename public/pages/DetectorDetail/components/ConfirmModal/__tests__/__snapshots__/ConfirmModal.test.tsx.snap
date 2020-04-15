@@ -61,9 +61,6 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with callout 1`] 
                 </p>
               </div>
             </div>
-            <div>
-              mock component
-            </div>
           </div>
         </div>
         <div

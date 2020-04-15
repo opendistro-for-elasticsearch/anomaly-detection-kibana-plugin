@@ -34,7 +34,6 @@ describe('<ConfirmModal /> spec', () => {
           onClose={onClose}
           onCancel={onCancel}
           onConfirm={onConfirm}
-          otherComponents={component}
         />
       );
       expect(container).toMatchSnapshot();
