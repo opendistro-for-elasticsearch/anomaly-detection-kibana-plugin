@@ -23,6 +23,7 @@ import { ListRouterParams } from '../DetectorsList/List/List';
 import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from '@elastic/eui';
 import { useSelector } from 'react-redux';
 import { APP_PATH } from '../../utils/constants';
+import { DetectorDetail } from '../DetectorDetail';
 
 enum Navigation {
   AnomalyDetection = 'Anomaly detection',
@@ -109,8 +110,7 @@ export function Main(props: MainProps) {
           <Route
             path={APP_PATH.DETECTOR_DETAIL}
             render={(props: RouteComponentProps) => (
-              // place holder for DetectorDetail, please replace with your page
-              <div>place holder for DetectorDetail</div>
+              <DetectorDetail {...props} />
             )}
           />
           <Redirect from="/" to="/dashboard" />

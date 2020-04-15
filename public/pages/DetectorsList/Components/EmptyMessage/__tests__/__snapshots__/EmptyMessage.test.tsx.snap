@@ -29,7 +29,7 @@ exports[`<EmptyDetectorMessage /> spec Empty results renders component with empt
   <a
     class="euiButton euiButton--primary euiButton--fill"
     data-test-subj="add_detector"
-    href="opendistro-anomaly-detection#/create-ad"
+    href="opendistro-anomaly-detection#/create-ad/"
   >
     <span
       class="euiButton__content"

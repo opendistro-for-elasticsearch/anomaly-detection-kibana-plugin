@@ -47,32 +47,30 @@ export const getErrorMessage = (err: any, defaultMessage: string) => {
 };
 
 export const isAlertingInstalled = (): boolean => {
-  const navLinks = get(
-    npStart,
-    'core.chrome.navLinks',
-    undefined
-  );
+  const navLinks = get(npStart, 'core.chrome.navLinks', undefined);
   if (navLinks) {
     return navLinks.has(ALERTING_PLUGIN_NAME);
   }
   return false;
 };
 
+const getPluginRootPath = (url: string, pluginName: string) => {
+  return url.slice(0, url.indexOf(pluginName) + pluginName.length);
+};
+
 export const getAlertingCreateMonitorLink = (
   detectorId: string,
-  detectorName: string
+  detectorName: string,
+  detectorInterval: number,
+  unit: string
 ): string => {
   try {
-    const navLinks = get(
-      npStart,
-      'core.chrome.navLinks',
-      undefined
-    );
-    return `${
-      navLinks.get(ALERTING_PLUGIN_NAME).url
-    }#/create-monitor?searchType=ad&adId=${detectorId}&name=${detectorName}`;
+    const navLinks = get(npStart, 'core.chrome.navLinks', undefined);
+    const url = `${navLinks.get(ALERTING_PLUGIN_NAME).url}`;
+    const alertingRootUrl = getPluginRootPath(url, ALERTING_PLUGIN_NAME);
+    return `${alertingRootUrl}#/create-monitor?searchType=ad&adId=${detectorId}&name=${detectorName}&interval=${2 *
+      detectorInterval}&unit=${unit}`;
   } catch (e) {
-    //Not installed
     console.error('unable to get the alerting URL', e);
     return '';
   }
@@ -80,15 +78,17 @@ export const getAlertingCreateMonitorLink = (
 
 export const getAlertingMonitorListLink = (): string => {
   try {
-    const navLinks = get(
-      npStart,
-      'core.chrome.navLinks',
-      undefined
-    );
-    return `${navLinks.get(ALERTING_PLUGIN_NAME).url}#/monitors`;
+    const navLinks = get(npStart, 'core.chrome.navLinks', undefined);
+    const url = `${navLinks.get(ALERTING_PLUGIN_NAME).url}`;
+    const alertingRootUrl = getPluginRootPath(url, ALERTING_PLUGIN_NAME);
+    return `${alertingRootUrl}#/monitors`;
   } catch (e) {
-    //Not installed
     console.error('unable to get the alerting URL', e);
     return '';
   }
 };
+
+export interface Listener {
+  onSuccess(): void;
+  onException(): void;
+}

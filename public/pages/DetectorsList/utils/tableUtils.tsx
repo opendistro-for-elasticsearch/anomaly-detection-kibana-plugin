@@ -37,7 +37,7 @@ export const staticColumn = [
     textOnly: true,
     width: '150px',
     render: (name: string, detector: Detector) => (
-      <EuiLink href={`${PLUGIN_NAME}#/detectors/${detector.id}/features/`}>
+      <EuiLink href={`${PLUGIN_NAME}#/detectors/${detector.id}`}>
         {name}
       </EuiLink>
     ),

@@ -1,0 +1,198 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DetectorDetail /> spec detector detail renders detector detail component 1`] = `
+<div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+    style="background-color: rgb(255, 255, 255);"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 10px;"
+    >
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <h1
+          class="euiTitle euiTitle--large"
+        >
+          bifadurzic
+           
+          <div
+            class="euiHealth"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow"
+            >
+              <div
+                class="euiFlexItem euiFlexItem--flexGrowZero"
+              >
+                <svg
+                  class="euiIcon euiIcon--medium euiIcon--success"
+                  focusable="false"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                >
+                  <defs>
+                    <circle
+                      cx="8"
+                      cy="8"
+                      id="dot-a"
+                      r="4"
+                    />
+                  </defs>
+                  <use
+                    xlink:href="#dot-a"
+                  />
+                </svg>
+              </div>
+              <div
+                class="euiFlexItem euiFlexItem--flexGrowZero"
+              >
+                Running since
+                 
+                04/13/20 5:13 pm
+              </div>
+            </div>
+          </div>
+        </h1>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiPopover euiPopover--anchorDownLeft"
+              id="actionsPopover"
+            >
+              <div
+                class="euiPopover__anchor"
+              >
+                <button
+                  class="euiButton euiButton--primary euiButton--iconRight"
+                  data-test-subj="actionsButton"
+                  type="button"
+                >
+                  <span
+                    class="euiButton__content"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--medium euiButton__icon"
+                      focusable="false"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <defs>
+                        <path
+                          d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.552.552 0 0 0-.771 0 .53.53 0 0 0 0 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76.552.552 0 0 0-.771 0z"
+                          id="arrow_down-a"
+                        />
+                      </defs>
+                      <use
+                        fill-rule="nonzero"
+                        xlink:href="#arrow_down-a"
+                      />
+                    </svg>
+                    <span
+                      class="euiButton__text"
+                    >
+                      Actions
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <button
+              class="euiButton euiButton--primary"
+              data-test-subj="stopDetectorButton"
+              type="button"
+            >
+              <span
+                class="euiButton__content"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="euiIcon euiIcon--medium euiButton__icon"
+                  focusable="false"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <span
+                  class="euiButton__text"
+                >
+                  Stop detector
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiTabs"
+          role="tablist"
+        >
+          <button
+            aria-selected="true"
+            class="euiTab euiTab-isSelected"
+            role="tab"
+            type="button"
+          >
+            <span
+              class="euiTab__content"
+            >
+              Anomaly Results
+            </span>
+          </button>
+          <button
+            aria-selected="false"
+            class="euiTab"
+            role="tab"
+            type="button"
+          >
+            <span
+              class="euiTab__content"
+            >
+              Detector configuration
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    style="padding-top: 20px;"
+  >
+    AnomalyResults page
+  </div>
+</div>
+`;

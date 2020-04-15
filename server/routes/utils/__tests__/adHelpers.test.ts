@@ -113,6 +113,9 @@ describe('adHelpers', () => {
         filterQuery: {},
         uiMetadata: {},
         featureAttributes: [],
+        disabledTime: undefined,
+        enabled: false,
+        enabledTime: undefined,
       });
     });
     test('should not convert keys to camelCase for filterQuery', () => {
@@ -141,6 +144,9 @@ describe('adHelpers', () => {
       });
       expect(camelCase).toEqual({
         helloWorld: 'value',
+        disabledTime: undefined,
+        enabled: false,
+        enabledTime: undefined,
         featureAttributes: [
           {
             featureId: 'WDO-lm0BL33kEAPF5moe',
@@ -183,6 +189,9 @@ describe('adHelpers', () => {
         },
         uiMetadata: { newFeatures: [{ featureName: 'Name' }] },
         featureAttributes: [],
+        disabledTime: undefined,
+        enabled: false,
+        enabledTime: undefined,
       });
     });
   });

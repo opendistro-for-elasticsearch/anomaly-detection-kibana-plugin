@@ -98,9 +98,10 @@ export type Detector = {
   windowDelay: { period: Schedule };
   detectionInterval: { period: Schedule };
   uiMetadata: UiMetaData;
+  lastUpdateTime: number;
   enabled?: boolean;
-  enabledTime?: Date;
-  disabledTime?: Date;
+  enabledTime?: number;
+  disabledTime?: number;
 };
 
 export type DetectorListItem = {
@@ -128,4 +129,26 @@ export type FeatureAggregationData = {
 export type AnomalyPreview = {
   anomalies: AnomalyData[];
   featureData: { [key: string]: FeatureAggregationData[] };
+};
+
+export type Monitor = {
+  id: string;
+  name: string;
+  enabled: boolean;
+  enabledTime?: number;
+  schedule: { period: Schedule };
+  inputs: any[];
+  triggers: any[];
+  lastUpdateTime: number;
+};
+
+export type MonitorAlert = {
+  monitorName: string;
+  triggerName: string;
+  severity: number;
+  state: string;
+  error: string;
+  startTime: number;
+  endTime: number;
+  acknowledgedTime: number;
 };

@@ -19,6 +19,7 @@ import adReducer from './ad';
 import anomalies from './anomalies';
 import anomalyResults from './anomalyResults';
 import adAppReducer from './adAppReducer';
+import alertingReducer from './alerting';
 
 const rootReducer = combineReducers({
   elasticsearch: indicesReducer,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   anomalyResults: anomalyResults,
   ad: adReducer,
   adApp: adAppReducer,
+  alerting: alertingReducer,
 });
 
 export default rootReducer;
