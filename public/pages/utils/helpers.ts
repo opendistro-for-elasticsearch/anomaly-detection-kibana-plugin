@@ -74,9 +74,10 @@ export const filterAndSortDetectors = (
   size: number,
   page: number
 ) => {
-  let filteredBySearch = detectors.filter(detector => {
-    return search == '' || detector.name.includes(search);
-  });
+  let filteredBySearch =
+    search == ''
+      ? detectors
+      : detectors.filter(detector => detector.name.includes(search));
   let filteredBySearchAndState =
     selectedDetectorStates == ALL_DETECTOR_STATES
       ? filteredBySearch

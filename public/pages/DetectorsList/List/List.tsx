@@ -130,11 +130,7 @@ export const DetectorList = (props: ListProps) => {
     dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
   }, [
     state.page,
-    state.queryParams.search,
-    state.queryParams.indices,
-    state.queryParams.size,
-    state.queryParams.sortDirection,
-    state.queryParams.sortField,
+    state.queryParams,
     state.selectedDetectorStates,
     state.selectedIndices,
   ]);

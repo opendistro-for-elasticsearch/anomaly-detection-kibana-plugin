@@ -221,12 +221,12 @@ describe('<ListControls /> spec', () => {
       getByText(randomDetectors[0].name);
       getByText(randomDetectors[0].indices[0]);
       getByText(randomDetectors[0].totalAnomalies.toString());
-      getByText('10/19/19 9:00 am');
+      getByText('10/19/2019 9:00 am');
       //Test3 Detector
       getByText(randomDetectors[2].name);
       getByText(randomDetectors[2].indices[0]);
       getByText(randomDetectors[2].totalAnomalies.toString());
-      getByText('10/19/19 9:30 am');
+      getByText('10/19/2019 9:30 am');
     });
   });
 });

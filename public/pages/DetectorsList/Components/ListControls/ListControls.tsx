@@ -55,7 +55,6 @@ export const ListControls = (props: ListControlsProps) => (
         placeholder="All detector states"
         isClearable={true}
         singleSelection={false}
-        async
         options={getDetectorStateOptions()}
         onChange={props.onDetectorStateChange}
         selectedOptions={
@@ -71,7 +70,6 @@ export const ListControls = (props: ListControlsProps) => (
         placeholder="All indices"
         isClearable={true}
         singleSelection={false}
-        async
         options={props.indexOptions}
         onChange={props.onIndexChange}
         onSearchChange={props.onSearchIndexChange}

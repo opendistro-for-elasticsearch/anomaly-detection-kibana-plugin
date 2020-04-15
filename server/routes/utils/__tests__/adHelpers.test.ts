@@ -113,13 +113,8 @@ describe('adHelpers', () => {
         filterQuery: {},
         uiMetadata: {},
         featureAttributes: [],
-<<<<<<< HEAD
-        disabledTime: undefined,
-        enabled: false,
-=======
         enabled: false,
         disabledTime: undefined,
->>>>>>> Update detector list page
         enabledTime: undefined,
       });
     });

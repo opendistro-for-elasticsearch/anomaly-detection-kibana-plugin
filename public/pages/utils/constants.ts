@@ -20,36 +20,26 @@ export enum DETECTOR_STATE {
   INIT = 'Initializing',
   RUNNING = 'Running',
   INIT_FAILURE = 'Initialization failure',
-  UNKNOWN_FAILURE = 'Unknown failure',
+  UNEXPECTED_FAILURE = 'Unexpected failure',
 }
 
-export enum DETECTOR_STATE_COLORS {
+export enum DETECTOR_STATE_COLOR {
   DISABLED = 'subdued',
   INIT = '#0000cc',
   RUNNING = 'success',
   INIT_FAILURE = 'danger',
-  UNKNOWN_FAILURE = 'danger',
+  UNEXPECTED_FAILURE = 'danger',
 }
 
-export const mapToColor = (state: string) => {
-  switch (state) {
-    case DETECTOR_STATE.DISABLED: {
-      return DETECTOR_STATE_COLORS.DISABLED;
-    }
-    case DETECTOR_STATE.INIT: {
-      return DETECTOR_STATE_COLORS.INIT;
-    }
-    case DETECTOR_STATE.RUNNING: {
-      return DETECTOR_STATE_COLORS.RUNNING;
-    }
-    case DETECTOR_STATE.INIT_FAILURE: {
-      return DETECTOR_STATE_COLORS.INIT_FAILURE;
-    }
-    case DETECTOR_STATE.UNKNOWN_FAILURE: {
-      return DETECTOR_STATE_COLORS.UNKNOWN_FAILURE;
-    }
-  }
-};
+export const stateToColorMap = new Map<DETECTOR_STATE, DETECTOR_STATE_COLOR>()
+  .set(DETECTOR_STATE.DISABLED, DETECTOR_STATE_COLOR.DISABLED)
+  .set(DETECTOR_STATE.INIT, DETECTOR_STATE_COLOR.INIT)
+  .set(DETECTOR_STATE.RUNNING, DETECTOR_STATE_COLOR.RUNNING)
+  .set(DETECTOR_STATE.INIT_FAILURE, DETECTOR_STATE_COLOR.INIT_FAILURE)
+  .set(
+    DETECTOR_STATE.UNEXPECTED_FAILURE,
+    DETECTOR_STATE_COLOR.UNEXPECTED_FAILURE
+  );
 
 export const ALL_DETECTOR_STATES = [];
 export const ALL_INDICES = [];

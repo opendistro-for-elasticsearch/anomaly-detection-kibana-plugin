@@ -20,21 +20,14 @@ import get from 'lodash/get';
 import React from 'react';
 import { Detector } from '../../../../server/models/types';
 import { PLUGIN_NAME } from '../../../utils/constants';
-import { DETECTOR_STATE, mapToColor } from '../../utils/constants';
+import { DETECTOR_STATE, stateToColorMap } from '../../utils/constants';
 
 export const DEFAULT_EMPTY_DATA = '-';
 
 const renderTime = (time: number) => {
   const momentTime = moment(time);
-  if (time && momentTime.isValid()) return momentTime.format('MM/DD/YY h:mm a');
-  return DEFAULT_EMPTY_DATA;
-};
-
-const renderLastUpdateTime = (lastUpdateTime: number, detector: Detector) => {
-  const momentTime = moment(detector.lastUpdateTime);
-  if (detector.lastUpdateTime && momentTime.isValid()) {
-    return momentTime.format('MM/DD/YY h:mm A');
-  }
+  if (time && momentTime.isValid())
+    return momentTime.format('MM/DD/YYYY h:mm a');
   return DEFAULT_EMPTY_DATA;
 };
 
@@ -45,7 +38,7 @@ const renderIndices = (indices: string[]) => {
 const renderState = (state: DETECTOR_STATE) => {
   return (
     //@ts-ignore
-    <EuiHealth color={mapToColor(state)}>{state}</EuiHealth>
+    <EuiHealth color={stateToColorMap.get(state)}>{state}</EuiHealth>
   );
 };
 
@@ -177,6 +170,6 @@ export const staticColumn = [
     dataType: 'date',
     truncateText: false,
     align: 'left',
-    render: renderLastUpdateTime,
+    render: renderTime,
   },
 ];

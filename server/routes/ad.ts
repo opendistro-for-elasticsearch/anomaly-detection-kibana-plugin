@@ -324,8 +324,6 @@ const getDetectors = async (
     const sortQueryMap = {
       name: { 'name.keyword': sortDirection },
       indices: { 'indices.keyword': sortDirection },
-      //totalAnomalies: { totalAnomalies: sortDirection },
-      //lastActiveAnomaly: { data_start_time: sortDirection },
       lastUpdateTime: { last_update_time: sortDirection },
     } as { [key: string]: object };
     let sort = {};
@@ -460,7 +458,7 @@ const getDetectors = async (
         detectorState.error.includes('Stopped detector')
       ) {
         detectorState.state = detectorState.error.includes('We might have bugs')
-          ? DETECTOR_STATE.UNKNOWN_FAILURE
+          ? DETECTOR_STATE.UNEXPECTED_FAILURE
           : DETECTOR_STATE.INIT_FAILURE;
       }
     });
