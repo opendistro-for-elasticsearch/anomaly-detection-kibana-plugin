@@ -110,6 +110,7 @@ export type DetectorListItem = {
   name: string;
   indices: string[];
   curState: DETECTOR_STATE;
+  featureAttributes: FeatureAttributes[];
   totalAnomalies: number;
   lastActiveAnomaly: number;
   lastUpdateTime: number;

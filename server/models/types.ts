@@ -83,7 +83,7 @@ export type GetDetectorsQueryParams = {
   from: number;
   size: number;
   search: string;
-  indices: string;
+  indices?: string;
   sortDirection: SORT_DIRECTION;
   sortField: string;
 };
@@ -93,6 +93,7 @@ export type DetectorResultsQueryParams = {
   size: number;
   sortDirection: SORT_DIRECTION;
   sortField: string;
+  range?: object;
 };
 
 export type AnomalyResult = {

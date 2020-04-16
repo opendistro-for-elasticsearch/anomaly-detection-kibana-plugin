@@ -25,6 +25,9 @@ import {
 } from '@elastic/eui';
 
 type ContentPanelProps = {
+  // keep title string part for backwards compatibility
+  // might need to refactor code and
+  // deprecate support for 'string' in the near future
   title: string | React.ReactNode | React.ReactNode[];
   titleSize?: EuiTitleSize;
   subTitle?: React.ReactNode | React.ReactNode[];
