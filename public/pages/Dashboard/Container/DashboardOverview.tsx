@@ -45,6 +45,7 @@ import {
   PLUGIN_NAME,
   APP_PATH,
 } from '../../../utils/constants';
+import { getDetectorStateOptions } from '../../DetectorsList/utils/helpers';
 
 export function DashboardOverview() {
   const dispatch = useDispatch();
@@ -91,23 +92,25 @@ export function DashboardOverview() {
   const allDetectorStates = Object.values(DETECTOR_STATE);
 
   const [selectedDetectorStates, setSelectedDetectorStates] = useState(
-    [] as string[]
+    [] as DETECTOR_STATE[]
   );
 
   const [allDetectorStatesSelected, setAllDetectorStatesSelected] = useState(
     true
   );
 
-  const getDetectorStateOptions = (states: string[]) => {
-    return states.map(state => {
-      return { label: state };
-    });
-  };
+  // const getDetectorStateOptions = (states: string[]) => {
+  //   return states.map(state => {
+  //     return { label: state };
+  //   });
+  // };
 
   const handleDetectorStateFilterChange = (
     options: EuiComboBoxOptionProps[]
   ): void => {
-    const selectedStates = options.map(option => option.label);
+    const selectedStates = options.map(
+      option => option.label as DETECTOR_STATE
+    );
     setSelectedDetectorStates(selectedStates);
     setAllDetectorStatesSelected(isEmpty(selectedStates));
   };
@@ -132,7 +135,7 @@ export function DashboardOverview() {
 
   const filterSelectedDetectors = async (
     selectedNameList: string[],
-    selectedStateList: string[],
+    selectedStateList: DETECTOR_STATE[],
     selectedIndexList: string[]
   ) => {
     let detectorsToFilter: DetectorListItem[];
@@ -218,7 +221,7 @@ export function DashboardOverview() {
           <EuiComboBox
             id="detectorStateFilter"
             placeholder={ALL_DETECTOR_STATES_MESSAGE}
-            options={getDetectorStateOptions(allDetectorStates)}
+            options={getDetectorStateOptions()}
             onChange={handleDetectorStateFilterChange}
             selectedOptions={selectedDetectorStates.map(buildItemOption)}
             isClearable={true}
