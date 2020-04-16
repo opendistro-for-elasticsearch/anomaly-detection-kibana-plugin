@@ -25,8 +25,9 @@ import {
 } from '@elastic/eui';
 
 type ContentPanelProps = {
-  title: string;
+  title: string | React.ReactNode | React.ReactNode[];
   titleSize?: EuiTitleSize;
+  subTitle?: React.ReactNode | React.ReactNode[];
   bodyStyles?: React.CSSProperties;
   panelStyles?: React.CSSProperties;
   horizontalRuleClassName?: string;
@@ -46,13 +47,43 @@ const ContentPanel = (props: ContentPanelProps) => (
       alignItems="center"
     >
       <EuiFlexItem>
-        <EuiTitle
-          size={props.titleSize || 'l'}
-          className={props.titleClassName || ''}
-        >
-          <h3>{props.title}</h3>
-        </EuiTitle>
+        {typeof props.title === 'string' ? (
+          <EuiTitle
+            size={props.titleSize || 'l'}
+            className={props.titleClassName || 'content-panel-title'}
+          >
+            <h3>{props.title}</h3>
+          </EuiTitle>
+        ) : (
+          <EuiFlexGroup justifyContent="flexStart" alignItems="center">
+            {Array.isArray(props.title) ? (
+              props.title.map(
+                (titleComponent: React.ReactNode, idx: number) => (
+                  <EuiFlexItem grow={false} key={idx}>
+                    {titleComponent}
+                  </EuiFlexItem>
+                )
+              )
+            ) : (
+              <EuiFlexItem>{props.title}</EuiFlexItem>
+            )}
+          </EuiFlexGroup>
+        )}
+        <EuiFlexGroup>
+          {Array.isArray(props.subTitle) ? (
+            props.subTitle.map(
+              (subTitleComponent: React.ReactNode, idx: number) => (
+                <EuiFlexItem grow={false} key={idx}>
+                  {subTitleComponent}
+                </EuiFlexItem>
+              )
+            )
+          ) : (
+            <EuiFlexItem>{props.subTitle}</EuiFlexItem>
+          )}
+        </EuiFlexGroup>
       </EuiFlexItem>
+
       <EuiFlexItem grow={false}>
         <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
           {Array.isArray(props.actions) ? (

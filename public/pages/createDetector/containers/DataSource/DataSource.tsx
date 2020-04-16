@@ -13,10 +13,10 @@
  * permissions and limitations under the License.
  */
 
-import { EuiComboBox, EuiFormRow, EuiSelect } from '@elastic/eui';
+import { EuiComboBox, EuiSelect } from '@elastic/eui';
 import { Field, FieldProps } from 'formik';
 import { debounce, get } from 'lodash';
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CatIndex, IndexAlias } from '../../../../../server/models/types';
 import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
@@ -28,8 +28,8 @@ import {
 } from '../../../../redux/reducers/elasticsearch';
 import { getError, isInvalid, required } from '../../../../utils/utils';
 import { IndexOption } from '../../components/Datasource/IndexOption';
-import { getVisibleOptions, sanitizeSearchText } from './utils/helpers';
-import { validateIndex } from './utils/validate';
+import { getVisibleOptions, sanitizeSearchText } from '../../../utils/helpers';
+import { validateIndex } from '../../../utils/validate';
 import {
   DataFilterProps,
   DataFilter,

@@ -65,11 +65,9 @@ describe('helpers', () => {
       expect(sanitizeSearchText('*')).toBe('');
       expect(sanitizeSearchText('')).toBe('');
     });
-    test('should append wildcard', () => {
-      expect(sanitizeSearchText('h')).toBe('h*');
-    });
-    test('should not append wildcard', () => {
-      expect(sanitizeSearchText('hello')).toBe('hello');
+    test('should prepend and append wildcard on valid input', () => {
+      expect(sanitizeSearchText('h')).toBe('*h*');
+      expect(sanitizeSearchText('hello')).toBe('*hello*');
     });
   });
 });

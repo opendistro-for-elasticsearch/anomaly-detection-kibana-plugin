@@ -126,4 +126,17 @@ export default function adPlugin(Client: any, config: any, components: any) {
     },
     method: 'POST',
   });
+
+  ad.detectorProfile = ca({
+    url: {
+      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/_profile`,
+      req: {
+        detectorId: {
+          type: 'string',
+          required: true,
+        },
+      },
+    },
+    method: 'GET',
+  });
 }

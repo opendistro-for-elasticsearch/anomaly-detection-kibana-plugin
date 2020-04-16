@@ -14,29 +14,70 @@
  */
 
 import {
+  EuiComboBox,
+  EuiComboBoxOptionProps,
   EuiFieldSearch,
   EuiFlexGroup,
   EuiFlexItem,
   EuiPagination,
 } from '@elastic/eui';
 import React from 'react';
+import { getDetectorStateOptions } from '../../utils/helpers';
+import { DETECTOR_STATE } from 'public/pages/utils/constants';
 
 interface ListControlsProps {
   activePage: number;
   pageCount: number;
   search: string;
-  onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  selectedDetectorStates: DETECTOR_STATE[];
+  selectedIndices: string[];
+  indexOptions: EuiComboBoxOptionProps[];
+  onDetectorStateChange: (options: EuiComboBoxOptionProps[]) => void;
+  onIndexChange: (options: EuiComboBoxOptionProps[]) => void;
+  onSearchDetectorChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearchIndexChange: (searchValue: string) => void;
   onPageClick: (pageNumber: number) => void;
 }
 export const ListControls = (props: ListControlsProps) => (
   <EuiFlexGroup>
-    <EuiFlexItem>
+    <EuiFlexItem grow={false} style={{ width: '40%' }}>
       <EuiFieldSearch
         fullWidth={true}
         value={props.search}
         placeholder="Search"
-        onChange={props.onSearchChange}
+        onChange={props.onSearchDetectorChange}
         data-test-subj="detectorListSearch"
+      />
+    </EuiFlexItem>
+    <EuiFlexItem>
+      <EuiComboBox
+        id="selectedDetectorStates"
+        placeholder="All detector states"
+        isClearable={true}
+        singleSelection={false}
+        options={getDetectorStateOptions()}
+        onChange={props.onDetectorStateChange}
+        selectedOptions={
+          props.selectedDetectorStates.length > 0
+            ? props.selectedDetectorStates.map(index => ({ label: index }))
+            : []
+        }
+      />
+    </EuiFlexItem>
+    <EuiFlexItem>
+      <EuiComboBox
+        id="selectedIndices"
+        placeholder="All indices"
+        isClearable={true}
+        singleSelection={false}
+        options={props.indexOptions}
+        onChange={props.onIndexChange}
+        onSearchChange={props.onSearchIndexChange}
+        selectedOptions={
+          props.selectedIndices.length > 0
+            ? props.selectedIndices.map(index => ({ label: index }))
+            : []
+        }
       />
     </EuiFlexItem>
     {props.pageCount > 1 ? (

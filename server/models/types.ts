@@ -83,6 +83,7 @@ export type GetDetectorsQueryParams = {
   from: number;
   size: number;
   search: string;
+  indices: string;
   sortDirection: SORT_DIRECTION;
   sortField: string;
 };

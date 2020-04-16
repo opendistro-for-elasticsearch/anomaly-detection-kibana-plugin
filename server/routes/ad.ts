@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ import {
   convertDetectorKeysToSnakeCase,
   getResultAggregationQuery,
 } from './utils/adHelpers';
+import { DETECTOR_STATE } from '../../public/pages/utils/constants';
 
 type PutDetectorParams = {
   detectorId: string;
@@ -46,7 +47,7 @@ type PutDetectorParams = {
   body: string;
 };
 
-export default function (apiRouter: Router) {
+export default function(apiRouter: Router) {
   apiRouter.post('/detectors', putDetector);
   apiRouter.put('/detectors/{detectorId}', putDetector);
   apiRouter.post('/detectors/_search', searchDetector);
@@ -57,6 +58,7 @@ export default function (apiRouter: Router) {
   apiRouter.delete('/detectors/{detectorId}', deleteDetector);
   apiRouter.post('/detectors/{detectorId}/start', startDetector);
   apiRouter.post('/detectors/{detectorId}/stop', stopDetector);
+  apiRouter.get('/detectors/{detectorId}/_profile', getDetectorProfile);
 }
 
 const deleteDetector = async (
@@ -194,7 +196,7 @@ const startDetector = async (
       response: response,
     };
   } catch (err) {
-    console.log('Anomaly detector - strartDetector', err);
+    console.log('Anomaly detector - startDetector', err);
     return { ok: false, error: err.body || err.message };
   }
 };
@@ -215,6 +217,26 @@ const stopDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - stopDetector', err);
+    return { ok: false, error: err.body || err.message };
+  }
+};
+
+const getDetectorProfile = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<any>> => {
+  try {
+    const { detectorId } = req.params;
+    const response = await callWithRequest(req, 'ad.detectorProfile', {
+      detectorId,
+    });
+    return {
+      ok: true,
+      response,
+    };
+  } catch (err) {
+    console.log('Anomaly detector - detectorProfile', err);
     return { ok: false, error: err.body || err.message };
   }
 };
@@ -268,6 +290,7 @@ const getDetectors = async (
       from = 0,
       size = 20,
       search = '',
+      indices = '',
       sortDirection = SORT_DIRECTION.DESC,
       sortField = 'name',
       //@ts-ignore
@@ -285,9 +308,23 @@ const getDetectors = async (
         },
       });
     }
+    if (indices.trim()) {
+      mustQueries.push({
+        query_string: {
+          fields: ['indices'],
+          default_operator: 'OR',
+          query: `*${indices
+            .trim()
+            .split(' ')
+            .join('* *')}*`,
+        },
+      });
+    }
     //Allowed sorting columns
     const sortQueryMap = {
       name: { 'name.keyword': sortDirection },
+      indices: { 'indices.keyword': sortDirection },
+      lastUpdateTime: { last_update_time: sortDirection },
     } as { [key: string]: object };
     let sort = {};
     const sortQuery = sortQueryMap[sortField];
@@ -318,19 +355,24 @@ const getDetectors = async (
         [detector._id]: {
           name: get(detector, '_source.name', ''),
           id: detector._id,
+          description: get(detector, '_source.description', ''),
+          indices: get(detector, '_source.indices', []),
+          lastUpdateTime: get(detector, '_source.last_update_time', 0),
+          // TODO: get the state of the detector once possible (enabled/disabled for now)
         },
       }),
       {}
     );
     //Given each detector from previous result, get aggregation to power list
     const allDetectorIds = Object.keys(allDetectors);
-    const aggregationResult = await callWithRequest(req, 'ad.searchDetector', {
+    const aggregationResult = await callWithRequest(req, 'ad.searchResults', {
       body: getResultAggregationQuery(allDetectorIds, {
         from,
         size,
         sortField,
         sortDirection,
         search,
+        indices,
       }),
     });
     const aggsDetectors = get(
@@ -377,6 +419,56 @@ const getDetectors = async (
           {}
         );
     }
+
+    // Get detector state as well: loop through the ids to get each detector's state using profile api
+    const allIds = finalDetectors.map(detector => detector.id);
+
+    const detectorStatePromises = allIds.map(async (id: string) => {
+      try {
+        const detectorStateResp = await callWithRequest(
+          req,
+          'ad.detectorProfile',
+          {
+            detectorId: id,
+          }
+        );
+        return detectorStateResp;
+      } catch (err) {
+        console.log(
+          'Anomaly detector - Unable to retrieve detector state',
+          err
+        );
+      }
+    });
+    const detectorStates = await Promise.all(detectorStatePromises);
+    detectorStates.forEach(detectorState => {
+      //@ts-ignore
+      detectorState.state = DETECTOR_STATE[detectorState.state];
+    });
+
+    // check if there was any failures
+    detectorStates.forEach(detectorState => {
+      /*
+        If the error starts with 'Stopped detector', then an EndRunException was thrown.
+        All EndRunExceptions are related to initialization failures except for the
+        unknown prediction error which contains the message "We might have bugs".
+      */
+      if (
+        detectorState.state === DETECTOR_STATE.DISABLED &&
+        detectorState.error !== undefined &&
+        detectorState.error.includes('Stopped detector')
+      ) {
+        detectorState.state = detectorState.error.includes('We might have bugs')
+          ? DETECTOR_STATE.UNEXPECTED_FAILURE
+          : DETECTOR_STATE.INIT_FAILURE;
+      }
+    });
+
+    // update the final detectors to include the detector state
+    finalDetectors.forEach((detector, i) => {
+      detector.curState = detectorStates[i].state;
+    });
+
     return {
       ok: true,
       response: {
@@ -385,7 +477,7 @@ const getDetectors = async (
       },
     };
   } catch (err) {
-    console.log('Anomaly detector - Unable list detectors', err);
+    console.log('Anomaly detector - Unable to list detectors', err);
     return { ok: false, error: err.message };
   }
 };
@@ -441,8 +533,15 @@ const getAnomalyResults = async (
       (result: any) => ({
         startTime: result._source.data_start_time,
         endTime: result._source.data_end_time,
-        confidence: result._source.confidence != null && result._source.confidence > 0 ? Number.parseFloat(result._source.confidence).toFixed(3) : 0,
-        anomalyGrade: result._source.anomaly_grade != null && result._source.anomaly_grade > 0 ? Number.parseFloat(result._source.anomaly_grade).toFixed(3) : 0
+        confidence:
+          result._source.confidence != null && result._source.confidence > 0
+            ? Number.parseFloat(result._source.confidence).toFixed(3)
+            : 0,
+        anomalyGrade:
+          result._source.anomaly_grade != null &&
+          result._source.anomaly_grade > 0
+            ? Number.parseFloat(result._source.anomaly_grade).toFixed(3)
+            : 0,
       })
     );
     return {

@@ -14,6 +14,7 @@
  */
 
 import { DATA_TYPES } from '../utils/constants';
+import { DETECTOR_STATE } from 'public/pages/utils/constants';
 
 export type FieldInfo = {
   label: string;
@@ -107,8 +108,11 @@ export type Detector = {
 export type DetectorListItem = {
   id: string;
   name: string;
+  indices: string[];
+  curState: DETECTOR_STATE;
   totalAnomalies: number;
   lastActiveAnomaly: number;
+  lastUpdateTime: number;
 };
 
 export type AnomalyData = {

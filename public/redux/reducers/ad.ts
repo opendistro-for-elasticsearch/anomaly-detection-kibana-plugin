@@ -33,6 +33,7 @@ const SEARCH_DETECTOR = 'ad/SEARCH_DETECTOR';
 const DELETE_DETECTOR = 'ad/DELETE_DETECTOR';
 const START_DETECTOR = 'ad/START_DETECTOR';
 const STOP_DETECTOR = 'ad/STOP_DETECTOR';
+const GET_DETECTOR_PROFILE = 'ad/GET_DETECTOR_PROFILE';
 
 export interface Detectors {
   requesting: boolean;
@@ -227,6 +228,29 @@ const reducer = handleActions<Detectors>(
         errorMessage: action.error,
       }),
     },
+
+    [GET_DETECTOR_PROFILE]: {
+      REQUEST: (state: Detectors): Detectors => {
+        const newState = { ...state, requesting: true, errorMessage: '' };
+        return newState;
+      },
+      SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
+        ...state,
+        requesting: false,
+        detectorList: {
+          ...state.detectorList,
+          [action.detectorId]: {
+            ...state.detectorList[action.detectorId],
+            curState: action.result.data.response.state,
+          },
+        },
+      }),
+      FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
+      }),
+    },
   },
   initialDetectorsState
 );
@@ -294,6 +318,15 @@ export const stopDetector = (detectorId: string): APIAction => ({
   request: (client: IHttpService) =>
     client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/stop`, {
       detectorId: detectorId,
+    }),
+  detectorId,
+});
+
+export const getDetectorProfile = (detectorId: string): APIAction => ({
+  type: GET_DETECTOR_PROFILE,
+  request: (client: IHttpService) =>
+    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/_profile`, {
+      params: detectorId,
     }),
   detectorId,
 });
