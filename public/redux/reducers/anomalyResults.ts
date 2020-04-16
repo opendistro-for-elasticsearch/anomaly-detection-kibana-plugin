@@ -20,7 +20,6 @@ import {
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
-import { DetectorResultsQueryParams } from '../../../server/models/types';
 
 const DETECTOR_RESULTS = 'ad/DETECTOR_RESULTS';
 
@@ -63,7 +62,7 @@ const reducer = handleActions<Anomalies>(
 
 export const getDetectorResults = (
   detectorId: string,
-  queryParams: DetectorResultsQueryParams
+  queryParams: any
 ): APIAction => ({
   type: DETECTOR_RESULTS,
   request: (client: IHttpService) =>

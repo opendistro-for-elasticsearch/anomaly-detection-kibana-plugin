@@ -32,7 +32,6 @@
     "@babel/preset-typescript": "^7.3.3",
     "@elastic/eslint-config-kibana": "link:../../packages/eslint-config-kibana",
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/kbn-eslint-import-resolver-kibana",
-    "@elastic/eui": "6.10.7",
     "@kbn/config-schema": "link:../../packages/kbn-config-schema",
     "@kbn/plugin-helpers": "link:../../packages/kbn-plugin-helpers",
     "@testing-library/jest-dom": "^4.0.0",
@@ -71,10 +70,11 @@
     "typescript": "3.0.3"
   },
   "dependencies": {
+    "@elastic/charts": "^18.2.2",
+    "babel-polyfill": "^6.26.0",
     "formik": "^1.5.8",
     "query-string": "^6.8.2",
     "react-redux": "^7.1.0",
-    "reselect": "^4.0.0",
-    "babel-polyfill": "^6.26.0"
+    "reselect": "^4.0.0"
   }
 }

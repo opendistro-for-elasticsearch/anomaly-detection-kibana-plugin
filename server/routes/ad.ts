@@ -25,12 +25,11 @@ import {
   AnomalyResult,
   AnomalyResultsResponse,
   Detector,
-  DetectorResultsQueryParams,
   GetDetectorsQueryParams,
   ServerResponse,
 } from '../models/types';
 import { Router } from '../router';
-import { SORT_DIRECTION } from '../utils/constants';
+import { SORT_DIRECTION, AD_DOC_FIELDS } from '../utils/constants';
 import { mapKeysDeep, toCamel, toSnake } from '../utils/helpers';
 import {
   anomalyResultMapper,
@@ -353,12 +352,12 @@ const getDetectors = async (
       (acc: any, detector: any) => ({
         ...acc,
         [detector._id]: {
-          name: get(detector, '_source.name', ''),
           id: detector._id,
           description: get(detector, '_source.description', ''),
           indices: get(detector, '_source.indices', []),
           lastUpdateTime: get(detector, '_source.last_update_time', 0),
           // TODO: get the state of the detector once possible (enabled/disabled for now)
+          ...convertDetectorKeysToCamelCase(get(detector, '_source', {})),
         },
       }),
       {}
@@ -492,23 +491,41 @@ const getAnomalyResults = async (
       from = 0,
       size = 20,
       sortDirection = SORT_DIRECTION.DESC,
-      sortField = 'startTime',
+      sortField = AD_DOC_FIELDS.DATA_START_TIME,
+      range = undefined,
       //@ts-ignore
-    } = req.query as DetectorResultsQueryParams;
+    } = req.query as {
+      from: number;
+      size: number;
+      sortDirection: SORT_DIRECTION;
+      sortField?: string;
+      range?: any;
+    };
     const { detectorId } = req.params;
 
     //Allowed sorting columns
     const sortQueryMap = {
       anomalyGrade: { anomaly_grade: sortDirection },
       confidence: { confidence: sortDirection },
-      startTime: { data_start_time: sortDirection },
-      endTime: { data_end_time: sortDirection },
+      [AD_DOC_FIELDS.DATA_START_TIME]: {
+        [AD_DOC_FIELDS.DATA_START_TIME]: sortDirection,
+      },
+      [AD_DOC_FIELDS.DATA_END_TIME]: {
+        [AD_DOC_FIELDS.DATA_END_TIME]: sortDirection,
+      },
     } as { [key: string]: object };
     let sort = {};
     const sortQuery = sortQueryMap[sortField];
     if (sortQuery) {
       sort = sortQuery;
     }
+
+    let rangeObj = range;
+
+    if (range !== undefined && typeof range === 'string') {
+      rangeObj = JSON.parse(range);
+    }
+
     //Preparing search request
     const requestBody = {
       sort,
@@ -516,17 +533,22 @@ const getAnomalyResults = async (
       from,
       query: {
         bool: {
-          filter: {
-            term: {
-              detector_id: detectorId,
+          filter: [
+            {
+              term: {
+                detector_id: detectorId,
+              },
             },
-          },
+            { ...(rangeObj !== undefined && { range: rangeObj }) },
+          ],
         },
       },
     };
+
     const response = await callWithRequest(req, 'ad.searchResults', {
       body: requestBody,
     });
+
     const totalResults: number = get(response, 'hits.total.value', 0);
     // Get all detectors from search detector API
     const detectorResults: AnomalyResult[] = get(response, 'hits.hits', []).map(

@@ -40,3 +40,15 @@ export const APP_PATH = {
 export const PLUGIN_NAME = 'opendistro-anomaly-detection';
 
 export const ALERTING_PLUGIN_NAME = 'opendistro-alerting';
+
+export const ANOMALY_RESULT_INDEX = '.opendistro-anomaly-results';
+
+export const MAX_DETECTORS = 1000;
+
+export const MAX_ANOMALIES = 10000;
+
+export const DETECTOR_STATE = Object.freeze({
+  DISABLED: 'Disabled',
+  INIT: 'Initializing',
+  RUNNING: 'Running',
+});
