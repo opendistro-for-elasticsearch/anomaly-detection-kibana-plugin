@@ -89,8 +89,6 @@ export function DashboardOverview() {
     setAllDetectorsSelected(isEmpty(selectedNames));
   };
 
-  const allDetectorStates = Object.values(DETECTOR_STATE);
-
   const [selectedDetectorStates, setSelectedDetectorStates] = useState(
     [] as DETECTOR_STATE[]
   );
@@ -98,12 +96,6 @@ export function DashboardOverview() {
   const [allDetectorStatesSelected, setAllDetectorStatesSelected] = useState(
     true
   );
-
-  // const getDetectorStateOptions = (states: string[]) => {
-  //   return states.map(state => {
-  //     return { label: state };
-  //   });
-  // };
 
   const handleDetectorStateFilterChange = (
     options: EuiComboBoxOptionProps[]
