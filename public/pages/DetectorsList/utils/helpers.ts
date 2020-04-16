@@ -16,7 +16,8 @@
 import queryString from 'query-string';
 import { GetDetectorsQueryParams } from '../../../../server/models/types';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
-import { DEFAULT_QUERY_PARAMS, DETECTOR_STATE } from '../../utils/constants';
+import { DEFAULT_QUERY_PARAMS } from '../../utils/constants';
+import { DETECTOR_STATE } from '../../../utils/constants';
 
 export const getURLQueryParams = (location: {
   search: string;

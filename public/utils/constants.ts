@@ -47,8 +47,10 @@ export const MAX_DETECTORS = 1000;
 
 export const MAX_ANOMALIES = 10000;
 
-export const DETECTOR_STATE = Object.freeze({
-  DISABLED: 'Disabled',
-  INIT: 'Initializing',
-  RUNNING: 'Running',
-});
+export enum DETECTOR_STATE {
+  DISABLED = 'Disabled',
+  INIT = 'Initializing',
+  RUNNING = 'Running',
+  INIT_FAILURE = 'Initialization failure',
+  UNEXPECTED_FAILURE = 'Unexpected failure',
+}

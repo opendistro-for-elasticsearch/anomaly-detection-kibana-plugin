@@ -16,12 +16,9 @@
 import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import {
-  ALL_DETECTOR_STATES,
-  ALL_INDICES,
-  DETECTOR_STATE,
-} from '../../../../utils/constants';
+import { ALL_DETECTOR_STATES, ALL_INDICES } from '../../../../utils/constants';
 import { ListControls } from '../ListControls';
+import { DETECTOR_STATE } from '../../../../../utils/constants';
 
 describe('<ListControls /> spec', () => {
   const defaultProps = {

@@ -17,7 +17,8 @@ import { CatIndex, IndexAlias } from '../../../server/models/types';
 import sortBy from 'lodash/sortBy';
 import { DetectorListItem } from '../../models/interfaces';
 import { SORT_DIRECTION } from '../../../server/utils/constants';
-import { ALL_INDICES, ALL_DETECTOR_STATES, DETECTOR_STATE } from './constants';
+import { ALL_INDICES, ALL_DETECTOR_STATES } from './constants';
+import { DETECTOR_STATE } from '../../utils/constants';
 
 export function sanitizeSearchText(searchValue: string): string {
   if (!searchValue || searchValue == '*') {

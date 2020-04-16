@@ -23,7 +23,7 @@ import {
 } from '@elastic/eui';
 import React from 'react';
 import { getDetectorStateOptions } from '../../utils/helpers';
-import { DETECTOR_STATE } from 'public/pages/utils/constants';
+import { DETECTOR_STATE } from '../../../../utils/constants';
 
 interface ListControlsProps {
   activePage: number;

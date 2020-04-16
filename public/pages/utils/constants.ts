@@ -14,14 +14,7 @@
  */
 
 import { SORT_DIRECTION } from '../../../server/utils/constants';
-
-export enum DETECTOR_STATE {
-  DISABLED = 'Disabled',
-  INIT = 'Initializing',
-  RUNNING = 'Running',
-  INIT_FAILURE = 'Initialization failure',
-  UNEXPECTED_FAILURE = 'Unexpected failure',
-}
+import { DETECTOR_STATE } from '../../utils/constants';
 
 export enum DETECTOR_STATE_COLOR {
   DISABLED = 'subdued',

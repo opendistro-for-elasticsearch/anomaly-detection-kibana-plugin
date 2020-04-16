@@ -39,7 +39,6 @@ import {
 } from '../utils/constants';
 import { AppState } from '../../../redux/reducers';
 import { CatIndex, IndexAlias } from '../../../../server/models/types';
-// import { getVisibleOptions } from '../../../pages/createDetector/containers/DataSource/utils/helpers';
 import { getVisibleOptions } from '../../utils/helpers';
 import {
   DETECTOR_STATE,
@@ -94,8 +93,7 @@ export function DashboardOverview() {
   const [selectedDetectorStates, setSelectedDetectorStates] = useState(
     [] as string[]
   );
-  // TODO: DetectorStates is placeholder for now until backend profile API is ready
-  // Issue link: https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/issues/25
+
   const [allDetectorStatesSelected, setAllDetectorStatesSelected] = useState(
     true
   );
@@ -134,8 +132,6 @@ export function DashboardOverview() {
 
   const filterSelectedDetectors = async (
     selectedNameList: string[],
-    // TODO: DetectorStates is placeholder for now until backend profile API is ready
-    // Issue link: https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/issues/25
     selectedStateList: string[],
     selectedIndexList: string[]
   ) => {
@@ -156,7 +152,14 @@ export function DashboardOverview() {
       );
     }
 
-    setCurrentDetectors(filteredDetectorItemsByNamesAndIndex);
+    let finalFilteredDetectors = filteredDetectorItemsByNamesAndIndex;
+    if (!allDetectorStatesSelected) {
+      finalFilteredDetectors = filteredDetectorItemsByNamesAndIndex.filter(
+        detectorItem => selectedStateList.includes(detectorItem.curState)
+      );
+    }
+
+    setCurrentDetectors(finalFilteredDetectors);
   };
 
   const intializeDetectors = () => {
