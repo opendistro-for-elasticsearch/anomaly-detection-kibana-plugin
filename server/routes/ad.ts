@@ -37,7 +37,7 @@ import {
   convertDetectorKeysToSnakeCase,
   getResultAggregationQuery,
 } from './utils/adHelpers';
-import { DETECTOR_STATE } from '../../public/pages/utils/constants';
+import { DETECTOR_STATE } from '../../public/utils/constants';
 
 type PutDetectorParams = {
   detectorId: string;

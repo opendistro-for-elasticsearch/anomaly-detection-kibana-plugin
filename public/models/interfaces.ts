@@ -13,8 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { DATA_TYPES } from '../utils/constants';
-import { DETECTOR_STATE } from 'public/pages/utils/constants';
+import { DATA_TYPES, DETECTOR_STATE } from '../utils/constants';
 
 export type FieldInfo = {
   label: string;

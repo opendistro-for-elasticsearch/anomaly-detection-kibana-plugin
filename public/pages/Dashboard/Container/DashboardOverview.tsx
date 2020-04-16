@@ -39,13 +39,13 @@ import {
 } from '../utils/constants';
 import { AppState } from '../../../redux/reducers';
 import { CatIndex, IndexAlias } from '../../../../server/models/types';
-// import { getVisibleOptions } from '../../../pages/createDetector/containers/DataSource/utils/helpers';
 import { getVisibleOptions } from '../../utils/helpers';
 import {
   DETECTOR_STATE,
   PLUGIN_NAME,
   APP_PATH,
 } from '../../../utils/constants';
+import { getDetectorStateOptions } from '../../DetectorsList/utils/helpers';
 
 export function DashboardOverview() {
   const dispatch = useDispatch();
@@ -89,27 +89,20 @@ export function DashboardOverview() {
     setAllDetectorsSelected(isEmpty(selectedNames));
   };
 
-  const allDetectorStates = Object.values(DETECTOR_STATE);
-
   const [selectedDetectorStates, setSelectedDetectorStates] = useState(
-    [] as string[]
+    [] as DETECTOR_STATE[]
   );
-  // TODO: DetectorStates is placeholder for now until backend profile API is ready
-  // Issue link: https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/issues/25
+
   const [allDetectorStatesSelected, setAllDetectorStatesSelected] = useState(
     true
   );
 
-  const getDetectorStateOptions = (states: string[]) => {
-    return states.map(state => {
-      return { label: state };
-    });
-  };
-
   const handleDetectorStateFilterChange = (
     options: EuiComboBoxOptionProps[]
   ): void => {
-    const selectedStates = options.map(option => option.label);
+    const selectedStates = options.map(
+      option => option.label as DETECTOR_STATE
+    );
     setSelectedDetectorStates(selectedStates);
     setAllDetectorStatesSelected(isEmpty(selectedStates));
   };
@@ -134,9 +127,7 @@ export function DashboardOverview() {
 
   const filterSelectedDetectors = async (
     selectedNameList: string[],
-    // TODO: DetectorStates is placeholder for now until backend profile API is ready
-    // Issue link: https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/issues/25
-    selectedStateList: string[],
+    selectedStateList: DETECTOR_STATE[],
     selectedIndexList: string[]
   ) => {
     let detectorsToFilter: DetectorListItem[];
@@ -156,7 +147,14 @@ export function DashboardOverview() {
       );
     }
 
-    setCurrentDetectors(filteredDetectorItemsByNamesAndIndex);
+    let finalFilteredDetectors = filteredDetectorItemsByNamesAndIndex;
+    if (!allDetectorStatesSelected) {
+      finalFilteredDetectors = filteredDetectorItemsByNamesAndIndex.filter(
+        detectorItem => selectedStateList.includes(detectorItem.curState)
+      );
+    }
+
+    setCurrentDetectors(finalFilteredDetectors);
   };
 
   const intializeDetectors = () => {
@@ -215,7 +213,7 @@ export function DashboardOverview() {
           <EuiComboBox
             id="detectorStateFilter"
             placeholder={ALL_DETECTOR_STATES_MESSAGE}
-            options={getDetectorStateOptions(allDetectorStates)}
+            options={getDetectorStateOptions()}
             onChange={handleDetectorStateFilterChange}
             selectedOptions={selectedDetectorStates.map(buildItemOption)}
             isClearable={true}
