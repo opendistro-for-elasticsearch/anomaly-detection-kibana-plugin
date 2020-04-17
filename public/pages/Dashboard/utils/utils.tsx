@@ -342,7 +342,6 @@ export const anomalousDetectorsStaticColumn = [
     sortable: true,
     truncateText: false,
     textOnly: true,
-    width: '150px',
     render: (name: string, detector: Detector) => (
       <EuiLink
         href={`${PLUGIN_NAME}#/detectors/${detector.id}/configurations/`}
@@ -358,7 +357,6 @@ export const anomalousDetectorsStaticColumn = [
     sortable: false,
     truncateText: false,
     textOnly: true,
-    width: '150px',
     render: (featureAttributes: FeatureAttributes[]) => {
       return featureAttributes.map(feature => {
         return <p>{feature.featureName}</p>;

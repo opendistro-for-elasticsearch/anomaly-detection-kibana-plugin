@@ -86,9 +86,11 @@ export const AnomalousDetectorsList = (props: AnomalousDetectorsListProps) => {
           fieldForSort
         )}
         columns={anomalousDetectorsStaticColumn}
+        tableLayout={'auto'}
         onChange={handleTableChange}
         sorting={sorting}
         pagination={pagination}
+        compressed
       />
     </ContentPanel>
   );
