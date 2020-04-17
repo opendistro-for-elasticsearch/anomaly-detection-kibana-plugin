@@ -13,103 +13,124 @@
  * permissions and limitations under the License.
  */
 
-import { get, snakeCase, cloneDeep } from 'lodash';
+import { snakeCase, cloneDeep } from 'lodash';
 import {
   Detector,
   FeatureAttributes,
   FEATURE_TYPE,
+  UiFeature,
 } from '../../../../models/interfaces';
 
 import { AggregationOption } from '../../models/types';
 
-export type FeaturesFormikValues = {
+export interface FeaturesFormikValues {
+  featureId: string;
   featureName: string;
   featureType: FEATURE_TYPE;
-  enabled: boolean;
-  customAggregation: string;
-  aggregationBy: string;
-  aggregationOf: AggregationOption[];
-};
+  featureEnabled: boolean;
+  aggregationQuery: string;
+  aggregationBy?: string;
+  aggregationOf?: AggregationOption[];
+  newFeature?: boolean;
+}
 
 export function prepareDetector(
-  values: FeaturesFormikValues,
+  values: FeaturesFormikValues[],
   ad: Detector,
-  featureToEdit: string
+  forPreview: boolean = false
 ): Detector {
-  //TODO::Verify why immutable is creating an issue
   const detector = cloneDeep(ad);
-  const feature = formikToFeatures(values);
-  const featureAttributes: FeatureAttributes[] = get(
-    detector,
-    'featureAttributes',
-    []
-  );
-  const editIndex = featureAttributes.findIndex(
-    feature => feature.featureId === featureToEdit
-  );
-
-  if (editIndex >= 0) {
-    featureAttributes.splice(editIndex, 1, {
-      featureId: featureToEdit,
-      ...feature,
-    });
-  } else {
-    featureAttributes.unshift(feature);
-  }
+  const featureAttributes = formikToFeatures(values, forPreview);
 
   return {
     ...detector,
     featureAttributes: [...featureAttributes],
     uiMetadata: {
       ...detector.uiMetadata,
-      features: {
-        ...get(detector, 'uiMetadata.features', {}),
-        ...formikToUIMetadata(values),
-      },
+      features: { ...formikToUIMetadata(values) },
     },
   };
+}
+
+export function formikToSimpleAggregation(value: FeaturesFormikValues) {
+  if (
+    value.aggregationBy &&
+    value.aggregationOf &&
+    value.aggregationOf.length > 0
+  ) {
+    return {
+      [value.featureName]: {
+        [value.aggregationBy]: { field: value.aggregationOf[0].label },
+      },
+    };
+  } else {
+    return {};
+  }
 }
 
 export function formikToAggregation(values: FeaturesFormikValues) {
   if (values.featureType === FEATURE_TYPE.SIMPLE) {
-    return {
-      [snakeCase(values.featureName)]: {
-        [values.aggregationBy]: { field: values.aggregationOf[0].label },
-      },
-    };
+    return values.aggregationBy &&
+      values.aggregationOf &&
+      values.aggregationOf.length > 0
+      ? {
+          [snakeCase(values.featureName)]: {
+            [values.aggregationBy]: { field: values.aggregationOf[0].label },
+          },
+        }
+      : {};
   }
-  return JSON.parse(values.customAggregation);
+  return JSON.parse(values.aggregationQuery);
 }
 
-export function formikToFeatures(values: FeaturesFormikValues) {
-  const featureAttribute = formikToFeatureAttributes(values);
+export function formikToFeatures(
+  values: FeaturesFormikValues[],
+  forPreview: boolean
+) {
+  const featureAttribute = formikToFeatureAttributes(values, forPreview);
   return featureAttribute;
 }
 
-export function formikToUIMetadata(values: FeaturesFormikValues) {
-  //TODO:: Delete Stale metadata if name is changed
-  if (values.featureType === FEATURE_TYPE.SIMPLE) {
-    return {
-      [values.featureName]: {
-        featureType: values.featureType,
-        aggregationBy: values.aggregationBy,
-        aggregationOf: values.aggregationOf[0].label,
-      },
-    };
-  }
-  return {
-    [values.featureName]: {
-      featureType: values.featureType,
-    },
-  };
+export function formikToUIMetadata(values: FeaturesFormikValues[]) {
+  // TODO:: Delete Stale metadata if name is changed
+  let features: {
+    [key: string]: UiFeature;
+  } = {};
+  values.forEach(value => {
+    if (value.featureType === FEATURE_TYPE.SIMPLE) {
+      features[value.featureName] = {
+        featureType: value.featureType,
+        aggregationBy: value.aggregationBy,
+        aggregationOf:
+          value.aggregationOf && value.aggregationOf.length
+            ? value.aggregationOf[0].label
+            : undefined,
+      };
+    } else {
+      features[value.featureName] = {
+        featureType: value.featureType,
+      };
+    }
+  });
+  return features;
 }
+
 function formikToFeatureAttributes(
-  values: FeaturesFormikValues
-): FeatureAttributes {
-  return {
-    featureName: values.featureName,
-    featureEnabled: values.enabled,
-    importance: 1,
-    aggregationQuery: formikToAggregation(values),
-  };
+  values: FeaturesFormikValues[],
+  forPreview: boolean
+): FeatureAttributes[] {
+  return values.map(function(value) {
+    const id = forPreview
+      ? value.featureId
+      : value.newFeature
+      ? undefined
+      : value.featureId;
+    return {
+      featureId: id,
+      featureName: value.featureName,
+      featureEnabled: value.featureEnabled,
+      importance: 1,
+      aggregationQuery: formikToAggregation(value),
+    };
+  });
 }

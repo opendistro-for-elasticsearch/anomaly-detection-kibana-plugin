@@ -50,25 +50,27 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
         id="random_id-row"
         title="Name"
       >
-        <label
-          aria-invalid="false"
-          class="euiFormLabel"
-          for="random_id"
-        >
-          <div
-            style="line-height: 8px;"
+        <div>
+          <label
+            aria-invalid="false"
+            class="euiFormLabel"
+            for="random_id"
           >
-            <p>
-              Name
-            </p>
-            <br />
-            <p
-              class="sublabel"
+            <div
+              style="line-height: 8px;"
             >
-              Specify a unique and descriptive name that is easy to recognize.
-            </p>
-          </div>
-        </label>
+              <p>
+                Name
+              </p>
+              <br />
+              <p
+                class="sublabel"
+              >
+                Specify a unique and descriptive name that is easy to recognize.
+              </p>
+            </div>
+          </label>
+        </div>
         <div
           class="euiFormControlLayout"
         >
@@ -92,30 +94,32 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
         hint="Describe the purpose of the detector."
         id="random_id-row"
       >
-        <label
-          aria-invalid="false"
-          class="euiFormLabel"
-          for="random_id"
-        >
-          <div
-            style="line-height: 8px;"
+        <div>
+          <label
+            aria-invalid="false"
+            class="euiFormLabel"
+            for="random_id"
           >
-            <p>
-              Description 
-              <span
-                class="optional"
-              >
-                - optional
-              </span>
-            </p>
-            <br />
-            <p
-              class="sublabel"
+            <div
+              style="line-height: 8px;"
             >
-              Describe the purpose of the detector.
-            </p>
-          </div>
-        </label>
+              <p>
+                Description 
+                <span
+                  class="optional"
+                >
+                  - optional
+                </span>
+              </p>
+              <br />
+              <p
+                class="sublabel"
+              >
+                Describe the purpose of the detector.
+              </p>
+            </div>
+          </label>
+        </div>
         <textarea
           class="euiTextArea euiTextArea--resizeVertical"
           id="random_id"

@@ -14,8 +14,8 @@
  */
 
 import React from 'react';
-//@ts-ignore
 import {
+  //@ts-ignore
   EuiTitleSize,
   EuiFlexGroup,
   EuiFlexItem,
@@ -52,7 +52,7 @@ const ContentPanel = (props: ContentPanelProps) => (
       <EuiFlexItem>
         {typeof props.title === 'string' ? (
           <EuiTitle
-            size={props.titleSize || 'l'}
+            size={props.titleSize || 's'}
             className={props.titleClassName || 'content-panel-title'}
           >
             <h3>{props.title}</h3>

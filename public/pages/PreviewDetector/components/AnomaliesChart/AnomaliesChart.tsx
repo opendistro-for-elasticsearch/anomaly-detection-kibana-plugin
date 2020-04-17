@@ -20,15 +20,12 @@ import { DateRangePicker } from '../DateRangePicker';
 import { Moment } from 'moment';
 import {
   Chart,
-  getAxisId,
   Axis,
-  getSpecId,
   LineSeries,
   niceTimeFormatter,
   Settings,
   Position,
   RectAnnotation,
-  getAnnotationId,
 } from '@elastic/charts';
 import { useDelayedLoader } from '../../../../hooks/useDelayedLoader';
 import { darkModeEnabled } from '../../../../utils/kibanaUtils';
@@ -66,8 +63,6 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
       <EuiSpacer size="s" />
       <ContentPanel
         title="Total anomalies"
-        titleSize="xs"
-        titleClassName="preview-title"
       >
         <div
           style={{
@@ -80,11 +75,13 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
             <Settings
               showLegend
               legendPosition={Position.Bottom}
-              showLegendDisplayValue={false}
+              // showLegendDisplayValue={false}
+              // showLegendExtra={false}
             />
             <RectAnnotation
               dataValues={props.annotations || []}
-              annotationId={getAnnotationId('react')}
+              id="annotations"
+              // annotationId={getAnnotationId('react')}
               style={{
                 stroke: darkModeEnabled() ? 'red' : '#FCAAAA',
                 strokeWidth: 1,
@@ -92,19 +89,15 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                 fill: darkModeEnabled() ? 'red' : '#FCAAAA',
               }}
             />
+            <Axis id="bottom" position="bottom" tickFormat={timeFormatter} />
             <Axis
-              id={getAxisId('bottom')}
-              position="bottom"
-              tickFormat={timeFormatter}
-            />
-            <Axis
-              id={getAxisId('left')}
+              id="left"
               title={'Anomaly grade / confidence'}
               position="left"
               domain={{ min: 0, max: 1 }}
             />
             <LineSeries
-              id={getSpecId('Anomaly grade')}
+              id="Anomaly grade"
               xScaleType="time"
               yScaleType="linear"
               xAccessor={'plotTime'}
@@ -112,7 +105,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
               data={props.anomalies}
             />
             <LineSeries
-              id={getSpecId('Confidence')}
+              id="Confidence"
               xScaleType="time"
               yScaleType="linear"
               xAccessor={'plotTime'}

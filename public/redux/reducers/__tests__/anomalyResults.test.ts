@@ -28,7 +28,7 @@ describe('elasticsearch reducer actions', () => {
         from: 0,
         size: 20,
         sortDirection: SORT_DIRECTION.ASC,
-        sortField: 'startTime',
+        sortField: 'data_start_ime',
       };
       await store.dispatch(getDetectorResults(tempDetectorId, queryParams));
       const actions = store.getActions();
@@ -44,6 +44,7 @@ describe('elasticsearch reducer actions', () => {
         requesting: false,
         total: response.totalAnomalies,
         anomalies: response.results,
+        featureData: undefined,
       });
       expect(httpMockedClient.get).toHaveBeenCalledWith(
         `..${AD_NODE_API.DETECTOR}/${tempDetectorId}/results`,

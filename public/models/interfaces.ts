@@ -156,3 +156,12 @@ export type MonitorAlert = {
   endTime: number;
   acknowledgedTime: number;
 };
+
+export type AnomalySummary = {
+  anomalyOccurrence: number;
+  minAnomalyGrade: number;
+  maxAnomalyGrade: number;
+  minConfidence: number;
+  maxConfidence: number;
+  lastAnomalyOccurrence: string;
+};

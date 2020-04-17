@@ -45,7 +45,7 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
       <EuiModalHeader>
         <EuiModalHeaderTitle>{props.title}</EuiModalHeaderTitle>
       </EuiModalHeader>
-      <EuiModalBody style={{ paddingLeft: '24px', paddingRight: '24px' }}>
+      <EuiModalBody>
         <EuiFlexGroup direction="column">
           {props.callout ? (
             <EuiFlexItem grow={false}>{props.callout}</EuiFlexItem>

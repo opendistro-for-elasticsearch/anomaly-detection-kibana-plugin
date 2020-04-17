@@ -23,10 +23,18 @@ import { ALERTING_PLUGIN_NAME } from './constants';
 export const isInvalid = (name: string, form: any) =>
   !!get(form.touched, name, false) && !!get(form.errors, name, false);
 
+export const isInvalidField = (name: string, form: any) => {
+  return !!get(form.touched, name, false) && !!get(form.errors, name, false);
+};
+
 export const getError = (name: string, form: any) => get(form.errors, name);
 
 export const required = (val: any): string | undefined => {
   return !val ? 'Required' : undefined;
+};
+
+export const requiredNonEmptyArray = (val: any): string | undefined => {
+  return !val || val.length === 0 ? 'Required' : undefined;
 };
 
 export const validatePositiveInteger = (value: any) => {

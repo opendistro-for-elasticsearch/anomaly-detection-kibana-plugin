@@ -138,6 +138,7 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
             <EuiDatePicker
               //@ts-ignore
               selected={rangeStartDateTime.selected}
+              //@ts-ignore
               onChange={handleChangeStart}
               startDate={rangeStartDateTime.selected}
               endDate={rangeEndDateTime.selected}
@@ -156,6 +157,7 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
             <EuiDatePicker
               //@ts-ignore
               selected={rangeEndDateTime.selected}
+              //@ts-ignore
               onChange={handleChangeEnd}
               startDate={rangeStartDateTime.selected}
               endDate={rangeEndDateTime.selected}

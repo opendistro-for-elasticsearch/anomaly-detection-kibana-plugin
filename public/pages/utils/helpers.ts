@@ -19,6 +19,7 @@ import { DetectorListItem } from '../../models/interfaces';
 import { SORT_DIRECTION } from '../../../server/utils/constants';
 import { ALL_INDICES, ALL_DETECTOR_STATES } from './constants';
 import { DETECTOR_STATE } from '../../utils/constants';
+import { timeFormatter } from '@elastic/charts';
 
 export function sanitizeSearchText(searchValue: string): string {
   if (!searchValue || searchValue == '*') {
@@ -105,3 +106,5 @@ export const getDetectorsToDisplay = (
 ) => {
   return detectors.slice(size * page, page * size + size);
 };
+
+export const dateFormatter = timeFormatter('MM/DD/YY hh:mm:ss a');

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -13,33 +13,4 @@
  * permissions and limitations under the License.
  */
 
-.page-header {
-  background-color: #fff;
-}
-
-.feature-class {
-  background: #fff;
-}
-
-.calendar-range-pooper {
-  left: unset !important;
-  right: 0 !important;
-}
-
-.preview-title {
-  color: #6a6a6a;
-}
-
-.feature-flyout {
-  transition: top 0 ease;
-  will-change: top;
-}
-
-.flyout {
-  padding: 10px;
-}
-
-.content-panel-subtitle {
-  font-size: 12pt;
-  color: #69707D;
-}
+export { AnomalyResults } from './containers/AnomalyResults';

@@ -13,25 +13,70 @@
  * permissions and limitations under the License.
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { EuiFormRow, EuiSelect, EuiComboBox } from '@elastic/eui';
 import { getAllFields } from '../../../../redux/selectors/elasticsearch';
 import { getNumberFields } from '../../utils/helpers';
 import { Field, FieldProps } from 'formik';
 import { AGGREGATION_TYPES } from '../../utils/constants';
-import { required, isInvalid, getError } from '../../../../utils/utils';
+import {
+  required,
+  requiredNonEmptyArray,
+  // isInvalid,
+  isInvalidField,
+  getError,
+} from '../../../../utils/utils';
 
-export const AggregationSelector = () => {
+interface AggregationSelectorProps {
+  index?: number;
+}
+export const AggregationSelector = (props: AggregationSelectorProps) => {
   const numberFields = getNumberFields(useSelector(getAllFields));
   return (
-    <div>
-      <Field name="aggregationBy" validate={required}>
+    <Fragment>
+      <Field
+        name={`featureList.${props.index}.aggregationOf`}
+        validate={requiredNonEmptyArray}
+      >
         {({ field, form }: FieldProps) => (
           <EuiFormRow
-            label="Aggregation by"
-            helpText="Select an aggregation to be performed on the selected field for the selected sample size"
-            isInvalid={isInvalid(field.name, form)}
+            label="Field"
+            isInvalid={isInvalidField(field.name, form)}
+            error={getError(field.name, form)}
+          >
+            <EuiComboBox
+              singleSelection
+              selectedOptions={field.value}
+              //@ts-ignore
+              options={numberFields}
+              {...field}
+              onClick={() => {
+                form.setFieldTouched(
+                  `featureList.${props.index}.aggregationOf`,
+                  true
+                );
+              }}
+              onChange={(options: any) => {
+                form.setFieldValue(
+                  `featureList.${props.index}.aggregationOf`,
+                  options
+                );
+              }}
+            />
+          </EuiFormRow>
+        )}
+      </Field>
+
+      <Field
+        name={`featureList.${props.index}.aggregationBy`}
+        validate={required}
+      >
+        {({ field, form }: FieldProps) => (
+          <EuiFormRow
+            label="Aggregation method"
+            helpText="The aggregation method determins what constitutes an anomaly. For example, if you choose min(), the detector focuses on finding anomalies based on the minimum values of your feature."
+            isInvalid={isInvalidField(field.name, form)}
             error={getError(field.name, form)}
           >
             <EuiSelect
@@ -42,26 +87,6 @@ export const AggregationSelector = () => {
           </EuiFormRow>
         )}
       </Field>
-      <Field name="aggregationOf" validate={required}>
-        {({ field, form }: FieldProps) => (
-          <EuiFormRow
-            label="Field"
-            isInvalid={isInvalid(field.name, form)}
-            error={getError(field.name, form)}
-          >
-            <EuiComboBox
-              singleSelection
-              selectedOptions={field.value}
-              //@ts-ignore
-              options={numberFields}
-              {...field}
-              onChange={(options: any) => {
-                form.setFieldValue(`aggregationOf`, options);
-              }}
-            />
-          </EuiFormRow>
-        )}
-      </Field>
-    </div>
+    </Fragment>
   );
 };

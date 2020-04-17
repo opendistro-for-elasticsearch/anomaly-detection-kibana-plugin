@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -17,13 +17,8 @@ import {
   Chart,
   Axis,
   LineSeries,
-  getSpecId,
-  getAxisId,
   RectAnnotation,
-  getAnnotationId,
   niceTimeFormatter,
-  CustomSeriesColorsMap,
-  DataSeriesColorsValues,
   Settings,
 } from '@elastic/charts';
 import { EuiButton, EuiEmptyPrompt, EuiText } from '@elastic/eui';
@@ -47,7 +42,6 @@ interface FeatureChartProps {
 }
 const getDisabledChartBackground = () =>
   darkModeEnabled() ? '#25262E' : '#F0F0F0';
-const getDisabledLineColor = () => (darkModeEnabled() ? '#434548' : '#C8CBCC');
 
 export const FeatureChart = (props: FeatureChartProps) => {
   const timeFormatter = niceTimeFormatter([
@@ -55,20 +49,12 @@ export const FeatureChart = (props: FeatureChartProps) => {
     props.endDateTime.valueOf(),
   ]);
   const showLoader = useDelayedLoader(props.isLoading);
-  const lineCustomSeriesColors: CustomSeriesColorsMap = new Map();
-  const lineDataSeriesColorValues: DataSeriesColorsValues = {
-    colorValues: [],
-    specId: getSpecId('lines'),
-  };
-  lineCustomSeriesColors.set(
-    lineDataSeriesColorValues,
-    props.enabled ? '#007DBC' : getDisabledLineColor()
-  );
 
   return (
     <ContentPanel
       title={props.enabled ? props.title : `${props.title} ( disabled )`}
       titleSize="xs"
+      titleClassName="preview-title"
       panelStyles={props.isEdit ? { border: '5px solid #96C8DA' } : {}}
       bodyStyles={
         !props.enabled ? { backgroundColor: getDisabledChartBackground() } : {}
@@ -82,7 +68,6 @@ export const FeatureChart = (props: FeatureChartProps) => {
           Edit
         </EuiButton>
       }
-      titleClassName="preview-title"
     >
       {props.featureData.length > 0 ? (
         <div
@@ -96,12 +81,12 @@ export const FeatureChart = (props: FeatureChartProps) => {
             <Settings
               showLegend
               legendPosition="bottom"
-              showLegendDisplayValue={false}
             />
             {props.enabled ? (
               <RectAnnotation
                 dataValues={props.annotations || []}
-                annotationId={getAnnotationId('react')}
+                id="annotations"
+                // annotationId={getAnnotationId('react')}
                 style={{
                   stroke: darkModeEnabled() ? 'red' : '#FCAAAA',
                   strokeWidth: 1,
@@ -110,20 +95,15 @@ export const FeatureChart = (props: FeatureChartProps) => {
                 }}
               />
             ) : null}
-            <Axis id={getAxisId('left')} title={props.title} position="left" />
-            <Axis
-              id={getAxisId('bottom')}
-              position="bottom"
-              tickFormat={timeFormatter}
-            />
+            <Axis id="left" title={props.title} position="left" />
+            <Axis id="bottom" position="bottom" tickFormat={timeFormatter} />
             <LineSeries
-              id={getSpecId('lines')}
+              id="lines"
               name={`Aggregated data for ${props.title}`}
               xScaleType="time"
               yScaleType="linear"
               xAccessor={'startTime'}
               yAccessors={['data']}
-              customSeriesColors={lineCustomSeriesColors}
               data={props.featureData}
             />
           </Chart>

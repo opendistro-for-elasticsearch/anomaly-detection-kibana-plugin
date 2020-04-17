@@ -46,6 +46,7 @@ import { ConfirmModal } from '../components/ConfirmModal/ConfirmModal';
 import { useFetchMonitorInfo } from '../hooks/useFetchMonitorInfo';
 import { MonitorCallout } from '../components/MonitorCallout/MonitorCallout';
 import { DETECTOR_DETAIL_TABS } from '../utils/constants';
+import { AnomalyResults } from '../../DetectorResults/containers/AnomalyResults';
 
 export interface DetectorRouterProps {
   detectorId?: string;
@@ -116,6 +117,14 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
       ]);
     }
   }, [detector]);
+
+  const handleSwitchToConfigurationTab = useCallback(() => {
+    setDetecorDetailModel({
+      ...detecorDetailModel,
+      selectedTab: DETECTOR_DETAIL_TABS.CONFIGURATIONS
+    });
+    props.history.push(`/detectors/${detectorId}/configurations`);
+  }, []);
 
   const handleTabChange = (route: DETECTOR_DETAIL_TABS) => {
     setDetecorDetailModel({
@@ -359,13 +368,11 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
           exact
           path="/detectors/:detectorId/results"
           render={props => (
-            // placeholder for AnomalyResults page, will change to
-            // <AnomalyResults
-            //   {...props}
-            //   detectorId={detectorId}
-            //   onSwitchToConfiguration={handleSwitchToConfigurationTab}
-            // />
-            <div style={{ paddingTop: '20px' }}>AnomalyResults page</div>
+            <AnomalyResults
+              {...props}
+              detectorId={detectorId}
+              onSwitchToConfiguration={handleSwitchToConfigurationTab}
+            />
           )}
         />
         <Route
