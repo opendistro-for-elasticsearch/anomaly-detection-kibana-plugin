@@ -237,13 +237,13 @@ export function DashboardOverview() {
       />
       <EuiSpacer />
       <EuiFlexGroup justifyContent="spaceBetween">
-        <EuiFlexItem grow={7}>
+        <EuiFlexItem grow={6}>
           <AnomaliesDistributionChart
             allDetectorsSelected={true}
             selectedDetectors={currentDetectors}
           />
         </EuiFlexItem>
-        <EuiFlexItem grow={2}>
+        <EuiFlexItem grow={3}>
           <AnomalousDetectorsList selectedDetectors={currentDetectors} />
         </EuiFlexItem>
       </EuiFlexGroup>
