@@ -16,27 +16,23 @@
 import React from 'react';
 
 import {
-  EuiEmptyPrompt,
-  EuiText,
   EuiFlexItem,
   EuiFlexGroup,
   EuiTitle,
   EuiSpacer,
-  EuiButton,
 } from '@elastic/eui';
 
 import { get } from 'lodash';
-import { FeatureChart } from '../components/FeatureChart/FeatureAnomaliesChart';
+import { FeatureChart } from '../components/FeatureChart/FeatureChart';
 import {
   Detector,
   FeatureAttributes,
   AnomalyPreview,
 } from '../../../models/interfaces';
 import moment, { Moment } from 'moment';
-import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { NoFeaturePrompt } from '../components/FeatureChart/NoFeaturePrompt';
 
-interface FeatureAnomaliesChartProps {
+interface FeatureBreakDownProps {
   title?: string;
   detector: Detector;
   onCreateFeature(event: React.MouseEvent<HTMLButtonElement>): void;
@@ -53,8 +49,8 @@ interface FeatureAnomaliesChartProps {
   showAnomalyAsBar: boolean;
 }
 
-export const FeatureAnomaliesChart = React.memo(
-  (props: FeatureAnomaliesChartProps) => {
+export const FeatureBreakDown = React.memo(
+  (props: FeatureBreakDownProps) => {
     return (
       <React.Fragment>
         {props.title ? (

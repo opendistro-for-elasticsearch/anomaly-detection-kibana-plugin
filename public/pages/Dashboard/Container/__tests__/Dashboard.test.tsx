@@ -48,28 +48,28 @@ describe('Dashboard test', () => {
       getByText('Create detector first to detect anomalies in your data.');
     });
     // There are some trouble fixing dynamic import will fix this later
-    // test('should not display empty dashboard if there are detector', async () => {
-    //   const randomDetectors = new Array(40).fill(null).map((_, index) => {
-    //     const hasAnomaly = Math.random() > 0.5;
-    //     return {
-    //       id: `detector_id_${index}`,
-    //       name: `detector_name_${index}`,
-    //       totalAnomalies: hasAnomaly ? Math.floor(Math.random() * 10) : 0,
-    //       lastActiveAnomaly: hasAnomaly ? Date.now() + index : 0,
-    //     };
-    //   });
-    //   httpClientMock.get = jest.fn().mockResolvedValue({
-    //     data: {
-    //       ok: true,
-    //       response: {
-    //         detectorList: randomDetectors.slice(0, 20),
-    //         totalDetectors: randomDetectors.length,
-    //       },
-    //     },
-    //   });
-    //   const { getByText } = renderWithRouter();
-    //   await wait();
-    //   getByText('Page under construction');
-    // });
+    test('should not display empty dashboard if there are detector', async () => {
+      const randomDetectors = new Array(40).fill(null).map((_, index) => {
+        const hasAnomaly = Math.random() > 0.5;
+        return {
+          id: `detector_id_${index}`,
+          name: `detector_name_${index}`,
+          totalAnomalies: hasAnomaly ? Math.floor(Math.random() * 10) : 0,
+          lastActiveAnomaly: hasAnomaly ? Date.now() + index : 0,
+        };
+      });
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        data: {
+          ok: true,
+          response: {
+            detectorList: randomDetectors.slice(0, 20),
+            totalDetectors: randomDetectors.length,
+          },
+        },
+      });
+      const { getByText } = renderWithRouter();
+      await wait();
+      getByText('Page under construction');
+    });
   });
 });

@@ -87,8 +87,8 @@ import { useFetchDetectorInfo } from '../../createDetector/hooks/useFetchDetecto
 import chrome from 'ui/chrome';
 import { BREADCRUMBS } from '../../../utils/constants';
 import { v4 as uuidv4 } from 'uuid';
-import { TotalAnomaliesChart } from '../components/AnomaliesChart/TotalAnomaliesChart';
-import { FeatureAnomaliesChart } from './FeatureAnomaliesChart';
+import { AnomaliesChart } from '../components/AnomaliesChart';
+import { FeatureBreakDown } from './FeatureBreakDown';
 import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
 
 interface FeaturesRouterProps {
@@ -119,7 +119,7 @@ export function EditFeatures(props: EditFeaturesProps) {
   const [newDetector, setNewDetector] = useState<Detector>(detector);
   const [fristPreview, setFristPreview] = useState<boolean>(true);
   const [previewDateRangeOption, setPreviewDateRangeOption] = useState<string>(
-    'last_7_days'
+    'last_7_days'//TODO: make it as constant 
   );
 
   useEffect(() => {
@@ -652,7 +652,7 @@ export function EditFeatures(props: EditFeaturesProps) {
         <ContentPanel
           title="Sample anomalies"
           titleSize="s"
-          description={sampleAnomaliesDescription()}
+          subTitle={sampleAnomaliesDescription()}
         >
           {isLoading ? (
             <EuiLoadingSpinner size="l" />
@@ -694,7 +694,7 @@ export function EditFeatures(props: EditFeaturesProps) {
           <EuiSpacer />
           {previewDone ? (
             <Fragment>
-              <TotalAnomaliesChart
+              <AnomaliesChart
                 title="Sample anomaly history"
                 onDateRangeChange={handleDateRangeChange}
                 anomalies={anomaliesResult.anomalies}
@@ -709,7 +709,7 @@ export function EditFeatures(props: EditFeaturesProps) {
                 detectorName={detector.name}
               />
               <EuiSpacer />
-              <FeatureAnomaliesChart
+              <FeatureBreakDown
                 title="Sample feature breakdown"
                 detector={newDetector}
                 onEdit={() => alert('edit')}

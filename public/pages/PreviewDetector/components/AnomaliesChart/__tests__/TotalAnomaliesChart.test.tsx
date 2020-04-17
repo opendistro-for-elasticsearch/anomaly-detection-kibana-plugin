@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -24,6 +24,12 @@ describe('<Anomalies /> spec', () => {
   test('renders the component', () => {
     const { container } = render(
       <AnomaliesChart
+        title="test"
+        detectorId='testDetectorId'
+        detectorName='testDetectorName'
+        anomalyGradeSeriesName="anoaly grade"
+        confidenceSeriesName="confidence"
+        dateRangeOption='last_24_hours'
         onDateRangeChange={jest.fn()}
         anomalies={[]}
         annotations={[]}

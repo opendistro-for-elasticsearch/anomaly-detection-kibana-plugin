@@ -27,9 +27,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from 'public/redux/reducers';
 import { AnomalyData, Detector, Monitor } from '../../../models/interfaces';
 import { getAnomalyResultsWithDateRange } from '../utils/anomalyResultUtils';
-import { TotalAnomaliesChart } from '../../PreviewDetector/components/AnomaliesChart/TotalAnomaliesChart';
+import { AnomaliesChart } from '../../PreviewDetector/components/AnomaliesChart';
 import { get, isEmpty } from 'lodash';
-import { FeatureAnomaliesChart } from '../../PreviewDetector/containers/FeatureAnomaliesChart';
+import { FeatureBreakDown } from '../../PreviewDetector/containers/FeatureBreakDown';
 import { AnomalyResultsTable } from './AnomalyResultsTable';
 
 interface AnomalyHistoryProps {
@@ -126,7 +126,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
 
   return (
     <Fragment>
-      <TotalAnomaliesChart
+      <AnomaliesChart
         title="Anomaly history"
         onDateRangeChange={handleDateRangeChange}
         anomalies={anomalyResults.anomalies}
@@ -161,7 +161,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
       ) : (
         <Fragment>
           {selectedTabId === 'featureBreakdown' ? (
-            <FeatureAnomaliesChart
+            <FeatureBreakDown
               detector={props.detector}
               onEdit={() => alert('edit')}
               featureEditId={''}
