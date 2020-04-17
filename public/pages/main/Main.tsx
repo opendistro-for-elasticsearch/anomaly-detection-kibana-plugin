@@ -70,7 +70,7 @@ export function Main(props: MainProps) {
       <EuiPageSideBar style={{ minWidth: 150 }} hidden={hideSideNavBar}>
         <EuiSideNav style={{ width: 150 }} items={sideNav} />
       </EuiPageSideBar>
-      <EuiPageBody restrictWidth={'70%'}>
+      <EuiPageBody>
         <Switch>
           <Route
             path={APP_PATH.DASHBOARD}
