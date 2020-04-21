@@ -47,6 +47,10 @@ export const MAX_DETECTORS = 1000;
 
 export const MAX_ANOMALIES = 10000;
 
+export const MAX_FEATURE_NUM = 5;
+
+export const MAX_FEATURE_NAME_SIZE = 256;
+
 export enum DETECTOR_STATE {
   DISABLED = 'Disabled',
   INIT = 'Initializing',

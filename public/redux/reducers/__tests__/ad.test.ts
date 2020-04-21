@@ -197,7 +197,15 @@ describe('detector reducer actions', () => {
         requesting: true,
       });
       expect(actions[1].type).toBe('ad/UPDATE_DETECTOR_SUCCESS');
-      expect(reducer(initialDetectorsState, actions[1])).toEqual({
+      const result = reducer(initialDetectorsState, actions[1]);
+      expect({...result,
+        detectors: {
+          [detectorId]: {
+            ...result.detectors[detectorId],
+            lastUpdateTime: randomDetector.lastUpdateTime,
+          },
+        },
+      }).toEqual({
         ...initialDetectorsState,
         requesting: false,
         detectors: {

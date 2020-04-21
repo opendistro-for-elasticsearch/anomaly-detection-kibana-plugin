@@ -22,7 +22,7 @@ describe('helpers spec', () => {
       expect(getURLQueryParams({ search: '' })).toEqual({
         from: 0,
         size: 20,
-        sortField: 'startTime',
+        sortField: 'data_start_time',
         sortDirection: SORT_DIRECTION.ASC,
       });
     });
@@ -30,7 +30,7 @@ describe('helpers spec', () => {
       expect(getURLQueryParams({ search: 'from=100&size=20' })).toEqual({
         from: 100,
         size: 20,
-        sortField: 'startTime',
+        sortField: 'data_start_time',
         sortDirection: SORT_DIRECTION.ASC,
       });
     });

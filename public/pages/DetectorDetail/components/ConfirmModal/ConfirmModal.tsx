@@ -30,7 +30,7 @@ import {
 
 interface ConfirmModalProps {
   title: string;
-  description: string;
+  description: string | React.ReactNode;
   callout?: any;
   confirmButtonText: string;
   confirmButtonColor: ButtonColor;
@@ -51,9 +51,13 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
             <EuiFlexItem grow={false}>{props.callout}</EuiFlexItem>
           ) : null}
           <EuiFlexItem grow={false}>
-            <EuiText>
-              <p>{props.description}</p>
-            </EuiText>
+            {typeof props.description === 'string' ? (
+              <EuiText>
+                <p>{props.description}</p>
+              </EuiText>
+            ) : (
+              <React.Fragment>{props.description}</React.Fragment>
+            )}
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiModalBody>

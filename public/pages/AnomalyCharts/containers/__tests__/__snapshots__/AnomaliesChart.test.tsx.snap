@@ -1,0 +1,285 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AnomaliesChart /> spec renders the component 1`] = `
+<div
+  class="euiPanel euiPanel--paddingMedium"
+  style="padding-left: 0px; padding-right: 0px;"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px 10px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <h3
+        class="euiTitle euiTitle--small content-panel-title"
+      >
+        test
+      </h3>
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        />
+      </div>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiFormControlLayout"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <select
+                class="euiSelect"
+                id="anomalyHistoryDatePicker"
+                style="width: 145px;"
+              >
+                <option
+                  value="last_1_hour"
+                >
+                  Last 1 hour
+                </option>
+                <option
+                  value="last_24_hours"
+                >
+                  Last 24 hours
+                </option>
+                <option
+                  value="last_7_days"
+                >
+                  Last 7 days
+                </option>
+              </select>
+              <div
+                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              >
+                <span
+                  class="euiFormControlLayoutCustomIcon"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                    focusable="false"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr
+    class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+  />
+  <div
+    style="padding: 0px 10px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 20px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiStat euiStat--leftAligned"
+          >
+            <div
+              class="euiText euiText--small euiStat__description"
+            >
+              <p
+                id="random_id"
+              >
+                Sample anomaly occurrences
+              </p>
+            </div>
+            <p
+              aria-labelledby="random_id"
+              class="euiTitle euiTitle--medium euiStat__title"
+            >
+              0
+            </p>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiStat euiStat--leftAligned"
+          >
+            <div
+              class="euiText euiText--small euiStat__description"
+            >
+              <p>
+                Sample anomaly grade
+                 
+                <span
+                  class="euiToolTipAnchor"
+                >
+                  <svg
+                    class="euiIcon euiIcon--medium euiIcon-isLoading"
+                    focusable="false"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  />
+                </span>
+              </p>
+            </div>
+            <div
+              class="euiTitle euiTitle--medium euiStat__title"
+              style="display: inline;"
+            >
+              0
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiStat euiStat--leftAligned"
+          >
+            <div
+              class="euiText euiText--small euiStat__description"
+            >
+              <p>
+                Sample confidence
+                 
+                <span
+                  class="euiToolTipAnchor"
+                >
+                  <svg
+                    class="euiIcon euiIcon--medium euiIcon-isLoading"
+                    focusable="false"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  />
+                </span>
+              </p>
+            </div>
+            <div
+              class="euiTitle euiTitle--medium euiStat__title"
+              style="display: inline;"
+            >
+              0
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiStat euiStat--leftAligned"
+          >
+            <div
+              class="euiText euiText--small euiStat__description"
+            >
+              <p
+                id="random_id"
+              >
+                Last sample anomaly occurrence
+              </p>
+            </div>
+            <p
+              aria-labelledby="random_id"
+              class="euiTitle euiTitle--medium euiStat__title"
+            >
+              -
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            style="height: 200px; width: 100%; opacity: 1;"
+          >
+            <div
+              class="echChart"
+            >
+              <div
+                class="echChartStatus"
+                data-ech-render-complete="true"
+                data-ech-render-count="1"
+              />
+              <div
+                class="echChartResizer"
+              />
+              <div
+                style="position: absolute; left: -9999px; opacity: 0;"
+              >
+                <svg
+                  class="euiIcon euiIcon--medium euiIcon-isLoading"
+                  focusable="false"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                />
+              </div>
+              <div
+                class="echContainer"
+              >
+                <div
+                  class="echChartPointerContainer"
+                  style="cursor: default;"
+                >
+                  <div
+                    class="echCrosshair"
+                  />
+                  <svg
+                    class="echHighlighter"
+                  >
+                    <defs>
+                      <clippath
+                        id="echHighlighterClipPath__843283f0-71f4-4050-8e37-b302a7f8b863"
+                      >
+                        <rect
+                          height="0"
+                          width="0"
+                          x="0"
+                          y="0"
+                        />
+                      </clippath>
+                    </defs>
+                    <g
+                      transform="translate(0, 0) rotate(0)"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

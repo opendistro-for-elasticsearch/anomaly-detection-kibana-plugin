@@ -25,6 +25,7 @@ import { useSelector } from 'react-redux';
 import { APP_PATH } from '../../utils/constants';
 import { DetectorDetail } from '../DetectorDetail';
 import { Dashboard } from '../Dashboard/Container/Dashboard';
+import { EditFeatures } from '../EditFeatures/containers/EditFeatures';
 
 enum Navigation {
   AnomalyDetection = 'Anomaly detection',
@@ -100,10 +101,7 @@ export function Main(props: MainProps) {
           <Route
             exact
             path={APP_PATH.EDIT_FEATURES}
-            render={(props: RouteComponentProps) => (
-              // place holder for EditFeatures, please replace with your page
-              <div>place holder for EditFeatures</div>
-            )}
+            render={(props: RouteComponentProps) => <EditFeatures {...props} />}
           />
           <Route
             path={APP_PATH.DETECTOR_DETAIL}

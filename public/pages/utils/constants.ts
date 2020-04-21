@@ -56,3 +56,9 @@ export const GET_ALL_DETECTORS_QUERY_PARAMS = {
   sortDirection: SORT_DIRECTION.ASC,
   sortField: 'name',
 };
+
+export enum AD_RESULT_DATE_RANGES {
+  LAST_1_HOUR = 'last_1_hour',
+  LAST_24_HOURS = 'last_24_hours',
+  LAST_7_DAYS = 'last_7_days',
+}

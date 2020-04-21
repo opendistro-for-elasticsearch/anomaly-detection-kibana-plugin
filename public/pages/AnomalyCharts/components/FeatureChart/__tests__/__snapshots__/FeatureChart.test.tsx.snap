@@ -1,0 +1,332 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FeatureChart /> spec Feature Chart renders component with custom expression 1`] = `
+<div>
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small content-panel-title"
+        >
+          feature-name
+        </h3>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiText euiText--small"
+            >
+              <p
+                style="font-size: 12px;"
+              >
+                Custom expression:
+                 
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  View code
+                </button>
+                ; State: 
+                Enabled
+                 
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 0px 10px;"
+    >
+      <div
+        style="height: 200px; width: 100%; opacity: 1;"
+      >
+        <div
+          class="echChart"
+        >
+          <div
+            class="echChartStatus"
+            data-ech-render-complete="true"
+            data-ech-render-count="1"
+          />
+          <div
+            class="echChartResizer"
+          />
+          <div
+            class="echLegend echLegend--right"
+          >
+            <div
+              class="echLegendListContainer"
+              style="width: 30px; max-width: 30px;"
+            >
+              <div
+                class="echLegendList"
+                style="padding-top: 10px; padding-bottom: 10px;"
+              >
+                <div
+                  class="echLegendItem echLegendItem--right"
+                >
+                  <div
+                    aria-label="series color"
+                    class="echLegendItem__color"
+                    title="series color"
+                  >
+                    <svg
+                      class="echIcon"
+                      color="#16191F"
+                      focusable="false"
+                      height="16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <defs>
+                        <circle
+                          cx="8"
+                          cy="8"
+                          id="dot-a"
+                          r="4"
+                        />
+                      </defs>
+                      <g>
+                        <use
+                          xlink:href="#dot-a"
+                        />
+                      </g>
+                    </svg>
+                  </div>
+                  <div
+                    class="echLegendItem__label"
+                    title="anomaly grade"
+                  >
+                    anomaly grade
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="echContainer"
+          >
+            <div
+              class="echChartPointerContainer"
+              style="cursor: default;"
+            >
+              <div
+                class="echCrosshair"
+              />
+              <svg
+                class="echHighlighter"
+              >
+                <defs>
+                  <clippath
+                    id="echHighlighterClipPath__9627cc98-cf70-44c5-8bbd-8b96bddb2798"
+                  >
+                    <rect
+                      height="0"
+                      width="0"
+                      x="0"
+                      y="0"
+                    />
+                  </clippath>
+                </defs>
+                <g
+                  transform="translate(0, 0) rotate(0)"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FeatureChart /> spec Feature Chart renders component with simple aggregation 1`] = `
+<div>
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small content-panel-title"
+        >
+          feature-name
+        </h3>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiText euiText--small"
+            >
+              <p
+                style="font-size: 12px;"
+              >
+                Field: 
+                value
+                ; Aggregation method: 
+                sum
+                ; State: 
+                Enabled
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 0px 10px;"
+    >
+      <div
+        style="height: 200px; width: 100%; opacity: 1;"
+      >
+        <div
+          class="echChart"
+        >
+          <div
+            class="echChartStatus"
+            data-ech-render-complete="true"
+            data-ech-render-count="1"
+          />
+          <div
+            class="echChartResizer"
+          />
+          <div
+            class="echLegend echLegend--right"
+          >
+            <div
+              class="echLegendListContainer"
+              style="width: 30px; max-width: 30px;"
+            >
+              <div
+                class="echLegendList"
+                style="padding-top: 10px; padding-bottom: 10px;"
+              >
+                <div
+                  class="echLegendItem echLegendItem--right"
+                >
+                  <div
+                    aria-label="series color"
+                    class="echLegendItem__color"
+                    title="series color"
+                  >
+                    <svg
+                      class="echIcon"
+                      color="#16191F"
+                      focusable="false"
+                      height="16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <defs>
+                        <circle
+                          cx="8"
+                          cy="8"
+                          id="dot-a"
+                          r="4"
+                        />
+                      </defs>
+                      <g>
+                        <use
+                          xlink:href="#dot-a"
+                        />
+                      </g>
+                    </svg>
+                  </div>
+                  <div
+                    class="echLegendItem__label"
+                    title="anomaly grade"
+                  >
+                    anomaly grade
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="echContainer"
+          >
+            <div
+              class="echChartPointerContainer"
+              style="cursor: default;"
+            >
+              <div
+                class="echCrosshair"
+              />
+              <svg
+                class="echHighlighter"
+              >
+                <defs>
+                  <clippath
+                    id="echHighlighterClipPath__d2536731-6d91-4094-a106-023a8f2bf6e1"
+                  >
+                    <rect
+                      height="0"
+                      width="0"
+                      x="0"
+                      y="0"
+                    />
+                  </clippath>
+                </defs>
+                <g
+                  transform="translate(0, 0) rotate(0)"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

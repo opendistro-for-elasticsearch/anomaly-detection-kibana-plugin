@@ -28,26 +28,13 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <svg
-                  class="euiIcon euiIcon--medium euiIcon--success"
+                  class="euiIcon euiIcon--medium euiIcon--success euiIcon-isLoading"
                   focusable="false"
                   height="16"
                   viewBox="0 0 16 16"
                   width="16"
                   xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                >
-                  <defs>
-                    <circle
-                      cx="8"
-                      cy="8"
-                      id="dot-a"
-                      r="4"
-                    />
-                  </defs>
-                  <use
-                    xlink:href="#dot-a"
-                  />
-                </svg>
+                />
               </div>
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -86,25 +73,13 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
                   >
                     <svg
                       aria-hidden="true"
-                      class="euiIcon euiIcon--medium euiButton__icon"
+                      class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
                       focusable="false"
                       height="16"
                       viewBox="0 0 16 16"
                       width="16"
                       xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                    >
-                      <defs>
-                        <path
-                          d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.552.552 0 0 0-.771 0 .53.53 0 0 0 0 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76.552.552 0 0 0-.771 0z"
-                          id="arrow_down-a"
-                        />
-                      </defs>
-                      <use
-                        fill-rule="nonzero"
-                        xlink:href="#arrow_down-a"
-                      />
-                    </svg>
+                    />
                     <span
                       class="euiButton__text"
                     >
@@ -128,18 +103,13 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
               >
                 <svg
                   aria-hidden="true"
-                  class="euiIcon euiIcon--medium euiButton__icon"
+                  class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
                   focusable="false"
                   height="16"
                   viewBox="0 0 16 16"
                   width="16"
                   xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
+                />
                 <span
                   class="euiButton__text"
                 >

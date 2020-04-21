@@ -14,6 +14,7 @@
  */
 
 import { DATA_TYPES, DETECTOR_STATE } from '../utils/constants';
+import { Moment } from 'moment';
 
 export type FieldInfo = {
   label: string;
@@ -74,8 +75,8 @@ export type Schedule = {
 
 export type UiFeature = {
   featureType: FEATURE_TYPE;
-  aggregationBy: string;
-  aggregationOf: string;
+  aggregationBy?: string;
+  aggregationOf?: string;
 };
 
 export type UiMetaData = {
@@ -155,4 +156,18 @@ export type MonitorAlert = {
   startTime: number;
   endTime: number;
   acknowledgedTime: number;
+};
+
+export type AnomalySummary = {
+  anomalyOccurrence: number;
+  minAnomalyGrade: number;
+  maxAnomalyGrade: number;
+  minConfidence: number;
+  maxConfidence: number;
+  lastAnomalyOccurrence: string;
+};
+
+export type DateRange = {
+  startDate: Moment;
+  endDate: Moment;
 };

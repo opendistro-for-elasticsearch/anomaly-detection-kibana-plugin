@@ -20,20 +20,23 @@ import {
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
+import { AnomalyData } from '../../models/interfaces';
 
 const DETECTOR_RESULTS = 'ad/DETECTOR_RESULTS';
 
 export interface Anomalies {
   requesting: boolean;
   total: number;
-  anomalies: Anomalies[];
+  anomalies: AnomalyData[];
   errorMessage: string;
+  featureData: any;
 }
 export const initialDetectorsState: Anomalies = {
   requesting: false,
   total: 0,
   anomalies: [],
   errorMessage: '',
+  featureData: {},
 };
 
 const reducer = handleActions<Anomalies>(
@@ -49,6 +52,7 @@ const reducer = handleActions<Anomalies>(
         requesting: false,
         total: action.result.data.response.totalAnomalies,
         anomalies: action.result.data.response.results,
+        featureData: action.result.data.response.featureResults,
       }),
       FAILURE: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
