@@ -21,8 +21,10 @@ import React from 'react';
 import { Detector } from '../../../../server/models/types';
 import { PLUGIN_NAME, DETECTOR_STATE } from '../../../utils/constants';
 import { stateToColorMap } from '../../utils/constants';
+import { darkModeEnabled } from '../../../utils/kibanaUtils';
 
 export const DEFAULT_EMPTY_DATA = '-';
+const hintColor = darkModeEnabled() ? '#98A2B3' : '#535966';
 
 const renderTime = (time: number) => {
   const momentTime = moment(time);
@@ -51,7 +53,7 @@ export const staticColumn = [
           Detector{' '}
           <EuiIcon
             size="s"
-            color="subdued"
+            color={hintColor}
             type="questionInCircle"
             className="eui-alignTop"
           />
@@ -76,7 +78,7 @@ export const staticColumn = [
           Indices{' '}
           <EuiIcon
             size="s"
-            color="subdued"
+            color={hintColor}
             type="questionInCircle"
             className="eui-alignTop"
           />
@@ -97,7 +99,7 @@ export const staticColumn = [
           Detector state{' '}
           <EuiIcon
             size="s"
-            color="subdued"
+            color={hintColor}
             type="questionInCircle"
             className="eui-alignTop"
           />
@@ -118,7 +120,7 @@ export const staticColumn = [
           Anomalies last 24 hours{' '}
           <EuiIcon
             size="s"
-            color="subdued"
+            color={hintColor}
             type="questionInCircle"
             className="eui-alignTop"
           />
@@ -138,7 +140,7 @@ export const staticColumn = [
           Last anomaly occurrence{' '}
           <EuiIcon
             size="s"
-            color="subdued"
+            color={hintColor}
             type="questionInCircle"
             className="eui-alignTop"
           />
@@ -159,7 +161,7 @@ export const staticColumn = [
           Last updated{' '}
           <EuiIcon
             size="s"
-            color="subdued"
+            color={hintColor}
             type="questionInCircle"
             className="eui-alignTop"
           />
