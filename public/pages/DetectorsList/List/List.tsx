@@ -57,6 +57,7 @@ import {
   ALL_DETECTOR_STATES,
   ALL_INDICES,
 } from '../../utils/constants';
+import { BREADCRUMBS } from '../../../utils/constants';
 import { getURLQueryParams } from '../utils/helpers';
 import {
   filterAndSortDetectors,
@@ -111,9 +112,12 @@ export const DetectorList = (props: ListProps) => {
     selectedIndices: ALL_INDICES,
   });
 
-  // Remove breadcrumbs on page initialization
+  // Set breadcrumbs on page initialization
   useEffect(() => {
-    chrome.breadcrumbs.set(['']);
+    chrome.breadcrumbs.set([
+      BREADCRUMBS.ANOMALY_DETECTOR,
+      BREADCRUMBS.DETECTORS,
+    ]);
   }, []);
 
   // Refresh data if user change any parameters / filter / sort
