@@ -45,12 +45,14 @@ export const Dashboard = () => {
     (state: AppState) => state.ad.totalDetectors
   );
 
+  const hasDetectors = totalDetectors > 0;
+
   useEffect(() => {
     onRefreshPage();
   }, []);
   return (
     <Fragment>
-      <DashboardHeader />
+      <DashboardHeader hasDetectors={hasDetectors} />
       {isLoading == true ? (
         <div>
           <EuiLoadingSpinner size="s" />
@@ -61,7 +63,7 @@ export const Dashboard = () => {
           &nbsp;&nbsp;
           <EuiLoadingSpinner size="xl" />
         </div>
-      ) : totalDetectors == 0 ? (
+      ) : !hasDetectors ? (
         <EmptyDashboard />
       ) : (
         <DashboardOverview />

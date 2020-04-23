@@ -187,17 +187,6 @@ export function DashboardOverview() {
 
   return (
     <Fragment>
-      <EuiFlexGroup justifyContent="flexEnd" style={{ padding: '0px 10px' }}>
-        <EuiButton
-          fill
-          href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-          target="_blank"
-          data-test-subj="add_detector"
-        >
-          Create detector
-        </EuiButton>
-      </EuiFlexGroup>
-      <EuiSpacer />
       <EuiFlexGroup justifyContent="flexStart">
         <EuiFlexItem grow={1}>
           <EuiComboBox

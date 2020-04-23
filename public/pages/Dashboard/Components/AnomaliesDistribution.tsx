@@ -190,13 +190,13 @@ export const AnomaliesDistributionChart = (
                       return d;
                     },
                     fillLabel: {
-                      textInvertible: false,
+                      textInvertible: true,
                     },
                     shape: {
                       fillColor: d => {
                         return fillOutColors(
                           d,
-                          (d.x0 + d.x1) / 3 / (2 * Math.PI),
+                          (d.x0 + d.x1) / 2 / (2 * Math.PI),
                           []
                         );
                       },
@@ -224,10 +224,9 @@ export const AnomaliesDistributionChart = (
                 config={{
                   partitionLayout: PartitionLayout.sunburst,
                   fontFamily: 'Arial',
-                  outerSizeRatio: 0.6,
+                  outerSizeRatio: 1,
                   fillLabel: {
                     textInvertible: true,
-                    fontStyle: 'italic',
                   },
                   // TODO: Given only 1 detector exists, the inside Index circle will have issue in following scenarios:
                   // 1: if Linked Label is configured for identifying index, label of Index circle will be invisible;
