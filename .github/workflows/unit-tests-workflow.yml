@@ -1,0 +1,48 @@
+name: Unit tests workflow
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  tests:
+    name: Run unit tests
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout Kibana
+        uses: actions/checkout@v2
+        with:
+          repository: opendistro-for-elasticsearch/kibana-oss
+          ref: 7.4.2
+          token: ${{ secrets.KIBANA_OSS_ACCESS }}
+          path: kibana
+      - name: Get node and yarn versions
+        id: versions_step
+        run: |
+          echo "::set-output name=node_version::$(node -p "(require('./kibana/package.json').engines.node).match(/[.0-9]+/)[0]")"
+          echo "::set-output name=yarn_version::$(node -p "(require('./kibana/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.versions_step.outputs.node_version }}
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install correct yarn version for Kibana
+        run: |
+          npm uninstall -g yarn
+          echo "Installing yarn ${{ steps.versions_step.outputs.yarn_version }}"
+          npm i -g yarn@${{ steps.versions_step.outputs.yarn_version }}
+      - name: Checkout Anomaly Detection Kibana plugin
+        uses: actions/checkout@v2
+        with:
+          path: kibana/plugins/anomaly-detection-kibana-plugin
+      - name: Bootstrap the plugin
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn kbn bootstrap
+      - name: Run tests
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn run test:jest
