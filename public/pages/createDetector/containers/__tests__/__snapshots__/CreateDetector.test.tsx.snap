@@ -69,25 +69,27 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           id="random_id-row"
           title="Name"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel"
-            for="random_id"
-          >
-            <div
-              style="line-height: 8px;"
+          <div>
+            <label
+              aria-invalid="false"
+              class="euiFormLabel"
+              for="random_id"
             >
-              <p>
-                Name
-              </p>
-              <br />
-              <p
-                class="sublabel"
+              <div
+                style="line-height: 8px;"
               >
-                Specify a unique and descriptive name that is easy to recognize.
-              </p>
-            </div>
-          </label>
+                <p>
+                  Name
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Specify a unique and descriptive name that is easy to recognize.
+                </p>
+              </div>
+            </label>
+          </div>
           <div
             class="euiFormControlLayout"
           >
@@ -111,30 +113,32 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           hint="Describe the purpose of the detector."
           id="random_id-row"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel"
-            for="random_id"
-          >
-            <div
-              style="line-height: 8px;"
+          <div>
+            <label
+              aria-invalid="false"
+              class="euiFormLabel"
+              for="random_id"
             >
-              <p>
-                Description 
-                <span
-                  class="optional"
-                >
-                  - optional
-                </span>
-              </p>
-              <br />
-              <p
-                class="sublabel"
+              <div
+                style="line-height: 8px;"
               >
-                Describe the purpose of the detector.
-              </p>
-            </div>
-          </label>
+                <p>
+                  Description 
+                  <span
+                    class="optional"
+                  >
+                    - optional
+                  </span>
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Describe the purpose of the detector.
+                </p>
+              </div>
+            </label>
+          </div>
           <textarea
             class="euiTextArea euiTextArea--resizeVertical"
             id="random_id"
@@ -196,25 +200,27 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           id="random_id-row"
           title="Index"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel"
-            for="random_id"
-          >
-            <div
-              style="line-height: 8px;"
+          <div>
+            <label
+              aria-invalid="false"
+              class="euiFormLabel"
+              for="random_id"
             >
-              <p>
-                Index
-              </p>
-              <br />
-              <p
-                class="sublabel"
+              <div
+                style="line-height: 8px;"
               >
-                Choose an index or index pattern as the data source.
-              </p>
-            </div>
-          </label>
+                <p>
+                  Index
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Choose an index or index pattern as the data source.
+                </p>
+              </div>
+            </label>
+          </div>
           <div
             aria-describedby="random_id-help"
             aria-expanded="false"
@@ -261,28 +267,17 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                     aria-label="Open list of options"
                     class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
                     data-test-subj="comboBoxToggleListButton"
+                    type="button"
                   >
                     <svg
                       aria-hidden="true"
-                      class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                      class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
                       focusable="false"
                       height="16"
                       viewBox="0 0 16 16"
                       width="16"
                       xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                    >
-                      <defs>
-                        <path
-                          d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.552.552 0 0 0-.771 0 .53.53 0 0 0 0 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76.552.552 0 0 0-.771 0z"
-                          id="arrow_down-a"
-                        />
-                      </defs>
-                      <use
-                        fill-rule="nonzero"
-                        xlink:href="#arrow_down-a"
-                      />
-                    </svg>
+                    />
                   </button>
                 </div>
               </div>
@@ -301,25 +296,27 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           id="random_id-row"
           title="Timestamp field"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel"
-            for="random_id"
-          >
-            <div
-              style="line-height: 8px;"
+          <div>
+            <label
+              aria-invalid="false"
+              class="euiFormLabel"
+              for="random_id"
             >
-              <p>
-                Timestamp field
-              </p>
-              <br />
-              <p
-                class="sublabel"
+              <div
+                style="line-height: 8px;"
               >
-                Choose the time field you want to use for time filter.
-              </p>
-            </div>
-          </label>
+                <p>
+                  Timestamp field
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Choose the time field you want to use for time filter.
+                </p>
+              </div>
+            </label>
+          </div>
           <div
             class="euiFormControlLayout"
           >
@@ -344,25 +341,13 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                    class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
                     focusable="false"
                     height="16"
                     viewBox="0 0 16 16"
                     width="16"
                     xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                  >
-                    <defs>
-                      <path
-                        d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.552.552 0 0 0-.771 0 .53.53 0 0 0 0 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76.552.552 0 0 0-.771 0z"
-                        id="arrow_down-a"
-                      />
-                    </defs>
-                    <use
-                      fill-rule="nonzero"
-                      xlink:href="#arrow_down-a"
-                    />
-                  </svg>
+                  />
                 </span>
               </div>
             </div>
@@ -374,35 +359,37 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           hint="Choose a subset of your data source to focus your data stream and reduce noisy data.,Use the visual editor to create a simple filter, or use the Elasticsearch query DSL to create more advanced filters."
           id="random_id-row"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel"
-            for="random_id"
-          >
-            <div
-              style="line-height: 8px;"
+          <div>
+            <label
+              aria-invalid="false"
+              class="euiFormLabel"
+              for="random_id"
             >
-              <p>
-                Data fiter
-                <span
-                  class="optional"
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Data fiter
+                  <span
+                    class="optional"
+                  >
+                    - optional
+                  </span>
+                </p>
+                <br />
+                <p
+                  class="sublabel"
                 >
-                  - optional
-                </span>
-              </p>
-              <br />
-              <p
-                class="sublabel"
-              >
-                Choose a subset of your data source to focus your data stream and reduce noisy data.
-              </p>
-              <p
-                class="sublabel"
-              >
-                Use the visual editor to create a simple filter, or use the Elasticsearch query DSL to create more advanced filters.
-              </p>
-            </div>
-          </label>
+                  Choose a subset of your data source to focus your data stream and reduce noisy data.
+                </p>
+                <p
+                  class="sublabel"
+                >
+                  Use the visual editor to create a simple filter, or use the Elasticsearch query DSL to create more advanced filters.
+                </p>
+              </div>
+            </label>
+          </div>
           <div
             class="euiFormControlLayout"
           >
@@ -433,25 +420,13 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                    class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
                     focusable="false"
                     height="16"
                     viewBox="0 0 16 16"
                     width="16"
                     xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                  >
-                    <defs>
-                      <path
-                        d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.552.552 0 0 0-.771 0 .53.53 0 0 0 0 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76.552.552 0 0 0-.771 0z"
-                        id="arrow_down-a"
-                      />
-                    </defs>
-                    <use
-                      fill-rule="nonzero"
-                      xlink:href="#arrow_down-a"
-                    />
-                  </svg>
+                  />
                 </span>
               </div>
             </div>
@@ -593,25 +568,27 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
               id="random_id-row"
               title="Detector interval"
             >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel"
-                for="random_id"
-              >
-                <div
-                  style="line-height: 8px;"
+              <div>
+                <label
+                  aria-invalid="false"
+                  class="euiFormLabel"
+                  for="random_id"
                 >
-                  <p>
-                    Detector interval
-                  </p>
-                  <br />
-                  <p
-                    class="sublabel"
+                  <div
+                    style="line-height: 8px;"
                   >
-                    Define how often the detector collects data to generate anomalies. The shorter the interval is, the more real time the detector results will be. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies.
-                  </p>
-                </div>
-              </label>
+                    <p>
+                      Detector interval
+                    </p>
+                    <br />
+                    <p
+                      class="sublabel"
+                    >
+                      Define how often the detector collects data to generate anomalies. The shorter the interval is, the more real time the detector results will be. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies.
+                    </p>
+                  </div>
+                </label>
+              </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
                 id="random_id"
@@ -660,25 +637,27 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           id="random_id-row"
           title="Window delay"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel"
-            for="random_id"
-          >
-            <div
-              style="line-height: 8px;"
+          <div>
+            <label
+              aria-invalid="false"
+              class="euiFormLabel"
+              for="random_id"
             >
-              <p>
-                Window delay
-              </p>
-              <br />
-              <p
-                class="sublabel"
+              <div
+                style="line-height: 8px;"
               >
-                Specify a window of delay for a detector to fetch data, if you need to account for extra processing time.
-              </p>
-            </div>
-          </label>
+                <p>
+                  Window delay
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Specify a window of delay for a detector to fetch data, if you need to account for extra processing time.
+                </p>
+              </div>
+            </label>
+          </div>
           <div
             class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
             id="random_id"

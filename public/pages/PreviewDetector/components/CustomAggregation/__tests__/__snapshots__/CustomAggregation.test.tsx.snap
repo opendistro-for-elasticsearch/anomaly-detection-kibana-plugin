@@ -6,13 +6,15 @@ exports[`<CustomAggregation /> spec renders the component 1`] = `
     class="euiFormRow euiFormRow--fullWidth"
     id="random_id-row"
   >
-    <label
-      aria-invalid="false"
-      class="euiFormLabel"
-      for="random_id"
-    >
-      Expression
-    </label>
+    <div>
+      <label
+        aria-invalid="false"
+        class="euiFormLabel"
+        for="random_id"
+      >
+        Expression
+      </label>
+    </div>
     <div
       class="euiCodeEditorWrapper"
       data-test-subj="codeEditorContainer"
