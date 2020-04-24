@@ -187,8 +187,8 @@ export function DashboardOverview() {
 
   return (
     <Fragment>
-      <EuiFlexGroup justifyContent="flexStart">
-        <EuiFlexItem grow={1}>
+      <EuiFlexGroup justifyContent="flexStart" gutterSize="s">
+        <EuiFlexItem>
           <EuiComboBox
             id="detectorFilter"
             placeholder={ALL_DETECTORS_MESSAGE}
@@ -196,9 +196,10 @@ export function DashboardOverview() {
             onChange={handleDetectorsFilterChange}
             selectedOptions={selectedDetectorsName.map(buildItemOption)}
             isClearable={true}
+            fullWidth
           />
         </EuiFlexItem>
-        <EuiFlexItem grow={1}>
+        <EuiFlexItem>
           <EuiComboBox
             id="detectorStateFilter"
             placeholder={ALL_DETECTOR_STATES_MESSAGE}
@@ -206,9 +207,10 @@ export function DashboardOverview() {
             onChange={handleDetectorStateFilterChange}
             selectedOptions={selectedDetectorStates.map(buildItemOption)}
             isClearable={true}
+            fullWidth
           />
         </EuiFlexItem>
-        <EuiFlexItem grow={2}>
+        <EuiFlexItem>
           <EuiComboBox
             id="indicesFilter"
             placeholder={ALL_INDICES_MESSAGE}
@@ -216,6 +218,7 @@ export function DashboardOverview() {
             onChange={handleIndicesFilterChange}
             selectedOptions={selectedIndices.map(buildItemOption)}
             isClearable={true}
+            fullWidth
           />
         </EuiFlexItem>
       </EuiFlexGroup>

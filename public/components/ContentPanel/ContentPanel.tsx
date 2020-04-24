@@ -38,14 +38,16 @@ type ContentPanelProps = {
   titleContainerStyles?: React.CSSProperties;
   actions?: React.ReactNode | React.ReactNode[];
   children: React.ReactNode | React.ReactNode[];
+  contentPanelClassName?: string;
 };
 
 const ContentPanel = (props: ContentPanelProps) => (
   <EuiPanel
     style={{ paddingLeft: '0px', paddingRight: '0px', ...props.panelStyles }}
+    className={props.contentPanelClassName}
   >
     <EuiFlexGroup
-      style={{ padding: '0px 10px', ...props.titleContainerStyles }}
+      style={{ padding: '0px 20px', ...props.titleContainerStyles }}
       justifyContent="spaceBetween"
       alignItems="center"
     >
@@ -105,7 +107,7 @@ const ContentPanel = (props: ContentPanelProps) => (
         className={props.horizontalRuleClassName}
       />
     )}
-    <div style={{ padding: '0px 10px', ...props.bodyStyles }}>
+    <div style={{ padding: '0px 20px', ...props.bodyStyles }}>
       {props.children}
     </div>
   </EuiPanel>

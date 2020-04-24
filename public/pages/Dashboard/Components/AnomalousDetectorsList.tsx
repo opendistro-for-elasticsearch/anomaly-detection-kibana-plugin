@@ -76,22 +76,24 @@ export const AnomalousDetectorsList = (props: AnomalousDetectorsListProps) => {
   };
 
   return (
-    <ContentPanel title="Detectors and features" titleSize="s">
-      <EuiBasicTable
-        items={getOrderedDetectorsForPage(
-          props.selectedDetectors,
-          indexOfPage,
-          sizeOfPage,
-          sortDirection,
-          fieldForSort
-        )}
-        columns={anomalousDetectorsStaticColumn}
-        tableLayout={'auto'}
-        onChange={handleTableChange}
-        sorting={sorting}
-        pagination={pagination}
-        compressed
-      />
-    </ContentPanel>
+    <div style={{ height: 'auto' }}>
+      <ContentPanel title="Detectors and features" titleSize="s">
+        <EuiBasicTable
+          items={getOrderedDetectorsForPage(
+            props.selectedDetectors,
+            indexOfPage,
+            sizeOfPage,
+            sortDirection,
+            fieldForSort
+          )}
+          columns={anomalousDetectorsStaticColumn}
+          tableLayout={'auto'}
+          onChange={handleTableChange}
+          sorting={sorting}
+          pagination={pagination}
+          compressed
+        />
+      </ContentPanel>
+    </div>
   );
 };
