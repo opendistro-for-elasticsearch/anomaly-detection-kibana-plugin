@@ -48,7 +48,7 @@ export const MAX_DETECTORS = 1000;
 export const MAX_ANOMALIES = 10000;
 
 export enum DETECTOR_STATE {
-  DISABLED = 'Disabled',
+  DISABLED = 'Stopped',
   INIT = 'Initializing',
   RUNNING = 'Running',
   INIT_FAILURE = 'Initialization failure',

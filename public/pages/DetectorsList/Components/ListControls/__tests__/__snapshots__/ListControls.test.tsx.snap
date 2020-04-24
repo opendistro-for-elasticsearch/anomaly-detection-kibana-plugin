@@ -2,7 +2,7 @@
 
 exports[`<ListControls /> spec Empty results renders component with empty message 1`] = `
 <div
-  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+  class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
 >
   <div
     class="euiFlexItem euiFlexItem--flexGrowZero"
