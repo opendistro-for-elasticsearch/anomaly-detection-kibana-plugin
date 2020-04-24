@@ -145,16 +145,27 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
   const prepareVisualizedAnomalies = (
     liveVisualizedAnomalies: object[]
   ): object[] => {
+    // add data point placeholder at every minute,
+    // to ensure chart evenly distrubted
+    const existingPlotTimes = liveVisualizedAnomalies.map(anomaly =>
+      getFloorPlotTime(get(anomaly, AD_DOC_FIELDS.PLOT_TIME, 0))
+    );
     const result = [...liveVisualizedAnomalies];
 
-    // add placeholder data point to make sure chart exists
-    result.push({
-      [AD_DOC_FIELDS.DETECTOR_NAME]: null,
-      [AD_DOC_FIELDS.PLOT_TIME]: getFloorPlotTime(
-        liveTimeRange.startDateTime.valueOf()
-      ),
-      [AD_DOC_FIELDS.ANOMALY_GRADE]: null,
-    });
+    for (
+      let currentTime = getFloorPlotTime(liveTimeRange.startDateTime.valueOf());
+      currentTime <= liveTimeRange.endDateTime.valueOf();
+      currentTime += MIN_IN_MILLI_SECS
+    ) {
+      if (existingPlotTimes.includes(currentTime)) {
+        continue;
+      }
+      result.push({
+        [AD_DOC_FIELDS.DETECTOR_NAME]: null,
+        [AD_DOC_FIELDS.PLOT_TIME]: currentTime,
+        [AD_DOC_FIELDS.ANOMALY_GRADE]: null,
+      });
+    }
 
     return result;
   };
@@ -269,7 +280,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                   size="s"
                   title={`You are viewing ${MAX_LIVE_DETECTORS} detectors with the most recent anomaly occurrences.`}
                   style={{
-                    width: '86%', // ensure width reaches NOW annotation line
+                    width: '88%', // ensure width reaches NOW annotation line
                     marginTop: '20px',
                     marginBottom: '20px',
                   }}
@@ -308,7 +319,6 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                     xDomain={{
                       min: liveTimeRange.startDateTime.valueOf(),
                       max: liveTimeRange.endDateTime.valueOf(),
-                      // minInterval: MIN_IN_MILLI_SECS,
                     }}
                   />
                   <LineAnnotation
