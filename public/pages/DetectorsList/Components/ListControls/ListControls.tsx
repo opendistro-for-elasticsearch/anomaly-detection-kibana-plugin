@@ -39,7 +39,7 @@ interface ListControlsProps {
   onPageClick: (pageNumber: number) => void;
 }
 export const ListControls = (props: ListControlsProps) => (
-  <EuiFlexGroup>
+  <EuiFlexGroup gutterSize="s">
     <EuiFlexItem grow={false} style={{ width: '40%' }}>
       <EuiFieldSearch
         fullWidth={true}

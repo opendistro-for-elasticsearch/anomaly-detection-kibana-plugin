@@ -109,6 +109,7 @@ export const staticColumn = [
     sortable: true,
     dataType: 'string',
     align: 'left',
+    width: '12%',
     truncateText: false,
     render: renderState,
   },
@@ -130,6 +131,7 @@ export const staticColumn = [
     sortable: true,
     dataType: 'number',
     align: 'right',
+    width: '16%',
     truncateText: false,
   },
   {
