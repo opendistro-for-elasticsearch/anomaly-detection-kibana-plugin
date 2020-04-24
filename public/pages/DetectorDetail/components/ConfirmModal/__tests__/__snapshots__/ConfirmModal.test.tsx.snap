@@ -2,7 +2,19 @@
 
 exports[`<ConfirmModal /> spec Confirm Modal renders component with callout 1`] = `
 <div>
-  <div>
+  <div
+    data-focus-guard="true"
+    style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+    tabindex="0"
+  />
+  <div
+    data-focus-guard="true"
+    style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+    tabindex="1"
+  />
+  <div
+    data-focus-lock-disabled="false"
+  >
     <div
       class="euiModal euiModal--maxWidth-default"
       tabindex="0"
@@ -14,17 +26,13 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with callout 1`] 
       >
         <svg
           aria-hidden="true"
-          class="euiIcon euiIcon--medium euiButtonIcon__icon"
+          class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonIcon__icon"
           focusable="false"
           height="16"
           viewBox="0 0 16 16"
           width="16"
           xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M7.293 8L3.146 3.854a.5.5 0 1 1 .708-.708L8 7.293l4.146-4.147a.5.5 0 0 1 .708.708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8z"
-          />
-        </svg>
+        />
       </button>
       <div
         class="euiModal__flex"
@@ -43,22 +51,26 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with callout 1`] 
           style="padding-left: 24px; padding-right: 24px;"
         >
           <div
-            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+            class="euiModalBody__overflow"
           >
             <div
-              class="euiFlexItem euiFlexItem--flexGrowZero"
-            >
-              test callout
-            </div>
-            <div
-              class="euiFlexItem euiFlexItem--flexGrowZero"
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
             >
               <div
-                class="euiText euiText--medium"
+                class="euiFlexItem euiFlexItem--flexGrowZero"
               >
-                <p>
-                  this is a testing description
-                </p>
+                test callout
+              </div>
+              <div
+                class="euiFlexItem euiFlexItem--flexGrowZero"
+              >
+                <div
+                  class="euiText euiText--medium"
+                >
+                  <p>
+                    this is a testing description
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -96,12 +108,29 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with callout 1`] 
       </div>
     </div>
   </div>
+  <div
+    data-focus-guard="true"
+    style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+    tabindex="0"
+  />
 </div>
 `;
 
 exports[`<ConfirmModal /> spec Confirm Modal renders component with empty callout 1`] = `
 <div>
-  <div>
+  <div
+    data-focus-guard="true"
+    style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+    tabindex="0"
+  />
+  <div
+    data-focus-guard="true"
+    style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+    tabindex="1"
+  />
+  <div
+    data-focus-lock-disabled="false"
+  >
     <div
       class="euiModal euiModal--maxWidth-default"
       tabindex="0"
@@ -113,17 +142,13 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with empty callou
       >
         <svg
           aria-hidden="true"
-          class="euiIcon euiIcon--medium euiButtonIcon__icon"
+          class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonIcon__icon"
           focusable="false"
           height="16"
           viewBox="0 0 16 16"
           width="16"
           xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M7.293 8L3.146 3.854a.5.5 0 1 1 .708-.708L8 7.293l4.146-4.147a.5.5 0 0 1 .708.708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8z"
-          />
-        </svg>
+        />
       </button>
       <div
         class="euiModal__flex"
@@ -142,17 +167,21 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with empty callou
           style="padding-left: 24px; padding-right: 24px;"
         >
           <div
-            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+            class="euiModalBody__overflow"
           >
             <div
-              class="euiFlexItem euiFlexItem--flexGrowZero"
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
             >
               <div
-                class="euiText euiText--medium"
+                class="euiFlexItem euiFlexItem--flexGrowZero"
               >
-                <p>
-                  this is a testing description
-                </p>
+                <div
+                  class="euiText euiText--medium"
+                >
+                  <p>
+                    this is a testing description
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -190,5 +219,10 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with empty callou
       </div>
     </div>
   </div>
+  <div
+    data-focus-guard="true"
+    style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+    tabindex="0"
+  />
 </div>
 `;
