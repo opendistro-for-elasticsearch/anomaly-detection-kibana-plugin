@@ -22,8 +22,19 @@ import { EmptyDashboard } from '../Components/EmptyDashboard/EmptyDashboard';
 import { EuiLoadingSpinner } from '@elastic/eui';
 import { DashboardHeader } from '../Components/utils/DashboardHeader';
 import { DashboardOverview } from './DashboardOverview';
+//@ts-ignore
+import chrome from 'ui/chrome';
+import { BREADCRUMBS } from '../../../utils/constants';
 
 export const Dashboard = () => {
+  // Set breadcrumbs on page initialization
+  useEffect(() => {
+    chrome.breadcrumbs.set([
+      BREADCRUMBS.ANOMALY_DETECTOR,
+      BREADCRUMBS.DASHBOARD,
+    ]);
+  }, []);
+
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
