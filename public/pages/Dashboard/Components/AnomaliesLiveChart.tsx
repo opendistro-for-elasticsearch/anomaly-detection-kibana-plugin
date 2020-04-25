@@ -72,7 +72,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
   const dispatch = useDispatch();
 
   const [liveTimeRange, setLiveTimeRange] = useState<LiveTimeRangeState>({
-    startDateTime: moment().subtract(30, 'minutes'),
+    startDateTime: moment().subtract(31, 'minutes'),
     endDateTime: moment(),
   });
 
@@ -121,7 +121,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
       setAnomalousDetectorCount(0);
     }
     setLiveTimeRange({
-      startDateTime: moment().subtract(30, 'minutes'),
+      startDateTime: moment().subtract(31, 'minutes'),
       endDateTime: moment(),
     });
   };
