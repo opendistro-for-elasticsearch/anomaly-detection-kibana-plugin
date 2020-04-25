@@ -73,7 +73,7 @@ export const staticColumn = [
   {
     field: 'indices',
     name: (
-      <EuiToolTip content="The index or index pattern the detector is detecting over">
+      <EuiToolTip content="The index or index pattern used for the detector">
         <span>
           Indices{' '}
           <EuiIcon
@@ -158,7 +158,7 @@ export const staticColumn = [
   {
     field: 'lastUpdateTime',
     name: (
-      <EuiToolTip content="Time of the last detector update">
+      <EuiToolTip content="The time the detector was last updated">
         <span>
           Last updated{' '}
           <EuiIcon
