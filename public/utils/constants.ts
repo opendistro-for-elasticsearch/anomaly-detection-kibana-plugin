@@ -51,6 +51,7 @@ export enum DETECTOR_STATE {
   DISABLED = 'Stopped',
   INIT = 'Initializing',
   RUNNING = 'Running',
+  FEATURE_REQUIRED = 'Feature required',
   INIT_FAILURE = 'Initialization failure',
   UNEXPECTED_FAILURE = 'Unexpected failure',
 }

@@ -137,6 +137,7 @@ describe('<ListControls /> spec', () => {
           name: `detector_name_${index}`,
           indices: [`index_${index}`],
           curState: DETECTOR_STATE.DISABLED,
+          featureAttributes: [`feature_${index}`],
           totalAnomalies: index,
           lastActiveAnomaly: moment('2020-04-15T09:00:00')
             .add(index, 'minutes')
@@ -160,12 +161,7 @@ describe('<ListControls /> spec', () => {
         },
       });
 
-      const {
-        getByText,
-        getAllByTestId,
-        queryByText,
-        getAllByText,
-      } = renderWithRouter({
+      const { getByText, getAllByTestId, queryByText } = renderWithRouter({
         ...initialDetectorsState,
         requesting: true,
       });
@@ -191,13 +187,14 @@ describe('<ListControls /> spec', () => {
       expect(queryByText('index_0')).toBeNull();
 
       // Sort by detector state (enum sorting)
-      userEvent.click(getAllByTestId('tableHeaderSortButton')[2]);
-      await wait();
-      getAllByText(DETECTOR_STATE.DISABLED);
-      expect(queryByText(DETECTOR_STATE.RUNNING)).toBeNull();
+      // NOTE: this is assuming DETECTOR_STATE.RUNNING is higher alphabetically ('running')
+      // than DETECTOR_STATE.DISABLED ('stopped')
       userEvent.click(getAllByTestId('tableHeaderSortButton')[2]);
       await wait();
       expect(queryByText(DETECTOR_STATE.RUNNING)).not.toBeNull();
+      userEvent.click(getAllByTestId('tableHeaderSortButton')[2]);
+      await wait();
+      expect(queryByText(DETECTOR_STATE.RUNNING)).toBeNull();
 
       // Sort by totalAnomalies (numeric sorting)
       userEvent.click(getAllByTestId('tableHeaderSortButton')[3]);
@@ -216,22 +213,22 @@ describe('<ListControls /> spec', () => {
       // Sort by last anomaly occurrence (date sorting)
       userEvent.click(getAllByTestId('tableHeaderSortButton')[4]);
       await wait();
-      getByText('04/15/2020 9:00 am');
-      expect(queryByText('04/15/2020 9:30 am')).toBeNull();
+      getByText('04/15/2020 9:00 AM');
+      expect(queryByText('04/15/2020 9:30 AM')).toBeNull();
       userEvent.click(getAllByTestId('tableHeaderSortButton')[4]);
       await wait();
-      getByText('04/15/2020 9:30 am');
-      expect(queryByText('04/15/2020 9:00 am')).toBeNull();
+      getByText('04/15/2020 9:30 AM');
+      expect(queryByText('04/15/2020 9:00 AM')).toBeNull();
 
       // Sort by last updated (date sorting)
       userEvent.click(getAllByTestId('tableHeaderSortButton')[5]);
       await wait();
-      getByText('04/15/2020 7:00 am');
-      expect(queryByText('04/15/2020 7:30 am')).toBeNull();
+      getByText('04/15/2020 7:00 AM');
+      expect(queryByText('04/15/2020 7:30 AM')).toBeNull();
       userEvent.click(getAllByTestId('tableHeaderSortButton')[5]);
       await wait();
-      getByText('04/15/2020 7:30 am');
-      expect(queryByText('04/15/2020 7:00 am')).toBeNull();
+      getByText('04/15/2020 7:30 AM');
+      expect(queryByText('04/15/2020 7:00 AM')).toBeNull();
     });
     test('should be able to search', async () => {
       const randomDetectors = new Array(40).fill(null).map((_, index) => {
@@ -328,15 +325,15 @@ describe('<ListControls /> spec', () => {
       getByText(randomDetectors[0].indices[0]);
       getByText(randomDetectors[0].curState);
       getByText(randomDetectors[0].totalAnomalies.toString());
-      getByText('10/19/2019 9:00 am');
-      getByText('10/19/2019 7:00 am');
+      getByText('10/19/2019 9:00 AM');
+      getByText('10/19/2019 7:00 AM');
       //Test3 Detector
       getByText(randomDetectors[2].name);
       getByText(randomDetectors[2].indices[0]);
       getByText(randomDetectors[2].curState);
       getByText(randomDetectors[2].totalAnomalies.toString());
-      getByText('10/19/2019 9:30 am');
-      getByText('10/19/2019 7:30 am');
+      getByText('10/19/2019 9:30 AM');
+      getByText('10/19/2019 7:30 AM');
     });
   });
 });

@@ -356,7 +356,6 @@ const getDetectors = async (
           description: get(detector, '_source.description', ''),
           indices: get(detector, '_source.indices', []),
           lastUpdateTime: get(detector, '_source.last_update_time', 0),
-          // TODO: get the state of the detector once possible (enabled/disabled for now)
           ...convertDetectorKeysToCamelCase(get(detector, '_source', {})),
         },
       }),
@@ -445,8 +444,8 @@ const getDetectors = async (
       detectorState.state = DETECTOR_STATE[detectorState.state];
     });
 
-    // check if there was any failures
-    detectorStates.forEach(detectorState => {
+    // check if there was any failures / detectors that are unable to start
+    detectorStates.forEach((detectorState, i) => {
       /*
         If the error starts with 'Stopped detector', then an EndRunException was thrown.
         All EndRunExceptions are related to initialization failures except for the
@@ -460,6 +459,16 @@ const getDetectors = async (
         detectorState.state = detectorState.error.includes('We might have bugs')
           ? DETECTOR_STATE.UNEXPECTED_FAILURE
           : DETECTOR_STATE.INIT_FAILURE;
+      }
+
+      /*
+        If a detector has no features, set to a feature required state
+      */
+      if (
+        detectorState.state === DETECTOR_STATE.DISABLED &&
+        finalDetectors[i].featureAttributes.length === 0
+      ) {
+        detectorState.state = DETECTOR_STATE.FEATURE_REQUIRED;
       }
     });
 

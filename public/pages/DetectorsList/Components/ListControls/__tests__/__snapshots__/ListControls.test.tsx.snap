@@ -47,17 +47,17 @@ exports[`<ListControls /> spec Empty results renders component with empty messag
     <div
       aria-expanded="false"
       aria-haspopup="listbox"
-      class="euiComboBox"
+      class="euiComboBox euiComboBox--fullWidth"
       role="combobox"
     >
       <div
-        class="euiFormControlLayout"
+        class="euiFormControlLayout euiFormControlLayout--fullWidth"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <div
-            class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+            class="euiComboBox__inputWrap euiComboBox__inputWrap--fullWidth euiComboBox__inputWrap-isClearable"
             data-test-subj="comboBoxInput"
             tabindex="-1"
           >
@@ -112,17 +112,17 @@ exports[`<ListControls /> spec Empty results renders component with empty messag
     <div
       aria-expanded="false"
       aria-haspopup="listbox"
-      class="euiComboBox"
+      class="euiComboBox euiComboBox--fullWidth"
       role="combobox"
     >
       <div
-        class="euiFormControlLayout"
+        class="euiFormControlLayout euiFormControlLayout--fullWidth"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <div
-            class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+            class="euiComboBox__inputWrap euiComboBox__inputWrap--fullWidth euiComboBox__inputWrap-isClearable"
             data-test-subj="comboBoxInput"
             tabindex="-1"
           >
