@@ -161,7 +161,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
         continue;
       }
       result.push({
-        [AD_DOC_FIELDS.DETECTOR_NAME]: null,
+        [AD_DOC_FIELDS.DETECTOR_NAME]: !isEmpty(liveAnomalyData) ? '' : null,
         [AD_DOC_FIELDS.PLOT_TIME]: currentTime,
         [AD_DOC_FIELDS.ANOMALY_GRADE]: null,
       });
@@ -303,7 +303,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
               ) : null,
               <div
                 style={{
-                  height: '200px',
+                  height: isFullScreen ? '400px' : '200px',
                   width: '100%',
                   opacity: 1,
                 }}
@@ -337,10 +337,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                     domain={{ min: 0, max: 1 }}
                   />
                   <BarSeries
-                    // `id` for placeholder data point introduced by `prepareVisualizedAnomalies` shows as legend,
-                    // When there exists anomalies with anomaly grade > 0
-                    // we make `id` to blank string to hide the legend of placeholder data point
-                    id={!isEmpty(liveAnomalyData) ? '' : ' '}
+                    id={'Detector Anomaly grade'}
                     xScaleType={ScaleType.Time}
                     timeZone="local"
                     yScaleType="linear"

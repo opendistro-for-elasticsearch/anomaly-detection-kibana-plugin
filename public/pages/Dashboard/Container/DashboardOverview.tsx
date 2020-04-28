@@ -23,7 +23,6 @@ import { DetectorListItem } from '../../../models/interfaces';
 import { getIndices, getAliases } from '../../../redux/reducers/elasticsearch';
 import { getDetectorList } from '../../../redux/reducers/ad';
 import {
-  EuiButton,
   EuiFlexGroup,
   EuiFlexItem,
   EuiComboBox,
@@ -40,11 +39,7 @@ import {
 import { AppState } from '../../../redux/reducers';
 import { CatIndex, IndexAlias } from '../../../../server/models/types';
 import { getVisibleOptions } from '../../utils/helpers';
-import {
-  DETECTOR_STATE,
-  PLUGIN_NAME,
-  APP_PATH,
-} from '../../../utils/constants';
+import { DETECTOR_STATE } from '../../../utils/constants';
 import { getDetectorStateOptions } from '../../DetectorsList/utils/helpers';
 
 export function DashboardOverview() {
