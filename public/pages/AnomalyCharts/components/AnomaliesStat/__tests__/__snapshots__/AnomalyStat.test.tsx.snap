@@ -1,0 +1,269 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AlertsStat /> spec Alert Stat renders component with monitor and loading 1`] = `
+<div>
+  <div
+    class="euiStat euiStat--leftAligned"
+  >
+    <div
+      class="euiText euiText--small euiStat__description"
+    >
+      <p>
+        Alert
+         
+        <button
+          class="euiLink euiLink--primary"
+          style="font-size: 12px;"
+          type="button"
+        >
+          Info
+        </button>
+      </p>
+    </div>
+    <div
+      class="euiTitle euiTitle--small euiStat__title"
+      style="display: inline;"
+    >
+      <p
+        class="euiTitle euiTitle--small euiStat__title"
+        style="display: inline;"
+      >
+        -
+         
+      </p>
+      <a
+        class="euiLink euiLink--primary"
+        href="/1d42b75b-3f59-550a-a"
+        rel="noopener noreferrer"
+        style="font-size: 14px;"
+        target="_blank"
+      >
+        View monitor 
+        <svg
+          class="euiIcon euiIcon--medium euiIcon-isLoading"
+          focusable="false"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        />
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AlertsStat /> spec Alert Stat renders component with monitor and not loading 1`] = `
+<div>
+  <div
+    class="euiStat euiStat--leftAligned"
+  >
+    <div
+      class="euiText euiText--small euiStat__description"
+    >
+      <p>
+        Alert
+         
+        <button
+          class="euiLink euiLink--primary"
+          style="font-size: 12px;"
+          type="button"
+        >
+          Info
+        </button>
+      </p>
+    </div>
+    <div
+      class="euiTitle euiTitle--small euiStat__title"
+      style="display: inline;"
+    >
+      <p
+        class="euiTitle euiTitle--small euiStat__title"
+        style="display: inline;"
+      >
+        9
+         
+      </p>
+      <a
+        class="euiLink euiLink--primary"
+        href="/899c56c6-99d0-539b-8"
+        rel="noopener noreferrer"
+        style="font-size: 14px;"
+        target="_blank"
+      >
+        View monitor 
+        <svg
+          class="euiIcon euiIcon--medium euiIcon-isLoading"
+          focusable="false"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        />
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AlertsStat /> spec Alert Stat renders component with undefined monitor and loading 1`] = `
+<div>
+  <div
+    class="euiStat euiStat--leftAligned"
+  >
+    <div
+      class="euiText euiText--small euiStat__description"
+    >
+      <p>
+        Alert
+         
+        <button
+          class="euiLink euiLink--primary"
+          style="font-size: 12px;"
+          type="button"
+        >
+          Info
+        </button>
+      </p>
+    </div>
+    <div
+      class="euiTitle euiTitle--small euiStat__title"
+      style="display: inline;"
+    >
+      <p
+        class="euiTitle euiTitle--small euiStat__title"
+        style="display: inline;"
+      >
+        -
+         
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AlertsStat /> spec Alert Stat renders component with undefined monitor and not loading 1`] = `
+<div>
+  <div
+    class="euiStat euiStat--leftAligned"
+  >
+    <div
+      class="euiText euiText--small euiStat__description"
+    >
+      <p>
+        Alert
+         
+        <button
+          class="euiLink euiLink--primary"
+          style="font-size: 12px;"
+          type="button"
+        >
+          Info
+        </button>
+      </p>
+    </div>
+    <div
+      class="euiTitle euiTitle--small euiStat__title"
+      style="display: inline;"
+    >
+      <p
+        class="euiTitle euiTitle--small euiStat__title"
+        style="display: inline;"
+      >
+        9
+         
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AnomalyStat /> spec Anomaly Stat renders component without tooltip 1`] = `
+<div>
+  <div
+    class="euiStat euiStat--leftAligned"
+  >
+    <div
+      class="euiText euiText--small euiStat__description"
+    >
+      test description
+    </div>
+    <div
+      class="euiTitle euiTitle--small euiStat__title"
+      style="display: inline;"
+    >
+      test title
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AnomalyStatWithTooltip /> spec Anomaly Stat with tooltip renders component with tooltip and loading 1`] = `
+<div>
+  <div
+    class="euiStat euiStat--leftAligned"
+  >
+    <div
+      class="euiText euiText--small euiStat__description"
+    >
+      <p>
+        test description
+         
+        <span
+          class="euiToolTipAnchor"
+        >
+          <svg
+            class="euiIcon euiIcon--medium euiIcon-isLoading"
+            focusable="false"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          />
+        </span>
+      </p>
+    </div>
+    <div
+      class="euiTitle euiTitle--small euiStat__title"
+      style="display: inline;"
+    >
+      -
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AnomalyStatWithTooltip /> spec Anomaly Stat with tooltip renders component with tooltip and not loading 1`] = `
+<div>
+  <div
+    class="euiStat euiStat--leftAligned"
+  >
+    <div
+      class="euiText euiText--small euiStat__description"
+    >
+      <p>
+        test description
+         
+        <span
+          class="euiToolTipAnchor"
+        >
+          <svg
+            class="euiIcon euiIcon--medium euiIcon-isLoading"
+            focusable="false"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          />
+        </span>
+      </p>
+    </div>
+    <div
+      class="euiTitle euiTitle--small euiStat__title"
+      style="display: inline;"
+    >
+      0.50-0.90
+    </div>
+  </div>
+</div>
+`;
