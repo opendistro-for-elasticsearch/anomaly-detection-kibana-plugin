@@ -14,7 +14,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
         class="euiFlexItem"
       >
         <h3
-          class="euiTitle euiTitle--small content-panel-title"
+          class="euiTitle euiTitle--small"
         >
           Name and description
         </h3>

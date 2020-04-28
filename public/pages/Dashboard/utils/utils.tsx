@@ -436,7 +436,7 @@ export const buildGetAnomalyResultQueryByRange = (
   timeRange: string,
   from: number,
   size: number,
-  threadhold: number
+  threshold: number
 ) => {
   return {
     index: `${ANOMALY_RESULT_INDEX}*`,
@@ -448,7 +448,7 @@ export const buildGetAnomalyResultQueryByRange = (
           {
             range: {
               [AD_DOC_FIELDS.ANOMALY_GRADE]: {
-                gt: threadhold,
+                gt: threshold,
               },
             },
           },
@@ -480,7 +480,7 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
   selectedDetectors: DetectorListItem[],
   timeRange: string,
   dispatch: Dispatch<any>,
-  threadhold: number,
+  threshold: number,
   anomalySize: number,
   detectorNum: number
 ): Promise<object[]> => {
@@ -495,7 +495,7 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
           timeRange,
           from,
           anomalySize,
-          threadhold
+          threshold
         )
       )
     );
@@ -539,7 +539,7 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
     SORT_DIRECTION.DESC
   );
 
-  const latestDetetorIds = selectLatestDetetorIds(
+  const latestDetetorIds = selectLatestDetectorIds(
     orderedLiveAnomalyData,
     detectorNum
   );
@@ -562,7 +562,7 @@ const buildDetectorAndIdMap = (
   return detectorAndIdMap;
 };
 
-const selectLatestDetetorIds = (
+const selectLatestDetectorIds = (
   orderedAnomalyData: object[],
   neededDetectorNum: number
 ): Set<string> => {
@@ -571,16 +571,6 @@ const selectLatestDetetorIds = (
       get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
     )
   );
-  if (uniqueIds.size <= neededDetectorNum) {
-    return uniqueIds;
-  }
-  const latestDetectorIds = new Set<string>();
-  for (let anomalyData of orderedAnomalyData) {
-    const detectorId = get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '');
-    latestDetectorIds.add(detectorId);
-    if (latestDetectorIds.size === neededDetectorNum) {
-      return latestDetectorIds;
-    }
-  }
-  return latestDetectorIds;
+
+  return new Set(Array.from(uniqueIds).slice(0, neededDetectorNum));
 };

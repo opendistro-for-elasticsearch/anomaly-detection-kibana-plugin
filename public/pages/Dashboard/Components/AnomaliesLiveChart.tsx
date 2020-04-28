@@ -191,7 +191,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
   return (
     <ContentPanel
       title={
-        <EuiTitle size="s" className="content-panel-title">
+        <EuiTitle size="s">
           <h3>
             Live anomalies{' '}
             <EuiBadge color={hasLatestAnomalyData ? '#DB1374' : '#DDD'}>
@@ -206,7 +206,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
             <p>
               {'Live anomaly results across detectors for the last 30 minutes. ' +
                 'The results refresh every 1 minute. ' +
-                'For each detector, if an anomaly occurence is detected at the end of the detector interval, ' +
+                'For each detector, if an anomaly occurrence is detected at the end of the detector interval, ' +
                 'you will see a bar representing its anomaly grade.'}
             </p>
           </EuiText>
@@ -238,13 +238,12 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
         // show below content as long as there exists anomaly data,
         // regardless of whether anomaly grade is 0 or larger.
         [
-          <EuiFlexGroup style={{ marginTop: '0px' }}>
+          <EuiFlexGroup>
             <EuiFlexItem>
               <EuiStat
                 description={'Last updated time'}
                 title={liveTimeRange.endDateTime.format('MM/DD/YYYY hh:mm A')}
                 titleSize="s"
-                style={{ color: '#000' }}
               />
             </EuiFlexItem>
             <EuiFlexItem>
@@ -256,7 +255,6 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                     : get(lastAnomalyResult, AD_DOC_FIELDS.DETECTOR_NAME, '')
                 }
                 titleSize="s"
-                style={{ color: '#000' }}
               />
             </EuiFlexItem>
             <EuiFlexItem>
@@ -268,7 +266,6 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                     : get(lastAnomalyResult, AD_DOC_FIELDS.ANOMALY_GRADE, 0)
                 }
                 titleSize="s"
-                style={{ color: '#000' }}
               />
             </EuiFlexItem>
           </EuiFlexGroup>,
@@ -286,9 +283,9 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                   }}
                 >
                   <p>
-                    10 detectors with the most recent anomalies are shown on the
+                    {`${MAX_LIVE_DETECTORS} detectors with the most recent anomalies are shown on the
                     chart. Adjust filters if there are specific detectors you
-                    would like to monitor.
+                    would like to monitor.`}
                   </p>
                 </EuiCallOut>
               ) : anomalousDetectorCount === 0 ? (

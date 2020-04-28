@@ -146,14 +146,13 @@ export const AnomaliesDistributionChart = (
         />
       }
     >
-      <EuiFlexGroup style={{ marginTop: '0px' }}>
+      <EuiFlexGroup>
         <EuiFlexItem>
           <EuiStat
             description={'Indices with anomalies'}
             title={indicesNumber}
             isLoading={anomalyResultsLoading}
             titleSize="s"
-            style={{ color: '#000' }}
           />
         </EuiFlexItem>
         <EuiFlexItem>
@@ -162,7 +161,6 @@ export const AnomaliesDistributionChart = (
             title={finalDetectors.length}
             isLoading={anomalyResultsLoading}
             titleSize="s"
-            style={{ color: '#000' }}
           />
         </EuiFlexItem>
       </EuiFlexGroup>
