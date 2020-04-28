@@ -27,14 +27,13 @@ import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
 
 interface NoFeaturePromptProps {
   detectorId: string;
-  title?: string;
 }
 
 export const NoFeaturePrompt = (props: NoFeaturePromptProps) => {
   return (
     <React.Fragment>
       <ContentPanel
-        title={props.title ? props.title : ''}
+        title=''
         titleSize="xs"
         titleClassName="preview-title"
       >

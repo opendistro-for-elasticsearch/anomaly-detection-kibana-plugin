@@ -147,7 +147,7 @@ export const disabledHistoryAnnotations = (
   dateRange: DateRange,
   detector?: Detector
 ) => {
-  if (!detector) {
+  if (!detector || detector.disabledTime) {
     return [];
   }
   const startTime = detector.disabledTime;
@@ -176,5 +176,4 @@ export const disabledHistoryAnnotations = (
       },
     ];
   }
-  return [];
 };

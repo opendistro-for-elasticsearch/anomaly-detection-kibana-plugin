@@ -97,7 +97,7 @@ export const FeatureChart = (props: FeatureChartProps) => {
             </EuiLink>
           </span>
           <span className="content-panel-subTitle">
-            State: {props.feature.featureEnabled ? 'Enabled' : 'Disabled'}{' '}
+            State: {props.feature.featureEnabled ? 'Enabled' : 'Disabled'}
           </span>
         </Fragment>
       )}
