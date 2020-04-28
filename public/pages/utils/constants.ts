@@ -18,7 +18,7 @@ import { DETECTOR_STATE } from '../../utils/constants';
 
 export enum DETECTOR_STATE_COLOR {
   DISABLED = 'subdued',
-  INIT = '#0000cc',
+  INIT = 'primary',
   RUNNING = 'success',
   FEATURE_REQUIRED = 'subdued',
   INIT_FAILURE = 'danger',
