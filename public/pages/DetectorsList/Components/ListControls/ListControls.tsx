@@ -62,6 +62,7 @@ export const ListControls = (props: ListControlsProps) => (
             ? props.selectedDetectorStates.map(index => ({ label: index }))
             : []
         }
+        fullWidth={true}
       />
     </EuiFlexItem>
     <EuiFlexItem>
@@ -78,6 +79,7 @@ export const ListControls = (props: ListControlsProps) => (
             ? props.selectedIndices.map(index => ({ label: index }))
             : []
         }
+        fullWidth={true}
       />
     </EuiFlexItem>
     {props.pageCount > 1 ? (

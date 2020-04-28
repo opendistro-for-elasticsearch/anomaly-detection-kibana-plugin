@@ -18,7 +18,7 @@ import { EuiIcon, EuiLink, EuiToolTip, EuiHealth } from '@elastic/eui';
 import moment from 'moment';
 import get from 'lodash/get';
 import React from 'react';
-import { Detector } from '../../../../server/models/types';
+import { Detector } from '../../../models/interfaces';
 import { PLUGIN_NAME, DETECTOR_STATE } from '../../../utils/constants';
 import { stateToColorMap } from '../../utils/constants';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
@@ -29,7 +29,7 @@ const hintColor = darkModeEnabled() ? '#98A2B3' : '#535966';
 const renderTime = (time: number) => {
   const momentTime = moment(time);
   if (time && momentTime.isValid())
-    return momentTime.format('MM/DD/YYYY h:mm a');
+    return momentTime.format('MM/DD/YYYY h:mm A');
   return DEFAULT_EMPTY_DATA;
 };
 
@@ -64,6 +64,7 @@ export const staticColumn = [
     truncateText: true,
     textOnly: true,
     align: 'left',
+    width: '15%',
     render: (name: string, detector: Detector) => (
       <EuiLink href={`${PLUGIN_NAME}#/detectors/${detector.id}`}>
         {name}
@@ -89,6 +90,7 @@ export const staticColumn = [
     truncateText: true,
     textOnly: true,
     align: 'left',
+    width: '15%',
     render: renderIndices,
   },
   {
@@ -153,6 +155,7 @@ export const staticColumn = [
     dataType: 'date',
     truncateText: false,
     align: 'left',
+    width: '16%',
     render: renderTime,
   },
   {
@@ -174,6 +177,7 @@ export const staticColumn = [
     dataType: 'date',
     truncateText: false,
     align: 'left',
+    width: '16%',
     render: renderTime,
   },
 ];

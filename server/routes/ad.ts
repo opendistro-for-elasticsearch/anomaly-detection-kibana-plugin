@@ -36,8 +36,8 @@ import {
   convertDetectorKeysToCamelCase,
   convertDetectorKeysToSnakeCase,
   getResultAggregationQuery,
+  getFinalDetectorStates,
 } from './utils/adHelpers';
-import { DETECTOR_STATE } from '../../public/utils/constants';
 
 type PutDetectorParams = {
   detectorId: string;
@@ -356,7 +356,6 @@ const getDetectors = async (
           description: get(detector, '_source.description', ''),
           indices: get(detector, '_source.indices', []),
           lastUpdateTime: get(detector, '_source.last_update_time', 0),
-          // TODO: get the state of the detector once possible (enabled/disabled for now)
           ...convertDetectorKeysToCamelCase(get(detector, '_source', {})),
         },
       }),
@@ -439,33 +438,14 @@ const getDetectors = async (
         );
       }
     });
-    const detectorStates = await Promise.all(detectorStatePromises);
-    detectorStates.forEach(detectorState => {
-      //@ts-ignore
-      detectorState.state = DETECTOR_STATE[detectorState.state];
-    });
-
-    // check if there was any failures
-    detectorStates.forEach(detectorState => {
-      /*
-        If the error starts with 'Stopped detector', then an EndRunException was thrown.
-        All EndRunExceptions are related to initialization failures except for the
-        unknown prediction error which contains the message "We might have bugs".
-      */
-      if (
-        detectorState.state === DETECTOR_STATE.DISABLED &&
-        detectorState.error !== undefined &&
-        detectorState.error.includes('Stopped detector')
-      ) {
-        detectorState.state = detectorState.error.includes('We might have bugs')
-          ? DETECTOR_STATE.UNEXPECTED_FAILURE
-          : DETECTOR_STATE.INIT_FAILURE;
-      }
-    });
-
+    const detectorStateResponses = await Promise.all(detectorStatePromises);
+    const finalDetectorStates = getFinalDetectorStates(
+      detectorStateResponses,
+      finalDetectors
+    );
     // update the final detectors to include the detector state
     finalDetectors.forEach((detector, i) => {
-      detector.curState = detectorStates[i].state;
+      detector.curState = finalDetectorStates[i].state;
     });
 
     return {
