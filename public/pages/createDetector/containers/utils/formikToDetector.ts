@@ -21,6 +21,7 @@ import {
 } from '../../../../models/interfaces';
 import { ADFormikValues } from '../models/interfaces';
 import { OPERATORS_QUERY_MAP } from './whereFilters';
+import { get } from 'lodash';
 
 export function formikToDetector(
   values: ADFormikValues,
@@ -38,7 +39,8 @@ export function formikToDetector(
     }
   }
   const indices = formikToIndices(values.index);
-  const uiMetaData = formikToUIMetadata(values);
+  const uiMetaData = formikToUIMetadata(values, detector);
+
   let apiRequest = {
     ...detector,
     name: values.detectorName,
@@ -60,11 +62,14 @@ export function formikToDetector(
   return apiRequest;
 }
 
-export const formikToUIMetadata = (values: ADFormikValues) => {
+export const formikToUIMetadata = (
+  values: ADFormikValues,
+  detector: Detector
+) => {
   return {
     filterType: values.filterType,
     filters: formikFiltersToUiMetadata(values.filters),
-    features: {},
+    features: get(detector, 'uiMetadata.features', {}),
   };
 };
 

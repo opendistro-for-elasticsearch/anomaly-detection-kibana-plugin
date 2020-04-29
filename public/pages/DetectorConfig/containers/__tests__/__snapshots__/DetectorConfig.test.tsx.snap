@@ -1,0 +1,1399 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DetectorConfig /> spec renders the component 1`] = `
+<div>
+  <div
+    class="euiPage"
+  >
+    <div
+      class="euiPageBody"
+    >
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiPanel euiPanel--paddingMedium"
+        style="padding-left: 0px; padding-right: 0px; left: 10px; width: 1120px;"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="padding: 0px 10px;"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <h3
+              class="euiTitle euiTitle--small content-panel-title"
+            >
+              Detector configuration
+            </h3>
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              />
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <button
+                  class="euiButton euiButton--primary"
+                  type="button"
+                >
+                  <span
+                    class="euiButton__content"
+                  >
+                    <span
+                      class="euiButton__text"
+                    >
+                      Edit
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr
+          class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+        />
+        <div
+          style="padding: 0px 10px;"
+        >
+          <div
+            class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Name
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    niihduhifi
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Data source index
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    logstash-*
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Detector interval
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    6 MINUTES
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Last Updated
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    Mon Apr 13 2020 17:13:38 GMT-0700 (Pacific Daylight Time)
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    ID
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Window delay
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    5 MINUTES
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Description
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    Gegni fe sokvuhi luwegja evumemu dajnidu dangap id baj vejmil linsumi leem.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Data filter
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    -
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiPanel euiPanel--paddingMedium"
+        style="padding-left: 0px; padding-right: 0px; left: 10px; width: 1120px;"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="padding: 0px 10px;"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <h3
+              class="euiTitle euiTitle--small content-panel-title"
+            >
+              Features (2)
+            </h3>
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <p>
+                  Specify index fields that you want to find anomalies for by defining features. A detector can discover anomalies across up to 5 features. Once you define the features, you can preview your anomalies from a sample feature output.
+                   
+                  <a
+                    class="euiLink euiLink--primary"
+                    href="https://github.com/opendistro-for-elasticsearch/anomaly-detection"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more  
+                    <svg
+                      class="euiIcon euiIcon--small euiIcon-isLoading"
+                      focusable="false"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    />
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <button
+                  class="euiButton euiButton--primary"
+                  type="button"
+                >
+                  <span
+                    class="euiButton__content"
+                  >
+                    <span
+                      class="euiButton__text"
+                    >
+                      Edit
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr
+          class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+        />
+        <div
+          style="padding: 0px 10px;"
+        >
+          <div
+            class="euiBasicTable"
+          >
+            <div>
+              <div
+                class="euiTableHeaderMobile"
+              >
+                <div
+                  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsBaseline euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow"
+                >
+                  <div
+                    class="euiFlexItem euiFlexItem--flexGrowZero"
+                  />
+                  <div
+                    class="euiFlexItem euiFlexItem--flexGrowZero"
+                  >
+                    <div
+                      class="euiTableSortMobile"
+                    >
+                      <div
+                        class="euiPopover euiPopover--anchorDownRight"
+                        id="sortPopover"
+                      >
+                        <div
+                          class="euiPopover__anchor"
+                        >
+                          <button
+                            class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiButtonEmpty--iconRight euiButtonEmpty--flushRight"
+                            type="button"
+                          >
+                            <span
+                              class="euiButtonEmpty__content"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonEmpty__icon"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              />
+                              <span
+                                class="euiButtonEmpty__text"
+                              >
+                                Sorting
+                              </span>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <table
+                class="euiTable euiTable--responsive"
+              >
+                <caption
+                  aria-live="polite"
+                  aria-relevant="text"
+                  class="euiScreenReaderOnly"
+                  role="status"
+                />
+                <thead>
+                  <tr>
+                    <th
+                      aria-live="polite"
+                      aria-sort="descending"
+                      class="euiTableHeaderCell"
+                      data-test-subj="tableHeaderCell_name_0"
+                      role="columnheader"
+                      scope="col"
+                    >
+                      <button
+                        class="euiTableHeaderButton euiTableHeaderButton-isSorted"
+                        data-test-subj="tableHeaderSortButton"
+                        type="button"
+                      >
+                        <span
+                          class="euiTableCellContent"
+                        >
+                          <span
+                            class="euiTableCellContent__text"
+                          >
+                            Feature name
+                          </span>
+                          <svg
+                            aria-label="Sorted in descending order"
+                            class="euiIcon euiIcon--medium euiIcon-isLoading euiTableSortIcon"
+                            focusable="false"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          />
+                          <span
+                            class="euiScreenReaderOnly"
+                          >
+                            Click to sort in ascending order
+                          </span>
+                        </span>
+                      </button>
+                    </th>
+                    <th
+                      class="euiTableHeaderCell"
+                      data-test-subj="tableHeaderCell_definition_1"
+                      role="columnheader"
+                      scope="col"
+                    >
+                      <div
+                        class="euiTableCellContent"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          Feature definition
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      class="euiTableHeaderCell"
+                      data-test-subj="tableHeaderCell_state_2"
+                      role="columnheader"
+                      scope="col"
+                    >
+                      <div
+                        class="euiTableCellContent"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          State
+                        </span>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="euiTableRow"
+                  >
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        Feature name
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          SR
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        Feature definition
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          <div>
+                            <p>
+                              Field: 
+                              SR
+                            </p>
+                            <p>
+                              Aggregation method: 
+                              min
+                            </p>
+                          </div>
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        State
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          Disabled
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="euiTableRow"
+                  >
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        Feature name
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          HN
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        Feature definition
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          <div>
+                            <p>
+                              Field: 
+                              HN
+                            </p>
+                            <p>
+                              Aggregation method: 
+                              max
+                            </p>
+                          </div>
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        State
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          Disabled
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simple features 1`] = `
+<div>
+  <div
+    class="euiPage"
+  >
+    <div
+      class="euiPageBody"
+    >
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiPanel euiPanel--paddingMedium"
+        style="padding-left: 0px; padding-right: 0px; left: 10px; width: 1120px;"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="padding: 0px 10px;"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <h3
+              class="euiTitle euiTitle--small content-panel-title"
+            >
+              Detector configuration
+            </h3>
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              />
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <button
+                  class="euiButton euiButton--primary"
+                  type="button"
+                >
+                  <span
+                    class="euiButton__content"
+                  >
+                    <span
+                      class="euiButton__text"
+                    >
+                      Edit
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr
+          class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+        />
+        <div
+          style="padding: 0px 10px;"
+        >
+          <div
+            class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Name
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    vibivubuko
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Data source index
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    logstash-*
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Detector interval
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    5 MINUTES
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Last Updated
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    Mon Apr 13 2020 17:13:38 GMT-0700 (Pacific Daylight Time)
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    ID
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    b480ad31-134b-5f8b-9
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Window delay
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    1 MINUTES
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Description
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    Cuzolale omuranot barpul ete wal zuclujzor ponopzel opo cosmicbov zezido viwwojci akgime.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="random_id-row"
+                style="width: 250px;"
+              >
+                <div>
+                  <label
+                    class="euiFormLabel"
+                    for="random_id"
+                  >
+                    Data filter
+                  </label>
+                </div>
+                <div
+                  class="euiText euiText--medium"
+                >
+                  <p
+                    class="enabled"
+                  >
+                    -
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiPanel euiPanel--paddingMedium"
+        style="padding-left: 0px; padding-right: 0px; left: 10px; width: 1120px;"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="padding: 0px 10px;"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <h3
+              class="euiTitle euiTitle--small content-panel-title"
+            >
+              Features (3)
+            </h3>
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <p>
+                  Specify index fields that you want to find anomalies for by defining features. A detector can discover anomalies across up to 5 features. Once you define the features, you can preview your anomalies from a sample feature output.
+                   
+                  <a
+                    class="euiLink euiLink--primary"
+                    href="https://github.com/opendistro-for-elasticsearch/anomaly-detection"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more  
+                    <svg
+                      class="euiIcon euiIcon--small euiIcon-isLoading"
+                      focusable="false"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    />
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <button
+                  class="euiButton euiButton--primary"
+                  type="button"
+                >
+                  <span
+                    class="euiButton__content"
+                  >
+                    <span
+                      class="euiButton__text"
+                    >
+                      Edit
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr
+          class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+        />
+        <div
+          style="padding: 0px 10px;"
+        >
+          <div
+            class="euiBasicTable"
+          >
+            <div>
+              <div
+                class="euiTableHeaderMobile"
+              >
+                <div
+                  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsBaseline euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow"
+                >
+                  <div
+                    class="euiFlexItem euiFlexItem--flexGrowZero"
+                  />
+                  <div
+                    class="euiFlexItem euiFlexItem--flexGrowZero"
+                  >
+                    <div
+                      class="euiTableSortMobile"
+                    >
+                      <div
+                        class="euiPopover euiPopover--anchorDownRight"
+                        id="sortPopover"
+                      >
+                        <div
+                          class="euiPopover__anchor"
+                        >
+                          <button
+                            class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiButtonEmpty--iconRight euiButtonEmpty--flushRight"
+                            type="button"
+                          >
+                            <span
+                              class="euiButtonEmpty__content"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonEmpty__icon"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              />
+                              <span
+                                class="euiButtonEmpty__text"
+                              >
+                                Sorting
+                              </span>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <table
+                class="euiTable euiTable--responsive"
+              >
+                <caption
+                  aria-live="polite"
+                  aria-relevant="text"
+                  class="euiScreenReaderOnly"
+                  role="status"
+                />
+                <thead>
+                  <tr>
+                    <th
+                      aria-live="polite"
+                      aria-sort="descending"
+                      class="euiTableHeaderCell"
+                      data-test-subj="tableHeaderCell_name_0"
+                      role="columnheader"
+                      scope="col"
+                    >
+                      <button
+                        class="euiTableHeaderButton euiTableHeaderButton-isSorted"
+                        data-test-subj="tableHeaderSortButton"
+                        type="button"
+                      >
+                        <span
+                          class="euiTableCellContent"
+                        >
+                          <span
+                            class="euiTableCellContent__text"
+                          >
+                            Feature name
+                          </span>
+                          <svg
+                            aria-label="Sorted in descending order"
+                            class="euiIcon euiIcon--medium euiIcon-isLoading euiTableSortIcon"
+                            focusable="false"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          />
+                          <span
+                            class="euiScreenReaderOnly"
+                          >
+                            Click to sort in ascending order
+                          </span>
+                        </span>
+                      </button>
+                    </th>
+                    <th
+                      class="euiTableHeaderCell"
+                      data-test-subj="tableHeaderCell_definition_1"
+                      role="columnheader"
+                      scope="col"
+                    >
+                      <div
+                        class="euiTableCellContent"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          Feature definition
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      class="euiTableHeaderCell"
+                      data-test-subj="tableHeaderCell_state_2"
+                      role="columnheader"
+                      scope="col"
+                    >
+                      <div
+                        class="euiTableCellContent"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          State
+                        </span>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="euiTableRow"
+                  >
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        Feature name
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          value2
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        Feature definition
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          <div>
+                            <p>
+                              Custom expression:
+                               
+                              <button
+                                class="euiLink euiLink--primary"
+                                data-test-subj="viewFeature-1"
+                                type="button"
+                              >
+                                View code
+                              </button>
+                            </p>
+                          </div>
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        State
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          Enabled
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="euiTableRow"
+                  >
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        Feature name
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          value
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        Feature definition
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          <div>
+                            <p>
+                              Custom expression:
+                               
+                              <button
+                                class="euiLink euiLink--primary"
+                                data-test-subj="viewFeature-2"
+                                type="button"
+                              >
+                                View code
+                              </button>
+                            </p>
+                          </div>
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        State
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          Disabled
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="euiTableRow"
+                  >
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        Feature name
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          value
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        Feature definition
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          <div>
+                            <p>
+                              Custom expression:
+                               
+                              <button
+                                class="euiLink euiLink--primary"
+                                data-test-subj="viewFeature-0"
+                                type="button"
+                              >
+                                View code
+                              </button>
+                            </p>
+                          </div>
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="euiTableRowCell"
+                    >
+                      <div
+                        class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                      >
+                        State
+                      </div>
+                      <div
+                        class="euiTableCellContent featureText"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                        >
+                          Enabled
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

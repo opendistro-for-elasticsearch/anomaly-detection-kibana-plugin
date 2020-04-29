@@ -39,22 +39,19 @@ export const useFetchDetectorInfo = (
     (state: AppState) => state.elasticsearch.requesting
   );
   const selectedIndices = get(detector, 'indices.0', '');
-  useEffect(
-    () => {
-      const fetchDetector = async () => {
-        if (!detector && !isDetectorRequesting) {
-          await dispatch(getDetector(detectorId));
-        }
-        if (selectedIndices && !isIndicesRequesting) {
-          await dispatch(getMappings(selectedIndices));
-        }
-      };
-      if (detectorId) {
-        fetchDetector();
+  useEffect(() => {
+    const fetchDetector = async () => {
+      if (!detector && !isDetectorRequesting) {
+        await dispatch(getDetector(detectorId));
       }
-    },
-    [detectorId, selectedIndices]
-  );
+      if (selectedIndices && !isIndicesRequesting) {
+        await dispatch(getMappings(selectedIndices));
+      }
+    };
+    if (detectorId) {
+      fetchDetector();
+    }
+  }, [detectorId, selectedIndices]);
   return {
     detector: detector || {},
     hasError: !isEmpty(hasError) && isEmpty(detector),
