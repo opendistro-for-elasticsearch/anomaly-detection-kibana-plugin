@@ -24,6 +24,8 @@ import { Detector, DetectorListItem } from '../../models/interfaces';
 import { AD_NODE_API } from '../../../utils/constants';
 import { GetDetectorsQueryParams } from '../../../server/models/types';
 import { cloneDeep } from 'lodash';
+import moment from 'moment';
+import { DETECTOR_STATE } from '../../utils/constants';
 
 const CREATE_DETECTOR = 'ad/CREATE_DETECTOR';
 const GET_DETECTOR = 'ad/GET_DETECTOR';
@@ -106,8 +108,11 @@ const reducer = handleActions<Detectors>(
         detectors: {
           ...state.detectors,
           [action.detectorId]: {
-            ...[action.detectorId],
+            ...state.detectors[action.detectorId],
             enabled: true,
+            enabledTime: moment().valueOf(),
+            curState: DETECTOR_STATE.INIT,
+            initializationError: '',
           },
         },
       }),
@@ -129,8 +134,11 @@ const reducer = handleActions<Detectors>(
         detectors: {
           ...state.detectors,
           [action.detectorId]: {
-            ...[action.detectorId],
+            ...state.detectors[action.detectorId],
             enabled: false,
+            disabledTime: moment().valueOf(),
+            curState: DETECTOR_STATE.DISABLED,
+            initializationError: '',
           },
         },
       }),
@@ -199,7 +207,9 @@ const reducer = handleActions<Detectors>(
         detectors: {
           ...state.detectors,
           [action.detectorId]: {
+            ...state.detectors[action.detectorId],
             ...action.result.data.response,
+            lastUpdateTime: moment().valueOf(),
           },
         },
       }),
