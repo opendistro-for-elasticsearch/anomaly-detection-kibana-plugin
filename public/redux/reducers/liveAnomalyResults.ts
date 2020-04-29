@@ -31,7 +31,7 @@ export interface Anomalies {
   liveAnomalies: Anomaly[];
   errorMessage: string;
 }
-export const initialDetectorsState: Anomalies = {
+export const initialDetectorLiveResults: Anomalies = {
   requesting: false,
   errorMessage: '',
   totalLiveAnomalies: 0,
@@ -59,7 +59,7 @@ const reducer = handleActions<Anomalies>(
       }),
     },
   },
-  initialDetectorsState
+  initialDetectorLiveResults
 );
 
 export const getDetectorLiveResults = (
