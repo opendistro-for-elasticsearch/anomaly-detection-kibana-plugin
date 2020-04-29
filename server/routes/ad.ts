@@ -27,10 +27,12 @@ import {
   Detector,
   GetDetectorsQueryParams,
   ServerResponse,
+  FeatureResult,
+  DateRangeFilter,
 } from '../models/types';
 import { Router } from '../router';
 import { SORT_DIRECTION, AD_DOC_FIELDS } from '../utils/constants';
-import { mapKeysDeep, toCamel, toSnake } from '../utils/helpers';
+import { mapKeysDeep, toCamel, toSnake, toFixedNumber } from '../utils/helpers';
 import {
   anomalyResultMapper,
   convertDetectorKeysToCamelCase,
@@ -38,6 +40,7 @@ import {
   getResultAggregationQuery,
   getFinalDetectorStates,
 } from './utils/adHelpers';
+import { set } from 'lodash';
 
 type PutDetectorParams = {
   detectorId: string;
@@ -472,14 +475,14 @@ const getAnomalyResults = async (
       size = 20,
       sortDirection = SORT_DIRECTION.DESC,
       sortField = AD_DOC_FIELDS.DATA_START_TIME,
-      range = undefined,
+      dateRangeFilter = undefined,
       //@ts-ignore
     } = req.query as {
       from: number;
       size: number;
       sortDirection: SORT_DIRECTION;
       sortField?: string;
-      range?: any;
+      dateRangeFilter?: string;
     };
     const { detectorId } = req.params;
 
@@ -500,12 +503,6 @@ const getAnomalyResults = async (
       sort = sortQuery;
     }
 
-    let rangeObj = range;
-
-    if (range !== undefined && typeof range === 'string') {
-      rangeObj = JSON.parse(range);
-    }
-
     //Preparing search request
     const requestBody = {
       sort,
@@ -519,42 +516,93 @@ const getAnomalyResults = async (
                 detector_id: detectorId,
               },
             },
-            { ...(rangeObj !== undefined && { range: rangeObj }) },
           ],
         },
       },
     };
+
+    try {
+      const dateRangeFilterObj = (dateRangeFilter
+        ? JSON.parse(dateRangeFilter)
+        : undefined) as DateRangeFilter;
+      const filterSize = requestBody.query.bool.filter.length;
+      if (dateRangeFilterObj && dateRangeFilterObj.fieldName) {
+        (dateRangeFilterObj.startTime || dateRangeFilterObj.endTime) &&
+          set(
+            requestBody.query.bool.filter,
+            `${filterSize}.range.${dateRangeFilterObj.fieldName}.format`,
+            'epoch_millis'
+          );
+
+        dateRangeFilterObj.startTime &&
+          set(
+            requestBody.query.bool.filter,
+            `${filterSize}.range.${dateRangeFilterObj.fieldName}.gte`,
+            dateRangeFilterObj.startTime
+          );
+
+        dateRangeFilterObj.endTime &&
+          set(
+            requestBody.query.bool.filter,
+            `${filterSize}.range.${dateRangeFilterObj.fieldName}.lte`,
+            dateRangeFilterObj.endTime
+          );
+      }
+    } catch (error) {
+      console.log('wrong date range filter', error);
+    }
 
     const response = await callWithRequest(req, 'ad.searchResults', {
       body: requestBody,
     });
 
     const totalResults: number = get(response, 'hits.total.value', 0);
-    // Get all detectors from search detector API
-    const detectorResults: AnomalyResult[] = get(response, 'hits.hits', []).map(
-      (result: any) => ({
+
+    const detectorResult: AnomalyResult[] = [];
+    const featureResult: { [key: string]: FeatureResult[] } = {};
+    get(response, 'hits.hits', []).forEach((result: any) => {
+      detectorResult.push({
         startTime: result._source.data_start_time,
         endTime: result._source.data_end_time,
+        plotTime: result._source.data_end_time,
         confidence:
-          result._source.confidence != null && result._source.confidence > 0
-            ? Number.parseFloat(result._source.confidence).toFixed(3)
+          result._source.confidence != null &&
+          result._source.confidence !== 'NaN' &&
+          result._source.confidence > 0
+            ? toFixedNumber(Number.parseFloat(result._source.confidence))
             : 0,
         anomalyGrade:
           result._source.anomaly_grade != null &&
+          result._source.anomaly_grade !== 'NaN' &&
           result._source.anomaly_grade > 0
-            ? Number.parseFloat(result._source.anomaly_grade).toFixed(3)
+            ? toFixedNumber(Number.parseFloat(result._source.anomaly_grade))
             : 0,
-      })
-    );
+      });
+      result._source.feature_data.forEach((featureData: any) => {
+        if (!featureResult[featureData.feature_id]) {
+          featureResult[featureData.feature_id] = [];
+        }
+        featureResult[featureData.feature_id].push({
+          startTime: result._source.data_start_time,
+          endTime: result._source.data_end_time,
+          plotTime: result._source.data_end_time,
+          data:
+            featureData.data != null && featureData.data !== 'NaN'
+              ? toFixedNumber(Number.parseFloat(featureData.data))
+              : 0,
+        });
+      });
+    });
     return {
       ok: true,
       response: {
         totalAnomalies: totalResults,
-        results: detectorResults,
+        results: detectorResult,
+        featureResults: featureResult,
       },
     };
   } catch (err) {
-    console.log('Anomaly detector - Unable get results', err);
+    console.log('Anomaly detector - Unable to get results', err);
     return { ok: false, error: err.message };
   }
 };
