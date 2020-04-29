@@ -51,7 +51,7 @@ Example output: `./build/opendistro-anomaly-detection-1.6.1.0.zip`
 
 ## Run
 
-- `yarn start --oss`
+- `yarn start`
 
   Starts Kibana and includes this plugin. Kibana will be available on `localhost:5601`.
 
