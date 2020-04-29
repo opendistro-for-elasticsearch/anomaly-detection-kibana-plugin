@@ -34,6 +34,7 @@ import {
 import { get, orderBy } from 'lodash';
 import { APIAction } from 'public/redux/middleware/types';
 import { useDispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 
 /**
  * Get the recent anomaly result query for the last timeRange period(Date-Math)
@@ -344,7 +345,7 @@ export const anomalousDetectorsStaticColumn = [
     textOnly: true,
     render: (name: string, detector: Detector) => (
       <EuiLink
-        href={`${PLUGIN_NAME}#/detectors/${detector.id}/configurations/`}
+        href={`${PLUGIN_NAME}#/detectors/${detector.id}/results`}
         target="_blank"
       >
         {name}
@@ -434,7 +435,8 @@ export const getFloorPlotTime = (plotTime: number): number => {
 export const buildGetAnomalyResultQueryByRange = (
   timeRange: string,
   from: number,
-  size: number
+  size: number,
+  threshold: number
 ) => {
   return {
     index: `${ANOMALY_RESULT_INDEX}*`,
@@ -446,7 +448,7 @@ export const buildGetAnomalyResultQueryByRange = (
           {
             range: {
               [AD_DOC_FIELDS.ANOMALY_GRADE]: {
-                gt: 0.0,
+                gt: threshold,
               },
             },
           },
@@ -477,8 +479,10 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
   func: (request: any) => APIAction,
   selectedDetectors: DetectorListItem[],
   timeRange: string,
-  detectorNum = MAX_DETECTORS,
-  dispatch = useDispatch()
+  dispatch: Dispatch<any>,
+  threshold: number,
+  anomalySize: number,
+  detectorNum: number
 ): Promise<object[]> => {
   const detectorAndIdMap = buildDetectorAndIdMap(selectedDetectors);
   let from = 0;
@@ -486,7 +490,14 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
   let anomalyResults = [] as object[];
   do {
     const searchResponse = await dispatch(
-      func(buildGetAnomalyResultQueryByRange(timeRange, from, MAX_ANOMALIES))
+      func(
+        buildGetAnomalyResultQueryByRange(
+          timeRange,
+          from,
+          anomalySize,
+          threshold
+        )
+      )
     );
     const searchAnomalyResponse = searchResponse.data.response;
 
@@ -528,13 +539,13 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
     SORT_DIRECTION.DESC
   );
 
-  const latestDetetorIds = selectLatestDetetorIds(
+  const latestDetetorIds = selectLatestDetectorIds(
     orderedLiveAnomalyData,
     detectorNum
   );
 
   const finalLiveAnomalyResult = orderedLiveAnomalyData.filter(anomalyData =>
-    latestDetetorIds.includes(get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, ''))
+    latestDetetorIds.has(get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, ''))
   );
   return finalLiveAnomalyResult;
 };
@@ -551,31 +562,15 @@ const buildDetectorAndIdMap = (
   return detectorAndIdMap;
 };
 
-const selectLatestDetetorIds = (
+const selectLatestDetectorIds = (
   orderedAnomalyData: object[],
-  needeDetectorNum: number
-): string[] => {
-  const uniqueIds = [
-    ...new Set(
-      orderedAnomalyData.map(anomalyData =>
-        get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
-      )
-    ),
-  ];
-  if (uniqueIds.length <= needeDetectorNum) {
-    return uniqueIds;
-  }
-  const latestDetectorIds = [] as string[];
-  for (let anomalyData of orderedAnomalyData) {
-    if (
-      !latestDetectorIds.includes(
-        get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
-      )
-    ) {
-    }
-    if (latestDetectorIds.length === needeDetectorNum) {
-      return latestDetectorIds;
-    }
-  }
-  return latestDetectorIds;
+  neededDetectorNum: number
+): Set<string> => {
+  const uniqueIds = new Set(
+    orderedAnomalyData.map(anomalyData =>
+      get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
+    )
+  );
+
+  return new Set(Array.from(uniqueIds).slice(0, neededDetectorNum));
 };

@@ -34,9 +34,9 @@ import { useDispatch } from 'react-redux';
 import { Datum } from '@elastic/charts/dist/utils/commons';
 import React from 'react';
 import { TIME_RANGE_OPTIONS } from '../../Dashboard/utils/constants';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { searchES } from '../../../redux/reducers/elasticsearch';
-import { MAX_DETECTORS } from '../../../utils/constants';
+import { MAX_DETECTORS, MAX_ANOMALIES } from '../../../utils/constants';
 import { AD_DOC_FIELDS } from '../../../../server/utils/constants';
 export interface AnomaliesDistributionChartProps {
   allDetectorsSelected: boolean;
@@ -64,17 +64,23 @@ export const AnomaliesDistributionChart = (
   const [timeRange, setTimeRange] = useState(TIME_RANGE_OPTIONS[0].value);
 
   const getAnomalyResult = async (currentDetectors: DetectorListItem[]) => {
-    const finalAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
+    const latestAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
       searchES,
       props.selectedDetectors,
       timeRange,
-      MAX_DETECTORS,
-      dispatch
+      dispatch,
+      0,
+      MAX_ANOMALIES,
+      MAX_DETECTORS
     );
-    setAnomalyResults(finalAnomalyResult);
+
+    const nonZeroAnomalyResult = latestAnomalyResult.filter(
+      anomalyData => get(anomalyData, AD_DOC_FIELDS.ANOMALY_GRADE, 0) > 0
+    );
+    setAnomalyResults(nonZeroAnomalyResult);
 
     const resultDetectors = getFinalDetectors(
-      finalAnomalyResult,
+      nonZeroAnomalyResult,
       props.selectedDetectors
     );
     setIndicesNumber(getFinalIndices(resultDetectors).size);
@@ -123,9 +129,8 @@ export const AnomaliesDistributionChart = (
         <EuiFlexItem>
           <EuiText className={'anomaly-distribution-subtitle'}>
             <p>
-              {
-                'The inner circle shows the anomaly distribution by your indices. The outer circle shows the anomaly distribution by your detector'
-              }
+              {'The inner circle shows the anomaly distribution by your indices. ' +
+                'The outer circle shows the anomaly distribution by your detectors.'}
             </p>
           </EuiText>
         </EuiFlexItem>
@@ -141,7 +146,7 @@ export const AnomaliesDistributionChart = (
         />
       }
     >
-      <EuiFlexGroup style={{ padding: '10px' }}>
+      <EuiFlexGroup>
         <EuiFlexItem>
           <EuiStat
             description={'Indices with anomalies'}
@@ -162,79 +167,75 @@ export const AnomaliesDistributionChart = (
       {anomalyResultsLoading ? (
         <EuiFlexGroup justifyContent="center">
           <EuiFlexItem grow={false}>
-            <EuiLoadingChart size="m" />
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiLoadingChart size="l" />
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
             <EuiLoadingChart size="xl" />
           </EuiFlexItem>
         </EuiFlexGroup>
       ) : (
         <EuiFlexGroup justifyContent="center">
           <EuiFlexItem grow={false}>
-            <Chart className="anomalies-distribution-sunburst">
-              <Partition
-                id="Anomalies by index and detector"
-                data={visualizeAnomalyResultForSunburstChart(
-                  anomalyResults,
-                  finalDetectors
-                )}
-                valueAccessor={(d: Datum) => d.count as number}
-                valueFormatter={(d: number) => d.toString()}
-                layers={[
-                  {
-                    groupByRollup: (d: Datum) => d.indices,
-                    nodeLabel: (d: Datum) => {
-                      return d;
+            {isEmpty(anomalyResults) ? null : (
+              <Chart className="anomalies-distribution-sunburst">
+                <Partition
+                  id="Anomalies by index and detector"
+                  data={visualizeAnomalyResultForSunburstChart(
+                    anomalyResults,
+                    finalDetectors
+                  )}
+                  valueAccessor={(d: Datum) => d.count as number}
+                  valueFormatter={(d: number) => d.toString()}
+                  layers={[
+                    {
+                      groupByRollup: (d: Datum) => d.indices,
+                      nodeLabel: (d: Datum) => {
+                        return d;
+                      },
+                      fillLabel: {
+                        textInvertible: true,
+                      },
+                      shape: {
+                        fillColor: d => {
+                          return fillOutColors(
+                            d,
+                            (d.x0 + d.x1) / 2 / (2 * Math.PI),
+                            []
+                          );
+                        },
+                      },
                     },
+                    {
+                      groupByRollup: (d: Datum) => d.name,
+                      nodeLabel: (d: Datum) => {
+                        return d;
+                      },
+                      fillLabel: {
+                        textInvertible: true,
+                      },
+                      shape: {
+                        fillColor: d => {
+                          return fillOutColors(
+                            d,
+                            (d.x0 + d.x1) / 2 / (2 * Math.PI),
+                            []
+                          );
+                        },
+                      },
+                    },
+                  ]}
+                  config={{
+                    partitionLayout: PartitionLayout.sunburst,
+                    fontFamily: 'Arial',
+                    outerSizeRatio: 1,
                     fillLabel: {
                       textInvertible: true,
                     },
-                    shape: {
-                      fillColor: d => {
-                        return fillOutColors(
-                          d,
-                          (d.x0 + d.x1) / 2 / (2 * Math.PI),
-                          []
-                        );
-                      },
-                    },
-                  },
-                  {
-                    groupByRollup: (d: Datum) => d.name,
-                    nodeLabel: (d: Datum) => {
-                      return d;
-                    },
-                    fillLabel: {
-                      textInvertible: true,
-                    },
-                    shape: {
-                      fillColor: d => {
-                        return fillOutColors(
-                          d,
-                          (d.x0 + d.x1) / 2 / (2 * Math.PI),
-                          []
-                        );
-                      },
-                    },
-                  },
-                ]}
-                config={{
-                  partitionLayout: PartitionLayout.sunburst,
-                  fontFamily: 'Arial',
-                  outerSizeRatio: 1,
-                  fillLabel: {
-                    textInvertible: true,
-                  },
-                  // TODO: Given only 1 detector exists, the inside Index circle will have issue in following scenarios:
-                  // 1: if Linked Label is configured for identifying index, label of Index circle will be invisible;
-                  // 2: if Fill Label is configured for identifying index, label of it will be overlapped with outer Detector circle
-                  // Issue link: https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/issues/24
-                }}
-              />
-            </Chart>
+                    // TODO: Given only 1 detector exists, the inside Index circle will have issue in following scenarios:
+                    // 1: if Linked Label is configured for identifying index, label of Index circle will be invisible;
+                    // 2: if Fill Label is configured for identifying index, label of it will be overlapped with outer Detector circle
+                    // Issue link: https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/issues/24
+                  }}
+                />
+              </Chart>
+            )}
           </EuiFlexItem>
         </EuiFlexGroup>
       )}

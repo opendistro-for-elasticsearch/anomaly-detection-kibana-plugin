@@ -23,7 +23,6 @@ import { DetectorListItem } from '../../../models/interfaces';
 import { getIndices, getAliases } from '../../../redux/reducers/elasticsearch';
 import { getDetectorList } from '../../../redux/reducers/ad';
 import {
-  EuiButton,
   EuiFlexGroup,
   EuiFlexItem,
   EuiComboBox,
@@ -40,11 +39,7 @@ import {
 import { AppState } from '../../../redux/reducers';
 import { CatIndex, IndexAlias } from '../../../../server/models/types';
 import { getVisibleOptions } from '../../utils/helpers';
-import {
-  DETECTOR_STATE,
-  PLUGIN_NAME,
-  APP_PATH,
-} from '../../../utils/constants';
+import { DETECTOR_STATE } from '../../../utils/constants';
 import { getDetectorStateOptions } from '../../DetectorsList/utils/helpers';
 
 export function DashboardOverview() {
@@ -187,8 +182,8 @@ export function DashboardOverview() {
 
   return (
     <Fragment>
-      <EuiFlexGroup justifyContent="flexStart">
-        <EuiFlexItem grow={1}>
+      <EuiFlexGroup justifyContent="flexStart" gutterSize="s">
+        <EuiFlexItem>
           <EuiComboBox
             id="detectorFilter"
             placeholder={ALL_DETECTORS_MESSAGE}
@@ -196,9 +191,10 @@ export function DashboardOverview() {
             onChange={handleDetectorsFilterChange}
             selectedOptions={selectedDetectorsName.map(buildItemOption)}
             isClearable={true}
+            fullWidth
           />
         </EuiFlexItem>
-        <EuiFlexItem grow={1}>
+        <EuiFlexItem>
           <EuiComboBox
             id="detectorStateFilter"
             placeholder={ALL_DETECTOR_STATES_MESSAGE}
@@ -206,9 +202,10 @@ export function DashboardOverview() {
             onChange={handleDetectorStateFilterChange}
             selectedOptions={selectedDetectorStates.map(buildItemOption)}
             isClearable={true}
+            fullWidth
           />
         </EuiFlexItem>
-        <EuiFlexItem grow={2}>
+        <EuiFlexItem>
           <EuiComboBox
             id="indicesFilter"
             placeholder={ALL_INDICES_MESSAGE}
@@ -216,6 +213,7 @@ export function DashboardOverview() {
             onChange={handleIndicesFilterChange}
             selectedOptions={selectedIndices.map(buildItemOption)}
             isClearable={true}
+            fullWidth
           />
         </EuiFlexItem>
       </EuiFlexGroup>

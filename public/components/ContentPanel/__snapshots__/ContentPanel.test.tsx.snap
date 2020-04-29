@@ -13,7 +13,7 @@ exports[`<ContentPanel /> spec renders the component 1`] = `
       class="euiFlexItem"
     >
       <h3
-        class="euiTitle euiTitle--large content-panel-title"
+        class="euiTitle euiTitle--large"
       >
         Testing
       </h3>

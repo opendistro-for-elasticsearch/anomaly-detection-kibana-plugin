@@ -40,16 +40,21 @@ export const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const onRefreshPage = async () => {
-    await dispatch(
-      getDetectorList({
-        from: 0,
-        size: 1,
-        search: '',
-        sortDirection: SORT_DIRECTION.DESC,
-        sortField: 'name',
-      })
-    );
-    setIsLoading(false);
+    try {
+      await dispatch(
+        getDetectorList({
+          from: 0,
+          size: 1,
+          search: '',
+          sortDirection: SORT_DIRECTION.DESC,
+          sortField: 'name',
+        })
+      );
+    } catch (error) {
+      console.log('Error is found during getting detector list', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const totalDetectors = useSelector(
