@@ -95,7 +95,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   //TODO: test dark mode once detector configuration and AD result page merged
   const isDark = darkModeEnabled();
 
-  const [detecorDetailModel, setDetecorDetailModel] = useState<
+  const [detecorDetailModel, setDetectorDetailModel] = useState<
     DetectorDetailModel
   >({
     selectedTab: getSelectedTabId(
@@ -127,7 +127,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   }, [detector]);
 
   const handleSwitchToConfigurationTab = useCallback(() => {
-    setDetecorDetailModel({
+    setDetectorDetailModel({
       ...detecorDetailModel,
       selectedTab: DETECTOR_DETAIL_TABS.CONFIGURATIONS,
     });
@@ -135,7 +135,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   }, []);
 
   const handleTabChange = (route: DETECTOR_DETAIL_TABS) => {
-    setDetecorDetailModel({
+    setDetectorDetailModel({
       ...detecorDetailModel,
       selectedTab: route,
     });
@@ -143,21 +143,21 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   };
 
   const hideMonitorCalloutModal = () => {
-    setDetecorDetailModel({
+    setDetectorDetailModel({
       ...detecorDetailModel,
       showMonitorCalloutModal: false,
     });
   };
 
   const hideStopDetectorModal = () => {
-    setDetecorDetailModel({
+    setDetectorDetailModel({
       ...detecorDetailModel,
       showStopDetectorModalFor: undefined,
     });
   };
 
   const hideDeleteDetectorModal = () => {
-    setDetecorDetailModel({
+    setDetectorDetailModel({
       ...detecorDetailModel,
       showDeleteDetectorModal: false,
     });
@@ -222,7 +222,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   const handleEditDetector = () => {
     detector.enabled
-      ? setDetecorDetailModel({
+      ? setDetectorDetailModel({
           ...detecorDetailModel,
           showStopDetectorModalFor: 'detector',
         })
@@ -231,7 +231,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   const handleEditFeature = () => {
     detector.enabled
-      ? setDetecorDetailModel({
+      ? setDetectorDetailModel({
           ...detecorDetailModel,
           showStopDetectorModalFor: 'features',
         })
@@ -303,7 +303,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
             <DetectorControls
               onEditDetector={handleEditDetector}
               onDelete={() =>
-                setDetecorDetailModel({
+                setDetectorDetailModel({
                   ...detecorDetailModel,
                   showDeleteDetectorModal: true,
                 })
@@ -311,7 +311,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
               onStartDetector={() => handleStartAdJob(detectorId)}
               onStopDetector={() =>
                 monitor
-                  ? setDetecorDetailModel({
+                  ? setDetectorDetailModel({
                       ...detecorDetailModel,
                       showMonitorCalloutModal: true,
                     })
@@ -362,12 +362,12 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                     placeholder="delete"
                     onChange={e => {
                       if (e.target.value === 'delete') {
-                        setDetecorDetailModel({
+                        setDetectorDetailModel({
                           ...detecorDetailModel,
                           deleteTyped: true,
                         });
                       } else {
-                        setDetecorDetailModel({
+                        setDetectorDetailModel({
                           ...detecorDetailModel,
                           deleteTyped: false,
                         });
