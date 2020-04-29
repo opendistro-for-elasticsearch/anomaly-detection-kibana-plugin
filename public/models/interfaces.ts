@@ -74,8 +74,8 @@ export type Schedule = {
 
 export type UiFeature = {
   featureType: FEATURE_TYPE;
-  aggregationBy: string;
-  aggregationOf: string;
+  aggregationBy?: string;
+  aggregationOf?: string;
 };
 
 export type UiMetaData = {
@@ -102,6 +102,8 @@ export type Detector = {
   enabled?: boolean;
   enabledTime?: number;
   disabledTime?: number;
+  curState: DETECTOR_STATE;
+  initializationError: string;
 };
 
 export type DetectorListItem = {
@@ -155,4 +157,18 @@ export type MonitorAlert = {
   startTime: number;
   endTime: number;
   acknowledgedTime: number;
+};
+
+export type AnomalySummary = {
+  anomalyOccurrence: number;
+  minAnomalyGrade: number;
+  maxAnomalyGrade: number;
+  minConfidence: number;
+  maxConfidence: number;
+  lastAnomalyOccurrence: string;
+};
+
+export type DateRange = {
+  startDate: number;
+  endDate: number;
 };

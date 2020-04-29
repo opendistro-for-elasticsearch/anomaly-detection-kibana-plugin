@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -20,28 +20,27 @@ import {
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
-import { AnomalyData } from '../../models/interfaces';
+import { DetectorResultsQueryParams } from '../../../server/models/types';
+import { Anomaly } from '../../../server/models/interfaces';
 
-const DETECTOR_RESULTS = 'ad/DETECTOR_RESULTS';
+const DETECTOR_LIVE_RESULTS = 'ad/DETECTOR_LIVE_RESULTS';
 
 export interface Anomalies {
   requesting: boolean;
-  total: number;
-  anomalies: AnomalyData[];
+  totalLiveAnomalies: number;
+  liveAnomalies: Anomaly[];
   errorMessage: string;
-  featureData: any;
 }
-export const initialDetectorsState: Anomalies = {
+export const initialDetectorLiveResults: Anomalies = {
   requesting: false,
-  total: 0,
-  anomalies: [],
   errorMessage: '',
-  featureData: {},
+  totalLiveAnomalies: 0,
+  liveAnomalies: [],
 };
 
 const reducer = handleActions<Anomalies>(
   {
-    [DETECTOR_RESULTS]: {
+    [DETECTOR_LIVE_RESULTS]: {
       REQUEST: (state: Anomalies): Anomalies => ({
         ...state,
         requesting: true,
@@ -50,9 +49,8 @@ const reducer = handleActions<Anomalies>(
       SUCCESS: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
         requesting: false,
-        total: action.result.data.response.totalAnomalies,
-        anomalies: action.result.data.response.results,
-        featureData: action.result.data.response.featureResults,
+        totalLiveAnomalies: action.result.data.response.totalAnomalies,
+        liveAnomalies: action.result.data.response.results,
       }),
       FAILURE: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
@@ -61,14 +59,14 @@ const reducer = handleActions<Anomalies>(
       }),
     },
   },
-  initialDetectorsState
+  initialDetectorLiveResults
 );
 
-export const getDetectorResults = (
+export const getDetectorLiveResults = (
   detectorId: string,
-  queryParams: any
+  queryParams: DetectorResultsQueryParams
 ): APIAction => ({
-  type: DETECTOR_RESULTS,
+  type: DETECTOR_LIVE_RESULTS,
   request: (client: IHttpService) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/results`, {
       params: queryParams,
