@@ -64,12 +64,13 @@ export const AnomaliesDistributionChart = (
   const [timeRange, setTimeRange] = useState(TIME_RANGE_OPTIONS[0].value);
 
   const getAnomalyResult = async (currentDetectors: DetectorListItem[]) => {
+    setAnomalyResultsLoading(true);
     const latestAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
       searchES,
       props.selectedDetectors,
       timeRange,
       dispatch,
-      0,
+      -1,
       MAX_ANOMALIES,
       MAX_DETECTORS
     );
