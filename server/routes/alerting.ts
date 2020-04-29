@@ -21,6 +21,7 @@ import { CallClusterWithRequest } from 'src/legacy/core_plugins/elasticsearch';
 import { SearchResponse } from '../models/interfaces';
 import { Monitor, ServerResponse } from '../models/types';
 import { Router } from '../router';
+import { MAX_MONITORS } from '../utils/constants';
 
 export default function(apiRouter: Router) {
   apiRouter.post('/monitors/_search', searchMonitors);
@@ -33,6 +34,7 @@ const searchMonitors = async (
 ): Promise<ServerResponse<any>> => {
   try {
     const requestBody = {
+      size: MAX_MONITORS,
       query: {
         nested: {
           path: 'monitor.inputs',
