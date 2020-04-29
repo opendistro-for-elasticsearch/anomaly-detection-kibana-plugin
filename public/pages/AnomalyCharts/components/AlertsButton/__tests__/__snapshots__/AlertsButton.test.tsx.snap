@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AlertsButton /> spec Alerts Button renders component with monitor 1`] = `
+<div>
+  <a
+    class="euiButton euiButton--primary"
+    detectorid="test-detector-id"
+    detectorinterval="1"
+    detectorname="test-detector-name"
+    href="/899c56c6-99d0-539b-8"
+    monitor="[object Object]"
+    rel="noreferrer"
+    unit="Minutes"
+  >
+    <span
+      class="euiButton__content"
+    >
+      <span
+        class="euiButton__text"
+      >
+        Edit alert settings
+      </span>
+    </span>
+  </a>
+</div>
+`;
+
+exports[`<AlertsButton /> spec Alerts Button renders component without monitor 1`] = `
+<div>
+  <button
+    class="euiButton euiButton--primary"
+    detectorid="test-detector-id"
+    detectorinterval="1"
+    detectorname="test-detector-name"
+    type="button"
+    unit="Minutes"
+  >
+    <span
+      class="euiButton__content"
+    >
+      <span
+        class="euiButton__text"
+      >
+        Set up alerts
+      </span>
+    </span>
+  </button>
+</div>
+`;
