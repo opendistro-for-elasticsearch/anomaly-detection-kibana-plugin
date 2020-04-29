@@ -40,7 +40,6 @@ interface FeatureAccordionProps {
   index: number;
   feature: any;
   handleChange(event: React.ChangeEvent<HTMLSelectElement>): void;
-  // ref: any;
 }
 
 export const FeatureAccordion = (props: FeatureAccordionProps) => {
@@ -67,7 +66,7 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
         Custom expression
       </span>
       <span className="content-panel-subTitle">
-        State: {feature.featureEnabled ? 'Enabled' : 'Disabled'}{' '}
+        State: {feature.featureEnabled ? 'Enabled' : 'Disabled'}
       </span>
     </Fragment>
   );
@@ -95,7 +94,7 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
     );
   };
 
-  const extraAction = (onClick: any) => (
+  const deleteAction = (onClick: any) => (
     <EuiButton size="s" color="danger" onClick={onClick}>
       Delete
     </EuiButton>
@@ -103,7 +102,6 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
 
   return (
     <EuiAccordion
-      // ref={props.ref}
       id={`featureList.${props.index}`}
       key={props.index}
       buttonContent={featureButtonContent(props.feature, props.index)}
@@ -112,7 +110,7 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
       className="euiAccordionForm"
       paddingSize="l"
       initialIsOpen={initialIsOpen}
-      extraAction={extraAction(props.onDelete)}
+      extraAction={deleteAction(props.onDelete)}
       onToggle={(isOpen: boolean) => {
         isOpen ? setShowSubtitle(false) : setShowSubtitle(true);
       }}
@@ -131,7 +129,6 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
           >
             <EuiFieldText
               name={`featureList.${props.index}.featureName`}
-              // id={`featureList.${props.index}.featureName`}
               placeholder="Enter feature name"
               value={field.value ? field.value : props.feature.featureName}
               {...field}

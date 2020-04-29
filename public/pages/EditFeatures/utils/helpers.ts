@@ -136,7 +136,6 @@ export const focusOnFirstWrongFeature = (errors: any, setFieldTouched: any) => {
       if (featureList[i]) {
         forOwn(featureList[i], function(value, key) {
           debugger;
-          console.log(value, key);
           setFieldTouched(`featureList.${i}.${key}`, true);
         });
         focusOnFeatureAccordion(i);
