@@ -29,12 +29,11 @@ import {
   PLUGIN_NAME,
   ANOMALY_RESULT_INDEX,
   MAX_ANOMALIES,
-  MAX_DETECTORS,
 } from '../../../utils/constants';
 import { get, orderBy } from 'lodash';
 import { APIAction } from 'public/redux/middleware/types';
-import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
+import { EuiBasicTableColumn } from '@elastic/eui';
 
 /**
  * Get the recent anomaly result query for the last timeRange period(Date-Math)
@@ -364,7 +363,7 @@ export const anomalousDetectorsStaticColumn = [
       });
     },
   },
-];
+] as EuiBasicTableColumn<any>[];
 
 export const visualizeAnomalyResultForSunburstChart = (
   anomalyResults: any[],

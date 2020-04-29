@@ -15,6 +15,7 @@
 
 //@ts-ignore
 import moment from 'moment';
+import { EuiBasicTableColumn } from '@elastic/eui';
 
 export const DEFAULT_EMPTY_DATA = '-';
 
@@ -55,4 +56,4 @@ export const staticColumn = [
     truncateText: false,
     dataType: 'number',
   },
-];
+] as EuiBasicTableColumn<any>[];

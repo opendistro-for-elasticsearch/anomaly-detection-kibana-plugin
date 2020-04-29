@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { EuiIcon, EuiLink, EuiToolTip, EuiHealth } from '@elastic/eui';
+import { EuiIcon, EuiLink, EuiToolTip, EuiHealth, EuiBasicTableColumn } from '@elastic/eui';
 //@ts-ignore
 import moment from 'moment';
 import get from 'lodash/get';
@@ -180,4 +180,4 @@ export const staticColumn = [
     width: '16%',
     render: renderTime,
   },
-];
+] as EuiBasicTableColumn<any>[];

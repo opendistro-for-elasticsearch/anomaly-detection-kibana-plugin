@@ -78,7 +78,7 @@ export const AnomalousDetectorsList = (props: AnomalousDetectorsListProps) => {
   return (
     <div style={{ height: 'auto' }}>
       <ContentPanel title="Detectors and features" titleSize="s">
-        <EuiBasicTable
+        <EuiBasicTable<any>
           items={getOrderedDetectorsForPage(
             props.selectedDetectors,
             indexOfPage,
