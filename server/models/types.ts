@@ -88,26 +88,50 @@ export type GetDetectorsQueryParams = {
   sortField: string;
 };
 
+export type GetAdMonitorsQueryParams = {
+  from: number;
+  size: number;
+  search: string;
+  indices?: string;
+  sortDirection: SORT_DIRECTION;
+  sortField: string;
+};
+
 export type DetectorResultsQueryParams = {
   from: number;
   size: number;
   sortDirection: SORT_DIRECTION;
   sortField: string;
-  range?: object;
+  dateRangeFilter?: DateRangeFilter;
 };
 
 export type AnomalyResult = {
   startTime: number;
   endTime: number;
-  grade: number;
+  plotTime: number;
+  anomalyGrade: number;
   confidence: number;
+};
+
+export type FeatureResult = {
+  startTime: number;
+  endTime: number;
+  plotTime: number;
+  data: number;
 };
 
 export type AnomalyResultsResponse = {
   totalAnomalies: number;
   results: AnomalyResult[];
+  featureResults: { [key: string]: FeatureResult[] };
 };
 
 export type ServerResponse<T> =
   | { ok: false; error: string }
   | { ok: true; response: T };
+
+export type DateRangeFilter = {
+  startTime?: number;
+  endTime?: number;
+  fieldName: string;
+}

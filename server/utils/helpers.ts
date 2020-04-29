@@ -22,6 +22,8 @@ import {
   snakeCase,
 } from 'lodash';
 
+import { MIN_IN_MILLI_SECS } from './constants';
+
 export function mapKeysDeep(obj: object, fn: any): object | any[] {
   if (Array.isArray(obj)) {
     return map(obj, innerObj => mapKeysDeep(innerObj, fn));
@@ -36,3 +38,12 @@ export function mapKeysDeep(obj: object, fn: any): object | any[] {
 export const toSnake = (value: any, key: string) => snakeCase(key);
 
 export const toCamel = (value: any, key: string) => camelCase(key);
+
+export const getFloorPlotTime = (plotTime: number): number => {
+  return Math.floor(plotTime / MIN_IN_MILLI_SECS) * MIN_IN_MILLI_SECS;
+};
+
+export const toFixedNumber = (num: number, digits?: number, base?: number) => {
+  var pow = Math.pow(base || 10, digits || 2);
+  return Math.round(num * pow) / pow;
+};
