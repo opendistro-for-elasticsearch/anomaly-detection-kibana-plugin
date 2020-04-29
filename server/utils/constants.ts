@@ -54,3 +54,5 @@ export enum AD_DOC_FIELDS {
   ERROR = 'error',
   INDICES = 'indices',
 }
+
+export const MAX_MONITORS = 1000;
