@@ -48,7 +48,6 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with callout 1`] 
         </div>
         <div
           class="euiModalBody"
-          style="padding-left: 24px; padding-right: 24px;"
         >
           <div
             class="euiModalBody__overflow"
@@ -164,7 +163,6 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with empty callou
         </div>
         <div
           class="euiModalBody"
-          style="padding-left: 24px; padding-right: 24px;"
         >
           <div
             class="euiModalBody__overflow"

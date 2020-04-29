@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Fragment } from 'react';
 import {
   EuiTabs,
   EuiTab,
@@ -22,6 +22,10 @@ import {
   EuiTitle,
   EuiHealth,
   EuiOverlayMask,
+  EuiCallOut,
+  EuiSpacer,
+  EuiText,
+  EuiFieldText,
 } from '@elastic/eui';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
@@ -39,13 +43,15 @@ import { getErrorMessage, Listener } from '../../../utils/utils';
 //@ts-ignore
 import chrome from 'ui/chrome';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
-import { BREADCRUMBS } from '../../../utils/constants';
+import { BREADCRUMBS, DETECTOR_STATE } from '../../../utils/constants';
 import { DetectorControls } from '../components/DetectorControls';
 import moment from 'moment';
 import { ConfirmModal } from '../components/ConfirmModal/ConfirmModal';
 import { useFetchMonitorInfo } from '../hooks/useFetchMonitorInfo';
 import { MonitorCallout } from '../components/MonitorCallout/MonitorCallout';
 import { DETECTOR_DETAIL_TABS } from '../utils/constants';
+import { DetectorConfig } from '../../DetectorConfig/containers/DetectorConfig';
+import { AnomalyResults } from '../../DetectorResults/containers/AnomalyResults';
 
 export interface DetectorRouterProps {
   detectorId?: string;
@@ -77,6 +83,7 @@ interface DetectorDetailModel {
   showDeleteDetectorModal: boolean;
   showStopDetectorModalFor: string | undefined;
   showMonitorCalloutModal: boolean;
+  deleteTyped: boolean;
 }
 
 export const DetectorDetail = (props: DetectorDetailProps) => {
@@ -84,10 +91,11 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const detectorId = get(props, 'match.params.detectorId', '') as string;
   const { monitor, fetchMonitorError } = useFetchMonitorInfo(detectorId);
   const { detector, hasError } = useFetchDetectorInfo(detectorId);
+
   //TODO: test dark mode once detector configuration and AD result page merged
   const isDark = darkModeEnabled();
 
-  const [detecorDetailModel, setDetecorDetailModel] = useState<
+  const [detecorDetailModel, setDetectorDetailModel] = useState<
     DetectorDetailModel
   >({
     selectedTab: getSelectedTabId(
@@ -96,6 +104,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     showDeleteDetectorModal: false,
     showStopDetectorModalFor: undefined,
     showMonitorCalloutModal: false,
+    deleteTyped: false,
   });
 
   useHideSideNavBar(true, false);
@@ -117,8 +126,16 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     }
   }, [detector]);
 
+  const handleSwitchToConfigurationTab = useCallback(() => {
+    setDetectorDetailModel({
+      ...detecorDetailModel,
+      selectedTab: DETECTOR_DETAIL_TABS.CONFIGURATIONS,
+    });
+    props.history.push(`/detectors/${detectorId}/configurations`);
+  }, []);
+
   const handleTabChange = (route: DETECTOR_DETAIL_TABS) => {
-    setDetecorDetailModel({
+    setDetectorDetailModel({
       ...detecorDetailModel,
       selectedTab: route,
     });
@@ -126,21 +143,21 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   };
 
   const hideMonitorCalloutModal = () => {
-    setDetecorDetailModel({
+    setDetectorDetailModel({
       ...detecorDetailModel,
       showMonitorCalloutModal: false,
     });
   };
 
   const hideStopDetectorModal = () => {
-    setDetecorDetailModel({
+    setDetectorDetailModel({
       ...detecorDetailModel,
       showStopDetectorModalFor: undefined,
     });
   };
 
   const hideDeleteDetectorModal = () => {
-    setDetecorDetailModel({
+    setDetectorDetailModel({
       ...detecorDetailModel,
       showDeleteDetectorModal: false,
     });
@@ -178,7 +195,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     try {
       await dispatch(stopDetector(detectorId));
       toastNotifications.addSuccess(
-        'Detector job has been stoped successfully'
+        'Detector job has been stopped successfully'
       );
       if (listener) listener.onSuccess();
     } catch (err) {
@@ -189,7 +206,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     }
   };
 
-  const handleDelete = useCallback(async () => {
+  const handleDelete = useCallback(async (detectorId: string) => {
     try {
       await dispatch(deleteDetector(detectorId));
       toastNotifications.addSuccess(`Detector has been deleted successfully`);
@@ -203,11 +220,37 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     }
   }, []);
 
+  const handleEditDetector = () => {
+    detector.enabled
+      ? setDetectorDetailModel({
+          ...detecorDetailModel,
+          showStopDetectorModalFor: 'detector',
+        })
+      : props.history.push(`/detectors/${detectorId}/edit`);
+  };
+
+  const handleEditFeature = () => {
+    detector.enabled
+      ? setDetectorDetailModel({
+          ...detecorDetailModel,
+          showStopDetectorModalFor: 'features',
+        })
+      : props.history.push(`/detectors/${detectorId}/features`);
+  };
+
   const lightStyles = {
     backgroundColor: '#FFF',
   };
   const monitorCallout = monitor ? (
     <MonitorCallout monitorId={monitor.id} monitorName={monitor.name} />
+  ) : null;
+
+  const deleteDetectorCallout = detector.enabled ? (
+    <EuiCallOut
+      title="The detector is running. Are you sure you want to proceed?"
+      color="warning"
+      iconType="alert"
+    ></EuiCallOut>
   ) : null;
 
   return (
@@ -225,20 +268,28 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
             <EuiTitle size="l">
               <h1>
                 {detector && detector.name}{' '}
-                {detector && detector.enabled ? (
+                {detector &&
+                detector.enabled &&
+                detector.curState === DETECTOR_STATE.RUNNING ? (
                   <EuiHealth color="success">
                     Running since{' '}
                     {detector.enabledTime
-                      ? moment(detector.enabledTime).format('MM/DD/YY h:mm a')
+                      ? moment(detector.enabledTime).format('MM/DD/YY h:mm A')
                       : '?'}
                   </EuiHealth>
+                ) : detector.enabled &&
+                  detector.curState === DETECTOR_STATE.INIT ? (
+                  <EuiHealth color="primary">Initializing</EuiHealth>
+                ) : detector.curState === DETECTOR_STATE.INIT_FAILURE ||
+                  detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE ? (
+                  <EuiHealth color="danger">Initialization failure</EuiHealth>
                 ) : (
                   <EuiHealth color="subdued">
                     {detector.featureAttributes &&
                     detector.featureAttributes.length
                       ? detector.disabledTime
                         ? `Stopped at ${moment(detector.disabledTime).format(
-                            'MM/DD/YY h:mm a'
+                            'MM/DD/YY h:mm A'
                           )}`
                         : 'Detector is not started'
                       : 'Feature required to start the detector'}
@@ -250,16 +301,9 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
           <EuiFlexItem grow={false}>
             <DetectorControls
-              onEditDetector={() => {
-                detector.enabled
-                  ? setDetecorDetailModel({
-                      ...detecorDetailModel,
-                      showStopDetectorModalFor: 'detector',
-                    })
-                  : props.history.push(`/detectors/${detectorId}/edit`);
-              }}
+              onEditDetector={handleEditDetector}
               onDelete={() =>
-                setDetecorDetailModel({
+                setDetectorDetailModel({
                   ...detecorDetailModel,
                   showDeleteDetectorModal: true,
                 })
@@ -267,20 +311,13 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
               onStartDetector={() => handleStartAdJob(detectorId)}
               onStopDetector={() =>
                 monitor
-                  ? setDetecorDetailModel({
+                  ? setDetectorDetailModel({
                       ...detecorDetailModel,
                       showMonitorCalloutModal: true,
                     })
                   : handleStopAdJob(detectorId)
               }
-              onEditFeatures={() => {
-                detector.enabled
-                  ? setDetecorDetailModel({
-                      ...detecorDetailModel,
-                      showStopDetectorModalFor: 'features',
-                    })
-                  : props.history.push(`/detectors/${detectorId}/features`);
-              }}
+              onEditFeatures={handleEditFeature}
               detector={detector}
             />
           </EuiFlexItem>
@@ -308,13 +345,63 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
         <EuiOverlayMask>
           <ConfirmModal
             title="Delete detector?"
-            description="Detector and feature configuration will be removed and the deletion is irreversible and you can’t review anomaly result of this detector on Kibana. To confirm deletion, click the delete button."
-            callout={monitorCallout}
+            description={
+              <EuiFlexGroup direction="column">
+                <EuiFlexItem>
+                  <EuiText>
+                    <p>
+                      Detector and feature configuration will be permanently
+                      removed. This action is irreversible. To confirm deletion,
+                      type <i>delete</i> in the field.
+                    </p>
+                  </EuiText>
+                </EuiFlexItem>
+                <EuiFlexItem grow={true}>
+                  <EuiFieldText
+                    fullWidth={true}
+                    placeholder="delete"
+                    onChange={e => {
+                      if (e.target.value === 'delete') {
+                        setDetectorDetailModel({
+                          ...detecorDetailModel,
+                          deleteTyped: true,
+                        });
+                      } else {
+                        setDetectorDetailModel({
+                          ...detecorDetailModel,
+                          deleteTyped: false,
+                        });
+                      }
+                    }}
+                  />
+                </EuiFlexItem>
+              </EuiFlexGroup>
+            }
+            callout={
+              <Fragment>
+                {deleteDetectorCallout}
+                {monitorCallout ? <EuiSpacer size="s" /> : null}
+                {monitorCallout}
+              </Fragment>
+            }
             confirmButtonText="Delete"
             confirmButtonColor="danger"
+            confirmButtonDisabled={!detecorDetailModel.deleteTyped}
             onClose={hideDeleteDetectorModal}
             onCancel={hideDeleteDetectorModal}
-            onConfirm={handleDelete}
+            onConfirm={() => {
+              if (detector.enabled) {
+                const listener: Listener = {
+                  onSuccess: () => {
+                    handleDelete(detectorId);
+                  },
+                  onException: hideDeleteDetectorModal,
+                };
+                handleStopAdJob(detectorId, listener);
+              } else {
+                handleDelete(detectorId);
+              }
+            }}
           />
         </EuiOverlayMask>
       ) : null}
@@ -324,8 +411,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
           <ConfirmModal
             title="Stop detector to proceed?"
             description="Stop the detector before you can edit any detector
-                      configuration. Reconfiguration requires a restart and
-                      reinitialization."
+                      configuration. After you change the detector, make sure to restart and reinitialize the detector."
             callout={monitorCallout}
             confirmButtonText="Stop and proceed to edit"
             confirmButtonColor="primary"
@@ -359,26 +445,25 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
           exact
           path="/detectors/:detectorId/results"
           render={props => (
-            // placeholder for AnomalyResults page, will change to
-            // <AnomalyResults
-            //   {...props}
-            //   detectorId={detectorId}
-            //   onSwitchToConfiguration={handleSwitchToConfigurationTab}
-            // />
-            <div style={{ paddingTop: '20px' }}>AnomalyResults page</div>
+            <AnomalyResults
+              {...props}
+              detectorId={detectorId}
+              onStartDetector={() => handleStartAdJob(detectorId)}
+              onSwitchToConfiguration={handleSwitchToConfigurationTab}
+            />
           )}
         />
         <Route
           exact
           path="/detectors/:detectorId/configurations"
           render={props => (
-            // placeholder for DetectorConfig page, will change to
-            // <DetectorConfig
-            //   {...props}
-            //   detectorId={detectorId}
-            //   detector={detector}
-            // />
-            <div style={{ paddingTop: '20px' }}>DetectorConfig page</div>
+            <DetectorConfig
+              {...props}
+              detectorId={detectorId}
+              detector={detector}
+              onEditFeatures={handleEditFeature}
+              onEditDetector={handleEditDetector}
+            />
           )}
         />
         <Redirect to="/detectors/:detectorId/results" />

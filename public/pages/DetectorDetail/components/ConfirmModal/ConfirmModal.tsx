@@ -30,10 +30,11 @@ import {
 
 interface ConfirmModalProps {
   title: string;
-  description: string;
+  description: string | React.ReactNode;
   callout?: any;
   confirmButtonText: string;
   confirmButtonColor: ButtonColor;
+  confirmButtonDisabled?: boolean;
   onClose(): void;
   onCancel(): void;
   onConfirm(): void;
@@ -45,15 +46,19 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
       <EuiModalHeader>
         <EuiModalHeaderTitle>{props.title}</EuiModalHeaderTitle>
       </EuiModalHeader>
-      <EuiModalBody style={{ paddingLeft: '24px', paddingRight: '24px' }}>
+      <EuiModalBody>
         <EuiFlexGroup direction="column">
           {props.callout ? (
             <EuiFlexItem grow={false}>{props.callout}</EuiFlexItem>
           ) : null}
           <EuiFlexItem grow={false}>
-            <EuiText>
-              <p>{props.description}</p>
-            </EuiText>
+            {typeof props.description === 'string' ? (
+              <EuiText>
+                <p>{props.description}</p>
+              </EuiText>
+            ) : (
+              <React.Fragment>{props.description}</React.Fragment>
+            )}
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiModalBody>
@@ -65,6 +70,7 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
           color={props.confirmButtonColor}
           fill
           onClick={props.onConfirm}
+          disabled={!!props.confirmButtonDisabled}
         >
           {props.confirmButtonText}
         </EuiButton>
