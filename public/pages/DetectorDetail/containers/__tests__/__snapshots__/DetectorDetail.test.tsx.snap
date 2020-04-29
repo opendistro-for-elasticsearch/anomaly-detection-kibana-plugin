@@ -28,7 +28,7 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <svg
-                  class="euiIcon euiIcon--medium euiIcon--success euiIcon-isLoading"
+                  class="euiIcon euiIcon--medium euiIcon--subdued euiIcon-isLoading"
                   focusable="false"
                   height="16"
                   viewBox="0 0 16 16"
@@ -39,9 +39,7 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
-                Running since
-                 
-                04/13/20 5:13 pm
+                Stopped at 04/12/20 5:13 PM
               </div>
             </div>
           </div>
@@ -55,6 +53,7 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
         >
           <div
             class="euiFlexItem euiFlexItem--flexGrowZero"
+            style="margin-right: 16px;"
           >
             <div
               class="euiPopover euiPopover--anchorDownLeft"
@@ -92,6 +91,7 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
           </div>
           <div
             class="euiFlexItem euiFlexItem--flexGrowZero"
+            style="margin-left: 0px;"
           >
             <button
               class="euiButton euiButton--primary"
@@ -160,9 +160,16 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
     </div>
   </div>
   <div
-    style="padding-top: 20px;"
+    class="euiPage"
+    style="margin-top: 16px; padding-top: 0px;"
   >
-    AnomalyResults page
+    <div
+      class="euiPageBody"
+    >
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+    </div>
   </div>
 </div>
 `;
