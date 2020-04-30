@@ -62,7 +62,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       <EuiPage style={{ marginTop: '16px', paddingTop: '0px' }}>
         <EuiPageBody>
           <EuiSpacer size="l" />
-          {detector && isEmpty(detector.featureAttributes) ? (
+          {detector && detector.curState === DETECTOR_STATE.FEATURE_REQUIRED ? (
             <EuiEmptyPrompt
               title={<h2>Features are required to run a detector</h2>}
               body={
