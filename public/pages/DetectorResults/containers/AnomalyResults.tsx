@@ -62,29 +62,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       <EuiPage style={{ marginTop: '16px', paddingTop: '0px' }}>
         <EuiPageBody>
           <EuiSpacer size="l" />
-          {detector && detector.curState === DETECTOR_STATE.FEATURE_REQUIRED ? (
-            <EuiEmptyPrompt
-              title={<h2>Features are required to run a detector</h2>}
-              body={
-                <Fragment>
-                  <p>
-                    Specify index fields that you want to find anomalies for by
-                    defining features. Once you define the features, you can
-                    preview your anomalies from a sample feature output.
-                  </p>
-                </Fragment>
-              }
-              actions={
-                <EuiButton
-                  color="primary"
-                  fill
-                  href={`#/detectors/${detectorId}/features`}
-                >
-                  Add features
-                </EuiButton>
-              }
-            />
-          ) : (
+          {
             <Fragment>
               {detector && detector.curState === DETECTOR_STATE.RUNNING ? (
                 <Fragment>
@@ -128,7 +106,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                 </Fragment>
               ) : null}
             </Fragment>
-          )}
+          }
         </EuiPageBody>
       </EuiPage>
     </Fragment>

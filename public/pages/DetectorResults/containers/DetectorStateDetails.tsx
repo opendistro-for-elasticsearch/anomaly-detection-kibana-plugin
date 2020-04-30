@@ -19,6 +19,7 @@ import { DETECTOR_STATE } from '../../../utils/constants';
 import { DetectorStopped } from '../components/DetectorState/DetectorStopped';
 import { DetectorInitializing } from '../components/DetectorState/DetectorInitializing';
 import { DetectorInitializationFailure } from '../components/DetectorState/DetectorInitializationFailure';
+import { DetectorFeatureRequired } from '../components/DetectorState/DetectorFeatureRequired';
 
 export interface DetectorStateDetailsProp {
   detector: Detector;
@@ -57,6 +58,8 @@ export const DetectorStateDetails = (props: DetectorStateDetailsProp) => {
           onSwitchToConfiguration={props.onSwitchToConfiguration}
         />
       );
+    case DETECTOR_STATE.FEATURE_REQUIRED:
+      return <DetectorFeatureRequired detector={props.detector} />;
     default:
       console.log('Unknown detector state', currentState);
       return null;
