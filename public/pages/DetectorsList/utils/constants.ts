@@ -13,20 +13,25 @@
  * permissions and limitations under the License.
  */
 
-import {
-  SORT_DIRECTION,
-  AD_DOC_FIELDS,
-} from '../../../../server/utils/constants';
+import { SORT_DIRECTION } from '../../../../server/utils/constants';
+
+export const ALL_DETECTOR_STATES = '';
+export const ALL_INDICES = '';
+export const MAX_DETECTORS = 1000;
+export const MAX_DISPLAY_LEN = 20;
+
+// TODO: finish when we know all possible detector states
+export enum DETECTOR_STATES {
+  RUNNING = 'Running',
+  STOPPED = 'Stopped',
+  INITIALIZING = 'Initializing',
+}
 
 export const DEFAULT_QUERY_PARAMS = {
   from: 0,
   search: '',
+  indices: '',
   size: 20,
   sortDirection: SORT_DIRECTION.ASC,
-  sortField: AD_DOC_FIELDS.DATA_START_TIME,
+  sortField: 'name',
 };
-
-export enum ANOMALY_HISTORY_TABS {
-  FEATURE_BREAKDOWN = 'featureBreakdown',
-  ANOMALY_OCCURRENCE = 'anomalyOccurrence',
-}

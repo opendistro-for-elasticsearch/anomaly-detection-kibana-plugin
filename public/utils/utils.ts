@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -13,12 +13,26 @@
  * permissions and limitations under the License.
  */
 
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 //@ts-ignore
 import { isAngularHttpError } from 'ui/notify/lib/format_angular_http_error';
 //@ts-ignore
 import { npStart } from 'ui/new_platform';
-import { ALERTING_PLUGIN_NAME } from './constants';
+import { ALERTING_PLUGIN_NAME, NAME_REGEX } from './constants';
+import { MAX_FEATURE_NAME_SIZE } from './constants';
+
+export const validateName = (featureName: string): string | undefined => {
+  debugger;
+  if (isEmpty(featureName)) {
+    return 'Required';
+  }
+  if (featureName.length > MAX_FEATURE_NAME_SIZE) {
+    return `Name is too big maximum limit is ${MAX_FEATURE_NAME_SIZE}`;
+  }
+  if (!NAME_REGEX.test(featureName)) {
+    return 'Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)';
+  }
+};
 
 export const isInvalid = (name: string, form: any) =>
   !!get(form.touched, name, false) && !!get(form.errors, name, false);
@@ -27,6 +41,10 @@ export const getError = (name: string, form: any) => get(form.errors, name);
 
 export const required = (val: any): string | undefined => {
   return !val ? 'Required' : undefined;
+};
+
+export const requiredNonEmptyArray = (val: any): string | undefined => {
+  return !val || val.length === 0 ? 'Required' : undefined;
 };
 
 export const validatePositiveInteger = (value: any) => {

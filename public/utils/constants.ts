@@ -55,3 +55,9 @@ export enum DETECTOR_STATE {
   INIT_FAILURE = 'Initialization failure',
   UNEXPECTED_FAILURE = 'Unexpected failure',
 }
+
+export const MAX_FEATURE_NUM = 5;
+
+export const MAX_FEATURE_NAME_SIZE = 64;
+
+export const NAME_REGEX = RegExp('^[a-zA-Z0-9._-]+$');
