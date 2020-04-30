@@ -99,7 +99,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
               ) : detector && detector.curState !== DETECTOR_STATE.RUNNING ? (
                 <Fragment>
                   <DetectorStateDetails
-                    detector={detector}
+                    detectorId={detector.id}
                     onStartDetector={props.onStartDetector}
                     onSwitchToConfiguration={props.onSwitchToConfiguration}
                   />
