@@ -29,7 +29,7 @@ exports[`<EmptyDetector /> spec Empty results renders component with empty messa
          
         <a
           class="euiLink euiLink--primary"
-          href="https://github.com/opendistro-for-elasticsearch/anomaly-detection"
+          href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
           rel="noopener noreferrer"
           target="_blank"
         >

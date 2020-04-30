@@ -85,6 +85,7 @@ export const AnomalyResultsLiveChart = (
       startDate: startDateTime.valueOf(),
       endDate: endDateTime.valueOf(),
     },
+    get(props.detector, 'detectionInterval.period.interval', 1),
     getFloorPlotTime
   );
   const timeFormatter = niceTimeFormatter([
