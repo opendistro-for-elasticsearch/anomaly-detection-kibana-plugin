@@ -35,8 +35,7 @@ import {
 import React, { Component, FunctionComponent } from 'react';
 import { displayText } from '../../createDetector/components/DataFilters/utils/helpers';
 import { CodeModal } from '../components/CodeModal/CodeModal';
-import { renderTime } from '../../DetectorResults/utils/tableUtils';
-import { render } from 'enzyme';
+import moment from 'moment';
 
 interface MetaDataProps {
   detectorId: string;
@@ -73,7 +72,7 @@ export function toString(obj: any): string {
       return period.interval + ' ' + period.unit;
     } else if (typeof obj == 'number') {
       // epoch
-      return renderTime(obj);
+      return moment(obj).format('MM/DD/YY hh:mm A');
     }
   }
   return '-';
@@ -189,10 +188,6 @@ export const MetaData = (props: MetaDataProps) => {
       title="Detector configuration"
       titleSize="s"
       actions={[<EuiButton onClick={props.onEditDetector}>Edit</EuiButton>]}
-      panelStyles={{
-        left: '10px',
-        width: '1120px',
-      }}
     >
       <EuiFlexGrid columns={4} gutterSize="l" style={{ border: 'none' }}>
         <EuiFlexItem>

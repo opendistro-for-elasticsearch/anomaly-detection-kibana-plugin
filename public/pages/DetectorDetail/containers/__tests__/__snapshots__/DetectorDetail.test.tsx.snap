@@ -159,6 +159,17 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
       </div>
     </div>
   </div>
-  <div />
+  <div
+    class="euiPage"
+    style="margin-top: 16px; padding-top: 0px;"
+  >
+    <div
+      class="euiPageBody"
+    >
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+    </div>
+  </div>
 </div>
 `;
