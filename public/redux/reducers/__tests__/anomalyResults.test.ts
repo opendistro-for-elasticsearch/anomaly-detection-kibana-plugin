@@ -44,6 +44,7 @@ describe('elasticsearch reducer actions', () => {
         requesting: false,
         total: response.totalAnomalies,
         anomalies: response.results,
+        "featureData": undefined,
       });
       expect(httpMockedClient.get).toHaveBeenCalledWith(
         `..${AD_NODE_API.DETECTOR}/${tempDetectorId}/results`,
