@@ -166,12 +166,36 @@ const getDetector = async (
     const response = await callWithRequest(req, 'ad.getDetector', {
       detectorId,
     });
+    let detectorState;
+    try {
+      const detectorStateResp = await callWithRequest(
+        req,
+        'ad.detectorProfile',
+        {
+          detectorId: detectorId,
+        }
+      );
+
+      const detectorStates = getFinalDetectorStates(
+        [detectorStateResp],
+        [convertDetectorKeysToCamelCase(response.anomaly_detector)]
+      );
+      detectorState = detectorStates[0];
+    } catch (err) {
+      console.log('Anomaly detector - Unable to retrieve detector state', err);
+    }
     const resp = {
       ...response.anomaly_detector,
       id: response._id,
       primaryTerm: response._primary_term,
       seqNo: response._seq_no,
       adJob: { ...response.anomaly_detector_job },
+      //@ts-ignore
+      ...(detectorState !== undefined ? { curState: detectorState.state } : {}),
+      ...(detectorState !== undefined
+        ? //@ts-ignore
+          { initializationError: detectorState.error }
+        : {}),
     };
     return {
       ok: true,

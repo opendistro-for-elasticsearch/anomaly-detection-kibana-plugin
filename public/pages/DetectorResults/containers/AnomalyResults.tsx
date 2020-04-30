@@ -30,12 +30,14 @@ import { RouteComponentProps } from 'react-router';
 //@ts-ignore
 import chrome from 'ui/chrome';
 import { AppState } from '../../../redux/reducers';
-import { BREADCRUMBS } from '../../../utils/constants';
+import { BREADCRUMBS, DETECTOR_STATE } from '../../../utils/constants';
 import { AnomalyResultsLiveChart } from './AnomalyResultsLiveChart';
 import { AnomalyHistory } from './AnomalyHistory';
+import { DetectorStateDetails } from './DetectorStateDetails';
 
 interface AnomalyResultsProps extends RouteComponentProps {
   detectorId: string;
+  onStartDetector(): void;
   onSwitchToConfiguration(): void;
 }
 
@@ -60,31 +62,9 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       <EuiPage style={{ marginTop: '16px', paddingTop: '0px' }}>
         <EuiPageBody>
           <EuiSpacer size="l" />
-          {detector && isEmpty(detector.featureAttributes) ? (
-            <EuiEmptyPrompt
-              title={<h2>Features are required to run a detector</h2>}
-              body={
-                <Fragment>
-                  <p>
-                    Specify index fields that you want to find anomalies for by
-                    defining features. Once you define the features, you can
-                    preview your anomalies from a sample feature output.
-                  </p>
-                </Fragment>
-              }
-              actions={
-                <EuiButton
-                  color="primary"
-                  fill
-                  href={`#/detectors/${detectorId}/features`}
-                >
-                  Add features
-                </EuiButton>
-              }
-            />
-          ) : (
+          {
             <Fragment>
-              {detector ? (
+              {detector && detector.curState === DETECTOR_STATE.RUNNING ? (
                 <Fragment>
                   {!detector.enabled &&
                   detector.disabledTime &&
@@ -106,9 +86,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       </EuiButton>
                     </EuiCallOut>
                   ) : null}
-                  <AnomalyResultsLiveChart
-                    detector={detector}
-                  />
+                  <AnomalyResultsLiveChart detector={detector} />
                   <EuiSpacer size="l" />
                   <AnomalyHistory
                     detector={detector}
@@ -118,9 +96,17 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     }
                   />
                 </Fragment>
+              ) : detector && detector.curState !== DETECTOR_STATE.RUNNING ? (
+                <Fragment>
+                  <DetectorStateDetails
+                    detector={detector}
+                    onStartDetector={props.onStartDetector}
+                    onSwitchToConfiguration={props.onSwitchToConfiguration}
+                  />
+                </Fragment>
               ) : null}
             </Fragment>
-          )}
+          }
         </EuiPageBody>
       </EuiPage>
     </Fragment>
