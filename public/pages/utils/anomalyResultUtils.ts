@@ -95,7 +95,11 @@ const sampleMaxAnomalyGrade = (anomalies: any[]): any[] => {
   return sampledAnomalies;
 };
 
-export const prepareDataForChart = (data: any[], dateRange: DateRange) => {
+export const prepareDataForChart = (
+  data: any[],
+  dateRange: DateRange,
+  getFloorPlotTime?: any
+) => {
   if (!data || data.length === 0) {
     return [];
   }
@@ -104,8 +108,9 @@ export const prepareDataForChart = (data: any[], dateRange: DateRange) => {
       anomaly.plotTime >= dateRange.startDate &&
       anomaly.plotTime <= dateRange.endDate
   );
-
-  anomalies = sampleMaxAnomalyGrade(anomalies);
+  if (anomalies.length > MAX_DATA_POINTS) {
+    anomalies = sampleMaxAnomalyGrade(anomalies);
+  }
 
   anomalies.push({
     startTime: dateRange.startDate,
@@ -121,6 +126,14 @@ export const prepareDataForChart = (data: any[], dateRange: DateRange) => {
     confidence: null,
     anomalyGrade: null,
   });
+  if (getFloorPlotTime) {
+    anomalies = anomalies.map(anomaly => {
+      return {
+        ...anomaly,
+        plotTime: getFloorPlotTime(anomaly.plotTime),
+      };
+    });
+  }
   return anomalies;
 };
 

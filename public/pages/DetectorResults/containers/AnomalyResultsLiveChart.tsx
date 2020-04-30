@@ -51,6 +51,7 @@ import {
   CHART_FIELDS,
   LIVE_CHART_CONFIG,
 } from '../../AnomalyCharts/utils/constants';
+import { getFloorPlotTime } from '../../../../server/utils/helpers';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
@@ -78,10 +79,14 @@ export const AnomalyResultsLiveChart = (
     'minutes'
   );
   const endDateTime = moment();
-  const anomalies = prepareDataForChart(liveAnomalyResults.liveAnomalies, {
-    startDate: startDateTime.valueOf(),
-    endDate: endDateTime.valueOf(),
-  });
+  const anomalies = prepareDataForChart(
+    liveAnomalyResults.liveAnomalies,
+    {
+      startDate: startDateTime.valueOf(),
+      endDate: endDateTime.valueOf(),
+    },
+    getFloorPlotTime
+  );
   const timeFormatter = niceTimeFormatter([
     startDateTime.valueOf(),
     endDateTime.valueOf(),
