@@ -57,7 +57,6 @@ import { AppState } from '../../../redux/reducers';
 import { MAX_ANOMALIES } from '../../../utils/constants';
 
 export interface AnomaliesLiveChartProps {
-  allDetectorsSelected: boolean;
   selectedDetectors: DetectorListItem[];
 }
 
@@ -80,17 +79,62 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
     (state: AppState) => state.elasticsearch
   );
 
+  const selectedDetectorIds = new Set(
+    props.selectedDetectors.map(detectorItem => detectorItem.id)
+  );
+
+  const latestAnomalousDetectors = new Set(
+    get(elasticsearchState.searchResult, 'hits.hits', [])
+      .filter(
+        //@ts-ignore
+        hit =>
+          get(hit, '_source.data_start_time', 0) >
+          liveTimeRange.startDateTime.valueOf()
+      )
+      .filter(
+        //@ts-ignore
+        hit => get(hit, '_source.anomaly_grade', 0) > 0
+      )
+      .map(
+        //@ts-ignore
+        hit => get(hit, '_source.detector_id', '')
+      )
+      .filter(
+        //@ts-ignore
+        detectorId => selectedDetectorIds.has(detectorId)
+      )
+  );
+
+  const latestDetectors = new Set(
+    get(elasticsearchState.searchResult, 'hits.hits', [])
+      .filter(
+        //@ts-ignore
+        hit =>
+          get(hit, '_source.data_start_time', 0) >
+          liveTimeRange.startDateTime.valueOf()
+      )
+      .map(
+        //@ts-ignore
+        hit => get(hit, '_source.detector_id', '')
+      )
+      .filter(
+        //@ts-ignore
+        detectorId => selectedDetectorIds.has(detectorId)
+      )
+  );
+
   const [lastAnomalyResult, setLastAnomalyResult] = useState<object>();
 
   const [liveAnomalyData, setLiveAnomalyData] = useState([] as object[]);
 
-  const [anomalousDetectorCount, setAnomalousDetectorCount] = useState(0);
-
-  const [hasLatestAnomalyData, setHasLatestAnomalyData] = useState(false);
-
   const [isFullScreen, setIsFullScreen] = useState(false);
 
+  const [isLoadingAnomalies, setIsLoadingAnomalies] = useState(true);
+
+  const hasLatestLiveAnomalyResult = latestDetectors.size > 0;
+
   const getLiveAnomalyResults = async () => {
+    setIsLoadingAnomalies(true);
     const latestLiveAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
       searchES,
       props.selectedDetectors,
@@ -101,8 +145,6 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
       MAX_LIVE_DETECTORS
     );
 
-    setHasLatestAnomalyData(!isEmpty(latestLiveAnomalyResult));
-
     const nonZeroAnomalyResult = latestLiveAnomalyResult.filter(
       anomalyData => get(anomalyData, AD_DOC_FIELDS.ANOMALY_GRADE, 0) > 0
     );
@@ -110,20 +152,14 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
 
     if (!isEmpty(nonZeroAnomalyResult)) {
       setLastAnomalyResult(nonZeroAnomalyResult[0]);
-      const uniqueIds = new Set(
-        nonZeroAnomalyResult.map(anomalyData =>
-          get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
-        )
-      );
-      setAnomalousDetectorCount(uniqueIds.size);
     } else {
       setLastAnomalyResult(undefined);
-      setAnomalousDetectorCount(0);
     }
     setLiveTimeRange({
       startDateTime: moment().subtract(31, 'minutes'),
       endDateTime: moment(),
     });
+    setIsLoadingAnomalies(false);
   };
 
   useEffect(() => {
@@ -194,7 +230,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
         <EuiTitle size="s">
           <h3>
             Live anomalies{' '}
-            <EuiBadge color={hasLatestAnomalyData ? '#DB1374' : '#DDD'}>
+            <EuiBadge color={hasLatestLiveAnomalyResult ? '#DB1374' : '#DDD'}>
               Live
             </EuiBadge>
           </h3>
@@ -215,13 +251,13 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
       actions={[fullScreenButton()]}
       contentPanelClassName={isFullScreen ? 'full-screen' : undefined}
     >
-      {elasticsearchState.requesting ? (
+      {isLoadingAnomalies ? (
         <EuiFlexGroup justifyContent="center">
           <EuiFlexItem grow={false}>
             <EuiLoadingChart size="xl" />
           </EuiFlexItem>
         </EuiFlexGroup>
-      ) : !hasLatestAnomalyData ? (
+      ) : !hasLatestLiveAnomalyResult ? (
         <EuiText
           style={{
             color: '#666666',
@@ -272,7 +308,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
           <div>
             {[
               // only show below message when anomalousDetectorCount >= MAX_LIVE_DETECTORS
-              anomalousDetectorCount >= MAX_LIVE_DETECTORS ? (
+              latestAnomalousDetectors.size >= MAX_LIVE_DETECTORS ? (
                 <EuiCallOut
                   size="s"
                   title={`You are viewing ${MAX_LIVE_DETECTORS} detectors with the most recent anomaly occurrences.`}
@@ -288,7 +324,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                     would like to monitor.`}
                   </p>
                 </EuiCallOut>
-              ) : anomalousDetectorCount === 0 ? (
+              ) : latestAnomalousDetectors.size === 0 ? (
                 // all the data points have anomaly grade as 0
                 <EuiCallOut
                   color="success"

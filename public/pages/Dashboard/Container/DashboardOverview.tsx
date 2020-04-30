@@ -27,8 +27,11 @@ import {
   EuiFlexItem,
   EuiComboBox,
   EuiComboBoxOptionProps,
+  EuiLoadingSpinner,
   EuiSpacer,
 } from '@elastic/eui';
+//@ts-ignore
+import chrome from 'ui/chrome';
 import { AnomalousDetectorsList } from '../Components/AnomalousDetectorsList';
 import {
   GET_ALL_DETECTORS_QUERY_PARAMS,
@@ -39,15 +42,19 @@ import {
 import { AppState } from '../../../redux/reducers';
 import { CatIndex, IndexAlias } from '../../../../server/models/types';
 import { getVisibleOptions } from '../../utils/helpers';
-import { DETECTOR_STATE } from '../../../utils/constants';
+import { DETECTOR_STATE, BREADCRUMBS } from '../../../utils/constants';
 import { getDetectorStateOptions } from '../../DetectorsList/utils/helpers';
+import { DashboardHeader } from '../Components/utils/DashboardHeader';
+import { EmptyDashboard } from '../Components/EmptyDashboard/EmptyDashboard';
 
 export function DashboardOverview() {
   const dispatch = useDispatch();
 
-  const allDetectorList = useSelector(
-    (state: AppState) => state.ad.detectorList
-  );
+  const adState = useSelector((state: AppState) => state.ad);
+
+  const allDetectorList = adState.detectorList;
+
+  const [isLoadingDetectors, setIsLoadingDetectors] = useState(true);
 
   const [currentDetectors, setCurrentDetectors] = useState(
     Object.values(allDetectorList)
@@ -152,8 +159,14 @@ export function DashboardOverview() {
     setCurrentDetectors(finalFilteredDetectors);
   };
 
-  const intializeDetectors = () => {
-    dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
+  const intializeDetectors = async () => {
+    setIsLoadingDetectors(true);
+    try {
+      await dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
+    } catch (error) {
+      console.log('Error is found during getting detector list', error);
+    }
+    setIsLoadingDetectors(false);
     dispatch(getIndices(''));
     dispatch(getAliases(''));
   };
@@ -163,12 +176,13 @@ export function DashboardOverview() {
   }, []);
 
   useEffect(() => {
-    // this is needed because on Dashboard.tsx, getDetectorList API is called as 1s time, but it only gets 1 detector
-    // and such result is rendered to this component since this component also relies on result from getDetectorList API.
-    // And after this component does call getDetectorList to get all
-    // detectors, we need to refresh the page with result from 2nd call
-    // TODO: we need to implement namespacing for redux as per https://tiny.amazon.com/3eszqzpx/stacques4290
-    // Issue link: https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/issues/23
+    chrome.breadcrumbs.set([
+      BREADCRUMBS.ANOMALY_DETECTOR,
+      BREADCRUMBS.DASHBOARD,
+    ]);
+  });
+
+  useEffect(() => {
     setCurrentDetectors(Object.values(allDetectorList));
   }, [allDetectorList]);
 
@@ -182,58 +196,71 @@ export function DashboardOverview() {
 
   return (
     <Fragment>
-      <EuiFlexGroup justifyContent="flexStart" gutterSize="s">
-        <EuiFlexItem>
-          <EuiComboBox
-            id="detectorFilter"
-            placeholder={ALL_DETECTORS_MESSAGE}
-            options={getDetectorOptions(allDetectorList)}
-            onChange={handleDetectorsFilterChange}
-            selectedOptions={selectedDetectorsName.map(buildItemOption)}
-            isClearable={true}
-            fullWidth
-          />
-        </EuiFlexItem>
-        <EuiFlexItem>
-          <EuiComboBox
-            id="detectorStateFilter"
-            placeholder={ALL_DETECTOR_STATES_MESSAGE}
-            options={getDetectorStateOptions()}
-            onChange={handleDetectorStateFilterChange}
-            selectedOptions={selectedDetectorStates.map(buildItemOption)}
-            isClearable={true}
-            fullWidth
-          />
-        </EuiFlexItem>
-        <EuiFlexItem>
-          <EuiComboBox
-            id="indicesFilter"
-            placeholder={ALL_INDICES_MESSAGE}
-            options={getVisibleOptions(visibleIndices, visibleAliases)}
-            onChange={handleIndicesFilterChange}
-            selectedOptions={selectedIndices.map(buildItemOption)}
-            isClearable={true}
-            fullWidth
-          />
-        </EuiFlexItem>
-      </EuiFlexGroup>
-      <EuiSpacer />
-      <AnomaliesLiveChart
-        allDetectorsSelected={false}
-        selectedDetectors={currentDetectors}
-      />
-      <EuiSpacer />
-      <EuiFlexGroup justifyContent="spaceBetween">
-        <EuiFlexItem grow={6}>
-          <AnomaliesDistributionChart
-            allDetectorsSelected={true}
-            selectedDetectors={currentDetectors}
-          />
-        </EuiFlexItem>
-        <EuiFlexItem grow={3}>
-          <AnomalousDetectorsList selectedDetectors={currentDetectors} />
-        </EuiFlexItem>
-      </EuiFlexGroup>
+      <DashboardHeader hasDetectors={adState.totalDetectors > 0} />
+      {isLoadingDetectors ? (
+        <div>
+          <EuiLoadingSpinner size="s" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="m" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="l" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="xl" />
+        </div>
+      ) : adState.totalDetectors === 0 ? (
+        <EmptyDashboard />
+      ) : (
+        <Fragment>
+          <EuiFlexGroup justifyContent="flexStart" gutterSize="s">
+            <EuiFlexItem>
+              <EuiComboBox
+                id="detectorFilter"
+                placeholder={ALL_DETECTORS_MESSAGE}
+                options={getDetectorOptions(allDetectorList)}
+                onChange={handleDetectorsFilterChange}
+                selectedOptions={selectedDetectorsName.map(buildItemOption)}
+                isClearable={true}
+                fullWidth
+              />
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <EuiComboBox
+                id="detectorStateFilter"
+                placeholder={ALL_DETECTOR_STATES_MESSAGE}
+                options={getDetectorStateOptions()}
+                onChange={handleDetectorStateFilterChange}
+                selectedOptions={selectedDetectorStates.map(buildItemOption)}
+                isClearable={true}
+                fullWidth
+              />
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <EuiComboBox
+                id="indicesFilter"
+                placeholder={ALL_INDICES_MESSAGE}
+                options={getVisibleOptions(visibleIndices, visibleAliases)}
+                onChange={handleIndicesFilterChange}
+                selectedOptions={selectedIndices.map(buildItemOption)}
+                isClearable={true}
+                fullWidth
+              />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          <EuiSpacer />
+          <AnomaliesLiveChart selectedDetectors={currentDetectors} />
+          <EuiSpacer />
+          <EuiFlexGroup justifyContent="spaceBetween">
+            <EuiFlexItem grow={6}>
+              <AnomaliesDistributionChart
+                selectedDetectors={currentDetectors}
+              />
+            </EuiFlexItem>
+            <EuiFlexItem grow={3}>
+              <AnomalousDetectorsList selectedDetectors={currentDetectors} />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </Fragment>
+      )}
     </Fragment>
   );
 }

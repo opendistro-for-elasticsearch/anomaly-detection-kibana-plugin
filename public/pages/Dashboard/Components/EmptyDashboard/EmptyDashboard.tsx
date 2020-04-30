@@ -32,7 +32,7 @@ export class EmptyDashboard extends Component<{}, {}> {
             <p>
               Read about{' '}
               <EuiLink
-                href="https://github.com/opendistro-for-elasticsearch/anomaly-detection"
+                href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
                 target="_blank"
               >
                 Get started with Anomaly detection &nbsp;
