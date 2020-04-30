@@ -30,12 +30,14 @@ import { RouteComponentProps } from 'react-router';
 //@ts-ignore
 import chrome from 'ui/chrome';
 import { AppState } from '../../../redux/reducers';
-import { BREADCRUMBS } from '../../../utils/constants';
+import { BREADCRUMBS, DETECTOR_STATE } from '../../../utils/constants';
 import { AnomalyResultsLiveChart } from './AnomalyResultsLiveChart';
 import { AnomalyHistory } from './AnomalyHistory';
+import { DetectorStateDetails } from './DetectorStateDetails';
 
 interface AnomalyResultsProps extends RouteComponentProps {
   detectorId: string;
+  onStartDetector(): void;
   onSwitchToConfiguration(): void;
 }
 
@@ -84,7 +86,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
             />
           ) : (
             <Fragment>
-              {detector ? (
+              {detector && detector.curState === DETECTOR_STATE.RUNNING ? (
                 <Fragment>
                   {!detector.enabled &&
                   detector.disabledTime &&
@@ -106,9 +108,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       </EuiButton>
                     </EuiCallOut>
                   ) : null}
-                  <AnomalyResultsLiveChart
-                    detector={detector}
-                  />
+                  <AnomalyResultsLiveChart detector={detector} />
                   <EuiSpacer size="l" />
                   <AnomalyHistory
                     detector={detector}
@@ -116,6 +116,14 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     createFeature={() =>
                       props.history.push(`/detectors/${detectorId}/features`)
                     }
+                  />
+                </Fragment>
+              ) : detector && detector.curState !== DETECTOR_STATE.RUNNING ? (
+                <Fragment>
+                  <DetectorStateDetails
+                    detector={detector}
+                    onStartDetector={props.onStartDetector}
+                    onSwitchToConfiguration={props.onSwitchToConfiguration}
                   />
                 </Fragment>
               ) : null}
