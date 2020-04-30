@@ -39,7 +39,6 @@ import { searchES } from '../../../redux/reducers/elasticsearch';
 import { MAX_DETECTORS, MAX_ANOMALIES } from '../../../utils/constants';
 import { AD_DOC_FIELDS } from '../../../../server/utils/constants';
 export interface AnomaliesDistributionChartProps {
-  allDetectorsSelected: boolean;
   selectedDetectors: DetectorListItem[];
 }
 
@@ -64,12 +63,13 @@ export const AnomaliesDistributionChart = (
   const [timeRange, setTimeRange] = useState(TIME_RANGE_OPTIONS[0].value);
 
   const getAnomalyResult = async (currentDetectors: DetectorListItem[]) => {
+    setAnomalyResultsLoading(true);
     const latestAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
       searchES,
       props.selectedDetectors,
       timeRange,
       dispatch,
-      0,
+      -1,
       MAX_ANOMALIES,
       MAX_DETECTORS
     );

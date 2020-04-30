@@ -193,7 +193,7 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
             Once you define the features, you can preview your anomalies from a
             sample feature output.{' '}
             <EuiLink
-              href="https://github.com/opendistro-for-elasticsearch/anomaly-detection"
+              href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
               target="_blank"
             >
               Learn more &nbsp;
