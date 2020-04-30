@@ -69,7 +69,12 @@ export const DetectorStateDetails = (props: DetectorStateDetailsProp) => {
         />
       );
     case DETECTOR_STATE.FEATURE_REQUIRED:
-      return <DetectorFeatureRequired detector={detector} />;
+      return (
+        <DetectorFeatureRequired
+          detector={detector}
+          onSwitchToConfiguration={props.onSwitchToConfiguration}
+        />
+      );
     default:
       console.log('Unknown detector state', currentState);
       return null;
