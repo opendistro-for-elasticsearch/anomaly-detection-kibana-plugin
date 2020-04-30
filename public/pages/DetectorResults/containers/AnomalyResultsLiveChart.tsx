@@ -51,6 +51,7 @@ import {
   CHART_FIELDS,
   LIVE_CHART_CONFIG,
 } from '../../AnomalyCharts/utils/constants';
+import { getFloorPlotTime } from '../../../../server/utils/helpers';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
@@ -78,10 +79,15 @@ export const AnomalyResultsLiveChart = (
     'minutes'
   );
   const endDateTime = moment();
-  const anomalies = prepareDataForChart(liveAnomalyResults.liveAnomalies, {
-    startDate: startDateTime.valueOf(),
-    endDate: endDateTime.valueOf(),
-  });
+  const anomalies = prepareDataForChart(
+    liveAnomalyResults.liveAnomalies,
+    {
+      startDate: startDateTime.valueOf(),
+      endDate: endDateTime.valueOf(),
+    },
+    get(props.detector, 'detectionInterval.period.interval', 1),
+    getFloorPlotTime
+  );
   const timeFormatter = niceTimeFormatter([
     startDateTime.valueOf(),
     endDateTime.valueOf(),
@@ -158,7 +164,7 @@ export const AnomalyResultsLiveChart = (
     <React.Fragment>
       <ContentPanel
         title={
-          <EuiTitle size="s" className="content-panel-title">
+          <EuiTitle size="s">
             <h3>
               Live anomalies{' '}
               <EuiBadge color={props.detector.enabled ? '#DB1374' : '#DDD'}>

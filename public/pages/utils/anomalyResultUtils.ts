@@ -13,7 +13,11 @@
  * permissions and limitations under the License.
  */
 
-import { SORT_DIRECTION, AD_DOC_FIELDS } from '../../../server/utils/constants';
+import {
+  SORT_DIRECTION,
+  AD_DOC_FIELDS,
+  MIN_IN_MILLI_SECS,
+} from '../../../server/utils/constants';
 import { getDetectorResults } from '../../redux/reducers/anomalyResults';
 import { getDetectorLiveResults } from '../../redux/reducers/liveAnomalyResults';
 import moment from 'moment';
@@ -95,7 +99,12 @@ const sampleMaxAnomalyGrade = (anomalies: any[]): any[] => {
   return sampledAnomalies;
 };
 
-export const prepareDataForChart = (data: any[], dateRange: DateRange) => {
+export const prepareDataForChart = (
+  data: any[],
+  dateRange: DateRange,
+  interval?: number,
+  getFloorPlotTime?: any
+) => {
   if (!data || data.length === 0) {
     return [];
   }
@@ -104,23 +113,36 @@ export const prepareDataForChart = (data: any[], dateRange: DateRange) => {
       anomaly.plotTime >= dateRange.startDate &&
       anomaly.plotTime <= dateRange.endDate
   );
-
-  anomalies = sampleMaxAnomalyGrade(anomalies);
+  if (anomalies.length > MAX_DATA_POINTS) {
+    anomalies = sampleMaxAnomalyGrade(anomalies);
+  }
 
   anomalies.push({
     startTime: dateRange.startDate,
     endTime: dateRange.startDate,
-    plotTime: dateRange.startDate,
+    plotTime: interval
+      ? dateRange.startDate - MIN_IN_MILLI_SECS * interval
+      : dateRange.startDate,
     confidence: null,
     anomalyGrade: null,
   });
   anomalies.unshift({
     startTime: dateRange.endDate,
     endTime: dateRange.endDate,
-    plotTime: dateRange.endDate,
+    plotTime: interval
+      ? dateRange.endDate + MIN_IN_MILLI_SECS * interval
+      : dateRange.endDate,
     confidence: null,
     anomalyGrade: null,
   });
+  if (getFloorPlotTime) {
+    anomalies = anomalies.map(anomaly => {
+      return {
+        ...anomaly,
+        plotTime: getFloorPlotTime(anomaly.plotTime),
+      };
+    });
+  }
   return anomalies;
 };
 

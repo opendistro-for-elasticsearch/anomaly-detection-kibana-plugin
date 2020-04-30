@@ -140,7 +140,9 @@ export function CreateDetector(props: CreateADProps) {
   };
 
   const handleCancelClick = () => {
-    props.history.push('/detectors');
+    detectorId
+      ? props.history.push(`/detectors/${detectorId}/configurations`)
+      : props.history.push('/detectors');
   };
 
   const handleValidateName = async (detectorName: string) => {
@@ -195,7 +197,7 @@ export function CreateDetector(props: CreateADProps) {
           initialValues={detectorToFormik(detector)}
           onSubmit={handleSubmit}
         >
-          {(formikProps) => (
+          {formikProps => (
             <Fragment>
               <DetectorInfo onValidateDetectorName={handleValidateName} />
               <EuiSpacer />
