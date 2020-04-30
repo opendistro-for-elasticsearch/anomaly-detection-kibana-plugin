@@ -309,7 +309,7 @@ export const DetectorList = (props: ListProps) => {
             onPageClick={handlePageChange}
           />
           <EuiHorizontalRule margin="xs" />
-          <EuiBasicTable
+          <EuiBasicTable<any>
             items={detectorsToDisplay}
             columns={staticColumn}
             onChange={handleTableChange}

@@ -12,6 +12,7 @@ exports[`<MonitorCallout /> spec Monitor callout renders component 1`] = `
       class="euiIcon euiIcon--medium euiIcon-isLoading euiCallOutHeader__icon"
       focusable="false"
       height="16"
+      role="img"
       viewBox="0 0 16 16"
       width="16"
       xmlns="http://www.w3.org/2000/svg"
@@ -37,9 +38,11 @@ exports[`<MonitorCallout /> spec Monitor callout renders component 1`] = `
         test-monitor
          
         <svg
+          aria-hidden="true"
           class="euiIcon euiIcon--small euiIcon-isLoading"
           focusable="false"
           height="16"
+          role="img"
           viewBox="0 0 16 16"
           width="16"
           xmlns="http://www.w3.org/2000/svg"

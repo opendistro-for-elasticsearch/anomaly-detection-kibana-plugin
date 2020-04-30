@@ -28,9 +28,11 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <svg
+                  aria-hidden="true"
                   class="euiIcon euiIcon--medium euiIcon--subdued euiIcon-isLoading"
                   focusable="false"
                   height="16"
+                  role="img"
                   viewBox="0 0 16 16"
                   width="16"
                   xmlns="http://www.w3.org/2000/svg"
@@ -75,6 +77,7 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
                       class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
                       focusable="false"
                       height="16"
+                      role="img"
                       viewBox="0 0 16 16"
                       width="16"
                       xmlns="http://www.w3.org/2000/svg"
@@ -106,6 +109,7 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
                   class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
                   focusable="false"
                   height="16"
+                  role="img"
                   viewBox="0 0 16 16"
                   width="16"
                   xmlns="http://www.w3.org/2000/svg"
@@ -163,13 +167,13 @@ exports[`<DetectorDetail /> spec detector detail renders detector detail compone
     class="euiPage"
     style="margin-top: 16px; padding-top: 0px;"
   >
-    <div
+    <main
       class="euiPageBody"
     >
       <div
         class="euiSpacer euiSpacer--l"
       />
-    </div>
+    </main>
   </div>
 </div>
 `;

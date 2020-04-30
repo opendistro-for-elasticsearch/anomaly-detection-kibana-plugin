@@ -33,12 +33,6 @@ describe('<ListControls /> spec', () => {
       const { container } = render(<ListControls {...defaultProps} />);
       expect(container.firstChild).toMatchSnapshot();
     });
-    test('pagination should be hidden if pages count is 1', async () => {
-      const { queryByTestId } = render(
-        <ListControls {...defaultProps} pageCount={1} />
-      );
-      expect(queryByTestId('anomaliesPageControls')).toBeNull();
-    });
     test('pagination should be visible if pages count more than 1', async () => {
       const { queryByTestId } = render(
         <ListControls {...defaultProps} pageCount={2} />

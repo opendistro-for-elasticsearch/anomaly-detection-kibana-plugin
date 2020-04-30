@@ -40,9 +40,11 @@ exports[`<AlertsStat /> spec Alert Stat renders component with monitor and loadi
       >
         View monitor 
         <svg
+          aria-hidden="true"
           class="euiIcon euiIcon--medium euiIcon-isLoading"
           focusable="false"
           height="16"
+          role="img"
           viewBox="0 0 16 16"
           width="16"
           xmlns="http://www.w3.org/2000/svg"
@@ -93,9 +95,11 @@ exports[`<AlertsStat /> spec Alert Stat renders component with monitor and not l
       >
         View monitor 
         <svg
+          aria-hidden="true"
           class="euiIcon euiIcon--medium euiIcon-isLoading"
           focusable="false"
           height="16"
+          role="img"
           viewBox="0 0 16 16"
           width="16"
           xmlns="http://www.w3.org/2000/svg"
@@ -213,9 +217,11 @@ exports[`<AnomalyStatWithTooltip /> spec Anomaly Stat with tooltip renders compo
           class="euiToolTipAnchor"
         >
           <svg
+            aria-hidden="true"
             class="euiIcon euiIcon--medium euiIcon-isLoading"
             focusable="false"
             height="16"
+            role="img"
             viewBox="0 0 16 16"
             width="16"
             xmlns="http://www.w3.org/2000/svg"
@@ -248,9 +254,11 @@ exports[`<AnomalyStatWithTooltip /> spec Anomaly Stat with tooltip renders compo
           class="euiToolTipAnchor"
         >
           <svg
+            aria-hidden="true"
             class="euiIcon euiIcon--medium euiIcon-isLoading"
             focusable="false"
             height="16"
+            role="img"
             viewBox="0 0 16 16"
             width="16"
             xmlns="http://www.w3.org/2000/svg"

@@ -5,7 +5,7 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
   class="euiPage"
   style="margin-top: 16px; padding-top: 0px;"
 >
-  <div
+  <main
     class="euiPageBody"
   >
     <div
@@ -79,23 +79,29 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Name
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  niihduhifi
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    niihduhifi
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -107,23 +113,29 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Data source index
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  logstash-*
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    logstash-*
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -135,23 +147,29 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Detector interval
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  6 MINUTES
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    6 MINUTES
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -163,23 +181,29 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Last Updated
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  04/13/20 05:13 PM
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    04/13/20 05:13 PM
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -191,21 +215,27 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   ID
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
-                />
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
+                >
+                  <p
+                    class="enabled"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -217,23 +247,29 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Window delay
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  5 MINUTES
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    5 MINUTES
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -245,23 +281,29 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Description
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  Gegni fe sokvuhi luwegja evumemu dajnidu dangap id baj vejmil linsumi leem.
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    Gegni fe sokvuhi luwegja evumemu dajnidu dangap id baj vejmil linsumi leem.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -273,22 +315,28 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Data filter
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
                 >
-                  -
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    -
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -334,9 +382,11 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
                   >
                     Learn more  
                     <svg
+                      aria-hidden="true"
                       class="euiIcon euiIcon--small euiIcon-isLoading"
                       focusable="false"
                       height="16"
+                      role="img"
                       viewBox="0 0 16 16"
                       width="16"
                       xmlns="http://www.w3.org/2000/svg"
@@ -401,7 +451,6 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
                   >
                     <div
                       class="euiPopover euiPopover--anchorDownRight"
-                      id="sortPopover"
                     >
                       <div
                         class="euiPopover__anchor"
@@ -418,6 +467,7 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
                               class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonEmpty__icon"
                               focusable="false"
                               height="16"
+                              role="img"
                               viewBox="0 0 16 16"
                               width="16"
                               xmlns="http://www.w3.org/2000/svg"
@@ -441,7 +491,7 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
               <caption
                 aria-live="polite"
                 aria-relevant="text"
-                class="euiScreenReaderOnly"
+                class="euiScreenReaderOnly euiTableCaption"
                 role="status"
               />
               <thead>
@@ -468,10 +518,12 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
                           Feature name
                         </span>
                         <svg
+                          aria-hidden="true"
                           aria-label="Sorted in ascending order"
                           class="euiIcon euiIcon--medium euiIcon-isLoading euiTableSortIcon"
                           focusable="false"
                           height="16"
+                          role="img"
                           viewBox="0 0 16 16"
                           width="16"
                           xmlns="http://www.w3.org/2000/svg"
@@ -659,7 +711,7 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </div>
 `;
 
@@ -668,7 +720,7 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
   class="euiPage"
   style="margin-top: 16px; padding-top: 0px;"
 >
-  <div
+  <main
     class="euiPageBody"
   >
     <div
@@ -742,23 +794,29 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Name
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  vibivubuko
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    vibivubuko
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -770,23 +828,29 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Data source index
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  logstash-*
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    logstash-*
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -798,23 +862,29 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Detector interval
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  5 MINUTES
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    5 MINUTES
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -826,23 +896,29 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Last Updated
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  04/13/20 05:13 PM
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    04/13/20 05:13 PM
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -854,23 +930,29 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   ID
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  b480ad31-134b-5f8b-9
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    b480ad31-134b-5f8b-9
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -882,23 +964,29 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Window delay
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  1 MINUTES
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    1 MINUTES
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -910,23 +998,29 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Description
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
+                  id="random_id"
                 >
-                  Cuzolale omuranot barpul ete wal zuclujzor ponopzel opo cosmicbov zezido viwwojci akgime.
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    Cuzolale omuranot barpul ete wal zuclujzor ponopzel opo cosmicbov zezido viwwojci akgime.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -938,22 +1032,28 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
               id="random_id-row"
               style="width: 250px;"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   Data filter
                 </label>
               </div>
               <div
-                class="euiText euiText--medium"
+                class="euiFormRow__fieldWrapper"
               >
-                <p
-                  class="enabled"
+                <div
+                  class="euiText euiText--medium"
                 >
-                  -
-                </p>
+                  <p
+                    class="enabled"
+                  >
+                    -
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -999,9 +1099,11 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
                   >
                     Learn more  
                     <svg
+                      aria-hidden="true"
                       class="euiIcon euiIcon--small euiIcon-isLoading"
                       focusable="false"
                       height="16"
+                      role="img"
                       viewBox="0 0 16 16"
                       width="16"
                       xmlns="http://www.w3.org/2000/svg"
@@ -1066,7 +1168,6 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
                   >
                     <div
                       class="euiPopover euiPopover--anchorDownRight"
-                      id="sortPopover"
                     >
                       <div
                         class="euiPopover__anchor"
@@ -1083,6 +1184,7 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
                               class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonEmpty__icon"
                               focusable="false"
                               height="16"
+                              role="img"
                               viewBox="0 0 16 16"
                               width="16"
                               xmlns="http://www.w3.org/2000/svg"
@@ -1106,7 +1208,7 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
               <caption
                 aria-live="polite"
                 aria-relevant="text"
-                class="euiScreenReaderOnly"
+                class="euiScreenReaderOnly euiTableCaption"
                 role="status"
               />
               <thead>
@@ -1133,10 +1235,12 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
                           Feature name
                         </span>
                         <svg
+                          aria-hidden="true"
                           aria-label="Sorted in ascending order"
                           class="euiIcon euiIcon--medium euiIcon-isLoading euiTableSortIcon"
                           focusable="false"
                           height="16"
+                          role="img"
                           viewBox="0 0 16 16"
                           width="16"
                           xmlns="http://www.w3.org/2000/svg"
@@ -1400,6 +1504,6 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </div>
 `;

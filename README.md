@@ -47,7 +47,7 @@ Ultimately, your directory structure should look like this:
 
 To build the plugin's distributable zip simply run `yarn build`.
 
-Example output: `./build/opendistro-anomaly-detection-1.4.2.0.zip`
+Example output: `./build/opendistro-anomaly-detection-1.6.1.0.zip`
 
 ## Run
 

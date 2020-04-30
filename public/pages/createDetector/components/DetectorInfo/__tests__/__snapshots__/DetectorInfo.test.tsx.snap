@@ -50,10 +50,12 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
         id="random_id-row"
         title="Name"
       >
-        <div>
+        <div
+          class="euiFormRow__labelWrapper"
+        >
           <label
             aria-invalid="false"
-            class="euiFormLabel"
+            class="euiFormLabel euiFormRow__label"
             for="random_id"
           >
             <div
@@ -72,19 +74,23 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
           </label>
         </div>
         <div
-          class="euiFormControlLayout"
+          class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout__childrenWrapper"
+            class="euiFormControlLayout"
           >
-            <input
-              class="euiFieldText"
-              id="random_id"
-              name="detectorName"
-              placeholder="Enter detector name"
-              type="text"
-              value=""
-            />
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldText"
+                id="random_id"
+                name="detectorName"
+                placeholder="Enter detector name"
+                type="text"
+                value=""
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -94,10 +100,12 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
         hint="Describe the purpose of the detector."
         id="random_id-row"
       >
-        <div>
+        <div
+          class="euiFormRow__labelWrapper"
+        >
           <label
             aria-invalid="false"
-            class="euiFormLabel"
+            class="euiFormLabel euiFormRow__label"
             for="random_id"
           >
             <div
@@ -120,13 +128,17 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
             </div>
           </label>
         </div>
-        <textarea
-          class="euiTextArea euiTextArea--resizeVertical"
-          id="random_id"
-          name="detectorDescription"
-          placeholder="Describe the detector"
-          rows="3"
-        />
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <textarea
+            class="euiTextArea euiTextArea--resizeVertical"
+            id="random_id"
+            name="detectorDescription"
+            placeholder="Describe the detector"
+            rows="3"
+          />
+        </div>
       </div>
     </div>
   </div>

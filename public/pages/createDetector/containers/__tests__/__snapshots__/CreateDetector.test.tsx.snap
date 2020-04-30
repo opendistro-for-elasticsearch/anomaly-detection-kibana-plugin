@@ -4,7 +4,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
 <div
   class="euiPage"
 >
-  <div
+  <main
     class="euiPageBody"
   >
     <div
@@ -69,10 +69,12 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           id="random_id-row"
           title="Name"
         >
-          <div>
+          <div
+            class="euiFormRow__labelWrapper"
+          >
             <label
               aria-invalid="false"
-              class="euiFormLabel"
+              class="euiFormLabel euiFormRow__label"
               for="random_id"
             >
               <div
@@ -91,19 +93,23 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
             </label>
           </div>
           <div
-            class="euiFormControlLayout"
+            class="euiFormRow__fieldWrapper"
           >
             <div
-              class="euiFormControlLayout__childrenWrapper"
+              class="euiFormControlLayout"
             >
-              <input
-                class="euiFieldText"
-                id="random_id"
-                name="detectorName"
-                placeholder="Enter detector name"
-                type="text"
-                value=""
-              />
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText"
+                  id="random_id"
+                  name="detectorName"
+                  placeholder="Enter detector name"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -113,10 +119,12 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           hint="Describe the purpose of the detector."
           id="random_id-row"
         >
-          <div>
+          <div
+            class="euiFormRow__labelWrapper"
+          >
             <label
               aria-invalid="false"
-              class="euiFormLabel"
+              class="euiFormLabel euiFormRow__label"
               for="random_id"
             >
               <div
@@ -139,13 +147,17 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
               </div>
             </label>
           </div>
-          <textarea
-            class="euiTextArea euiTextArea--resizeVertical"
-            id="random_id"
-            name="detectorDescription"
-            placeholder="Describe the detector"
-            rows="3"
-          />
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <textarea
+              class="euiTextArea euiTextArea--resizeVertical"
+              id="random_id"
+              name="detectorDescription"
+              placeholder="Describe the detector"
+              rows="3"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -200,10 +212,12 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           id="random_id-row"
           title="Index"
         >
-          <div>
+          <div
+            class="euiFormRow__labelWrapper"
+          >
             <label
               aria-invalid="false"
-              class="euiFormLabel"
+              class="euiFormLabel euiFormRow__label"
               for="random_id"
             >
               <div
@@ -222,72 +236,77 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
             </label>
           </div>
           <div
-            aria-describedby="random_id-help"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            class="euiComboBox"
-            role="combobox"
+            class="euiFormRow__fieldWrapper"
           >
             <div
-              class="euiFormControlLayout"
+              aria-describedby="random_id-help"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              class="euiComboBox"
+              role="combobox"
             >
               <div
-                class="euiFormControlLayout__childrenWrapper"
+                class="euiFormControlLayout"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap"
-                  data-test-subj="comboBoxInput"
-                  tabindex="-1"
+                  class="euiFormControlLayout__childrenWrapper"
                 >
-                  <p
-                    class="euiComboBoxPlaceholder"
-                  >
-                    Find indices
-                  </p>
                   <div
-                    class="euiComboBox__input"
-                    style="font-size: 14px; display: inline-block;"
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap"
+                    data-test-subj="comboBoxInput"
+                    tabindex="-1"
                   >
-                    <input
-                      data-test-subj="comboBoxSearchInput"
-                      id="random_id"
-                      role="textbox"
-                      style="box-sizing: content-box; width: 2px;"
-                      value=""
-                    />
+                    <p
+                      class="euiComboBoxPlaceholder"
+                    >
+                      Find indices
+                    </p>
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                    />
+                      class="euiComboBox__input"
+                      style="font-size: 14px; display: inline-block;"
+                    >
+                      <input
+                        data-test-subj="comboBoxSearchInput"
+                        id="random_id"
+                        role="textbox"
+                        style="box-sizing: content-box; width: 2px;"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div
-                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                >
-                  <button
-                    aria-label="Open list of options"
-                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                    data-test-subj="comboBoxToggleListButton"
-                    type="button"
+                  <div
+                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                   >
-                    <svg
-                      aria-hidden="true"
-                      class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
-                      focusable="false"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      width="16"
-                      xmlns="http://www.w3.org/2000/svg"
-                    />
-                  </button>
+                    <button
+                      aria-label="Open list of options"
+                      class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                      data-test-subj="comboBoxToggleListButton"
+                      type="button"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            id="random_id-help"
-          >
-            You can use a wildcard (*) in your index pattern
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              id="random_id-help"
+            >
+              You can use a wildcard (*) in your index pattern
+            </div>
           </div>
         </div>
         <div
@@ -296,10 +315,12 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           id="random_id-row"
           title="Timestamp field"
         >
-          <div>
+          <div
+            class="euiFormRow__labelWrapper"
+          >
             <label
               aria-invalid="false"
-              class="euiFormLabel"
+              class="euiFormLabel euiFormRow__label"
               for="random_id"
             >
               <div
@@ -318,37 +339,42 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
             </label>
           </div>
           <div
-            class="euiFormControlLayout"
+            class="euiFormRow__fieldWrapper"
           >
             <div
-              class="euiFormControlLayout__childrenWrapper"
+              class="euiFormControlLayout"
             >
-              <select
-                class="euiSelect"
-                id="random_id"
-                name="timeField"
-                placeholder="Find timestamp"
-              >
-                <option
-                  value=""
-                />
-              </select>
               <div
-                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                class="euiFormControlLayout__childrenWrapper"
               >
-                <span
-                  class="euiFormControlLayoutCustomIcon"
+                <select
+                  class="euiSelect"
+                  id="random_id"
+                  name="timeField"
+                  placeholder="Find timestamp"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
-                    focusable="false"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    width="16"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <option
+                    value=""
                   />
-                </span>
+                </select>
+                <div
+                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                >
+                  <span
+                    class="euiFormControlLayoutCustomIcon"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                      focusable="false"
+                      height="16"
+                      role="img"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -359,10 +385,12 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           hint="Choose a subset of your data source to focus your data stream and reduce noisy data.,Use the visual editor to create a simple filter, or use the Elasticsearch query DSL to create more advanced filters."
           id="random_id-row"
         >
-          <div>
+          <div
+            class="euiFormRow__labelWrapper"
+          >
             <label
               aria-invalid="false"
-              class="euiFormLabel"
+              class="euiFormLabel euiFormRow__label"
               for="random_id"
             >
               <div
@@ -391,43 +419,48 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
             </label>
           </div>
           <div
-            class="euiFormControlLayout"
+            class="euiFormRow__fieldWrapper"
           >
             <div
-              class="euiFormControlLayout__childrenWrapper"
+              class="euiFormControlLayout"
             >
-              <select
-                class="euiSelect"
-                id="random_id"
-                name="filterType"
-              >
-                <option
-                  value="simple_filter"
-                >
-                  Visual editor
-                </option>
-                <option
-                  value="custom_filter"
-                >
-                  Custom expression
-                </option>
-              </select>
               <div
-                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                class="euiFormControlLayout__childrenWrapper"
               >
-                <span
-                  class="euiFormControlLayoutCustomIcon"
+                <select
+                  class="euiSelect"
+                  id="random_id"
+                  name="filterType"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
-                    focusable="false"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    width="16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  />
-                </span>
+                  <option
+                    value="simple_filter"
+                  >
+                    Visual editor
+                  </option>
+                  <option
+                    value="custom_filter"
+                  >
+                    Custom expression
+                  </option>
+                </select>
+                <div
+                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                >
+                  <span
+                    class="euiFormControlLayoutCustomIcon"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                      focusable="false"
+                      height="16"
+                      role="img"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -568,10 +601,12 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
               id="random_id-row"
               title="Detector interval"
             >
-              <div>
+              <div
+                class="euiFormRow__labelWrapper"
+              >
                 <label
                   aria-invalid="false"
-                  class="euiFormLabel"
+                  class="euiFormLabel euiFormRow__label"
                   for="random_id"
                 >
                   <div
@@ -590,41 +625,45 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                 </label>
               </div>
               <div
-                class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
-                id="random_id"
+                class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                  class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                  id="random_id"
                 >
                   <div
-                    class="euiFormControlLayout"
+                    class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
                     <div
-                      class="euiFormControlLayout__childrenWrapper"
+                      class="euiFormControlLayout"
                     >
-                      <input
-                        class="euiFieldNumber"
-                        data-test-subj="detectionInterval"
-                        id="detectionInterval"
-                        name="detectionInterval"
-                        placeholder="Detector interval"
-                        type="number"
-                        value="10"
-                      />
+                      <div
+                        class="euiFormControlLayout__childrenWrapper"
+                      >
+                        <input
+                          class="euiFieldNumber"
+                          data-test-subj="detectionInterval"
+                          id="detectionInterval"
+                          name="detectionInterval"
+                          placeholder="Detector interval"
+                          type="number"
+                          value="10"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="euiFlexItem"
-                >
                   <div
-                    class="euiText euiText--medium"
+                    class="euiFlexItem"
                   >
-                    <p
-                      class="minutes"
+                    <div
+                      class="euiText euiText--medium"
                     >
-                      minutes
-                    </p>
+                      <p
+                        class="minutes"
+                      >
+                        minutes
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -638,10 +677,12 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           style="margin-top: 16px;"
           title="Window delay"
         >
-          <div>
+          <div
+            class="euiFormRow__labelWrapper"
+          >
             <label
               aria-invalid="false"
-              class="euiFormLabel"
+              class="euiFormLabel euiFormRow__label"
               for="random_id"
             >
               <div
@@ -660,41 +701,45 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
             </label>
           </div>
           <div
-            class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
-            id="random_id"
+            class="euiFormRow__fieldWrapper"
           >
             <div
-              class="euiFlexItem euiFlexItem--flexGrowZero"
+              class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+              id="random_id"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <div
-                  class="euiFormControlLayout__childrenWrapper"
+                  class="euiFormControlLayout"
                 >
-                  <input
-                    class="euiFieldNumber"
-                    data-test-subj="windowDelay"
-                    id="windowDelay"
-                    name="windowDelay"
-                    placeholder="Window delay"
-                    type="number"
-                    value="1"
-                  />
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <input
+                      class="euiFieldNumber"
+                      data-test-subj="windowDelay"
+                      id="windowDelay"
+                      name="windowDelay"
+                      placeholder="Window delay"
+                      type="number"
+                      value="1"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="euiFlexItem"
-            >
               <div
-                class="euiText euiText--medium"
+                class="euiFlexItem"
               >
-                <p
-                  class="minutes"
+                <div
+                  class="euiText euiText--medium"
                 >
-                  minutes
-                </p>
+                  <p
+                    class="minutes"
+                  >
+                    minutes
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -744,6 +789,6 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
         </button>
       </div>
     </div>
-  </div>
+  </main>
 </div>
 `;
