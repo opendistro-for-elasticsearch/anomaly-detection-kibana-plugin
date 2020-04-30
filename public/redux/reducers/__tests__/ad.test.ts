@@ -11,6 +11,7 @@ import reducer, {
   updateDetector,
 } from '../ad';
 import { getRandomDetector } from './utils';
+import { get } from 'lodash';
 
 describe('detector reducer actions', () => {
   let store: MockStore;
@@ -197,13 +198,15 @@ describe('detector reducer actions', () => {
         requesting: true,
       });
       expect(actions[1].type).toBe('ad/UPDATE_DETECTOR_SUCCESS');
-      expect(reducer(initialDetectorsState, actions[1])).toEqual({
+      const result = reducer(initialDetectorsState, actions[1]);
+      expect(result).toEqual({
         ...initialDetectorsState,
         requesting: false,
         detectors: {
           [detectorId]: {
             ...randomDetector,
             id: detectorId,
+            lastUpdateTime: get(result, `detectors.${detectorId}.lastUpdateTime`)
           },
         },
       });

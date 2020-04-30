@@ -20,7 +20,7 @@ import { Provider } from 'react-redux';
 import { mockedStore } from '../../../../../redux/utils/testUtils';
 import { Formik } from 'formik';
 import { FeaturesFormikValues } from '../../../../EditFeatures/containers/utils/formikToFeatures';
-import { INITIAL_VALUES } from '../../../../EditFeatures/containers/utils/constants';
+import { INITIAL_VALUES } from '../../../../EditFeatures/utils/constants';
 
 const renderWithFormik = (initialValue: FeaturesFormikValues) => ({
   ...render(

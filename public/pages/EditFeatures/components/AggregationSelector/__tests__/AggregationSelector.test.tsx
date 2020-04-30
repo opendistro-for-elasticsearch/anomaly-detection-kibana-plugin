@@ -23,7 +23,7 @@ import {
   mockedStore,
 } from '../../../../../redux/utils/testUtils';
 import { FeaturesFormikValues } from '../../../containers/utils/formikToFeatures';
-import { INITIAL_VALUES } from '../../../containers/utils/constants';
+import { INITIAL_VALUES } from '../../../utils/constants';
 
 const renderAggregationSelector = (initialValue: FeaturesFormikValues) => ({
   ...render(
