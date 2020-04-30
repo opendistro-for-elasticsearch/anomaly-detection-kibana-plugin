@@ -53,7 +53,6 @@ import {
 } from '../../AnomalyCharts/utils/constants';
 
 interface AnomalyResultsLiveChartProps {
-  detectorId: string;
   detector: Detector;
 }
 
@@ -92,7 +91,7 @@ export const AnomalyResultsLiveChart = (
     if (props.detector.enabled) {
       getLiveAnomalyResults(
         dispatch,
-        props.detectorId,
+        props.detector.id,
         detectionInterval,
         LIVE_CHART_CONFIG.MONITORING_INTERVALS
       );
@@ -100,7 +99,7 @@ export const AnomalyResultsLiveChart = (
         () =>
           getLiveAnomalyResults(
             dispatch,
-            props.detectorId,
+            props.detector.id,
             detectionInterval,
             LIVE_CHART_CONFIG.MONITORING_INTERVALS
           ),

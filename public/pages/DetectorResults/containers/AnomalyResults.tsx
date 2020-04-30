@@ -107,7 +107,6 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     </EuiCallOut>
                   ) : null}
                   <AnomalyResultsLiveChart
-                    detectorId={detectorId}
                     detector={detector}
                   />
                   <EuiSpacer size="l" />

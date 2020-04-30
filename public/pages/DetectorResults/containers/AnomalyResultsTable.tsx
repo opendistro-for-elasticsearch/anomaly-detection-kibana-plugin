@@ -130,7 +130,6 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
         }
         onPageClick={handlePageChange}
       />
-      {/* <EuiHorizontalRule margin="xs" /> */}
 
       <EuiBasicTable
         items={targetAnomalies}
