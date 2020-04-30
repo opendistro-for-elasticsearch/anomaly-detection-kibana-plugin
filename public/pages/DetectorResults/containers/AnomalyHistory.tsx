@@ -43,7 +43,6 @@ import { minuteDateFormatter } from '../../utils/helpers';
 import { ANOMALY_HISTORY_TABS } from '../utils/constants';
 
 interface AnomalyHistoryProps {
-  detectorId: string;
   detector: Detector;
   monitor: Monitor | undefined;
   createFeature(): void;
@@ -73,7 +72,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
       dispatch,
       dateRange.startDate,
       dateRange.endDate,
-      props.detectorId
+      props.detector.id
     );
   }, [dateRange]);
 
@@ -153,7 +152,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         anomalyGradeSeriesName="Anomaly grade"
         confidenceSeriesName="Confidence"
         showAlerts={true}
-        detectorId={props.detectorId}
+        detectorId={props.detector.id}
         detectorName={props.detector.name}
         detector={props.detector}
         detectorInterval={get(

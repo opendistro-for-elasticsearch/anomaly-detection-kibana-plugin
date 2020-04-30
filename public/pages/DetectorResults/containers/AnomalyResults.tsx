@@ -62,7 +62,6 @@ export function AnomalyResults(props: AnomalyResultsProps) {
           <EuiSpacer size="l" />
           {detector && isEmpty(detector.featureAttributes) ? (
             <EuiEmptyPrompt
-              // iconType="editorStrike"
               title={<h2>Features are required to run a detector</h2>}
               body={
                 <Fragment>
@@ -113,7 +112,6 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                   />
                   <EuiSpacer size="l" />
                   <AnomalyHistory
-                    detectorId={detectorId}
                     detector={detector}
                     monitor={monitor}
                     createFeature={() =>
