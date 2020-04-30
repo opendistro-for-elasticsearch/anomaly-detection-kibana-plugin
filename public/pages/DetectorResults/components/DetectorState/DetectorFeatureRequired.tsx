@@ -19,6 +19,7 @@ import { Detector } from '../../../../models/interfaces';
 
 export interface DetectorFeatureRequiredProps {
   detector: Detector;
+  onSwitchToConfiguration(): void;
 }
 
 export const DetectorFeatureRequired = (
@@ -41,7 +42,7 @@ export const DetectorFeatureRequired = (
         <EuiButton
           color="primary"
           fill
-          href={`#/detectors/${props.detector.id}/features`}
+          onClick={props.onSwitchToConfiguration}
           style={{ width: '250px' }}
         >
           View detector configuration
