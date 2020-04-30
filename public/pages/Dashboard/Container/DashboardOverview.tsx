@@ -42,7 +42,7 @@ import {
 import { AppState } from '../../../redux/reducers';
 import { CatIndex, IndexAlias } from '../../../../server/models/types';
 import { getVisibleOptions } from '../../utils/helpers';
-import { DETECTOR_STATE } from '../../../utils/constants';
+import { DETECTOR_STATE, BREADCRUMBS } from '../../../utils/constants';
 import { getDetectorStateOptions } from '../../DetectorsList/utils/helpers';
 import { DashboardHeader } from '../Components/utils/DashboardHeader';
 import { EmptyDashboard } from '../Components/EmptyDashboard/EmptyDashboard';
@@ -176,7 +176,10 @@ export function DashboardOverview() {
   }, []);
 
   useEffect(() => {
-    chrome.breadcrumbs.set([]);
+    chrome.breadcrumbs.set([
+      BREADCRUMBS.ANOMALY_DETECTOR,
+      BREADCRUMBS.DASHBOARD,
+    ]);
   });
 
   useEffect(() => {
