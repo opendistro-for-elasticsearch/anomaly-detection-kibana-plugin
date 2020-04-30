@@ -4,11 +4,11 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
 <div>
   <div
     class="euiPanel euiPanel--paddingMedium"
-    style="padding: 20px 0px;"
+    style="padding: 20px;"
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 20px;"
+      style="padding: 0px;"
     >
       <div
         class="euiFlexItem"
@@ -42,7 +42,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      style="padding-top: 12px; padding-left: 20px; padding-right: 20px;"
+      style="padding: 10px 0px;"
     >
       <div
         class="euiFormRow"
