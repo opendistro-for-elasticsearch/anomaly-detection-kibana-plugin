@@ -42,7 +42,7 @@ import {
   updateDetector,
 } from '../../../redux/reducers/ad';
 import { BREADCRUMBS } from '../../../utils/constants';
-import { getErrorMessage } from '../../../utils/utils';
+import { getErrorMessage, validateName } from '../../../utils/utils';
 import { DetectorInfo } from '../components/DetectorInfo';
 import { useFetchDetectorInfo } from '../hooks/useFetchDetectorInfo';
 import { DataSource } from './DataSource/index';
@@ -74,10 +74,19 @@ export function CreateDetector(props: CreateADProps) {
     const createOrEditBreadcrumb = props.isEdit
       ? BREADCRUMBS.EDIT_DETECTOR
       : BREADCRUMBS.CREATE_DETECTOR;
-    chrome.breadcrumbs.set([
+    let breadCrumbs = [
       BREADCRUMBS.ANOMALY_DETECTOR,
+      BREADCRUMBS.DETECTORS,
       createOrEditBreadcrumb,
-    ]);
+    ];
+    if (detector && detector.name) {
+      breadCrumbs.splice(2, 0, {
+        text: detector.name,
+        //@ts-ignore
+        href: `#/detectors/${detectorId}`,
+      });
+    }
+    chrome.breadcrumbs.set(breadCrumbs);
   });
   // If no detector found with ID, redirect it to list
   useEffect(() => {
@@ -144,6 +153,10 @@ export function CreateDetector(props: CreateADProps) {
     if (isEmpty(detectorName)) {
       throw 'Detector name can not be empty';
     } else {
+      const error = validateName(detectorName);
+      if (error) {
+        throw error;
+      }
       //TODO::Avoid making call if value is same
       const resp = await dispatch(
         searchDetector({ query: { term: { 'name.keyword': detectorName } } })
@@ -182,7 +195,7 @@ export function CreateDetector(props: CreateADProps) {
           initialValues={detectorToFormik(detector)}
           onSubmit={handleSubmit}
         >
-          {formikProps => (
+          {(formikProps) => (
             <Fragment>
               <DetectorInfo onValidateDetectorName={handleValidateName} />
               <EuiSpacer />
@@ -204,7 +217,7 @@ export function CreateDetector(props: CreateADProps) {
                     //@ts-ignore
                     onClick={formikProps.handleSubmit}
                   >
-                    {props.isEdit ? 'Save change' : 'Create'}
+                    {props.isEdit ? 'Save changes' : 'Create'}
                   </EuiButton>
                 </EuiFlexItem>
               </EuiFlexGroup>

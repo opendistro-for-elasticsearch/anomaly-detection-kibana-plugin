@@ -4,17 +4,17 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
 <div>
   <div
     class="euiPanel euiPanel--paddingMedium"
-    style="padding-left: 0px; padding-right: 0px;"
+    style="padding: 20px;"
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      style="padding: 0px;"
     >
       <div
         class="euiFlexItem"
       >
         <h3
-          class="euiTitle euiTitle--small"
+          class="euiTitle euiTitle--small content-panel-title"
         >
           Name and description
         </h3>
@@ -42,11 +42,11 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      style="padding: 0px 10px;"
+      style="padding: 10px 0px;"
     >
       <div
         class="euiFormRow"
-        hint="Specify a unique and descriptive name that is easy to recognize."
+        hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
         id="random_id-row"
         title="Name"
       >
@@ -66,7 +66,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
               <p
                 class="sublabel"
               >
-                Specify a unique and descriptive name that is easy to recognize.
+                Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
               </p>
             </div>
           </label>
