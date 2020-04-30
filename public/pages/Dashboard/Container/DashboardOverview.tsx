@@ -247,15 +247,11 @@ export function DashboardOverview() {
             </EuiFlexItem>
           </EuiFlexGroup>
           <EuiSpacer />
-          <AnomaliesLiveChart
-            allDetectorsSelected={false}
-            selectedDetectors={currentDetectors}
-          />
+          <AnomaliesLiveChart selectedDetectors={currentDetectors} />
           <EuiSpacer />
           <EuiFlexGroup justifyContent="spaceBetween">
             <EuiFlexItem grow={6}>
               <AnomaliesDistributionChart
-                allDetectorsSelected={true}
                 selectedDetectors={currentDetectors}
               />
             </EuiFlexItem>

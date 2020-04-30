@@ -39,7 +39,6 @@ import { searchES } from '../../../redux/reducers/elasticsearch';
 import { MAX_DETECTORS, MAX_ANOMALIES } from '../../../utils/constants';
 import { AD_DOC_FIELDS } from '../../../../server/utils/constants';
 export interface AnomaliesDistributionChartProps {
-  allDetectorsSelected: boolean;
   selectedDetectors: DetectorListItem[];
 }
 

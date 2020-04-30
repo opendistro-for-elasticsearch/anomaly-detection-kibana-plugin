@@ -57,7 +57,6 @@ import { AppState } from '../../../redux/reducers';
 import { MAX_ANOMALIES } from '../../../utils/constants';
 
 export interface AnomaliesLiveChartProps {
-  allDetectorsSelected: boolean;
   selectedDetectors: DetectorListItem[];
 }
 
