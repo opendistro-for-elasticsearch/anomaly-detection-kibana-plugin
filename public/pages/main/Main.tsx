@@ -24,6 +24,7 @@ import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from '@elastic/eui';
 import { useSelector } from 'react-redux';
 import { APP_PATH } from '../../utils/constants';
 import { DetectorDetail } from '../DetectorDetail';
+import { EditFeatures } from '../EditFeatures/containers/EditFeatures';
 import { DashboardOverview } from '../Dashboard/Container/DashboardOverview';
 
 enum Navigation {
@@ -100,10 +101,7 @@ export function Main(props: MainProps) {
           <Route
             exact
             path={APP_PATH.EDIT_FEATURES}
-            render={(props: RouteComponentProps) => (
-              // place holder for EditFeatures, please replace with your page
-              <div>place holder for EditFeatures</div>
-            )}
+            render={(props: RouteComponentProps) => <EditFeatures {...props} />}
           />
           <Route
             path={APP_PATH.DETECTOR_DETAIL}
@@ -111,7 +109,7 @@ export function Main(props: MainProps) {
               <DetectorDetail {...props} />
             )}
           />
-          <Redirect from="/" to="/dashboard" />
+          <Redirect from="/" to={APP_PATH.DASHBOARD} />
         </Switch>
       </EuiPageBody>
     </EuiPage>

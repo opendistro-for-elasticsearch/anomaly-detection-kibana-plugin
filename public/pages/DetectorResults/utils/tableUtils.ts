@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ import moment from 'moment';
 
 export const DEFAULT_EMPTY_DATA = '-';
 
-export const renderTime = (time: number) => {
+const renderTime = (time: number) => {
   const momentTime = moment(time);
-  if (time && momentTime.isValid()) return momentTime.format('MM/DD/YY h:mm a');
+  if (time && momentTime.isValid()) return momentTime.format('MM/DD/YY h:mm A');
   return DEFAULT_EMPTY_DATA;
 };
 
@@ -32,7 +32,6 @@ export const staticColumn = [
     truncateText: false,
     render: renderTime,
     dataType: 'date',
-    width: '150px',
   },
   {
     field: 'endTime',
@@ -41,7 +40,6 @@ export const staticColumn = [
     truncateText: false,
     render: renderTime,
     dataType: 'date',
-    width: '150px',
   },
   {
     field: 'confidence',
@@ -49,7 +47,6 @@ export const staticColumn = [
     sortable: true,
     truncateText: false,
     dataType: 'number',
-    width: '150px',
   },
   {
     field: 'anomalyGrade',
@@ -57,6 +54,5 @@ export const staticColumn = [
     sortable: true,
     truncateText: false,
     dataType: 'number',
-    width: '150px',
   },
 ];
