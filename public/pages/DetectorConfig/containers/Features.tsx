@@ -51,7 +51,7 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
         () => false
       ),
       sortField: 'name',
-      sortDirection: 'desc',
+      sortDirection: 'asc',
     };
   }
 
@@ -175,7 +175,6 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
 
     const getCellProps = () => {
       return {
-        className: 'featureText',
         textOnly: true,
       };
     };
@@ -187,27 +186,25 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
         title={`Features (${featureNum})`}
         titleSize="s"
         subTitle={
-          <EuiText style={{ padding: '0px 10px' }} className="fieldsSubtitle">
-            Specify index fields that you want to find anomalies for by defining
-            features. A detector can discover anomalies across up to 5 features.
-            Once you define the features, you can preview your anomalies from a
-            sample feature output.{' '}
-            <EuiLink
-              href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
-              target="_blank"
-            >
-              Learn more &nbsp;
-              <EuiIcon size="s" type="popout" />
-            </EuiLink>
+          <EuiText className="anomaly-distribution-subtitle">
+            <p>
+              Specify index fields that you want to find anomalies for by
+              defining features. A detector can discover anomalies for up to 5
+              features. Once you define the features, you can preview your
+              anomalies from a sample feature output.{' '}
+              <EuiLink
+                href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
+                target="_blank"
+              >
+                Learn more &nbsp;
+                <EuiIcon size="s" type="popout" />
+              </EuiLink>
+            </p>
           </EuiText>
         }
         actions={[
           <EuiButton onClick={this.props.onEditFeatures}>Edit</EuiButton>,
         ]}
-        panelStyles={{
-          left: '10px',
-          width: '1120px',
-        }}
       >
         {featureNum == 0 ? (
           <EuiEmptyPrompt
