@@ -164,7 +164,7 @@ export const AnomalyResultsLiveChart = (
     <React.Fragment>
       <ContentPanel
         title={
-          <EuiTitle size="s" className="content-panel-title">
+          <EuiTitle size="s">
             <h3>
               Live anomalies{' '}
               <EuiBadge color={props.detector.enabled ? '#DB1374' : '#DDD'}>

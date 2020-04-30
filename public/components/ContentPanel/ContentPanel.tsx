@@ -13,8 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import React, { ReactElement } from 'react';
-//@ts-ignore
+import React from 'react';
 import {
   //@ts-ignore
   EuiTitleSize,
@@ -44,22 +43,19 @@ type ContentPanelProps = {
 
 const ContentPanel = (props: ContentPanelProps) => (
   <EuiPanel
-    style={{
-      padding: '20px 0px',
-      ...props.panelStyles,
-    }}
+    style={{ padding: '20px', ...props.panelStyles }}
     className={props.contentPanelClassName}
   >
     <EuiFlexGroup
-      style={{ padding: '0px 20px', ...props.titleContainerStyles }}
+      style={{ padding: '0px', ...props.titleContainerStyles }}
       justifyContent="spaceBetween"
       alignItems="center"
     >
       <EuiFlexItem>
         {typeof props.title === 'string' ? (
           <EuiTitle
-            size={props.titleSize || 'l'}
-            className={props.titleClassName || ''}
+            size={props.titleSize || 's'}
+            className={props.titleClassName}
           >
             <h3>{props.title}</h3>
           </EuiTitle>
@@ -105,21 +101,13 @@ const ContentPanel = (props: ContentPanelProps) => (
         </EuiFlexGroup>
       </EuiFlexItem>
     </EuiFlexGroup>
-
     {props.title != '' && (
       <EuiHorizontalRule
         margin="xs"
         className={props.horizontalRuleClassName}
       />
     )}
-    <div
-      style={{
-        paddingTop: '12px',
-        paddingLeft: '20px',
-        paddingRight: '20px',
-        ...props.bodyStyles,
-      }}
-    >
+    <div style={{ padding: '10px 0px', ...props.bodyStyles }}>
       {props.children}
     </div>
   </EuiPanel>

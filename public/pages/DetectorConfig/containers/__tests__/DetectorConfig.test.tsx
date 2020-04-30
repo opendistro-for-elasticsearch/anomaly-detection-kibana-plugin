@@ -165,7 +165,7 @@ describe('<DetectorConfig /> spec', () => {
       // filter should be -
       getByText('-');
       getByText(
-        'Specify index fields that you want to find anomalies for by defining features. A detector can discover anomalies across up to 5 features. Once you define the features, you can preview your anomalies from a sample feature output.'
+        'Specify index fields that you want to find anomalies for by defining features. A detector can discover anomalies for up to 5 features. Once you define the features, you can preview your anomalies from a sample feature output.'
       );
     });
   });
