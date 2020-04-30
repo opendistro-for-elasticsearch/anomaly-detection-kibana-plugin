@@ -524,7 +524,7 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
       }
     );
     anomalyResults = [...anomalyResults, ...anomalies];
-    from++;
+    from += anomalySize;
   } while (numResults === MAX_ANOMALIES);
 
   const filteredAnomalyResults = anomalyResults.filter(anomaly =>
