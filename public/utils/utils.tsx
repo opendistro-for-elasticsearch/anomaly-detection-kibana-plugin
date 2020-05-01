@@ -14,10 +14,13 @@
  */
 
 import { get, isEmpty } from 'lodash';
+import React from 'react';
+import { EuiTitle } from '@elastic/eui';
 //@ts-ignore
 import { isAngularHttpError } from 'ui/notify/lib/format_angular_http_error';
 //@ts-ignore
 import { npStart } from 'ui/new_platform';
+import { darkModeEnabled } from '../utils/kibanaUtils';
 import { ALERTING_PLUGIN_NAME, NAME_REGEX } from './constants';
 import { MAX_FEATURE_NAME_SIZE } from './constants';
 
@@ -108,4 +111,24 @@ export const getAlertingMonitorListLink = (): string => {
 export interface Listener {
   onSuccess(): void;
   onException(): void;
+};
+
+const detectorCountFontColor = darkModeEnabled() ? '#98A2B3' : '#535966';
+
+export const getTitleWithCount = (title: string, count: number) => {
+  return (
+    <EuiTitle size={'s'} className={''}>
+      <h3
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <p>{title}&nbsp;</p>
+        <p
+          style={{ color: detectorCountFontColor }}
+        >{`(${count})`}</p>
+      </h3>
+    </EuiTitle>
+  );
 }

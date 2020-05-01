@@ -30,6 +30,7 @@ import { get, sortBy } from 'lodash';
 import { PLUGIN_NAME } from '../../../utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { CodeModal } from '../components/CodeModal/CodeModal';
+import { getTitleWithCount } from '../../../utils/utils';
 
 interface FeaturesProps {
   detectorId: string;
@@ -183,7 +184,7 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
 
     return (
       <ContentPanel
-        title={`Features (${featureNum})`}
+        title={getTitleWithCount('Features', featureNum)}
         titleSize="s"
         subTitle={
           <EuiText className="anomaly-distribution-subtitle">

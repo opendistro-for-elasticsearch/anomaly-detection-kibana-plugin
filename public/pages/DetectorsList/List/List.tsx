@@ -20,7 +20,6 @@ import {
   EuiHorizontalRule,
   EuiPage,
   EuiPageBody,
-  EuiTitle,
 } from '@elastic/eui';
 import { debounce, get, isEmpty } from 'lodash';
 import queryString from 'query-string';
@@ -64,7 +63,7 @@ import {
   getDetectorsToDisplay,
 } from '../../utils/helpers';
 import { staticColumn } from '../utils/tableUtils';
-import { darkModeEnabled } from '../../../utils/kibanaUtils';
+import { getTitleWithCount } from '../../../utils/utils';
 
 export interface ListRouterParams {
   from: string;
@@ -265,28 +264,11 @@ export const DetectorList = (props: ListProps) => {
     pageSizeOptions: [5, 10, 20, 50],
   };
 
-  const detectorCountFontColor = darkModeEnabled() ? '#98A2B3' : '#535966';
-  const pageTitle = (
-    <EuiTitle size={'s'} className={''}>
-      <h3
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-        }}
-      >
-        <p>{'Detectors'}&nbsp;</p>
-        <p
-          style={{ color: detectorCountFontColor }}
-        >{`(${selectedDetectors.length})`}</p>
-      </h3>
-    </EuiTitle>
-  );
-
   return (
     <EuiPage>
       <EuiPageBody>
         <ContentPanel
-          title={pageTitle}
+          title={getTitleWithCount('Detectors', selectedDetectors.length)}
           actions={[
             <EuiButton fill href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
               Create detector

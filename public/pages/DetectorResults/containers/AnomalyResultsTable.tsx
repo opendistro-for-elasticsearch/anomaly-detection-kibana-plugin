@@ -29,6 +29,7 @@ import { staticColumn } from '../utils/tableUtils';
 import { ListControls } from '../components/ListControls/ListControls';
 import { DetectorResultsQueryParams } from 'server/models/types';
 import { AnomalyData } from '../../../models/interfaces';
+import { getTitleWithCount } from '../../../utils/utils';
 
 interface AnomalyResultsTableProps {
   anomalies: AnomalyData[];
@@ -119,7 +120,7 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
   };
   return (
     <ContentPanel
-      title={`Anomaly occurrences(${totalAnomalies.length})`}
+      title={getTitleWithCount('Anomaly occurrences', totalAnomalies.length)}
       titleSize="xs"
       titleClassName="preview-title"
     >
