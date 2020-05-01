@@ -25,6 +25,11 @@ import { darkModeEnabled } from '../../../utils/kibanaUtils';
 
 export const DEFAULT_EMPTY_DATA = '-';
 const hintColor = darkModeEnabled() ? '#98A2B3' : '#535966';
+const columnStyle = {
+  overflow: 'visible',
+  whiteSpace: 'normal',
+  wordBreak: 'break-word',
+} as React.CSSProperties;
 
 const renderTime = (time: number) => {
   const momentTime = moment(time);
@@ -49,8 +54,8 @@ export const staticColumn = [
     field: 'name',
     name: (
       <EuiToolTip content="The name of the detector">
-        <span>
-          Detector{' '}
+        <span style={columnStyle}>
+          Detector{''}
           <EuiIcon
             size="s"
             color={hintColor}
@@ -75,8 +80,8 @@ export const staticColumn = [
     field: 'indices',
     name: (
       <EuiToolTip content="The index or index pattern used for the detector">
-        <span>
-          Indices{' '}
+        <span style={columnStyle}>
+          Indices{''}
           <EuiIcon
             size="s"
             color={hintColor}
@@ -97,8 +102,8 @@ export const staticColumn = [
     field: 'curState',
     name: (
       <EuiToolTip content="The current state of the detector">
-        <span>
-          Detector state{' '}
+        <span style={columnStyle}>
+          Detector state{''}
           <EuiIcon
             size="s"
             color={hintColor}
@@ -119,8 +124,8 @@ export const staticColumn = [
     field: 'totalAnomalies',
     name: (
       <EuiToolTip content="Total anomalies with a grade > 0 in last 24 hours">
-        <span>
-          Anomalies last 24 hours{' '}
+        <span style={columnStyle}>
+          Anomalies last 24 hours{''}
           <EuiIcon
             size="s"
             color={hintColor}
@@ -140,8 +145,8 @@ export const staticColumn = [
     field: 'lastActiveAnomaly',
     name: (
       <EuiToolTip content="Time of the last active anomaly with a grade > 0">
-        <span>
-          Last anomaly occurrence{' '}
+        <span style={columnStyle}>
+          Last anomaly occurrence{''}
           <EuiIcon
             size="s"
             color={hintColor}
@@ -162,8 +167,8 @@ export const staticColumn = [
     field: 'lastUpdateTime',
     name: (
       <EuiToolTip content="The time the detector was last updated">
-        <span>
-          Last updated{' '}
+        <span style={columnStyle}>
+          Last updated{''}
           <EuiIcon
             size="s"
             color={hintColor}
