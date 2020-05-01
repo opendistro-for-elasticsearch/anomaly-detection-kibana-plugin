@@ -41,7 +41,7 @@ export function SaveFeaturesConfirmModal(props: SaveFeaturesConfirmModalProps) {
     return [
       {
         id: SAVE_FEATURE_OPTIONS.START_AD_JOB,
-        label: 'Automatically run detector (Recommended)',
+        label: 'Automatically start detector (Recommended)',
         disabled: disableStartAdJob,
       },
       {
