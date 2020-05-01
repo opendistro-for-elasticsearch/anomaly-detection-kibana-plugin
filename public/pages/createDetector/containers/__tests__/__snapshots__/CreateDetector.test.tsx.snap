@@ -397,7 +397,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                 style="line-height: 8px;"
               >
                 <p>
-                  Data fiter
+                  Data filter
                   <span
                     class="optional"
                   >
