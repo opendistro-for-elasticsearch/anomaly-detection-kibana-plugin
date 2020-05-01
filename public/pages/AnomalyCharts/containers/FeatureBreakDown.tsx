@@ -46,11 +46,11 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
             <EuiTitle size="s" className="preview-title">
               <h4>{props.title}</h4>
             </EuiTitle>
+          <EuiSpacer size="s" />
           </EuiFlexItem>
         </EuiFlexGroup>
       ) : null}
 
-      <EuiSpacer size="s" />
       {get(props, 'detector.featureAttributes', []).map(
         (feature: FeatureAttributes, index: number) => (
           <React.Fragment key={`${feature.featureName}-${feature.featureId}`}>
@@ -98,7 +98,7 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
                 focusOnFeatureAccordion(index);
               }}
             />
-            <EuiSpacer />
+            <EuiSpacer size='m'/>
           </React.Fragment>
         )
       )}

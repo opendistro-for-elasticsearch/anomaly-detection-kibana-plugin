@@ -17,7 +17,6 @@ import React, { useState, useEffect, useCallback, Fragment } from 'react';
 import {
   EuiFlexItem,
   EuiFlexGroup,
-  EuiSpacer,
   EuiTabs,
   EuiTab,
   EuiLoadingSpinner,
@@ -161,42 +160,42 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         )}
         unit={get(props.detector, 'detectionInterval.period.unit')}
         monitor={props.monitor}
-      />
-      <EuiTabs>{renderTabs()}</EuiTabs>
-      <EuiSpacer />
+      >
+        <EuiTabs>{renderTabs()}</EuiTabs>
 
-      {isLoading ? (
-        <EuiFlexGroup
-          justifyContent="spaceAround"
-          style={{ height: '200px', paddingTop: '100px' }}
-        >
-          <EuiFlexItem grow={false}>
-            <EuiLoadingSpinner size="xl" />
-          </EuiFlexItem>
-        </EuiFlexGroup>
-      ) : (
-        <Fragment>
-          {selectedTabId === 'featureBreakdown' ? (
-            <FeatureBreakDown
-              detector={props.detector}
-              // @ts-ignore
-              anomaliesResult={anomalyResults}
-              annotations={annotations}
-              isLoading={isLoading}
-              dateRange={zoomRange}
-              featureDataSeriesName="Feature output"
-            />
-          ) : (
-            <AnomalyResultsTable
-              anomalies={filterWithDateRange(
-                anomalyResults.anomalies,
-                zoomRange,
-                'plotTime'
-              )}
-            />
-          )}
-        </Fragment>
-      )}
+        {isLoading ? (
+          <EuiFlexGroup
+            justifyContent="spaceAround"
+            style={{ height: '200px', paddingTop: '100px' }}
+          >
+            <EuiFlexItem grow={false}>
+              <EuiLoadingSpinner size="xl" />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        ) : (
+          <div style={{ padding: '20px', backgroundColor: '#F7F7F7' }}>
+            {selectedTabId === 'featureBreakdown' ? (
+              <FeatureBreakDown
+                detector={props.detector}
+                // @ts-ignore
+                anomaliesResult={anomalyResults}
+                annotations={annotations}
+                isLoading={isLoading}
+                dateRange={zoomRange}
+                featureDataSeriesName="Feature output"
+              />
+            ) : (
+              <AnomalyResultsTable
+                anomalies={filterWithDateRange(
+                  anomalyResults.anomalies,
+                  zoomRange,
+                  'plotTime'
+                )}
+              />
+            )}
+          </div>
+        )}
+      </AnomaliesChart>
     </Fragment>
   );
 };
