@@ -35,7 +35,7 @@ import {
   getAnomalyResultsWithDateRange,
   filterWithDateRange,
 } from '../../utils/anomalyResultUtils';
-import { get, isEmpty } from 'lodash';
+import { get } from 'lodash';
 import { AnomalyResultsTable } from './AnomalyResultsTable';
 import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
 import { FeatureBreakDown } from '../../AnomalyCharts/containers/FeatureBreakDown';
@@ -161,7 +161,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         )}
         unit={get(props.detector, 'detectionInterval.period.unit')}
         monitor={props.monitor}
-        noFeature={isEmpty(props.detector.featureAttributes)}
       />
       <EuiTabs>{renderTabs()}</EuiTabs>
       <EuiSpacer />

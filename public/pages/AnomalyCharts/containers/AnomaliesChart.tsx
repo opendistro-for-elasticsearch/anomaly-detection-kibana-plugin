@@ -63,8 +63,8 @@ import {
 import {
   INITIAL_ANOMALY_SUMMARY,
   CHART_FIELDS,
-  CHART_COLORS,
   DATE_PICKER_QUICK_OPTIONS,
+  ANOMALY_CHART_THEME,
 } from '../utils/constants';
 import {
   convertAlerts,
@@ -343,6 +343,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                           end: moment(end).format(),
                         });
                       }}
+                      theme={ANOMALY_CHART_THEME}
                     />
                     <RectAnnotation
                       dataValues={disabledHistoryAnnotations(
@@ -384,7 +385,6 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                       yScaleType={ScaleType.Linear}
                       xAccessor={CHART_FIELDS.PLOT_TIME}
                       yAccessors={[CHART_FIELDS.CONFIDENCE]}
-                      color={[CHART_COLORS.CONFIDENCE_COLOR]}
                       data={zoomedAnomalies}
                     />
                     <LineSeries
@@ -395,7 +395,6 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                       yScaleType={ScaleType.Linear}
                       xAccessor={CHART_FIELDS.PLOT_TIME}
                       yAccessors={[CHART_FIELDS.ANOMALY_GRADE]}
-                      color={[CHART_COLORS.ANOMALY_GRADE_COLOR]}
                     />
                   </Chart>
                 )}
