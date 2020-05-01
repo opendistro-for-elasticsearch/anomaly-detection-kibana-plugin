@@ -12,6 +12,9 @@ exports[`<FeatureBreakDown /> spec renders the component 1`] = `
     >
       test
     </h4>
+    <div
+      class="euiSpacer euiSpacer--s"
+    />
   </div>
 </div>
 `;
