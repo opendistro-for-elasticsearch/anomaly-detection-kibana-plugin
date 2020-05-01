@@ -36,7 +36,7 @@ function DataFilter(props: DataFilterProps) {
             fullWidth
             formattedTitle={
               <p>
-                Data fiter
+                Data filter
                 <span className="optional">- optional</span>
               </p>
             }

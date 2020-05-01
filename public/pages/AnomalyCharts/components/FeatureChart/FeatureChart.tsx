@@ -137,6 +137,7 @@ export const FeatureChart = (props: FeatureChartProps) => {
             <Settings
               showLegend
               showLegendExtra={false}
+              //TODO: research more why only set this old property will work.
               showLegendDisplayValue={false}
               legendPosition={Position.Right}
               theme={FEATURE_CHART_THEME}

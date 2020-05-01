@@ -305,7 +305,7 @@ export function EditFeatures(props: EditFeaturesProps) {
                         )
                       }
                     >
-                      Save changes
+                      Save and start detector
                     </EuiButton>
                   </EuiFlexItem>
                 </EuiFlexGroup>
