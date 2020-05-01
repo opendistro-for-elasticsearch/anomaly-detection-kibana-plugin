@@ -47,11 +47,11 @@ import {
 } from '../../utils/anomalyResultUtils';
 import { get } from 'lodash';
 import {
-  CHART_COLORS,
   CHART_FIELDS,
   LIVE_CHART_CONFIG,
 } from '../../AnomalyCharts/utils/constants';
 import { getFloorPlotTime } from '../../../../server/utils/helpers';
+import { LIVE_ANOMALY_CHART_THEME } from '../utils/constants';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
@@ -202,7 +202,7 @@ export const AnomalyResultsLiveChart = (
                 />
               ) : null}
               <Chart>
-                <Settings />
+                <Settings theme={LIVE_ANOMALY_CHART_THEME} />
                 <LineAnnotation
                   id="annotationNow"
                   domainType={AnnotationDomainTypes.XDomain}
@@ -230,7 +230,6 @@ export const AnomalyResultsLiveChart = (
                   yScaleType={ScaleType.Linear}
                   xAccessor={CHART_FIELDS.PLOT_TIME}
                   yAccessors={[CHART_FIELDS.ANOMALY_GRADE]}
-                  color={[CHART_COLORS.ANOMALY_GRADE_COLOR]}
                 />
               </Chart>
             </EuiFlexItem>

@@ -21,6 +21,7 @@ import {
   AnomalySummary,
 } from '../../../models/interfaces';
 import { dateFormatter, minuteDateFormatter } from '../../utils/helpers';
+import { RectAnnotationDatum } from '@elastic/charts';
 
 export const getAlertsQuery = (monitorId: string, startTime: number) => {
   return {
@@ -146,7 +147,7 @@ export const getAnomalySummary = (anomalies: any[]): AnomalySummary => {
 export const disabledHistoryAnnotations = (
   dateRange: DateRange,
   detector?: Detector
-) => {
+): RectAnnotationDatum[] => {
   if (!detector || !detector.disabledTime) {
     return [];
   }
@@ -155,25 +156,23 @@ export const disabledHistoryAnnotations = (
     ? detector.enabledTime
     : dateRange.endDate.valueOf();
 
-  if (startTime) {
-    const details =
-      detector.enabled && detector.enabledTime
-        ? `Detector was stopped from ${dateFormatter(
-            startTime
-          )} to ${dateFormatter(detector.enabledTime)}`
-        : `Detector was stopped from ${dateFormatter(startTime)} until now`;
-    const coordinateX0 =
-      startTime >= dateRange.startDate.valueOf()
-        ? startTime
-        : dateRange.startDate.valueOf();
-    return [
-      {
-        coordinates: {
-          x0: coordinateX0,
-          x1: endTime,
-        },
-        details: details,
+  const details =
+    detector.enabled && detector.enabledTime
+      ? `Detector was stopped from ${dateFormatter(
+          startTime
+        )} to ${dateFormatter(detector.enabledTime)}`
+      : `Detector was stopped from ${dateFormatter(startTime)} until now`;
+  const coordinateX0 =
+    startTime >= dateRange.startDate.valueOf()
+      ? startTime
+      : dateRange.startDate.valueOf();
+  return [
+    {
+      coordinates: {
+        x0: coordinateX0,
+        x1: endTime,
       },
-    ];
-  }
+      details: details,
+    },
+  ];
 };
