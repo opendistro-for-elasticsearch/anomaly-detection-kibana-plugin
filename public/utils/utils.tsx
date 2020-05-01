@@ -42,6 +42,7 @@ export const isInvalid = (name: string, form: any) =>
 export const getError = (name: string, form: any) => get(form.errors, name);
 
 export const required = (val: any): string | undefined => {
+  // if val is number, skip check as number value already exists
   return typeof val !== 'number' && !val ? 'Required' : undefined;
 };
 
