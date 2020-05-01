@@ -315,6 +315,8 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                     // hide legend if there only exists anomalies with 0 anomaly grade
                     showLegend={!isEmpty(liveAnomalyData)}
                     legendPosition={Position.Right}
+                    showLegendExtra={false}
+                    showLegendDisplayValue={false}
                     xDomain={{
                       min: liveTimeRange.startDateTime.valueOf(),
                       max: liveTimeRange.endDateTime.valueOf(),
