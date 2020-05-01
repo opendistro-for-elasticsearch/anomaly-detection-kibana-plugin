@@ -165,7 +165,6 @@ export const FeatureChart = (props: FeatureChartProps) => {
               yScaleType={ScaleType.Linear}
               xAccessor={CHART_FIELDS.PLOT_TIME}
               yAccessors={[CHART_FIELDS.DATA]}
-              // color={[CHART_COLORS.FEATURE_DATA_COLOR]}
               data={featureData}
             />
           </Chart>
