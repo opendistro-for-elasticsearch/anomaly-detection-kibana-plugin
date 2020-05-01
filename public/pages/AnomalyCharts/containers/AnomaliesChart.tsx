@@ -335,6 +335,9 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                   <Chart>
                     <Settings
                       showLegend
+                      showLegendExtra={false}
+                      //TODO: research more why only set this old property will work.
+                      showLegendDisplayValue={false}
                       legendPosition={Position.Right}
                       onBrushEnd={(start: number, end: number) => {
                         handleZoomRangeChange(start, end);
