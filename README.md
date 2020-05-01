@@ -6,25 +6,22 @@ The Open Distro for Elasticsearch Anomaly Detection plugin enables you to levera
 
 Anomaly detection is using Random Cut Forest (RCF) algorithm for detecting anomalous data points.
 
-You should use anomaly detection kibana plugin with Open Distro Alerting kibana plugin [1.2-alpha](https://github.com/opendistro-for-elasticsearch/alerting-kibana-plugin/tree/opendistro-1.2-alpha). You can also create monitor based on anomaly detector. Scheduled monitor run will trigger anomaly detector and get anomaly result to check if should trigger alert or not based on custom trigger conditions.
+You should use anomaly detection kibana plugin with the same version of [Open Distro Alerting kibana plugin](https://github.com/opendistro-for-elasticsearch/alerting-kibana-plugin). You can also create monitor based on anomaly detector. A scheduled monitor run checks the anomaly detection results regularly and collects anomalies to trigger alerts based on custom trigger conditions.
 
 ## Current Limitations
 
-- This is alpha code.
-- We inherit security features from Open Distro for Elasticsearch Alerting.
-- We use Alerting alpha code branch.
 - We will continuously add new unit test cases, but we don't have 100% unit test coverage for now. This is a great area for developers from the community to contribute and help improve test coverage.
 - Please see documentation links and GitHub issues for other details.
 
 ## Documentation
 
-Please see our [documentation](https://opendistro.github.io/for-elasticsearch-docs/).
+Please see our [documentation](https://opendistro.github.io/for-elasticsearch-docs/docs/ad/).
 
 ## Setup
 
-1. Download Elasticsearch for the version that matches the [Kibana version specified in package.json](./package.json#L9).
+1. Download Elasticsearch for the version that matches the [Kibana version specified in package.json](./package.json#L7).
 1. Download and install the appropriate [Open Distro for Elasticsearch Anomaly Detection Kibana plugin](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin).
-1. Download the Kibana source code for the [version specified in package.json](./package.json#L9) you want to set up.
+1. Download the Kibana source code for the [version specified in package.json](./package.json#L7) you want to set up.
 
    See the [Kibana contributing guide](https://github.com/elastic/kibana/blob/master/CONTRIBUTING.md#setting-up-your-development-environment) for more instructions on setting up your development environment.
 
