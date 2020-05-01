@@ -154,7 +154,7 @@ describe('<DetectorConfig /> spec', () => {
       getByText(
         'Specify index fields that you want to find anomalies for by defining features. Once you define the features, you can preview your anomalies from a sample feature output.'
       );
-      getByText('Features (0)');
+      getByText('Features');
       getByText(randomDetector.name);
       getByText(randomDetector.indices[0]);
       getByText(toString(randomDetector.detectionInterval));
