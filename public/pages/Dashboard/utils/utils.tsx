@@ -353,7 +353,7 @@ export const anomalousDetectorsStaticColumn = [
   },
   {
     field: 'featureAttributes',
-    name: 'features',
+    name: 'Features',
     sortable: false,
     truncateText: false,
     textOnly: true,
