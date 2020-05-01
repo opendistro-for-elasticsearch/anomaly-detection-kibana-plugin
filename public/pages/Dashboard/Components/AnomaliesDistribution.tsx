@@ -29,7 +29,7 @@ import {
   //@ts-ignore
   EuiStat,
 } from '@elastic/eui';
-import { Chart, Partition, PartitionLayout } from '@elastic/charts';
+import { Chart, Partition, PartitionLayout } from '@elastic/charts/dist/index';
 import { useDispatch } from 'react-redux';
 import { Datum } from '@elastic/charts/dist/utils/commons';
 import React from 'react';
@@ -69,7 +69,7 @@ export const AnomaliesDistributionChart = (
       props.selectedDetectors,
       timeRange,
       dispatch,
-      -1,
+      0,
       MAX_ANOMALIES,
       MAX_DETECTORS
     );
