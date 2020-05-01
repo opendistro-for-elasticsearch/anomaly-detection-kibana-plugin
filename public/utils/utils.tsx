@@ -42,7 +42,7 @@ export const isInvalid = (name: string, form: any) =>
 export const getError = (name: string, form: any) => get(form.errors, name);
 
 export const required = (val: any): string | undefined => {
-  return !val ? 'Required' : undefined;
+  return typeof val !== 'number' && !val ? 'Required' : undefined;
 };
 
 export const requiredNonEmptyArray = (val: any): string | undefined => {
@@ -111,7 +111,7 @@ export const getAlertingMonitorListLink = (): string => {
 export interface Listener {
   onSuccess(): void;
   onException(): void;
-};
+}
 
 const detectorCountFontColor = darkModeEnabled() ? '#98A2B3' : '#535966';
 
@@ -125,10 +125,8 @@ export const getTitleWithCount = (title: string, count: number) => {
         }}
       >
         <p>{title}&nbsp;</p>
-        <p
-          style={{ color: detectorCountFontColor }}
-        >{`(${count})`}</p>
+        <p style={{ color: detectorCountFontColor }}>{`(${count})`}</p>
       </h3>
     </EuiTitle>
   );
-}
+};
