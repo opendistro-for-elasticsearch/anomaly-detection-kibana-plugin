@@ -29,7 +29,7 @@ import {
   //@ts-ignore
   EuiStat,
 } from '@elastic/eui';
-import { Chart, Partition, PartitionLayout } from '@elastic/charts/dist/index';
+import { Chart, Partition, PartitionLayout } from '@elastic/charts';
 import { useDispatch } from 'react-redux';
 import { Datum } from '@elastic/charts/dist/utils/commons';
 import React from 'react';
