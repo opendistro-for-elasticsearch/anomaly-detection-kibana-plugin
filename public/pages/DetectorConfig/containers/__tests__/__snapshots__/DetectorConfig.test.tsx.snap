@@ -357,11 +357,28 @@ exports[`<DetectorConfig /> spec renders the component 1`] = `
         <div
           class="euiFlexItem"
         >
-          <h3
-            class="euiTitle euiTitle--small"
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
           >
-            Features (2)
-          </h3>
+            <div
+              class="euiFlexItem"
+            >
+              <h3
+                class="euiTitle euiTitle--small"
+                style="display: flex;"
+              >
+                <p>
+                  Features
+                   
+                </p>
+                <p
+                  style="color: rgb(83, 89, 102);"
+                >
+                  (2)
+                </p>
+              </h3>
+            </div>
+          </div>
           <div
             class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
           >
@@ -1074,11 +1091,28 @@ exports[`<DetectorConfig /> spec renders the component with 2 custom and 1 simpl
         <div
           class="euiFlexItem"
         >
-          <h3
-            class="euiTitle euiTitle--small"
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
           >
-            Features (3)
-          </h3>
+            <div
+              class="euiFlexItem"
+            >
+              <h3
+                class="euiTitle euiTitle--small"
+                style="display: flex;"
+              >
+                <p>
+                  Features
+                   
+                </p>
+                <p
+                  style="color: rgb(83, 89, 102);"
+                >
+                  (3)
+                </p>
+              </h3>
+            </div>
+          </div>
           <div
             class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
           >
