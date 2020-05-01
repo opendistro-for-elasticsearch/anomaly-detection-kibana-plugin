@@ -241,14 +241,14 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
         // regardless of whether anomaly grade is 0 or larger.
         [
           <EuiFlexGroup>
-            <EuiFlexItem>
+            <EuiFlexItem style={{ minWidth: '200px' }}>
               <EuiStat
                 description={'Last updated time'}
                 title={liveTimeRange.endDateTime.format('MM/DD/YYYY hh:mm A')}
                 titleSize="s"
               />
             </EuiFlexItem>
-            <EuiFlexItem>
+            <EuiFlexItem style={{ minWidth: '310px' }}>
               <EuiStat
                 description={'Detector with most recent anomaly occurrence'}
                 title={
@@ -259,7 +259,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                 titleSize="s"
               />
             </EuiFlexItem>
-            <EuiFlexItem>
+            <EuiFlexItem style={{ minWidth: '185px' }}>
               <EuiStat
                 description={'Most recent anomaly grade'}
                 title={
