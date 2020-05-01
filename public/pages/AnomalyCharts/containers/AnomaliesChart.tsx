@@ -96,6 +96,7 @@ interface AnomaliesChartProps {
   detectorInterval?: number;
   unit?: string;
   monitor?: Monitor;
+  children: React.ReactNode | React.ReactNode[];
 }
 export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
   const dispatch = useDispatch();
@@ -405,6 +406,9 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiFlexGroup>
+        <div style={{ paddingTop: '10px', margin: '0px -20px -30px -20px'}}>
+          {props.children}
+        </div>
       </ContentPanel>
 
       {showAlertsFlyout ? (
