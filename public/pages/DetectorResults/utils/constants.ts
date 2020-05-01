@@ -17,6 +17,7 @@ import {
   SORT_DIRECTION,
   AD_DOC_FIELDS,
 } from '../../../../server/utils/constants';
+import { CHART_COLORS } from '../../AnomalyCharts/utils/constants';
 
 export const DEFAULT_QUERY_PARAMS = {
   from: 0,
@@ -30,3 +31,11 @@ export enum ANOMALY_HISTORY_TABS {
   FEATURE_BREAKDOWN = 'featureBreakdown',
   ANOMALY_OCCURRENCE = 'anomalyOccurrence',
 }
+
+export const LIVE_ANOMALY_CHART_THEME = [
+  {
+    colors: {
+      vizColors: [CHART_COLORS.ANOMALY_GRADE_COLOR],
+    },
+  },
+];
