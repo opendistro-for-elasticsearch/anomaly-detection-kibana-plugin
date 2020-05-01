@@ -228,6 +228,9 @@ export const AnomaliesDistributionChart = (
                     fillLabel: {
                       textInvertible: true,
                     },
+                    linkLabel: {
+                      maxCount: 0,
+                    },
                     // TODO: Given only 1 detector exists, the inside Index circle will have issue in following scenarios:
                     // 1: if Linked Label is configured for identifying index, label of Index circle will be invisible;
                     // 2: if Fill Label is configured for identifying index, label of it will be overlapped with outer Detector circle
