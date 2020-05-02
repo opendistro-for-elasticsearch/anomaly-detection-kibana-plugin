@@ -37,7 +37,7 @@ export const APP_PATH = {
   EDIT_FEATURES: '/detectors/:detectorId/features/',
   DETECTOR_DETAIL: '/detectors/:detectorId/',
 };
-export const PLUGIN_NAME = 'opendistro-anomaly-detection';
+export const PLUGIN_NAME = 'opendistro-anomaly-detection-kibana';
 
 export const ALERTING_PLUGIN_NAME = 'opendistro-alerting';
 
