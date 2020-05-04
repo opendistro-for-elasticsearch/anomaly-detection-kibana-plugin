@@ -30,7 +30,7 @@ import {
   ANOMALY_RESULT_INDEX,
   MAX_ANOMALIES,
 } from '../../../utils/constants';
-import { get, orderBy } from 'lodash';
+import { get, orderBy, isEmpty } from 'lodash';
 import { APIAction } from 'public/redux/middleware/types';
 import { Dispatch } from 'redux';
 import { EuiBasicTableColumn } from '@elastic/eui';
@@ -537,16 +537,21 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
     anomalyData => get(anomalyData, AD_DOC_FIELDS.DATA_START_TIME, ''),
     SORT_DIRECTION.DESC
   );
-
-  const latestDetetorIds = selectLatestDetectorIds(
+  const latestAnomalousDetectorIds = selectLatestAnomalousDetectorIds(
     orderedLiveAnomalyData,
     detectorNum
   );
-
-  const finalLiveAnomalyResult = orderedLiveAnomalyData.filter(anomalyData =>
-    latestDetetorIds.has(get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, ''))
-  );
-  return finalLiveAnomalyResult;
+  if (!isEmpty(latestAnomalousDetectorIds)) {
+    const finalLiveAnomalyResult = orderedLiveAnomalyData.filter(anomalyData =>
+      latestAnomalousDetectorIds.has(
+        get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
+      )
+    );
+    return finalLiveAnomalyResult;
+  }
+  // data to be returned here is the ones with anomaly grade === 0
+  // indicating there exists detector running, but no anomalies
+  return orderedLiveAnomalyData;
 };
 
 const buildDetectorAndIdMap = (
@@ -561,15 +566,17 @@ const buildDetectorAndIdMap = (
   return detectorAndIdMap;
 };
 
-const selectLatestDetectorIds = (
+const selectLatestAnomalousDetectorIds = (
   orderedAnomalyData: object[],
   neededDetectorNum: number
 ): Set<string> => {
-  const uniqueIds = new Set(
-    orderedAnomalyData.map(anomalyData =>
-      get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
-    )
+  const anomalousDetectorIds = new Set(
+    orderedAnomalyData
+      .filter(
+        anomalyData => get(anomalyData, AD_DOC_FIELDS.ANOMALY_GRADE, 0) > 0
+      )
+      .map(anomalyData => get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, ''))
   );
 
-  return new Set(Array.from(uniqueIds).slice(0, neededDetectorNum));
+  return new Set(Array.from(anomalousDetectorIds).slice(0, neededDetectorNum));
 };
