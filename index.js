@@ -21,15 +21,15 @@ import { ADPlugin } from './server/plugin';
 export default kibana => {
   return new kibana.Plugin({
     require: ['kibana', 'elasticsearch'],
-    name: 'opendistro-anomaly-detection',
+    name: 'opendistro-anomaly-detection-kibana',
     uiExports: {
       app: {
         title: 'Open Distro for Elasticsearch Anomaly Detection Kibana plugin',
         description:
           'Open Distro for Elasticsearch Anomaly Detection Kibana plugin',
-        main: 'plugins/opendistro-anomaly-detection/app',
+        main: 'plugins/opendistro-anomaly-detection-kibana/app',
         icon:
-          'plugins/opendistro-anomaly-detection/images/anomaly_detection_icon.svg',
+          'plugins/opendistro-anomaly-detection-kibana/images/anomaly_detection_icon.svg',
       },
       styleSheetPaths: [
         resolve(__dirname, 'public/app.scss'),
