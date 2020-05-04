@@ -35,7 +35,7 @@ export const DetectorInitializationFailure = (
           <EuiIcon type="alert" size="l" color="danger" />
 
           <h2>
-            {`The detector cannot be initialized due to ${props.failureDetail.cause}`}
+            {`The detector is not initialized because ${props.failureDetail.cause}`}
           </h2>
         </div>
       }

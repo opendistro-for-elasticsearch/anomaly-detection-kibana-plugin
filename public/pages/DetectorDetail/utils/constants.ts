@@ -18,61 +18,59 @@ export enum DETECTOR_DETAIL_TABS {
   CONFIGURATIONS = 'configurations',
 }
 
-const DEFAULT_ACTION_ITEM = 'Please restart this detector to retry.';
+const DEFAULT_ACTION_ITEM = 'Restart the detector and try again.';
 // Known causes:
 // https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L174-L185
 export const DETECTOR_INIT_FAILURES = Object.freeze({
   NO_TRAINING_DATA: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L801
     keyword: 'Cannot get training data',
-    cause: 'lack of data ingestion',
+    cause: 'sufficient data is not ingested',
     actionItem:
-      'Please make sure your data ingestion is working. Or increase your detector time interval if data source has infrequent ingestion.',
+      'Make sure your data is ingested correctly. If your data source has infrequent ingestion, increase the detector time interval and try again.',
   },
   COLD_START_ERROR: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L811
     keyword: 'Error while cold start',
-    cause: 'error is found while model initialization',
+    cause: 'of an error during model training',
     actionItem: DEFAULT_ACTION_ITEM,
   },
   AD_MODEL_MEMORY_REACH_LIMIT: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/ml/ModelManager.java#L272
     keyword: 'AD models memory usage exceeds our limit',
-    cause: 'lack of memory for detector models',
-    actionItem:
-      'Model of this detector is too large, please reduce the number of features in this detector.',
+    cause: 'of lack of memory for the detector models',
+    actionItem: 'Reduce the number of features and try again.',
   },
   DETECTOR_MEMORY_REACH_LIMIT: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/ml/ModelManager.java#L783
     keyword: 'Exceeded memory limit',
-    cause: 'lack of memory',
+    cause: 'of lack of memory for the detector',
     actionItem:
-      "Try deleting or stop other detectors that you don't actively use, increase your cluster size, reduce the number of features in this detector, or scale up with an instance type of more memory.",
+      "Remove or stop other detectors that you don't actively use, increase your cluster size, reduce the number of features, or scale up with an instance type of more memory and try again.",
   },
   DATA_INDEX_NOT_FOUND: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L366
     keyword: 'Having trouble querying data: ',
-    cause: 'data index not found',
-    actionItem: 'Please make sure your data index does exist.',
+    cause: 'the data index is not found',
+    actionItem: 'Make sure your index exists and try again.',
   },
   ALL_FEATURES_DISABLED: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L368
     keyword:
       'Having trouble querying data because all of your features have been disabled',
-    cause: 'all features in this detector are disabled',
-    actionItem:
-      'Please enable some of your features and re-start your detector.',
+    cause: 'all detector features are disabled',
+    actionItem: 'Enable one or more features and try again.',
   },
   DETECTOR_UNDEFINED: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L230
     keyword: 'AnomalyDetector is not available',
-    cause: 'your detector is not defined',
-    actionItem: 'Please make sure your detector is defined.',
+    cause: 'the detector is not defined',
+    actionItem: 'Define your detector and try again.',
   },
   UNKNOWN_EXCEPTION: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L438
     keyword: 'We might have bug',
-    cause: 'unknown error',
+    cause: 'of unknown error',
     actionItem: DEFAULT_ACTION_ITEM,
   },
 });

@@ -40,8 +40,7 @@ export const DetectorInitializing = (props: DetectorInitializingProps) => {
             real-time anomalies.
           </p>
           <p>
-            The longer the detector interval is, the longer the initialization
-            will take.
+            The longer the detector interval is, the more time this will take.
           </p>
         </Fragment>
       }
