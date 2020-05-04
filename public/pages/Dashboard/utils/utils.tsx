@@ -537,13 +537,13 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
     anomalyData => get(anomalyData, AD_DOC_FIELDS.DATA_START_TIME, ''),
     SORT_DIRECTION.DESC
   );
-  const latestAnomalousDetetorIds = selectLatestAnomalousDetectorIds(
+  const latestAnomalousDetectorIds = selectLatestAnomalousDetectorIds(
     orderedLiveAnomalyData,
     detectorNum
   );
-  if (!isEmpty(latestAnomalousDetetorIds)) {
+  if (!isEmpty(latestAnomalousDetectorIds)) {
     const finalLiveAnomalyResult = orderedLiveAnomalyData.filter(anomalyData =>
-      latestAnomalousDetetorIds.has(
+      latestAnomalousDetectorIds.has(
         get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
       )
     );
