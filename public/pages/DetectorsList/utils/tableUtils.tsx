@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { EuiIcon, EuiLink, EuiToolTip, EuiHealth, EuiBasicTableColumn } from '@elastic/eui';
+import { EuiLink, EuiToolTip, EuiHealth, EuiBasicTableColumn } from '@elastic/eui';
 //@ts-ignore
 import moment from 'moment';
 import get from 'lodash/get';
@@ -21,10 +21,8 @@ import React from 'react';
 import { Detector } from '../../../models/interfaces';
 import { PLUGIN_NAME, DETECTOR_STATE } from '../../../utils/constants';
 import { stateToColorMap } from '../../utils/constants';
-import { darkModeEnabled } from '../../../utils/kibanaUtils';
 
 export const DEFAULT_EMPTY_DATA = '-';
-const hintColor = darkModeEnabled() ? '#98A2B3' : '#535966';
 const columnStyle = {
   overflow: 'visible',
   whiteSpace: 'normal',
@@ -56,12 +54,6 @@ export const staticColumn = [
       <EuiToolTip content="The name of the detector">
         <span style={columnStyle}>
           Detector{''}
-          <EuiIcon
-            size="s"
-            color={hintColor}
-            type="questionInCircle"
-            className="eui-alignTop"
-          />
         </span>
       </EuiToolTip>
     ),
@@ -82,12 +74,6 @@ export const staticColumn = [
       <EuiToolTip content="The index or index pattern used for the detector">
         <span style={columnStyle}>
           Indices{''}
-          <EuiIcon
-            size="s"
-            color={hintColor}
-            type="questionInCircle"
-            className="eui-alignTop"
-          />
         </span>
       </EuiToolTip>
     ),
@@ -104,12 +90,6 @@ export const staticColumn = [
       <EuiToolTip content="The current state of the detector">
         <span style={columnStyle}>
           Detector state{''}
-          <EuiIcon
-            size="s"
-            color={hintColor}
-            type="questionInCircle"
-            className="eui-alignTop"
-          />
         </span>
       </EuiToolTip>
     ),
@@ -126,12 +106,6 @@ export const staticColumn = [
       <EuiToolTip content="Total anomalies with a grade > 0 in last 24 hours">
         <span style={columnStyle}>
           Anomalies last 24 hours{''}
-          <EuiIcon
-            size="s"
-            color={hintColor}
-            type="questionInCircle"
-            className="eui-alignTop"
-          />
         </span>
       </EuiToolTip>
     ),
@@ -147,12 +121,6 @@ export const staticColumn = [
       <EuiToolTip content="Time of the last active anomaly with a grade > 0">
         <span style={columnStyle}>
           Last anomaly occurrence{''}
-          <EuiIcon
-            size="s"
-            color={hintColor}
-            type="questionInCircle"
-            className="eui-alignTop"
-          />
         </span>
       </EuiToolTip>
     ),
@@ -169,12 +137,6 @@ export const staticColumn = [
       <EuiToolTip content="The time the detector was last updated">
         <span style={columnStyle}>
           Last updated{''}
-          <EuiIcon
-            size="s"
-            color={hintColor}
-            type="questionInCircle"
-            className="eui-alignTop"
-          />
         </span>
       </EuiToolTip>
     ),
