@@ -33,12 +33,12 @@ export const DetectorStopped = (props: DetectorStoppedProps) => {
         <Fragment>
           {props.detector.enabledTime ? (
             <p>
-              The detector is stopped due to your latest update to the detector
-              configuration. Run the detector to see anomalies.
+              The detector is stopped because of an update to the configuration.
+              Run the detector to see anomalies.
             </p>
           ) : (
             <p>
-              The detector is never started. Please start the detector to see
+              The detector is never started. Start the detector to see
               anomalies.
             </p>
           )}
