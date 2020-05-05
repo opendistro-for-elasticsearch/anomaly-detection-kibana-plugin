@@ -40,7 +40,6 @@ export const DashboardHeader = (props: DashboardHeaderProps) => {
             <EuiButton
               fill
               href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-              target="_blank"
               data-test-subj="add_detector"
             >
               Create detector
