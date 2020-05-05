@@ -343,10 +343,7 @@ export const anomalousDetectorsStaticColumn = [
     truncateText: false,
     textOnly: true,
     render: (name: string, detector: Detector) => (
-      <EuiLink
-        href={`${PLUGIN_NAME}#/detectors/${detector.id}/results`}
-        target="_blank"
-      >
+      <EuiLink href={`${PLUGIN_NAME}#/detectors/${detector.id}/results`}>
         {name}
       </EuiLink>
     ),
