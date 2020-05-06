@@ -84,7 +84,7 @@ interface AnomaliesChartProps {
   onZoomRangeChange(startDate: number, endDate: number): void;
   title: string;
   anomalies: any[];
-  atomicAnomalies: boolean;
+  bucketizedAnomalies: boolean;
   anomalySummary: any;
   annotations?: any[];
   dateRange: DateRange;
@@ -124,7 +124,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
     const anomalies = prepareDataForChart(props.anomalies, zoomRange);
     setZoomedAnomalies(anomalies);
     setAnomalySummary(
-      props.atomicAnomalies
+      !props.bucketizedAnomalies
         ? getAnomalySummary(
             filterWithDateRange(props.anomalies, zoomRange, 'plotTime')
           )
@@ -195,7 +195,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
         if (endTime) {
           if (
             !refresh &&
-            props.atomicAnomalies &&
+            !props.bucketizedAnomalies &&
             startTime.valueOf() >= props.dateRange.startDate &&
             endTime.valueOf() <= props.dateRange.endDate
           ) {
@@ -346,7 +346,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                       showLegendDisplayValue={false}
                       legendPosition={Position.Right}
                       onBrushEnd={(start: number, end: number) => {
-                        props.atomicAnomalies
+                        !props.bucketizedAnomalies
                           ? handleZoomRangeChange(start, end)
                           : handleDateRangeChange(start, end);
                         setDatePickerRange({

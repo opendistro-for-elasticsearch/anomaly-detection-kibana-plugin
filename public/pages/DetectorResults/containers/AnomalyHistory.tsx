@@ -36,8 +36,8 @@ import {
   getAnomalyResultsWithDateRange,
   filterWithDateRange,
   getAnomalySummaryQuery,
-  getAnomalyResultsQuery,
-  parseAnomalyResults,
+  getBucketizedAnomalyResultsQuery,
+  parseBucketizedAnomalyResults,
   parseAnomalySummary,
   parsePureAnomalies,
 } from '../../utils/anomalyResultUtils';
@@ -89,7 +89,10 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   >(INITIAL_ANOMALY_SUMMARY);
 
   useEffect(() => {
-    async function getAnomalyResults() {
+    // We load at most 10k AD result data points for one call. If user choose
+    // a big time range which may have more than 10k AD results, will use bucket
+    // aggregation to load data points in whole time range with larger interval.
+    async function getBucketizedAnomalyResults() {
       try {
         setIsLoadingAnomalyResults(true);
         const anomalySummaryResult = await dispatch(
@@ -105,7 +108,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         setBucketizedAnomalySummary(parseAnomalySummary(anomalySummaryResult));
         const result = await dispatch(
           searchES(
-            getAnomalyResultsQuery(
+            getBucketizedAnomalyResultsQuery(
               dateRange.startDate,
               dateRange.endDate,
               1,
@@ -113,7 +116,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
             )
           )
         );
-        setBucketizedAnomalyResults(parseAnomalyResults(result));
+        setBucketizedAnomalyResults(parseBucketizedAnomalyResults(result));
       } catch (err) {
         console.error(
           `Failed to get anomaly results for ${props.detector.id}`,
@@ -130,7 +133,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         MIN_IN_MILLI_SECS *
         MAX_ANOMALIES
     ) {
-      getAnomalyResults();
+      getBucketizedAnomalyResults();
     } else {
       setBucketizedAnomalyResults(undefined);
       getAnomalyResultsWithDateRange(
@@ -222,7 +225,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         onDateRangeChange={handleDateRangeChange}
         onZoomRangeChange={handleZoomChange}
         anomalies={anomalyResults.anomalies}
-        atomicAnomalies={bucketizedAnomalyResults === undefined}
+        bucketizedAnomalies={bucketizedAnomalyResults !== undefined}
         anomalySummary={bucketizedAnomalySummary}
         isLoading={isLoading || isLoadingAnomalyResults}
         anomalyGradeSeriesName="Anomaly grade"

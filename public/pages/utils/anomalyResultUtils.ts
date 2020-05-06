@@ -266,7 +266,7 @@ export const getAnomalySummaryQuery = (
   };
 };
 
-export const getAnomalyResultsQuery = (
+export const getBucketizedAnomalyResultsQuery = (
   startTime: number,
   endTime: number,
   interval: number,
@@ -327,7 +327,7 @@ export const getAnomalyResultsQuery = (
   };
 };
 
-export const parseAnomalyResults = (result: any): Anomalies => {
+export const parseBucketizedAnomalyResults = (result: any): Anomalies => {
   const rawAnomalies = get(
     result,
     'data.response.aggregations.bucketized_anomaly_grade.buckets',
