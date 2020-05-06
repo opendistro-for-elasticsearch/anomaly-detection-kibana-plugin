@@ -119,20 +119,22 @@ export type DetectorListItem = {
 
 export type AnomalyData = {
   anomalyGrade: number;
-  anomalyScore: number;
+  anomalyScore?: number;
   confidence: number;
-  detectorId: string;
+  detectorId?: string;
   endTime: number;
   startTime: number;
+  plotTime?: number;
 };
 
 export type FeatureAggregationData = {
   data: number;
   endTime: number;
   startTime: number;
+  plotTime?: number;
 };
 
-export type AnomalyPreview = {
+export type Anomalies = {
   anomalies: AnomalyData[];
   featureData: { [key: string]: FeatureAggregationData[] };
 };
