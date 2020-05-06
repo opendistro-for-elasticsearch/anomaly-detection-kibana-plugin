@@ -114,13 +114,13 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
           )
         );
         setBucketizedAnomalyResults(parseAnomalyResults(result));
-        setIsLoadingAnomalyResults(false);
       } catch (err) {
-        setIsLoadingAnomalyResults(false);
         console.error(
           `Failed to get anomaly results for ${props.detector.id}`,
           err
         );
+      } finally {
+        setIsLoadingAnomalyResults(false);
       }
     }
 
