@@ -184,7 +184,7 @@ export const filterWithDateRange = (
   return anomalies;
 };
 
-export const RETURNED_AD_RESULT_FILEDS = [
+export const RETURNED_AD_RESULT_FIELDS = [
   'data_start_time',
   'data_end_time',
   'anomaly_grade',
@@ -260,7 +260,7 @@ export const getAnomalySummaryQuery = (
         },
       },
       _source: {
-        includes: RETURNED_AD_RESULT_FILEDS,
+        includes: RETURNED_AD_RESULT_FIELDS,
       },
     },
   };
@@ -315,7 +315,7 @@ export const getAnomalyResultsQuery = (
                   },
                 ],
                 _source: {
-                  includes: RETURNED_AD_RESULT_FILEDS,
+                  includes: RETURNED_AD_RESULT_FIELDS,
                 },
                 size: 1,
               },
