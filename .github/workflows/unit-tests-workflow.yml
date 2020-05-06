@@ -39,10 +39,17 @@ jobs:
         with:
           path: kibana/plugins/anomaly-detection-kibana-plugin
       - name: Bootstrap the plugin
+        continue-on-error: true
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn kbn bootstrap
+      - name: Bootstrap the plugin again
+        if: ${{ always() }}
         run: |
           cd kibana/plugins/anomaly-detection-kibana-plugin
           yarn kbn bootstrap
       - name: Run tests
+        if: ${{ always() }}
         run: |
           cd kibana/plugins/anomaly-detection-kibana-plugin
           yarn run test:jest
