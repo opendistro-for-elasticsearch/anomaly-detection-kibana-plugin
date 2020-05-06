@@ -64,7 +64,7 @@ describe('<DetectorDetail /> spec', () => {
     jest.clearAllMocks();
   });
   describe('detector detail', () => {
-    test('renders detector detail component', () => {
+    test.skip('renders detector detail component', () => {
       const { container } = renderWithRouter(detectorId);
       expect(container).toMatchSnapshot();
     });
