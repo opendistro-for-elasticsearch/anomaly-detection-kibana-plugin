@@ -30,6 +30,7 @@ import { ListControls } from '../components/ListControls/ListControls';
 import { DetectorResultsQueryParams } from 'server/models/types';
 import { AnomalyData } from '../../../models/interfaces';
 import { getTitleWithCount } from '../../../utils/utils';
+import { toFixedNumber } from '../../../../server/utils/helpers';
 
 interface AnomalyResultsTableProps {
   anomalies: AnomalyData[];
@@ -68,7 +69,13 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
 
   useEffect(() => {
     const anomalies = props.anomalies
-      ? props.anomalies.filter(anomaly => anomaly.anomalyGrade > 0)
+      ? props.anomalies.filter(anomaly => anomaly.anomalyGrade > 0).map(anomaly => {
+        return {
+          ...anomaly,
+          anomalyGrade: toFixedNumber(anomaly.anomalyGrade),
+          confidence: toFixedNumber(anomaly.confidence),
+        }
+      })
       : [];
 
     anomalies.sort(

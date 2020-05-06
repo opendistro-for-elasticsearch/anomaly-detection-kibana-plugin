@@ -20,13 +20,13 @@ import {
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
-import { AnomalyPreview } from '../../models/interfaces';
+import { Anomalies } from '../../models/interfaces';
 
 const PREVIEW_DETECTOR = 'ad/PREVIEW_DETECTOR';
 
 export interface Anomalies {
   requesting: boolean;
-  anomaliesResult: AnomalyPreview;
+  anomaliesResult: Anomalies;
   errorMessage: string;
 }
 export const initialDetectorsState: Anomalies = {

@@ -20,7 +20,7 @@ import { FeatureChart } from '../components/FeatureChart/FeatureChart';
 import {
   Detector,
   FeatureAttributes,
-  AnomalyPreview,
+  Anomalies,
   DateRange,
   FEATURE_TYPE,
 } from '../../../models/interfaces';
@@ -30,7 +30,7 @@ import { focusOnFeatureAccordion } from '../../EditFeatures/utils/helpers';
 interface FeatureBreakDownProps {
   title?: string;
   detector: Detector;
-  anomaliesResult: AnomalyPreview;
+  anomaliesResult: Anomalies;
   annotations: any[];
   isLoading: boolean;
   dateRange: DateRange;

@@ -21,9 +21,8 @@ import {
   EuiSpacer,
   EuiCallOut,
   EuiButton,
-  EuiEmptyPrompt,
 } from '@elastic/eui';
-import { get, isEmpty } from 'lodash';
+import { get } from 'lodash';
 import React, { useEffect, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';

@@ -106,11 +106,12 @@ const findLatestAnomaly = (anomalies: any[]) => {
   return latestAnomaly;
 };
 
-export const getAnomalySummary = (anomalies: any[]): AnomalySummary => {
+export const getAnomalySummary = (totalAnomalies: any[]): AnomalySummary => {
   let minConfidence = 1.0,
     maxConfidence = 0.0;
   let minAnomalyGrade = 1.0,
     maxAnomalyGrade = 0.0;
+  const anomalies = totalAnomalies.filter(anomaly => anomaly.anomalyGrade>0)
   const targetAnomalies = anomalies.filter(anomaly => {
     if (anomaly.anomalyGrade < minAnomalyGrade) {
       minAnomalyGrade = anomaly.anomalyGrade;
