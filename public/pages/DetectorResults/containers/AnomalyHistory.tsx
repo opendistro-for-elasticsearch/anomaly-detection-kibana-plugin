@@ -29,10 +29,17 @@ import {
   Detector,
   Monitor,
   DateRange,
+  AnomalySummary,
+  Anomalies,
 } from '../../../models/interfaces';
 import {
   getAnomalyResultsWithDateRange,
   filterWithDateRange,
+  getAnomalySummaryQuery,
+  getAnomalyResultsQuery,
+  parseAnomalyResults,
+  parseAnomalySummary,
+  parsePureAnomalies,
 } from '../../utils/anomalyResultUtils';
 import { get } from 'lodash';
 import { AnomalyResultsTable } from './AnomalyResultsTable';
@@ -40,6 +47,10 @@ import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
 import { FeatureBreakDown } from '../../AnomalyCharts/containers/FeatureBreakDown';
 import { minuteDateFormatter } from '../../utils/helpers';
 import { ANOMALY_HISTORY_TABS } from '../utils/constants';
+import { searchES } from '../../../redux/reducers/elasticsearch';
+import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
+import { INITIAL_ANOMALY_SUMMARY } from '../../AnomalyCharts/utils/constants';
+import { MAX_ANOMALIES } from '../../../utils/constants';
 
 interface AnomalyHistoryProps {
   detector: Detector;
@@ -66,16 +77,78 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     ANOMALY_HISTORY_TABS.FEATURE_BREAKDOWN
   );
 
+  const [isLoadingAnomalyResults, setIsLoadingAnomalyResults] = useState<
+    boolean
+  >(false);
+  const [bucketizedAnomalyResults, setBucketizedAnomalyResults] = useState<
+    Anomalies
+  >();
+  const [pureAnomalies, setPureAnomalies] = useState<AnomalyData[]>([]);
+  const [bucketizedAnomalySummary, setBucketizedAnomalySummary] = useState<
+    AnomalySummary
+  >(INITIAL_ANOMALY_SUMMARY);
+
   useEffect(() => {
-    getAnomalyResultsWithDateRange(
-      dispatch,
-      dateRange.startDate,
-      dateRange.endDate,
-      props.detector.id
-    );
+    async function getAnomalyResults() {
+      try {
+        setIsLoadingAnomalyResults(true);
+        const anomalySummaryResult = await dispatch(
+          searchES(
+            getAnomalySummaryQuery(
+              dateRange.startDate,
+              dateRange.endDate,
+              props.detector.id
+            )
+          )
+        );
+        setPureAnomalies(parsePureAnomalies(anomalySummaryResult));
+        setBucketizedAnomalySummary(parseAnomalySummary(anomalySummaryResult));
+        const result = await dispatch(
+          searchES(
+            getAnomalyResultsQuery(
+              dateRange.startDate,
+              dateRange.endDate,
+              1,
+              props.detector.id
+            )
+          )
+        );
+        setBucketizedAnomalyResults(parseAnomalyResults(result));
+        setIsLoadingAnomalyResults(false);
+      } catch (err) {
+        setIsLoadingAnomalyResults(false);
+        console.error(
+          `Failed to get anomaly results for ${props.detector.id}`,
+          err
+        );
+      }
+    }
+
+    if (
+      dateRange.endDate - dateRange.startDate >
+      get(props.detector, 'detectionInterval.period.interval', 1) *
+        MIN_IN_MILLI_SECS *
+        MAX_ANOMALIES
+    ) {
+      getAnomalyResults();
+    } else {
+      setBucketizedAnomalyResults(undefined);
+      getAnomalyResultsWithDateRange(
+        dispatch,
+        dateRange.startDate,
+        dateRange.endDate,
+        props.detector.id
+      );
+    }
   }, [dateRange]);
 
-  const anomalyResults = useSelector((state: AppState) => state.anomalyResults);
+  const atomicAnomalyResults = useSelector(
+    (state: AppState) => state.anomalyResults
+  );
+
+  const anomalyResults = bucketizedAnomalyResults
+    ? bucketizedAnomalyResults
+    : atomicAnomalyResults;
 
   const handleDateRangeChange = useCallback(
     (startDate: number, endDate: number, dateRangeOption?: string) => {
@@ -94,20 +167,22 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     });
   }, []);
 
-  const annotations = get(anomalyResults, 'anomalies', [])
-    //@ts-ignore
-    .filter((anomaly: AnomalyData) => anomaly.anomalyGrade > 0)
-    .map((anomaly: AnomalyData) => ({
-      coordinates: {
-        x0: anomaly.startTime,
-        x1: anomaly.endTime,
-      },
-      details: `There is an anomaly with confidence ${
-        anomaly.confidence
-      } between ${minuteDateFormatter(
-        anomaly.startTime
-      )} and ${minuteDateFormatter(anomaly.endTime)}`,
-    }));
+  const annotations = anomalyResults
+    ? get(anomalyResults, 'anomalies', [])
+        //@ts-ignore
+        .filter((anomaly: AnomalyData) => anomaly.anomalyGrade > 0)
+        .map((anomaly: AnomalyData) => ({
+          coordinates: {
+            x0: anomaly.startTime,
+            x1: anomaly.endTime,
+          },
+          details: `There is an anomaly with confidence ${
+            anomaly.confidence
+          } between ${minuteDateFormatter(
+            anomaly.startTime
+          )} and ${minuteDateFormatter(anomaly.endTime)}`,
+        }))
+    : [];
 
   const tabs = [
     {
@@ -147,7 +222,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         onDateRangeChange={handleDateRangeChange}
         onZoomRangeChange={handleZoomChange}
         anomalies={anomalyResults.anomalies}
-        isLoading={isLoading}
+        atomicAnomalies={bucketizedAnomalyResults === undefined}
+        anomalySummary={bucketizedAnomalySummary}
+        isLoading={isLoading || isLoadingAnomalyResults}
         anomalyGradeSeriesName="Anomaly grade"
         confidenceSeriesName="Confidence"
         showAlerts={true}
@@ -163,7 +240,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
       >
         <EuiTabs>{renderTabs()}</EuiTabs>
 
-        {isLoading ? (
+        {isLoading || isLoadingAnomalyResults ? (
           <EuiFlexGroup
             justifyContent="spaceAround"
             style={{ height: '200px', paddingTop: '100px' }}
@@ -186,11 +263,15 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
               />
             ) : (
               <AnomalyResultsTable
-                anomalies={filterWithDateRange(
-                  anomalyResults.anomalies,
-                  zoomRange,
-                  'plotTime'
-                )}
+                anomalies={
+                  bucketizedAnomalyResults === undefined
+                    ? filterWithDateRange(
+                        anomalyResults.anomalies,
+                        zoomRange,
+                        'plotTime'
+                      )
+                    : pureAnomalies
+                }
               />
             )}
           </div>

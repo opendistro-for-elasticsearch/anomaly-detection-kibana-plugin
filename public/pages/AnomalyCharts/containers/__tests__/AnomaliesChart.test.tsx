@@ -46,7 +46,7 @@ const renderDataFilter = () => ({
           dataTypes: {
             keyword: ['cityName.keyword'],
             integer: ['age'],
-            text: ['cityName'],
+            text: ['cityName'], 
           },
         },
       })}
@@ -56,6 +56,8 @@ const renderDataFilter = () => ({
         onZoomRangeChange={jest.fn()}
         title="test"
         anomalies={anomalies}
+        atomicAnomalies={true}
+        anomalySummary={undefined}
         dateRange={dateRange}
         isLoading={false}
         anomalyGradeSeriesName="anoaly grade"
