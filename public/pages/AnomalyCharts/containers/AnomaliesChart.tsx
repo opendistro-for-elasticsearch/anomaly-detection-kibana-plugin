@@ -84,6 +84,8 @@ interface AnomaliesChartProps {
   onZoomRangeChange(startDate: number, endDate: number): void;
   title: string;
   anomalies: any[];
+  bucketizedAnomalies: boolean;
+  anomalySummary: any;
   annotations?: any[];
   dateRange: DateRange;
   isLoading: boolean;
@@ -122,9 +124,11 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
     const anomalies = prepareDataForChart(props.anomalies, zoomRange);
     setZoomedAnomalies(anomalies);
     setAnomalySummary(
-      getAnomalySummary(
-        filterWithDateRange(props.anomalies, zoomRange, 'plotTime')
-      )
+      !props.bucketizedAnomalies
+        ? getAnomalySummary(
+            filterWithDateRange(props.anomalies, zoomRange, 'plotTime')
+          )
+        : props.anomalySummary
     );
     setTotalAlerts(filterWithDateRange(alerts, zoomRange, 'startTime').length);
   }, [props.anomalies, zoomRange]);
@@ -191,6 +195,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
         if (endTime) {
           if (
             !refresh &&
+            !props.bucketizedAnomalies &&
             startTime.valueOf() >= props.dateRange.startDate &&
             endTime.valueOf() <= props.dateRange.endDate
           ) {
@@ -341,7 +346,9 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                       showLegendDisplayValue={false}
                       legendPosition={Position.Right}
                       onBrushEnd={(start: number, end: number) => {
-                        handleZoomRangeChange(start, end);
+                        !props.bucketizedAnomalies
+                          ? handleZoomRangeChange(start, end)
+                          : handleDateRangeChange(start, end);
                         setDatePickerRange({
                           start: moment(start).format(),
                           end: moment(end).format(),
@@ -406,7 +413,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiFlexGroup>
-        <div style={{ paddingTop: '10px', margin: '0px -20px -30px -20px'}}>
+        <div style={{ paddingTop: '10px', margin: '0px -20px -30px -20px' }}>
           {props.children}
         </div>
       </ContentPanel>
