@@ -52,6 +52,7 @@ import {
 } from '../../AnomalyCharts/utils/constants';
 import { getFloorPlotTime } from '../../../../server/utils/helpers';
 import { LIVE_ANOMALY_CHART_THEME } from '../utils/constants';
+import { DETECTOR_STATE } from '../../../utils/constants';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
@@ -94,7 +95,7 @@ export const AnomalyResultsLiveChart = (
   ]);
 
   useEffect(() => {
-    if (props.detector.enabled) {
+    if (props.detector.curState === DETECTOR_STATE.RUNNING) {
       getLiveAnomalyResults(
         dispatch,
         props.detector.id,
@@ -156,7 +157,7 @@ export const AnomalyResultsLiveChart = (
       iconType={isFullScreen ? 'exit' : 'fullScreen'}
       aria-label="View full screen"
     >
-      {isFullScreen ? 'Exit fullscreen' : 'View fullscreen'}
+      {isFullScreen ? 'Exit full screen' : 'View full screen'}
     </EuiButton>
   );
 
@@ -167,17 +168,27 @@ export const AnomalyResultsLiveChart = (
           <EuiTitle size="s">
             <h3>
               Live anomalies{' '}
-              <EuiBadge color={props.detector.enabled ? '#DB1374' : '#DDD'}>
+              <EuiBadge
+                color={
+                  props.detector.curState === DETECTOR_STATE.RUNNING
+                    ? '#DB1374'
+                    : '#DDD'
+                }
+              >
                 Live
               </EuiBadge>
             </h3>
           </EuiTitle>
         }
-        subTitle={props.detector.enabled ? liveAnomaliesDescription() : null}
+        subTitle={
+          props.detector.curState === DETECTOR_STATE.RUNNING
+            ? liveAnomaliesDescription()
+            : null
+        }
         actions={[fullScreenButton()]}
         contentPanelClassName={isFullScreen ? 'full-screen' : undefined}
       >
-        {props.detector.enabled ? (
+        {props.detector.curState === DETECTOR_STATE.RUNNING ? (
           <EuiFlexGroup
             justifyContent="spaceBetween"
             style={{
@@ -269,7 +280,7 @@ export const AnomalyResultsLiveChart = (
             </EuiFlexItem>
           </EuiFlexGroup>
         ) : (
-          <EuiText>Not available when the detector is stopped.</EuiText>
+          <EuiText>{`Not available when the detector is ${props.detector.curState.toLowerCase()}.`}</EuiText>
         )}
       </ContentPanel>
     </React.Fragment>

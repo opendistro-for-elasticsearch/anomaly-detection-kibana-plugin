@@ -44,7 +44,6 @@ export const DetectorStateDetails = (props: DetectorStateDetailsProp) => {
     case DETECTOR_STATE.DISABLED:
       return (
         <DetectorStopped
-          detector={detector}
           onStartDetector={props.onStartDetector}
           onSwitchToConfiguration={props.onSwitchToConfiguration}
         />
