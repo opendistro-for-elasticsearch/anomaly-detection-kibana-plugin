@@ -13,34 +13,44 @@
  * permissions and limitations under the License.
  */
 
-import { Detector } from '../../../models/interfaces';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MetaData } from './MetaData';
 import { Features } from './Features';
 import { EuiSpacer, EuiPage, EuiPageBody } from '@elastic/eui';
 import { RouteComponentProps } from 'react-router';
+import { AppState } from '../../../redux/reducers';
+import { useSelector, useDispatch } from 'react-redux';
+import { getDetector } from '../../../redux/reducers/ad';
 
 interface DetectorConfigProps extends RouteComponentProps {
   detectorId: string;
-  detector: Detector;
   onEditFeatures(): void;
   onEditDetector(): void;
 }
 
 export const DetectorConfig = (props: DetectorConfigProps) => {
+  const dispatch = useDispatch();
+  const detector = useSelector(
+    (state: AppState) => state.ad.detectors[props.detectorId]
+  );
+
+  useEffect(() => {
+    dispatch(getDetector(props.detectorId));
+  }, []);
+
   return (
     <EuiPage style={{ marginTop: '16px', paddingTop: '0px' }}>
       <EuiPageBody>
         <EuiSpacer size="l" />
         <MetaData
           detectorId={props.detectorId}
-          detector={props.detector}
+          detector={detector}
           onEditDetector={props.onEditDetector}
         />
         <EuiSpacer />
         <Features
           detectorId={props.detectorId}
-          detector={props.detector}
+          detector={detector}
           onEditFeatures={props.onEditFeatures}
         />
       </EuiPageBody>
