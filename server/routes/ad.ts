@@ -104,7 +104,7 @@ const previewDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - previewDetector', err);
-    return { ok: false, error: err.message };
+    return { ok: false, error: err };
   }
 };
 
