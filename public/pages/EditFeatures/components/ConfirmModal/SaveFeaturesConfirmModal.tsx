@@ -57,7 +57,7 @@ export function SaveFeaturesConfirmModal(props: SaveFeaturesConfirmModalProps) {
         <EuiText>
           <p>
             The detector is currently stopped. To receive accurate and real-time
-            anomalies, the detector need to collect sufficient data to
+            anomalies, the detector needs to collect sufficient data to
             include your latest change. The earlier the detector starts running,
             the sooner the anomalies will be available.
           </p>
