@@ -460,7 +460,6 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
             <DetectorConfig
               {...props}
               detectorId={detectorId}
-              // detector={detector}
               onEditFeatures={handleEditFeature}
               onEditDetector={handleEditDetector}
             />
