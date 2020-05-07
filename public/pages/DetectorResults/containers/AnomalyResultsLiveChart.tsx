@@ -157,7 +157,7 @@ export const AnomalyResultsLiveChart = (
       iconType={isFullScreen ? 'exit' : 'fullScreen'}
       aria-label="View full screen"
     >
-      {isFullScreen ? 'Exit fullscreen' : 'View fullscreen'}
+      {isFullScreen ? 'Exit full screen' : 'View full screen'}
     </EuiButton>
   );
 
