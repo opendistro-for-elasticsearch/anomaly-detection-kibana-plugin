@@ -16,10 +16,8 @@
 import React from 'react';
 import { EuiButton, EuiEmptyPrompt } from '@elastic/eui';
 import { Fragment } from 'react';
-import { Detector } from '../../../../models/interfaces';
 
 export interface DetectorStoppedProps {
-  detector: Detector;
   onStartDetector(): void;
   onSwitchToConfiguration(): void;
 }
@@ -31,17 +29,9 @@ export const DetectorStopped = (props: DetectorStoppedProps) => {
       title={<h2>The detector is stopped</h2>}
       body={
         <Fragment>
-          {props.detector.enabledTime ? (
-            <p>
-              The detector is stopped because of an update to the configuration.
-              Run the detector to see anomalies.
-            </p>
-          ) : (
-            <p>
-              The detector is never started. Start the detector to see
-              anomalies.
-            </p>
-          )}
+          <p>
+            The detector is not started. Start the detector to see anomalies.
+          </p>
         </Fragment>
       }
       actions={[
@@ -52,12 +42,12 @@ export const DetectorStopped = (props: DetectorStoppedProps) => {
           View detector configuration
         </EuiButton>,
         <EuiButton
-          fill={!props.detector.enabledTime}
+          fill
           onClick={props.onStartDetector}
           iconType={'play'}
           style={{ width: '250px' }}
         >
-          {props.detector.enabledTime ? 'Restart detector' : 'Start detector'}
+          Start detector
         </EuiButton>,
       ]}
     />
