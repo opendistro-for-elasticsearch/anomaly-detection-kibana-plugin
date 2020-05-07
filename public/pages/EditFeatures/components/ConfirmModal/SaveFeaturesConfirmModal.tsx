@@ -56,10 +56,10 @@ export function SaveFeaturesConfirmModal(props: SaveFeaturesConfirmModalProps) {
       <EuiFlexItem grow={false}>
         <EuiText>
           <p>
-            The detector is currently stopped. To receive accurate and real-time
-            anomalies, the detector needs to collect sufficient data to
-            include your latest change. The earlier the detector starts running,
-            the sooner the anomalies will be available.
+            The detector is currently stopped. To find accurate and real-time
+            anomalies, the detector needs to collect sufficient data to include
+            your latest change. The earlier you start the detector, the sooner
+            the anomalies will be available.
           </p>
         </EuiText>
       </EuiFlexItem>
