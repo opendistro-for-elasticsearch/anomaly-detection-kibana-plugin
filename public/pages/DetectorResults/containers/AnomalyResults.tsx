@@ -56,6 +56,27 @@ export function AnomalyResults(props: AnomalyResultsProps) {
 
   const monitors = useSelector((state: AppState) => state.alerting.monitors);
   const monitor = get(monitors, `${detectorId}.0`);
+
+  const isDetectorRunning =
+    detector && detector.curState === DETECTOR_STATE.RUNNING;
+
+  const isDetectorPaused =
+    detector &&
+    detector.curState === DETECTOR_STATE.DISABLED &&
+    !detector.enabled &&
+    detector.enabledTime &&
+    detector.disabledTime;
+
+  const isDetectorUpdated =
+    // @ts-ignore
+    isDetectorPaused && detector.lastUpdateTime > detector.disabledTime;
+
+  const isDetectorInitializingAgain =
+    detector &&
+    detector.curState === DETECTOR_STATE.INIT &&
+    detector.enabled &&
+    detector.disabledTime;
+
   return (
     <Fragment>
       <EuiPage style={{ marginTop: '16px', paddingTop: '0px' }}>
@@ -63,26 +84,50 @@ export function AnomalyResults(props: AnomalyResultsProps) {
           <EuiSpacer size="l" />
           {
             <Fragment>
-              {detector && detector.curState === DETECTOR_STATE.RUNNING ? (
+              {isDetectorRunning ||
+              isDetectorPaused ||
+              isDetectorInitializingAgain ? (
                 <Fragment>
-                  {!detector.enabled &&
-                  detector.disabledTime &&
-                  detector.lastUpdateTime > detector.disabledTime ? (
+                  {isDetectorUpdated || isDetectorInitializingAgain ? (
                     <EuiCallOut
-                      title="There are change(s) to the detector configuration after the detector is stopped."
+                      title={
+                        isDetectorUpdated
+                          ? 'There are change(s) to the detector configuration after the detector is stopped.'
+                          : 'The detector is being re-initialized based on the latest configuration changes.'
+                      }
                       color="warning"
                       iconType="alert"
+                      style={{ marginBottom: '20px' }}
                     >
-                      <p>
-                        Restart the detector to see accurate anomalies based on
-                        your latest configuration.
-                      </p>
+                      {isDetectorUpdated ? (
+                        <p>
+                          Restart the detector to see accurate anomalies based
+                          on your latest configuration.
+                        </p>
+                      ) : (
+                        <p>
+                          After the initialization is complete, you will see the
+                          anomaly results based on your latest configuration
+                          changes.
+                        </p>
+                      )}
                       <EuiButton
                         onClick={props.onSwitchToConfiguration}
                         color="warning"
+                        style={{ marginRight: '8px' }}
                       >
                         View detector configuration
                       </EuiButton>
+                      {isDetectorUpdated ? (
+                        <EuiButton
+                          color="warning"
+                          onClick={props.onStartDetector}
+                          iconType={'play'}
+                          style={{ marginLeft: '8px' }}
+                        >
+                          Restart detector
+                        </EuiButton>
+                      ) : null}
                     </EuiCallOut>
                   ) : null}
                   <AnomalyResultsLiveChart detector={detector} />
