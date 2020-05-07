@@ -89,8 +89,8 @@ interface DetectorDetailModel {
 export const DetectorDetail = (props: DetectorDetailProps) => {
   const dispatch = useDispatch();
   const detectorId = get(props, 'match.params.detectorId', '') as string;
-  const { monitor, fetchMonitorError } = useFetchMonitorInfo(detectorId);
   const { detector, hasError } = useFetchDetectorInfo(detectorId);
+  const { monitor, fetchMonitorError } = useFetchMonitorInfo(detectorId);
 
   //TODO: test dark mode once detector configuration and AD result page merged
   const isDark = darkModeEnabled();
@@ -460,7 +460,6 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
             <DetectorConfig
               {...props}
               detectorId={detectorId}
-              detector={detector}
               onEditFeatures={handleEditFeature}
               onEditDetector={handleEditDetector}
             />
