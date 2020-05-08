@@ -110,8 +110,8 @@ const sampleMaxAnomalyGrade = (anomalies: any[]): any[] => {
 export const prepareDataForChart = (
   data: any[],
   dateRange: DateRange,
-  interval?: number,
-  getFloorPlotTime?: any
+  interval: number = 1,
+  getFloorPlotTime?: any,
 ) => {
   if (!data || data.length === 0) {
     return [];
@@ -124,31 +124,41 @@ export const prepareDataForChart = (
   if (anomalies.length > MAX_DATA_POINTS) {
     anomalies = sampleMaxAnomalyGrade(anomalies);
   }
-
-  anomalies.push({
-    startTime: dateRange.startDate,
-    endTime: dateRange.startDate,
-    plotTime: interval
-      ? dateRange.startDate - MIN_IN_MILLI_SECS * interval
-      : dateRange.startDate,
-    confidence: null,
-    anomalyGrade: null,
-  });
-  anomalies.unshift({
-    startTime: dateRange.endDate,
-    endTime: dateRange.endDate,
-    plotTime: interval
-      ? dateRange.endDate + MIN_IN_MILLI_SECS * interval
-      : dateRange.endDate,
-    confidence: null,
-    anomalyGrade: null,
-  });
-  if (getFloorPlotTime) {
+  if (getFloorPlotTime) { // we need to get floor plot time for bar chart
     anomalies = anomalies.map(anomaly => {
       return {
         ...anomaly,
         plotTime: getFloorPlotTime(anomaly.plotTime),
       };
+    });
+    anomalies.push({
+      startTime: dateRange.startDate,
+      endTime: dateRange.startDate,
+      plotTime: anomalies[anomalies.length - 1].plotTime - MIN_IN_MILLI_SECS * interval,
+      confidence: null,
+      anomalyGrade: null,
+    });
+    anomalies.unshift({
+      startTime: dateRange.endDate,
+      endTime: dateRange.endDate,
+      plotTime: anomalies[0].plotTime + MIN_IN_MILLI_SECS * interval,
+      confidence: null,
+      anomalyGrade: null,
+    });
+  } else {
+    anomalies.push({
+      startTime: dateRange.startDate,
+      endTime: dateRange.startDate,
+      plotTime: dateRange.startDate,
+      confidence: null,
+      anomalyGrade: null,
+    });
+    anomalies.unshift({
+      startTime: dateRange.endDate,
+      endTime: dateRange.endDate,
+      plotTime: dateRange.endDate,
+      confidence: null,
+      anomalyGrade: null,
     });
   }
   return anomalies;
