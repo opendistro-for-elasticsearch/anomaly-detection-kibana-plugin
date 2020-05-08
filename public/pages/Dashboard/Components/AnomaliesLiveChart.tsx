@@ -91,16 +91,29 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
 
   const getLiveAnomalyResults = async () => {
     setIsLoadingAnomalies(true);
-    const latestLiveAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
+    // check if there is any anomaly result in last 30mins
+    const latestSingleLiveAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
       searchES,
       props.selectedDetectors,
       '30m',
       dispatch,
       -1,
+      1,
+      MAX_LIVE_DETECTORS
+    );
+
+    setHasLatestAnomalyResult(!isEmpty(latestSingleLiveAnomalyResult));
+
+    // get anomalies(anomaly_grade>0) in last 30mins
+    const latestLiveAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
+      searchES,
+      props.selectedDetectors,
+      '30m',
+      dispatch,
+      0,
       MAX_ANOMALIES,
       MAX_LIVE_DETECTORS
     );
-    setHasLatestAnomalyResult(!isEmpty(latestLiveAnomalyResult));
 
     const nonZeroAnomalyResult = latestLiveAnomalyResult.filter(
       anomalyData => get(anomalyData, AD_DOC_FIELDS.ANOMALY_GRADE, 0) > 0
