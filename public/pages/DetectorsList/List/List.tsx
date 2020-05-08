@@ -168,6 +168,7 @@ export const DetectorList = (props: ListProps) => {
     const searchText = e.target.value;
     setState({
       ...state,
+      page: 0,
       queryParams: {
         ...state.queryParams,
         search: searchText,
@@ -181,6 +182,10 @@ export const DetectorList = (props: ListProps) => {
       const sanitizedQuery = sanitizeSearchText(searchValue);
       setIndexQuery(sanitizedQuery);
       await dispatch(getPrioritizedIndices(sanitizedQuery));
+      setState(state => ({
+        ...state,
+        page: 0,
+      }));
     }
   }, 300);
 
@@ -195,6 +200,7 @@ export const DetectorList = (props: ListProps) => {
         : options.map(option => option.label as DETECTOR_STATE);
     setState(state => ({
       ...state,
+      page: 0,
       selectedDetectorStates: states,
     }));
   };
@@ -209,6 +215,7 @@ export const DetectorList = (props: ListProps) => {
 
     setState({
       ...state,
+      page: 0,
       selectedIndices: indices,
     });
   };
@@ -234,8 +241,6 @@ export const DetectorList = (props: ListProps) => {
     state.selectedDetectorStates,
     state.queryParams.sortField,
     state.queryParams.sortDirection,
-    state.queryParams.size,
-    state.page
   );
 
   // get detectors to display based on this page
