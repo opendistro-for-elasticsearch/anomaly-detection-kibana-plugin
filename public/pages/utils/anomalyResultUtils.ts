@@ -142,6 +142,7 @@ export const prepareDataForChart = (
         : getFloorPlotTime(dateRange.endDate);
 
     while (endTime < dateRange.endDate) {
+      // make sure the end of plot time is big enough to cover NOW annotation, which is at dateRange.endDate
       endTime += MIN_IN_MILLI_SECS * interval;
     }
     if (anomalies.length === 0) {
