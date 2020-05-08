@@ -41,10 +41,10 @@ export const useFetchDetectorInfo = (
   const selectedIndices = get(detector, 'indices.0', '');
   useEffect(() => {
     const fetchDetector = async () => {
-      if (!detector && !isDetectorRequesting) {
+      if (!detector) {
         await dispatch(getDetector(detectorId));
       }
-      if (selectedIndices && !isIndicesRequesting) {
+      if (selectedIndices) {
         await dispatch(getMappings(selectedIndices));
       }
     };
