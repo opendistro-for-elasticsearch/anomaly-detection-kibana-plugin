@@ -50,22 +50,36 @@ import { toString } from '../MetaData';
 import { DATA_TYPES } from '../../../../utils/constants';
 import { OPERATORS_MAP } from '../../../createDetector/components/DataFilters/utils/constant';
 import { displayText } from '../../../createDetector/components/DataFilters/utils/helpers';
+import { mockedStore, initialState } from '../../../../redux/utils/testUtils';
 
 const renderWithRouter = (detector: Detector) => ({
   ...render(
-    <Router>
-      <Switch>
-        <Route
-          render={(props: RouteComponentProps) => (
-            <DetectorConfig
-              detector={detector}
-              detectorId={detector.id}
-              {...props}
-            />
-          )}
-        />
-      </Switch>
-    </Router>
+    <Provider
+      store={mockedStore({
+        ...initialState,
+        ad: {
+          ...initialState.ad,
+          detectors: {
+            [detector.id]: detector,
+          },
+        },
+      })}
+    >
+      <Router>
+        <Switch>
+          <Route
+            render={(props: RouteComponentProps) => (
+              <DetectorConfig
+                detectorId={detector.id}
+                onEditDetector={jest.fn()}
+                onEditFeatures={jest.fn()}
+                {...props}
+              />
+            )}
+          />
+        </Switch>
+      </Router>
+    </Provider>
   ),
 });
 
@@ -229,7 +243,10 @@ describe('<DetectorConfig /> spec', () => {
   });
 
   describe('test 1 simple feature enabled/disabled', () => {
-    test.each([[true, 'Enabled'], [false, 'Disabled']])(
+    test.each([
+      [true, 'Enabled'],
+      [false, 'Disabled'],
+    ])(
       'renders 1 simple feature enabled/disabled',
       async (enabledInDef, enabledInRender) => {
         const randomDetector = {
