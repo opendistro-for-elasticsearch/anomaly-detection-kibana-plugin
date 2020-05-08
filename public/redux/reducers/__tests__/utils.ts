@@ -10,6 +10,7 @@ import {
   Monitor,
 } from '../../../models/interfaces';
 import moment from 'moment';
+import { DETECTOR_STATE } from '../../../utils/constants';
 
 const detectorFaker = new chance('seed');
 
@@ -103,10 +104,15 @@ export const getRandomDetector = (isCreate: boolean = true): Detector => {
     disabledTime: moment(1586823218000)
       .subtract(1, 'days')
       .valueOf(),
+    curState: DETECTOR_STATE.INIT,
+    initializationError: '',
   };
 };
 
-export const getRandomMonitor = (detectorId: string, enabled: boolean = true): Monitor => {
+export const getRandomMonitor = (
+  detectorId: string,
+  enabled: boolean = true
+): Monitor => {
   return {
     id: detectorFaker.guid().slice(0, 20),
     name: detectorFaker.word({ length: 10 }),

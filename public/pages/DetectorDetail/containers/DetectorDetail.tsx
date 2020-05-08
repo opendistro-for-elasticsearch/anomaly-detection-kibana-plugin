@@ -291,7 +291,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                         ? `Stopped at ${moment(detector.disabledTime).format(
                             'MM/DD/YY h:mm A'
                           )}`
-                        : 'Detector is not started'
+                        : 'Detector is stopped'
                       : 'Feature required to start the detector'}
                   </EuiHealth>
                 )}
