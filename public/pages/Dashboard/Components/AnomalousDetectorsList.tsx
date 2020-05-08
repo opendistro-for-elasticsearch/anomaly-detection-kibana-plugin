@@ -47,7 +47,10 @@ export const AnomalousDetectorsList = (props: AnomalousDetectorsListProps) => {
     pageSizeOptions: [5, 10, 20, 50],
   };
 
-  useEffect(() => {});
+  useEffect(() => {
+    setIndexOfPage(0);
+  }, [props.selectedDetectors]);
+
   const handleTableChange = ({ page: tablePage = {}, sort = {} }: any) => {
     const { index: page, size } = tablePage;
     const { field: sortField, direction: direction } = sort;
