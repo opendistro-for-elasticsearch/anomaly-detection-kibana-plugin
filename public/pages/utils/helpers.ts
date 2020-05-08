@@ -72,9 +72,7 @@ export const filterAndSortDetectors = (
   selectedIndices: string[],
   selectedDetectorStates: DETECTOR_STATE[],
   sortField: string,
-  sortDirection: string,
-  size: number,
-  page: number
+  sortDirection: string
 ) => {
   let filteredBySearch =
     search == ''
