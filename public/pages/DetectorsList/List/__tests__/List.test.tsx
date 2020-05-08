@@ -273,6 +273,47 @@ describe('<ListControls /> spec', () => {
       expect(queryByText('detector_name_0')).toBeNull();
       expect(queryByText('index_0')).toBeNull();
     });
+    test('should reset to first page when filtering', async () => {
+      const randomDetectors = new Array(40).fill(null).map((_, index) => {
+        const hasAnomaly = Math.random() > 0.5;
+        return {
+          id: `detector_id_${index}`,
+          indices: [`index_${index}`],
+          name: `detector_name_${index}`,
+          totalAnomalies: hasAnomaly ? Math.floor(Math.random() * 10) : 0,
+          lastActiveAnomaly: hasAnomaly ? Date.now() + index : 0,
+        };
+      });
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        data: {
+          ok: true,
+          response: {
+            detectorList: randomDetectors,
+            totalDetectors: randomDetectors.length,
+          },
+        },
+      });
+
+      const { getByText, getByPlaceholderText, queryByText, getAllByTestId } = renderWithRouter(
+        {
+          ...initialDetectorsState,
+          requesting: true,
+        }
+      );
+      // Initial load, only first 20 items
+      await wait();
+      getByText('detector_name_0')
+
+      // Go to next page
+      userEvent.click(getAllByTestId('pagination-button-next')[0]);
+      await wait();
+
+      // Search for detector which is on prev page
+      userEvent.type(getByPlaceholderText('Search'), 'detector_name_0');
+      await wait();
+      getByText('detector_name_0');
+      expect(queryByText('detector_name_30')).toBeNull();
+    });
     test('should display rows if there are data', async () => {
       const tempAnomalyTime = moment('2019-10-19T09:00:00');
       const tempLastUpdateTime = moment('2019-10-19T07:00:00');
