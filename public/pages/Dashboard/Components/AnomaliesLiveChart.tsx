@@ -52,6 +52,7 @@ import {
   visualizeAnomalyResultForXYChart,
   getFloorPlotTime,
   getLatestAnomalyResultsForDetectorsByTimeRange,
+  getLatestAnomalyResultsByTimeRange,
 } from '../utils/utils';
 import { MAX_ANOMALIES } from '../../../utils/constants';
 
@@ -92,14 +93,12 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
   const getLiveAnomalyResults = async () => {
     setIsLoadingAnomalies(true);
     // check if there is any anomaly result in last 30mins
-    const latestSingleLiveAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
+    const latestSingleLiveAnomalyResult = await getLatestAnomalyResultsByTimeRange(
       searchES,
-      props.selectedDetectors,
       '30m',
       dispatch,
       -1,
-      1,
-      MAX_LIVE_DETECTORS
+      1
     );
 
     setHasLatestAnomalyResult(!isEmpty(latestSingleLiveAnomalyResult));
@@ -115,22 +114,18 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
       MAX_LIVE_DETECTORS
     );
 
-    const nonZeroAnomalyResult = latestLiveAnomalyResult.filter(
-      anomalyData => get(anomalyData, AD_DOC_FIELDS.ANOMALY_GRADE, 0) > 0
-    );
-
-    setLiveAnomalyData(nonZeroAnomalyResult);
+    setLiveAnomalyData(latestLiveAnomalyResult);
 
     setLatestLiveAnomalousDetectorsCount(
       new Set(
-        nonZeroAnomalyResult.map(anomalyData =>
+        latestLiveAnomalyResult.map(anomalyData =>
           get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
         )
       ).size
     );
 
-    if (!isEmpty(nonZeroAnomalyResult)) {
-      setLastAnomalyResult(nonZeroAnomalyResult[0]);
+    if (!isEmpty(latestLiveAnomalyResult)) {
+      setLastAnomalyResult(latestLiveAnomalyResult[0]);
     } else {
       setLastAnomalyResult(undefined);
     }
