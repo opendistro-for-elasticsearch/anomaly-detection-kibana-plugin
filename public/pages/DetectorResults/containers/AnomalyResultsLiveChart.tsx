@@ -44,7 +44,7 @@ import { AppState } from '../../../redux/reducers';
 import { Detector, AnomalyData } from '../../../models/interfaces';
 import {
   getLiveAnomalyResults,
-  prepareDataForChart,
+  prepareDataForLiveChart,
 } from '../../utils/anomalyResultUtils';
 import { get } from 'lodash';
 import {
@@ -52,11 +52,11 @@ import {
   LIVE_CHART_CONFIG,
   CHART_COLORS,
 } from '../../AnomalyCharts/utils/constants';
-import { getFloorPlotTime } from '../../../../server/utils/helpers';
 import { LIVE_ANOMALY_CHART_THEME } from '../utils/constants';
 import { DETECTOR_STATE } from '../../../utils/constants';
 import { dateFormatter } from '../../utils/helpers';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
+import { EuiIcon } from '@elastic/eui';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
@@ -84,14 +84,13 @@ export const AnomalyResultsLiveChart = (
     'minutes'
   );
   const endDateTime = moment();
-  const anomalies = prepareDataForChart(
+  const anomalies = prepareDataForLiveChart(
     liveAnomalyResults.liveAnomalies,
     {
       startDate: startDateTime.valueOf(),
       endDate: endDateTime.valueOf(),
     },
     get(props.detector, 'detectionInterval.period.interval', 1),
-    getFloorPlotTime
   );
 
   const annotations = liveAnomalyResults
@@ -106,11 +105,7 @@ export const AnomalyResultsLiveChart = (
             y0: 0,
             y1: anomaly.anomalyGrade,
           },
-          details: `Anomaly detected with anomaly grade ${
-            anomaly.anomalyGrade
-          } confidence ${anomaly.confidence} between ${dateFormatter(
-            anomaly.startTime
-          )} and ${dateFormatter(anomaly.endTime)}`,
+          details: `${JSON.stringify(anomaly)}`,
         }))
     : [];
 
@@ -186,6 +181,26 @@ export const AnomalyResultsLiveChart = (
     </EuiButton>
   );
 
+  const customAnomalyTooltip = (details?: string) => {
+    const anomaly = details ? JSON.parse(details) : undefined;
+    return (
+      <div>
+        <EuiText size="xs">
+          <EuiIcon type="alert" /> <b>Anomaly</b>
+          {anomaly ? (
+            <p>
+              Anomaly grade: {get(anomaly, 'anomalyGrade', '')} <br />
+              Confidence: {get(anomaly, 'confidence', '')} <br />
+              Start time: {dateFormatter(get(anomaly, 'startTime'))}
+              <br />
+              End time: {dateFormatter(get(anomaly, 'endTime'))}
+            </p>
+          ) : null}
+        </EuiText>
+      </div>
+    );
+  };
+
   return (
     <React.Fragment>
       <ContentPanel
@@ -259,6 +274,7 @@ export const AnomalyResultsLiveChart = (
                       ? 'red'
                       : CHART_COLORS.ANOMALY_GRADE_COLOR,
                   }}
+                  renderTooltip={customAnomalyTooltip}
                 />
                 <Axis
                   id="bottom"
