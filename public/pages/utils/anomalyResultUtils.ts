@@ -107,11 +107,43 @@ const sampleMaxAnomalyGrade = (anomalies: any[]): any[] => {
   return sampledAnomalies;
 };
 
+export const prepareDataForLiveChart = (
+  data: any[],
+  dateRange: DateRange,
+  interval: number
+) => {
+  if (!data || data.length === 0) {
+    return [];
+  }
+
+  let anomalies = [];
+  for (
+    let time = dateRange.endDate;
+    time > dateRange.startDate;
+    time -= MIN_IN_MILLI_SECS * interval
+  ) {
+    anomalies.push({
+      startTime: time,
+      endTime: time,
+      plotTime: time,
+      confidence: null,
+      anomalyGrade: null,
+    });
+  }
+
+  anomalies.push({
+    startTime: dateRange.startDate,
+    endTime: dateRange.startDate,
+    plotTime: dateRange.startDate,
+    confidence: null,
+    anomalyGrade: null,
+  });
+  return anomalies;
+};
+
 export const prepareDataForChart = (
   data: any[],
   dateRange: DateRange,
-  interval: number = 1,
-  getFloorPlotTime?: any
 ) => {
   if (!data || data.length === 0) {
     return [];
@@ -124,75 +156,20 @@ export const prepareDataForChart = (
   if (anomalies.length > MAX_DATA_POINTS) {
     anomalies = sampleMaxAnomalyGrade(anomalies);
   }
-  if (getFloorPlotTime) {
-    // we need to get floor plot time for bar chart
-    anomalies = anomalies.map(anomaly => {
-      return {
-        ...anomaly,
-        confidence: null,
-        anomalyGrade: null,
-        plotTime: getFloorPlotTime(anomaly.plotTime),
-      };
-    });
-    let startTime =
-      anomalies.length > 0
-        ? anomalies[anomalies.length - 1].plotTime
-        : getFloorPlotTime(dateRange.startDate);
-    let endTime =
-      anomalies.length > 0
-        ? anomalies[0].plotTime
-        : getFloorPlotTime(dateRange.endDate);
-
-    while (endTime < dateRange.endDate) {
-      // make sure the end of plot time is big enough to cover NOW annotation, which is at dateRange.endDate
-      endTime += MIN_IN_MILLI_SECS * interval;
-    }
-    if (anomalies.length === 0) {
-      for (
-        let time = endTime;
-        time > startTime;
-        time -= MIN_IN_MILLI_SECS * interval
-      ) {
-        anomalies.push({
-          startTime: time,
-          endTime: time,
-          plotTime: time,
-          confidence: null,
-          anomalyGrade: null,
-        });
-      }
-    }
-
-    anomalies.push({
-      startTime: dateRange.startDate,
-      endTime: dateRange.startDate,
-      plotTime: startTime - MIN_IN_MILLI_SECS * interval,
-      confidence: null,
-      anomalyGrade: null,
-    });
-    anomalies.unshift({
-      startTime: dateRange.endDate,
-      endTime: dateRange.endDate,
-      plotTime: endTime,
-      confidence: null,
-      anomalyGrade: null,
-    });
-  } else {
-    anomalies.push({
-      startTime: dateRange.startDate,
-      endTime: dateRange.startDate,
-      plotTime: dateRange.startDate,
-      confidence: null,
-      anomalyGrade: null,
-    });
-    anomalies.unshift({
-      startTime: dateRange.endDate,
-      endTime: dateRange.endDate,
-      plotTime: dateRange.endDate,
-      confidence: null,
-      anomalyGrade: null,
-    });
-  }
+  anomalies.push({
+    startTime: dateRange.startDate,
+    endTime: dateRange.startDate,
+    plotTime: dateRange.startDate,
+    confidence: null,
+    anomalyGrade: null,
+  });
+  anomalies.unshift({
+    startTime: dateRange.endDate,
+    endTime: dateRange.endDate,
+    plotTime: dateRange.endDate,
+    confidence: null,
+    anomalyGrade: null,
+  });
   return anomalies;
 };
 
