@@ -471,6 +471,53 @@ export const buildGetAnomalyResultQueryByRange = (
   };
 };
 
+export const getLatestAnomalyResultsByTimeRange = async (
+  func: (request: any) => APIAction,
+  timeRange: string,
+  dispatch: Dispatch<any>,
+  threshold: number,
+  anomalySize: number
+): Promise<object[]> => {
+  let from = 0;
+  let numResults: number;
+  let anomalyResults = [] as object[];
+  do {
+    const searchResponse = await dispatch(
+      func(
+        buildGetAnomalyResultQueryByRange(
+          timeRange,
+          from,
+          anomalySize,
+          threshold
+        )
+      )
+    );
+    const searchAnomalyResponse = searchResponse.data.response;
+
+    numResults = get(searchAnomalyResponse, 'hits.total.value', 0);
+    if (numResults === 0) {
+      break;
+    }
+
+    const anomalies: any[] = get(searchAnomalyResponse, 'hits.hits', []).map(
+      (result: any) => {
+        return {
+          [AD_DOC_FIELDS.DETECTOR_ID]: result._source.detector_id,
+          [AD_DOC_FIELDS.ANOMALY_GRADE]: Number(
+            result._source.anomaly_grade
+          ).toFixed(2),
+          [AD_DOC_FIELDS.DATA_START_TIME]: result._source.data_start_time,
+          [AD_DOC_FIELDS.DATA_END_TIME]: result._source.data_end_time,
+        };
+      }
+    );
+    anomalyResults = [...anomalyResults, ...anomalies];
+    from += anomalySize;
+  } while (numResults === MAX_ANOMALIES);
+
+  return anomalyResults;
+};
+
 export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
   func: (request: any) => APIAction,
   selectedDetectors: DetectorListItem[],
