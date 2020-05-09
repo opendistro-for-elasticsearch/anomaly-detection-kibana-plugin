@@ -32,6 +32,7 @@ import {
   niceTimeFormatter,
   Settings,
   LineAnnotation,
+  RectAnnotation,
   AnnotationDomainTypes,
   LineAnnotationDatum,
   ScaleType,
@@ -40,7 +41,7 @@ import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { useDelayedLoader } from '../../../hooks/useDelayedLoader';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
-import { Detector } from '../../../models/interfaces';
+import { Detector, AnomalyData } from '../../../models/interfaces';
 import {
   getLiveAnomalyResults,
   prepareDataForChart,
@@ -49,10 +50,13 @@ import { get } from 'lodash';
 import {
   CHART_FIELDS,
   LIVE_CHART_CONFIG,
+  CHART_COLORS,
 } from '../../AnomalyCharts/utils/constants';
 import { getFloorPlotTime } from '../../../../server/utils/helpers';
 import { LIVE_ANOMALY_CHART_THEME } from '../utils/constants';
 import { DETECTOR_STATE } from '../../../utils/constants';
+import { dateFormatter } from '../../utils/helpers';
+import { darkModeEnabled } from '../../../utils/kibanaUtils';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
@@ -89,6 +93,25 @@ export const AnomalyResultsLiveChart = (
     get(props.detector, 'detectionInterval.period.interval', 1),
     getFloorPlotTime
   );
+
+  const annotations = liveAnomalyResults
+    ? get(liveAnomalyResults, 'liveAnomalies', [])
+        //@ts-ignore
+        .filter((anomaly: AnomalyData) => anomaly.anomalyGrade > 0)
+        .map((anomaly: AnomalyData) => ({
+          coordinates: {
+            x0:
+              anomaly.startTime + (anomaly.endTime - anomaly.startTime) * 0.05,
+            x1: anomaly.endTime - (anomaly.endTime - anomaly.startTime) * 0.05,
+          },
+          details: `Anomaly detected with anomaly grade ${
+            anomaly.anomalyGrade
+          } confidence ${anomaly.confidence} between ${dateFormatter(
+            anomaly.startTime
+          )} and ${dateFormatter(anomaly.endTime)}`,
+        }))
+    : [];
+
   const timeFormatter = niceTimeFormatter([
     startDateTime.valueOf(),
     endDateTime.valueOf(),
@@ -221,6 +244,20 @@ export const AnomalyResultsLiveChart = (
                   style={nowLineStyle}
                   // @ts-ignore
                   marker={'now'}
+                />
+                <RectAnnotation
+                  dataValues={annotations || []}
+                  id="annotations"
+                  style={{
+                    stroke: darkModeEnabled()
+                      ? 'red'
+                      : CHART_COLORS.ANOMALY_GRADE_COLOR,
+                    strokeWidth: 1,
+                    opacity: 0.8,
+                    fill: darkModeEnabled()
+                      ? 'red'
+                      : CHART_COLORS.ANOMALY_GRADE_COLOR,
+                  }}
                 />
                 <Axis
                   id="bottom"
