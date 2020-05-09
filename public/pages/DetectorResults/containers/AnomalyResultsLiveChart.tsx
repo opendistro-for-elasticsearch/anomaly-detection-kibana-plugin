@@ -101,8 +101,10 @@ export const AnomalyResultsLiveChart = (
         .map((anomaly: AnomalyData) => ({
           coordinates: {
             x0:
-              anomaly.startTime + (anomaly.endTime - anomaly.startTime) * 0.05,
-            x1: anomaly.endTime - (anomaly.endTime - anomaly.startTime) * 0.05,
+              anomaly.startTime + (anomaly.endTime - anomaly.startTime) * 0.08,
+            x1: anomaly.endTime - (anomaly.endTime - anomaly.startTime) * 0.08,
+            y0: 0,
+            y1: anomaly.anomalyGrade,
           },
           details: `Anomaly detected with anomaly grade ${
             anomaly.anomalyGrade
@@ -252,7 +254,6 @@ export const AnomalyResultsLiveChart = (
                     stroke: darkModeEnabled()
                       ? 'red'
                       : CHART_COLORS.ANOMALY_GRADE_COLOR,
-                    strokeWidth: 1,
                     opacity: 0.8,
                     fill: darkModeEnabled()
                       ? 'red'
