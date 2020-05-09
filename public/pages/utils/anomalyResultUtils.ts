@@ -129,6 +129,8 @@ export const prepareDataForChart = (
     anomalies = anomalies.map(anomaly => {
       return {
         ...anomaly,
+        confidence: null,
+        anomalyGrade: null,
         plotTime: getFloorPlotTime(anomaly.plotTime),
       };
     });
