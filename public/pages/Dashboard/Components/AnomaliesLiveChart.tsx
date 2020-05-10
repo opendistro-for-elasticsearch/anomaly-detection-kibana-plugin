@@ -224,6 +224,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
       }
       actions={[fullScreenButton()]}
       contentPanelClassName={isFullScreen ? 'full-screen' : undefined}
+      panelStyles={{ height: !isFullScreen ? '390px' : undefined }}
     >
       {isLoadingAnomalies ? (
         <EuiFlexGroup justifyContent="center">
@@ -273,7 +274,9 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                 title={
                   lastAnomalyResult === undefined
                     ? '-'
-                    : get(lastAnomalyResult, AD_DOC_FIELDS.ANOMALY_GRADE, 0)
+                    : Number(
+                        get(lastAnomalyResult, AD_DOC_FIELDS.ANOMALY_GRADE, 0)
+                      ).toExponential(2)
                 }
                 titleSize="s"
               />
