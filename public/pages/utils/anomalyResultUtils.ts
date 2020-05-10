@@ -32,7 +32,7 @@ import {
 } from '../../models/interfaces';
 import { MAX_ANOMALIES } from '../../utils/constants';
 import { minuteDateFormatter } from './helpers';
-import { toFixedNumber } from '../../../server/utils/helpers';
+import { toFixedNumberForAnomaly } from '../../../server/utils/helpers';
 
 export const getLiveAnomalyResults = (
   dispatch: Dispatch<any>,
@@ -359,8 +359,8 @@ export const parseBucketizedAnomalyResults = (result: any): Anomalies => {
       const rawAnomaly = get(item, 'top_anomaly_hits.hits.hits.0._source');
       if (get(rawAnomaly, 'anomaly_grade') !== undefined) {
         anomalies.push({
-          anomalyGrade: toFixedNumber(get(rawAnomaly, 'anomaly_grade')),
-          confidence: toFixedNumber(get(rawAnomaly, 'confidence')),
+          anomalyGrade: toFixedNumberForAnomaly(get(rawAnomaly, 'anomaly_grade')),
+          confidence: toFixedNumberForAnomaly(get(rawAnomaly, 'confidence')),
           startTime: get(rawAnomaly, 'data_start_time'),
           endTime: get(rawAnomaly, 'data_end_time'),
           plotTime: get(rawAnomaly, 'data_end_time'),
@@ -372,7 +372,7 @@ export const parseBucketizedAnomalyResults = (result: any): Anomalies => {
             featureData[get(feature, 'feature_id')] = [];
           }
           featureData[get(feature, 'feature_id')].push({
-            data: toFixedNumber(get(feature, 'data')),
+            data: toFixedNumberForAnomaly(get(feature, 'data')),
             startTime: get(rawAnomaly, 'data_start_time'),
             endTime: get(rawAnomaly, 'data_end_time'),
             plotTime: get(rawAnomaly, 'data_end_time'),
@@ -398,7 +398,7 @@ export const parseAnomalySummary = (
   return {
     anomalyOccurrence: anomalyCount,
     minAnomalyGrade: anomalyCount
-      ? toFixedNumber(
+      ? toFixedNumberForAnomaly(
           get(
             anomalySummaryResult,
             'data.response.aggregations.min_anomaly_grade.value'
@@ -406,7 +406,7 @@ export const parseAnomalySummary = (
         )
       : 0,
     maxAnomalyGrade: anomalyCount
-      ? toFixedNumber(
+      ? toFixedNumberForAnomaly(
           get(
             anomalySummaryResult,
             'data.response.aggregations.max_anomaly_grade.value'
@@ -414,7 +414,7 @@ export const parseAnomalySummary = (
         )
       : 0,
     minConfidence: anomalyCount
-      ? toFixedNumber(
+      ? toFixedNumberForAnomaly(
           get(
             anomalySummaryResult,
             'data.response.aggregations.min_confidence.value'
@@ -422,7 +422,7 @@ export const parseAnomalySummary = (
         )
       : 0,
     maxConfidence: anomalyCount
-      ? toFixedNumber(
+      ? toFixedNumberForAnomaly(
           get(
             anomalySummaryResult,
             'data.response.aggregations.max_confidence.value'
@@ -453,8 +453,8 @@ export const parsePureAnomalies = (
     anomaliesHits.forEach((item: any) => {
       const rawAnomaly = get(item, '_source');
       anomalies.push({
-        anomalyGrade: get(rawAnomaly, 'anomaly_grade'),
-        confidence: get(rawAnomaly, 'confidence'),
+        anomalyGrade: toFixedNumberForAnomaly(get(rawAnomaly, 'anomaly_grade')),
+        confidence: toFixedNumberForAnomaly(get(rawAnomaly, 'confidence')),
         startTime: get(rawAnomaly, 'data_start_time'),
         endTime: get(rawAnomaly, 'data_end_time'),
         plotTime: get(rawAnomaly, 'data_end_time'),
