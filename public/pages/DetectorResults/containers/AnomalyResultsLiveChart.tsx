@@ -57,6 +57,7 @@ import { DETECTOR_STATE } from '../../../utils/constants';
 import { dateFormatter } from '../../utils/helpers';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
 import { EuiIcon } from '@elastic/eui';
+import { formatAnomalyNumber } from '../../../../server/utils/helpers';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
@@ -321,13 +322,13 @@ export const AnomalyResultsLiveChart = (
               />
               <EuiStat
                 title={
-                  latestAnomalyGrade ? latestAnomalyGrade.anomalyGrade : '-'
+                  latestAnomalyGrade ? formatAnomalyNumber(latestAnomalyGrade.anomalyGrade) : '-'
                 }
                 description="Latest anomaly grade"
                 titleSize="s"
               />
               <EuiStat
-                title={latestAnomalyGrade ? latestAnomalyGrade.confidence : '-'}
+                title={latestAnomalyGrade ? formatAnomalyNumber(latestAnomalyGrade.confidence) : '-'}
                 description="Latest confidence"
                 titleSize="s"
               />
