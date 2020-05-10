@@ -32,7 +32,7 @@ import {
 } from '../models/types';
 import { Router } from '../router';
 import { SORT_DIRECTION, AD_DOC_FIELDS } from '../utils/constants';
-import { mapKeysDeep, toCamel, toSnake, toFixedNumber } from '../utils/helpers';
+import { mapKeysDeep, toCamel, toSnake, toFixedNumberForAnomaly } from '../utils/helpers';
 import {
   anomalyResultMapper,
   convertDetectorKeysToCamelCase,
@@ -593,13 +593,13 @@ const getAnomalyResults = async (
           result._source.confidence != null &&
           result._source.confidence !== 'NaN' &&
           result._source.confidence > 0
-            ? toFixedNumber(Number.parseFloat(result._source.confidence))
+            ? toFixedNumberForAnomaly(Number.parseFloat(result._source.confidence))
             : 0,
         anomalyGrade:
           result._source.anomaly_grade != null &&
           result._source.anomaly_grade !== 'NaN' &&
           result._source.anomaly_grade > 0
-            ? toFixedNumber(Number.parseFloat(result._source.anomaly_grade))
+            ? toFixedNumberForAnomaly(Number.parseFloat(result._source.anomaly_grade))
             : 0,
       });
       result._source.feature_data.forEach((featureData: any) => {
@@ -612,7 +612,7 @@ const getAnomalyResults = async (
           plotTime: result._source.data_end_time,
           data:
             featureData.data != null && featureData.data !== 'NaN'
-              ? toFixedNumber(Number.parseFloat(featureData.data))
+              ? toFixedNumberForAnomaly(Number.parseFloat(featureData.data))
               : 0,
         });
       });
