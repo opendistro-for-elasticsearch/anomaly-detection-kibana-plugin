@@ -52,8 +52,9 @@ export const toFixedNumber = (num: number, digits?: number, base?: number) => {
 // 1.If num>0.01, will keep two digits;
 // 2.If num<0.01, will use scientific notation, for example 0.001234 will become 1.23e-3
 export const toFixedNumberForAnomaly = (num: number): number => {
-  const newNumber = toFixedNumber(num, 2);
-  return newNumber ? newNumber : Number(num.toExponential(2));
+  return num >= SHOW_DECIMAL_NUMBER_THRESHOLD
+    ? toFixedNumber(num, 2)
+    : Number(num.toExponential(2));
 };
 
 export const formatAnomalyNumber = (num: number): string => {
