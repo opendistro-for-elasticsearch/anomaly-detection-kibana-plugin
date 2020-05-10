@@ -101,7 +101,8 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
       '30m',
       dispatch,
       -1,
-      1
+      1,
+      true
     );
 
     setHasLatestAnomalyResult(!isEmpty(latestSingleLiveAnomalyResult));
@@ -114,7 +115,8 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
       dispatch,
       0,
       MAX_ANOMALIES,
-      MAX_LIVE_DETECTORS
+      MAX_LIVE_DETECTORS,
+      false
     );
 
     setLiveAnomalyData(latestLiveAnomalyResult);
@@ -227,10 +229,12 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
       }
       actions={[fullScreenButton()]}
       contentPanelClassName={isFullScreen ? 'full-screen' : undefined}
-      panelStyles={{ height: !isFullScreen ? '390px' : undefined }}
     >
       {isLoadingAnomalies ? (
-        <EuiFlexGroup justifyContent="center">
+        <EuiFlexGroup
+          justifyContent="center"
+          style={{ height: '353px', paddingTop: '175px' }}
+        >
           <EuiFlexItem grow={false}>
             <EuiLoadingChart size="xl" />
           </EuiFlexItem>

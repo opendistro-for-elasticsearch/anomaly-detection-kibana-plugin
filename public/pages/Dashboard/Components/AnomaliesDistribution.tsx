@@ -71,7 +71,8 @@ export const AnomaliesDistributionChart = (
       dispatch,
       0,
       MAX_ANOMALIES,
-      MAX_DETECTORS
+      MAX_DETECTORS,
+      false
     );
 
     const nonZeroAnomalyResult = latestAnomalyResult.filter(
