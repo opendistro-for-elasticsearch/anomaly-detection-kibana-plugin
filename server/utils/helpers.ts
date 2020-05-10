@@ -23,6 +23,7 @@ import {
 } from 'lodash';
 
 import { MIN_IN_MILLI_SECS } from './constants';
+import { SHOW_DECIMAL_NUMBER_THRESHOLD } from '../../public/pages/Dashboard/utils/constants';
 
 export function mapKeysDeep(obj: object, fn: any): object | any[] {
   if (Array.isArray(obj)) {
@@ -46,4 +47,18 @@ export const getFloorPlotTime = (plotTime: number): number => {
 export const toFixedNumber = (num: number, digits?: number, base?: number) => {
   var pow = Math.pow(base || 10, digits || 2);
   return Math.round(num * pow) / pow;
+};
+
+// 1.If num>0.01, will keep two digits;
+// 2.If num<0.01, will use scientific notation, for example 0.001234 will become 1.23e-3
+export const toFixedNumberForAnomaly = (num: number): number => {
+  return num >= SHOW_DECIMAL_NUMBER_THRESHOLD
+    ? toFixedNumber(num, 2)
+    : Number(num.toExponential(2));
+};
+
+export const formatAnomalyNumber = (num: number): string => {
+  return num >= SHOW_DECIMAL_NUMBER_THRESHOLD
+    ? num.toFixed(2)
+    : num.toExponential(2);
 };
