@@ -47,7 +47,10 @@ import {
 } from '@elastic/charts';
 import { EuiText, EuiTitle } from '@elastic/eui';
 import React from 'react';
-import { TIME_NOW_LINE_STYLE } from '../utils/constants';
+import {
+  TIME_NOW_LINE_STYLE,
+  SHOW_DECIMAL_NUMBER_THRESHOLD,
+} from '../utils/constants';
 import {
   visualizeAnomalyResultForXYChart,
   getFloorPlotTime,
@@ -274,9 +277,14 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
                 title={
                   lastAnomalyResult === undefined
                     ? '-'
-                    : Number(
+                    : get(lastAnomalyResult, AD_DOC_FIELDS.ANOMALY_GRADE, 0) <
+                      SHOW_DECIMAL_NUMBER_THRESHOLD
+                    ? Number(
                         get(lastAnomalyResult, AD_DOC_FIELDS.ANOMALY_GRADE, 0)
                       ).toExponential(2)
+                    : Number(
+                        get(lastAnomalyResult, AD_DOC_FIELDS.ANOMALY_GRADE, 0)
+                      ).toFixed(2)
                 }
                 titleSize="s"
               />
