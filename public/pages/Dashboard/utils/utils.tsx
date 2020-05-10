@@ -34,6 +34,7 @@ import { get, orderBy, isEmpty } from 'lodash';
 import { APIAction } from 'public/redux/middleware/types';
 import { Dispatch } from 'redux';
 import { EuiBasicTableColumn } from '@elastic/eui';
+import { SHOW_DECIMAL_NUMBER_THRESHOLD } from './constants';
 
 /**
  * Get the recent anomaly result query for the last timeRange period(Date-Math)
@@ -416,16 +417,16 @@ const buildDetectorAnomalyResultMap = (
 export const visualizeAnomalyResultForXYChart = (
   anomalyResult: any
 ): object => {
+  const actualAnomalyGrade = get(anomalyResult, AD_DOC_FIELDS.ANOMALY_GRADE, 0);
   return {
     ...anomalyResult,
     [AD_DOC_FIELDS.PLOT_TIME]: getFloorPlotTime(
       get(anomalyResult, AD_DOC_FIELDS.DATA_START_TIME, 0)
     ),
-    [AD_DOC_FIELDS.ANOMALY_GRADE]: get(
-      anomalyResult,
-      AD_DOC_FIELDS.ANOMALY_GRADE,
-      0
-    ),
+    [AD_DOC_FIELDS.ANOMALY_GRADE]:
+      actualAnomalyGrade < SHOW_DECIMAL_NUMBER_THRESHOLD
+        ? Number(actualAnomalyGrade).toExponential(2)
+        : Number(actualAnomalyGrade).toFixed(2),
   };
 };
 
