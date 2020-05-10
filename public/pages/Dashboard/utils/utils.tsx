@@ -438,10 +438,13 @@ export const buildGetAnomalyResultQueryByRange = (
   timeRange: string,
   from: number,
   size: number,
-  threshold: number
+  threshold: number,
+  checkLastIndexOnly: boolean
 ) => {
   return {
-    index: `${ANOMALY_RESULT_INDEX}*`,
+    index: checkLastIndexOnly
+      ? ANOMALY_RESULT_INDEX
+      : `${ANOMALY_RESULT_INDEX}*`,
     size: size,
     from: from,
     query: {
@@ -482,11 +485,12 @@ export const getLatestAnomalyResultsByTimeRange = async (
   timeRange: string,
   dispatch: Dispatch<any>,
   threshold: number,
-  anomalySize: number
+  anomalySize: number,
+  checkLastIndexOnly: boolean
 ): Promise<object[]> => {
   let from = 0;
-  let numResults: number;
   let anomalyResults = [] as object[];
+  let numSingleBatchResults: number;
   do {
     const searchResponse = await dispatch(
       func(
@@ -494,14 +498,15 @@ export const getLatestAnomalyResultsByTimeRange = async (
           timeRange,
           from,
           anomalySize,
-          threshold
+          threshold,
+          checkLastIndexOnly
         )
       )
     );
     const searchAnomalyResponse = searchResponse.data.response;
 
-    numResults = get(searchAnomalyResponse, 'hits.total.value', 0);
-    if (numResults === 0) {
+    const numHits = get(searchAnomalyResponse, 'hits.total.value', 0);
+    if (numHits === 0) {
       break;
     }
 
@@ -517,7 +522,8 @@ export const getLatestAnomalyResultsByTimeRange = async (
     );
     anomalyResults = [...anomalyResults, ...anomalies];
     from += anomalySize;
-  } while (numResults === MAX_ANOMALIES);
+    numSingleBatchResults = anomalies.length;
+  } while (numSingleBatchResults === MAX_ANOMALIES);
 
   return anomalyResults;
 };
@@ -529,12 +535,13 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
   dispatch: Dispatch<any>,
   threshold: number,
   anomalySize: number,
-  detectorNum: number
+  detectorNum: number,
+  checkLastIndexOnly: boolean
 ): Promise<object[]> => {
   const detectorAndIdMap = buildDetectorAndIdMap(selectedDetectors);
   let from = 0;
-  let numResults: number;
   let anomalyResults = [] as object[];
+  let numSingleBatchResults: number;
   do {
     const searchResponse = await dispatch(
       func(
@@ -542,14 +549,15 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
           timeRange,
           from,
           anomalySize,
-          threshold
+          threshold,
+          checkLastIndexOnly
         )
       )
     );
     const searchAnomalyResponse = searchResponse.data.response;
 
-    numResults = get(searchAnomalyResponse, 'hits.total.value', 0);
-    if (numResults === 0) {
+    const numHits = get(searchAnomalyResponse, 'hits.total.value', 0);
+    if (numHits === 0) {
       break;
     }
 
@@ -571,7 +579,8 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
     );
     anomalyResults = [...anomalyResults, ...anomalies];
     from += anomalySize;
-  } while (numResults === MAX_ANOMALIES);
+    numSingleBatchResults = anomalies.length;
+  } while (numSingleBatchResults === MAX_ANOMALIES);
 
   const filteredAnomalyResults = anomalyResults.filter(anomaly =>
     detectorAndIdMap.has(get(anomaly, AD_DOC_FIELDS.DETECTOR_ID, ''))
