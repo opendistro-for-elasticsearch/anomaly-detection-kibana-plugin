@@ -35,6 +35,7 @@ import { get, orderBy, isEmpty } from 'lodash';
 import { APIAction } from 'public/redux/middleware/types';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
+import { SHOW_DECIMAL_NUMBER_THRESHOLD } from './constants';
 
 /**
  * Get the recent anomaly result query for the last timeRange period(Date-Math)
@@ -417,11 +418,16 @@ const buildDetectorAnomalyResultMap = (
 export const visualizeAnomalyResultForXYChart = (
   anomalyResult: any
 ): object => {
+  const actualAnomalyGrade = get(anomalyResult, AD_DOC_FIELDS.ANOMALY_GRADE, 0);
   return {
     ...anomalyResult,
     [AD_DOC_FIELDS.PLOT_TIME]: getFloorPlotTime(
       get(anomalyResult, AD_DOC_FIELDS.DATA_START_TIME, 0)
     ),
+    [AD_DOC_FIELDS.ANOMALY_GRADE]:
+      actualAnomalyGrade < SHOW_DECIMAL_NUMBER_THRESHOLD
+        ? Number(actualAnomalyGrade).toExponential(2)
+        : Number(actualAnomalyGrade).toFixed(2),
   };
 };
 
@@ -504,9 +510,7 @@ export const getLatestAnomalyResultsByTimeRange = async (
       (result: any) => {
         return {
           [AD_DOC_FIELDS.DETECTOR_ID]: result._source.detector_id,
-          [AD_DOC_FIELDS.ANOMALY_GRADE]: Number(
-            result._source.anomaly_grade
-          ).toFixed(2),
+          [AD_DOC_FIELDS.ANOMALY_GRADE]: result._source.anomaly_grade,
           [AD_DOC_FIELDS.DATA_START_TIME]: result._source.data_start_time,
           [AD_DOC_FIELDS.DATA_END_TIME]: result._source.data_end_time,
         };
@@ -555,9 +559,7 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
         const detector = detectorAndIdMap.get(result._source.detector_id);
         return {
           [AD_DOC_FIELDS.DETECTOR_ID]: result._source.detector_id,
-          [AD_DOC_FIELDS.ANOMALY_GRADE]: Number(
-            result._source.anomaly_grade
-          ).toFixed(2),
+          [AD_DOC_FIELDS.ANOMALY_GRADE]: result._source.anomaly_grade,
           [AD_DOC_FIELDS.DATA_START_TIME]: result._source.data_start_time,
           [AD_DOC_FIELDS.DATA_END_TIME]: result._source.data_end_time,
           [AD_DOC_FIELDS.DETECTOR_NAME]: get(

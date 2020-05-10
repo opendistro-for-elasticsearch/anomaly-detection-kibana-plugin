@@ -88,3 +88,5 @@ export const GET_ALL_DETECTORS_QUERY_PARAMS = {
 export const ALL_DETECTORS_MESSAGE = 'All detectors';
 export const ALL_DETECTOR_STATES_MESSAGE = 'All detector states';
 export const ALL_INDICES_MESSAGE = 'All indices';
+
+export const SHOW_DECIMAL_NUMBER_THRESHOLD = 0.01;
