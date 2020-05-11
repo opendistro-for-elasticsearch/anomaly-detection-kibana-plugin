@@ -35,6 +35,7 @@ import { APIAction } from 'public/redux/middleware/types';
 import { Dispatch } from 'redux';
 import { EuiBasicTableColumn } from '@elastic/eui';
 import { SHOW_DECIMAL_NUMBER_THRESHOLD } from './constants';
+import { MAX_DETECTORS } from '../../../pages/utils/constants';
 
 /**
  * Get the recent anomaly result query for the last timeRange period(Date-Math)
@@ -363,57 +364,6 @@ export const anomalousDetectorsStaticColumn = [
   },
 ] as EuiBasicTableColumn<any>[];
 
-export const visualizeAnomalyResultForSunburstChart = (
-  anomalyResults: any[],
-  detectors: DetectorListItem[]
-): object[] => {
-  const detectorAnomalyResultMap = buildDetectorAnomalyResultMap(
-    anomalyResults,
-    detectors
-  );
-  const visualizedResult = [] as object[];
-  for (let detectorInfo of detectorAnomalyResultMap.values()) {
-    visualizedResult.push(detectorInfo);
-  }
-  return visualizedResult;
-};
-
-const buildDetectorAnomalyResultMap = (
-  anomalyResults: any[],
-  detectors: DetectorListItem[]
-): Map<string, object> => {
-  const detectorAndIdMap = buildDetectorAndIdMap(detectors);
-  const detectorAnomalyResultMap = new Map();
-  anomalyResults.forEach(anomalyResult => {
-    const detectorId = get(anomalyResult, AD_DOC_FIELDS.DETECTOR_ID, '');
-    const detector = detectorAndIdMap.get(detectorId);
-    if (detectorAnomalyResultMap.has(detectorId)) {
-      const detectorInfo = detectorAnomalyResultMap.get(detectorId);
-      let currentCount = get(detectorInfo, 'count', 0);
-      currentCount++;
-      detectorAnomalyResultMap.set(
-        detectorId,
-        Object.assign({}, detectorInfo, { count: currentCount })
-      );
-    } else {
-      detectorAnomalyResultMap.set(detectorId, {
-        [AD_DOC_FIELDS.DETECTOR_NAME]: get(
-          anomalyResult,
-          AD_DOC_FIELDS.DETECTOR_NAME,
-          ''
-        ),
-        [AD_DOC_FIELDS.INDICES]: get(
-          detector,
-          AD_DOC_FIELDS.INDICES,
-          ''
-        ).toString(),
-        count: 1,
-      });
-    }
-  });
-  return detectorAnomalyResultMap;
-};
-
 export const visualizeAnomalyResultForXYChart = (
   anomalyResult: any
 ): object => {
@@ -634,4 +584,67 @@ const selectLatestAnomalousDetectorIds = (
   );
 
   return new Set(Array.from(anomalousDetectorIds).slice(0, neededDetectorNum));
+};
+
+export const getAnomalyDistributionForDetectorsByTimeRange = async (
+  func: (request: any) => APIAction,
+  selectedDetectors: DetectorListItem[],
+  timeRange: string,
+  dispatch: Dispatch<any>,
+  threshold: number,
+  checkLastIndexOnly: boolean
+) => {
+  const aggregationName = 'anomaly_dist';
+  const detectorAndIdMap = buildDetectorAndIdMap(selectedDetectors);
+
+  const getResultQuery = buildGetAnomalyResultQueryByRange(
+    timeRange,
+    0,
+    0,
+    threshold,
+    checkLastIndexOnly
+  );
+  const anomaly_dist_aggs = {
+    aggs: {
+      [aggregationName]: {
+        terms: {
+          field: AD_DOC_FIELDS.DETECTOR_ID,
+          size: MAX_DETECTORS,
+        },
+      },
+    },
+  };
+  const finalQuery = Object.assign({}, getResultQuery, anomaly_dist_aggs);
+
+  const result = await dispatch(func(finalQuery));
+
+  const detectorsAggResults = get(
+    result,
+    `data.response.aggregations.${aggregationName}.buckets`,
+    []
+  );
+
+  const finalDetectorDistributionResult = [] as object[];
+  for (let detectorResult of detectorsAggResults) {
+    const detectorId = get(detectorResult, 'key', '');
+    if (detectorAndIdMap.has(detectorId)) {
+      const detector = detectorAndIdMap.get(detectorId);
+      finalDetectorDistributionResult.push({
+        [AD_DOC_FIELDS.DETECTOR_ID]: detectorId,
+        [AD_DOC_FIELDS.DETECTOR_NAME]: get(
+          detector,
+          AD_DOC_FIELDS.DETECTOR_NAME,
+          ''
+        ),
+        [AD_DOC_FIELDS.INDICES]: get(
+          detector,
+          AD_DOC_FIELDS.INDICES,
+          ''
+        ).toString(),
+        count: get(detectorResult, 'doc_count', 0),
+      });
+    }
+  }
+
+  return finalDetectorDistributionResult;
 };
