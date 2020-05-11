@@ -36,7 +36,6 @@ import { APIAction } from 'public/redux/middleware/types';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 import { SHOW_DECIMAL_NUMBER_THRESHOLD } from './constants';
-import { MAX_DETECTORS } from '../../../pages/utils/constants';
 
 /**
  * Get the recent anomaly result query for the last timeRange period(Date-Math)
