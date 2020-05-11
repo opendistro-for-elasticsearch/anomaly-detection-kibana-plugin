@@ -96,14 +96,22 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
   const getLiveAnomalyResults = async () => {
     setIsLoadingAnomalies(true);
     // check if there is any anomaly result in last 30mins
-    const latestSingleLiveAnomalyResult = await getLatestAnomalyResultsByTimeRange(
-      searchES,
-      '30m',
-      dispatch,
-      -1,
-      1,
-      true
-    );
+    // need to initially check if there is an error when accessing anomaly results index
+    // in the case that it doesn't exist upon cluster initialization
+    let latestSingleLiveAnomalyResult = [] as any[];
+    try {
+      latestSingleLiveAnomalyResult = await getLatestAnomalyResultsByTimeRange(
+        searchES,
+        '30m',
+        dispatch,
+        -1,
+        1,
+        true
+      );
+    } catch (err) {
+      console.log('Error getting latest anomaly results - index may not exist yet', err);
+      setIsLoadingAnomalies(false);
+    }
 
     setHasLatestAnomalyResult(!isEmpty(latestSingleLiveAnomalyResult));
 
