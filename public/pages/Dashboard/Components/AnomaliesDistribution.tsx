@@ -16,8 +16,7 @@ import { DetectorListItem } from '../../../models/interfaces';
 import { useState, useEffect } from 'react';
 import {
   fillOutColors,
-  visualizeAnomalyResultForSunburstChart,
-  getLatestAnomalyResultsForDetectorsByTimeRange,
+  getAnomalyDistributionForDetectorsByTimeRange,
 } from '../utils/utils';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import {
@@ -36,7 +35,6 @@ import React from 'react';
 import { TIME_RANGE_OPTIONS } from '../../Dashboard/utils/constants';
 import { get, isEmpty } from 'lodash';
 import { searchES } from '../../../redux/reducers/elasticsearch';
-import { MAX_DETECTORS, MAX_ANOMALIES } from '../../../utils/constants';
 import { AD_DOC_FIELDS } from '../../../../server/utils/constants';
 export interface AnomaliesDistributionChartProps {
   selectedDetectors: DetectorListItem[];
@@ -47,7 +45,9 @@ export const AnomaliesDistributionChart = (
 ) => {
   const dispatch = useDispatch();
 
-  const [anomalyResults, setAnomalyResults] = useState([] as object[]);
+  const [anomalyDistribution, setAnomalyDistribution] = useState(
+    [] as object[]
+  );
 
   // TODO: try to find a better way of using redux,
   // which can leverage redux, and also get rid of issue with multiple redux on same page,
@@ -64,24 +64,19 @@ export const AnomaliesDistributionChart = (
 
   const getAnomalyResult = async (currentDetectors: DetectorListItem[]) => {
     setAnomalyResultsLoading(true);
-    const latestAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
+
+    const distributionResult = await getAnomalyDistributionForDetectorsByTimeRange(
       searchES,
       props.selectedDetectors,
       timeRange,
       dispatch,
       0,
-      MAX_ANOMALIES,
-      MAX_DETECTORS,
       false
     );
-
-    const nonZeroAnomalyResult = latestAnomalyResult.filter(
-      anomalyData => get(anomalyData, AD_DOC_FIELDS.ANOMALY_GRADE, 0) > 0
-    );
-    setAnomalyResults(nonZeroAnomalyResult);
+    setAnomalyDistribution(distributionResult);
 
     const resultDetectors = getFinalDetectors(
-      nonZeroAnomalyResult,
+      distributionResult,
       props.selectedDetectors
     );
     setIndicesNumber(getFinalIndices(resultDetectors).size);
@@ -99,11 +94,11 @@ export const AnomaliesDistributionChart = (
   };
 
   const getFinalDetectors = (
-    finalLiveAnomalyResult: object[],
+    finalAnomalyResult: object[],
     detectorList: DetectorListItem[]
   ): DetectorListItem[] => {
     const detectorSet = new Set<string>();
-    finalLiveAnomalyResult.forEach(anomalyResult => {
+    finalAnomalyResult.forEach(anomalyResult => {
       detectorSet.add(get(anomalyResult, AD_DOC_FIELDS.DETECTOR_ID, ''));
     });
 
@@ -174,14 +169,11 @@ export const AnomaliesDistributionChart = (
       ) : (
         <EuiFlexGroup justifyContent="center">
           <EuiFlexItem grow={false}>
-            {isEmpty(anomalyResults) ? null : (
+            {isEmpty(anomalyDistribution) ? null : (
               <Chart className="anomalies-distribution-sunburst">
                 <Partition
                   id="Anomalies by index and detector"
-                  data={visualizeAnomalyResultForSunburstChart(
-                    anomalyResults,
-                    finalDetectors
-                  )}
+                  data={anomalyDistribution}
                   valueAccessor={(d: Datum) => d.count as number}
                   valueFormatter={(d: number) => d.toString()}
                   layers={[

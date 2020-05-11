@@ -53,6 +53,7 @@ const executeSearch = async (
       size = 0,
       sort = undefined,
       collapse = undefined,
+      aggs = undefined,
       rawQuery = undefined,
     } = req.payload as {
       index: string;
@@ -60,6 +61,7 @@ const executeSearch = async (
       size?: number;
       sort?: object;
       collapse?: object;
+      aggs?: object;
       rawQuery: object;
     };
     const requestBody = rawQuery
@@ -68,6 +70,7 @@ const executeSearch = async (
           query: query,
           ...(sort !== undefined && { sort: sort }),
           ...(collapse !== undefined && { collapse: collapse }),
+          ...(aggs !== undefined && { aggs: aggs }),
         };
 
     const params: SearchParams = { index, size, body: requestBody };
