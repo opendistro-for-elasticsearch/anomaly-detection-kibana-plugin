@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Dispatch } from 'react';
 import {
   EuiFlexItem,
   EuiFlexGroup,
@@ -23,6 +23,7 @@ import {
   EuiTitle,
   EuiCallOut,
   EuiStat,
+  EuiLoadingChart,
 } from '@elastic/eui';
 import moment from 'moment';
 import {
@@ -45,6 +46,7 @@ import { Detector, AnomalyData } from '../../../models/interfaces';
 import {
   getLiveAnomalyResults,
   prepareDataForLiveChart,
+  getQueryParamsForLiveAnomalyResults,
 } from '../../utils/anomalyResultUtils';
 import { get } from 'lodash';
 import {
@@ -58,6 +60,7 @@ import { dateFormatter } from '../../utils/helpers';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
 import { EuiIcon } from '@elastic/eui';
 import { formatAnomalyNumber } from '../../../../server/utils/helpers';
+import { getDetectorLiveResults } from '../../../redux/reducers/liveAnomalyResults';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
@@ -68,6 +71,7 @@ export const AnomalyResultsLiveChart = (
 ) => {
   const dispatch = useDispatch();
 
+  const [firstLoading, setFirstLoading] = useState<boolean>(true);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
   const isLoading = useSelector(
     (state: AppState) => state.liveAnomalyResults.requesting
@@ -85,14 +89,16 @@ export const AnomalyResultsLiveChart = (
     'minutes'
   );
   const endDateTime = moment();
-  const anomalies = prepareDataForLiveChart(
-    liveAnomalyResults.liveAnomalies,
-    {
-      startDate: startDateTime.valueOf(),
-      endDate: endDateTime.valueOf(),
-    },
-    get(props.detector, 'detectionInterval.period.interval', 1),
-  );
+  const anomalies = !firstLoading
+    ? prepareDataForLiveChart(
+        liveAnomalyResults.liveAnomalies,
+        {
+          startDate: startDateTime.valueOf(),
+          endDate: endDateTime.valueOf(),
+        },
+        get(props.detector, 'detectionInterval.period.interval', 1)
+      )
+    : [];
 
   const annotations = liveAnomalyResults
     ? get(liveAnomalyResults, 'liveAnomalies', [])
@@ -116,8 +122,30 @@ export const AnomalyResultsLiveChart = (
   ]);
 
   useEffect(() => {
+    async function loadLiveAnomalyResults(
+      dispatch: Dispatch<any>,
+      detectorId: string,
+      detectionInterval: number,
+      intervals: number
+    ) {
+      try {
+        const queryParams = getQueryParamsForLiveAnomalyResults(
+          detectionInterval,
+          intervals
+        );
+        await dispatch(getDetectorLiveResults(detectorId, queryParams));
+      } catch (err) {
+        console.error(
+          `Failed to get live anomaly result for detector ${detectorId}`,
+          err
+        );
+      } finally {
+        setFirstLoading(false);
+      }
+    }
+
     if (props.detector.curState === DETECTOR_STATE.RUNNING) {
-      getLiveAnomalyResults(
+      loadLiveAnomalyResults(
         dispatch,
         props.detector.id,
         detectionInterval,
@@ -237,68 +265,80 @@ export const AnomalyResultsLiveChart = (
               opacity: showLoader ? 0.2 : 1,
             }}
           >
-            <EuiFlexItem grow={true} style={{ marginRight: '0px' }}>
-              {get(liveAnomalyResults, 'liveAnomalies', []).length === 0 ||
-              !latestAnomalyGrade ? (
-                <EuiCallOut
-                  color="success"
-                  size="s"
-                  title={`No anomalies found during the last ${
-                    LIVE_CHART_CONFIG.MONITORING_INTERVALS
-                  } intervals (${LIVE_CHART_CONFIG.MONITORING_INTERVALS *
-                    props.detector.detectionInterval.period
-                      .interval} minutes).`}
-                  style={{
-                    width: '97%', // ensure width reaches NOW line
-                  }}
-                />
-              ) : null}
-              <Chart>
-                <Settings theme={LIVE_ANOMALY_CHART_THEME} />
-                <LineAnnotation
-                  id="annotationNow"
-                  domainType={AnnotationDomainTypes.XDomain}
-                  dataValues={nowAnnotation([endDateTime.valueOf(), 1])}
-                  style={nowLineStyle}
-                  // @ts-ignore
-                  marker={'now'}
-                />
-                <RectAnnotation
-                  dataValues={annotations || []}
-                  id="annotations"
-                  style={{
-                    stroke: darkModeEnabled()
-                      ? 'red'
-                      : CHART_COLORS.ANOMALY_GRADE_COLOR,
-                    opacity: 0.8,
-                    fill: darkModeEnabled()
-                      ? 'red'
-                      : CHART_COLORS.ANOMALY_GRADE_COLOR,
-                  }}
-                  renderTooltip={customAnomalyTooltip}
-                />
-                <Axis
-                  id="bottom"
-                  position="bottom"
-                  tickFormat={timeFormatter}
-                />
-                <Axis
-                  id="left"
-                  title={'Anomaly grade'}
-                  position="left"
-                  domain={{ min: 0, max: 1 }}
-                />
-                <BarSeries
-                  id="Anomaly grade"
-                  name="Anomaly grade"
-                  data={anomalies}
-                  xScaleType={ScaleType.Time}
-                  yScaleType={ScaleType.Linear}
-                  xAccessor={CHART_FIELDS.PLOT_TIME}
-                  yAccessors={[CHART_FIELDS.ANOMALY_GRADE]}
-                />
-              </Chart>
-            </EuiFlexItem>
+            {firstLoading ? (
+              <EuiFlexGroup
+                justifyContent="spaceAround"
+                style={{ paddingTop: '150px' }}
+              >
+                <EuiFlexItem grow={false}>
+                  <EuiLoadingChart size="xl" mono />
+                </EuiFlexItem>
+              </EuiFlexGroup>
+            ) : (
+              <EuiFlexItem grow={true} style={{ marginRight: '0px' }}>
+                {get(liveAnomalyResults, 'liveAnomalies', []).length === 0 ||
+                !latestAnomalyGrade ? (
+                  <EuiCallOut
+                    color="success"
+                    size="s"
+                    title={`No anomalies found during the last ${
+                      LIVE_CHART_CONFIG.MONITORING_INTERVALS
+                    } intervals (${LIVE_CHART_CONFIG.MONITORING_INTERVALS *
+                      props.detector.detectionInterval.period
+                        .interval} minutes).`}
+                    style={{
+                      width: '97%', // ensure width reaches NOW line
+                    }}
+                  />
+                ) : null}
+                <Chart>
+                  <Settings theme={LIVE_ANOMALY_CHART_THEME} />
+                  <LineAnnotation
+                    id="annotationNow"
+                    domainType={AnnotationDomainTypes.XDomain}
+                    dataValues={nowAnnotation([endDateTime.valueOf(), 1])}
+                    style={nowLineStyle}
+                    // @ts-ignore
+                    marker={'now'}
+                  />
+                  <RectAnnotation
+                    dataValues={annotations || []}
+                    id="annotations"
+                    style={{
+                      stroke: darkModeEnabled()
+                        ? 'red'
+                        : CHART_COLORS.ANOMALY_GRADE_COLOR,
+                      opacity: 0.8,
+                      fill: darkModeEnabled()
+                        ? 'red'
+                        : CHART_COLORS.ANOMALY_GRADE_COLOR,
+                    }}
+                    renderTooltip={customAnomalyTooltip}
+                  />
+                  <Axis
+                    id="bottom"
+                    position="bottom"
+                    tickFormat={timeFormatter}
+                  />
+                  <Axis
+                    id="left"
+                    title={'Anomaly grade'}
+                    position="left"
+                    domain={{ min: 0, max: 1 }}
+                  />
+                  <BarSeries
+                    id="Anomaly grade"
+                    name="Anomaly grade"
+                    data={anomalies}
+                    xScaleType={ScaleType.Time}
+                    yScaleType={ScaleType.Linear}
+                    xAccessor={CHART_FIELDS.PLOT_TIME}
+                    yAccessors={[CHART_FIELDS.ANOMALY_GRADE]}
+                  />
+                </Chart>
+              </EuiFlexItem>
+            )}
+
             <EuiFlexItem grow={false} style={{ marginLeft: '0px' }}>
               <EuiStat
                 title={`${get(
@@ -322,13 +362,19 @@ export const AnomalyResultsLiveChart = (
               />
               <EuiStat
                 title={
-                  latestAnomalyGrade ? formatAnomalyNumber(latestAnomalyGrade.anomalyGrade) : '-'
+                  latestAnomalyGrade
+                    ? formatAnomalyNumber(latestAnomalyGrade.anomalyGrade)
+                    : '-'
                 }
                 description="Latest anomaly grade"
                 titleSize="s"
               />
               <EuiStat
-                title={latestAnomalyGrade ? formatAnomalyNumber(latestAnomalyGrade.confidence) : '-'}
+                title={
+                  latestAnomalyGrade
+                    ? formatAnomalyNumber(latestAnomalyGrade.confidence)
+                    : '-'
+                }
                 description="Latest confidence"
                 titleSize="s"
               />

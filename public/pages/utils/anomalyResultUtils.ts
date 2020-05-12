@@ -34,9 +34,7 @@ import { MAX_ANOMALIES } from '../../utils/constants';
 import { minuteDateFormatter } from './helpers';
 import { toFixedNumberForAnomaly } from '../../../server/utils/helpers';
 
-export const getLiveAnomalyResults = (
-  dispatch: Dispatch<any>,
-  detectorId: string,
+export const getQueryParamsForLiveAnomalyResults = (
   detectionInterval: number,
   intervals: number
 ) => {
@@ -53,7 +51,20 @@ export const getLiveAnomalyResults = (
       fieldName: AD_DOC_FIELDS.DATA_START_TIME,
     },
   };
-  dispatch(getDetectorLiveResults(detectorId, updatedParams));
+  return updatedParams;
+};
+
+export const getLiveAnomalyResults = (
+  dispatch: Dispatch<any>,
+  detectorId: string,
+  detectionInterval: number,
+  intervals: number
+) => {
+  const queryParams = getQueryParamsForLiveAnomalyResults(
+    detectionInterval,
+    intervals
+  );
+  dispatch(getDetectorLiveResults(detectorId, queryParams));
 };
 
 export const getAnomalyResultsWithDateRange = (
