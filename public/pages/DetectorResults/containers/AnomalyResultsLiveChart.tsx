@@ -61,10 +61,6 @@ import { darkModeEnabled } from '../../../utils/kibanaUtils';
 import { EuiIcon } from '@elastic/eui';
 import { formatAnomalyNumber } from '../../../../server/utils/helpers';
 import { getDetectorLiveResults } from '../../../redux/reducers/liveAnomalyResults';
-import {
-  AD_DOC_FIELDS,
-  SORT_DIRECTION,
-} from '../../../../server/utils/constants';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
