@@ -1,4 +1,5 @@
 ## Open Distro for Elasticsearch 1.7.0 Release Notes
+Compatible with Kibana 7.6.1 and Open Distro for Elasticsearch 1.7.0.
 
 ## Initial Release
 The Anomaly Detection Kibana plugin provides a Kibana view for the [Anomaly Detection Elasticsearch plugin](https://github.com/opendistro-for-elasticsearch/anomaly-detection).
@@ -18,7 +19,6 @@ You can use the plugin with the same version of the [Open Distro Alerting Kibana
 
 ## Current Limitations
 
-- Supports Elasticsearch / Kibana 7.6.1.
 - Page may load slowly if you load/review data in a long time range.
 - Not all API calls have complete error handling.
 - We will continuously add new unit test cases, but we don't have 100% unit test coverage for now. This is a great area for developers from the community to contribute and help improve test coverage.
