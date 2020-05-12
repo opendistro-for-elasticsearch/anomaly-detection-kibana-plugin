@@ -10,9 +10,11 @@ You can use the plugin with the same version of the [Open Distro Alerting Kibana
 ## Features
 
 1. Create an anomaly detector on an index and configure features for the detector
-2. Preview sample anomaly results for historical data
-3. Monitor live anomalies
-4. Review anomaly history together with alerts
+2. Start and stop detectors at any time
+3. View live anomaly results and summarized results on the dashboard
+4. Preview sample anomaly results for historical data
+5. Monitor live anomalies
+6. Review anomaly history together with alerts
 
 ## Current Limitations
 
