@@ -161,7 +161,7 @@ export function CreateDetector(props: CreateADProps) {
       },
     } = props;
     if (isEmpty(detectorName)) {
-      throw 'Detector name can not be empty';
+      throw 'Detector name cannot be empty';
     } else {
       const error = validateName(detectorName);
       if (error) {
