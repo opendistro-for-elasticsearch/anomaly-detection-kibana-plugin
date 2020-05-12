@@ -41,7 +41,7 @@ import {
   searchDetector,
   updateDetector,
 } from '../../../redux/reducers/ad';
-import { BREADCRUMBS } from '../../../utils/constants';
+import { BREADCRUMBS, MAX_DETECTORS } from '../../../utils/constants';
 import { getErrorMessage, validateName } from '../../../utils/utils';
 import { DetectorInfo } from '../components/DetectorInfo';
 import { useFetchDetectorInfo } from '../hooks/useFetchDetectorInfo';
@@ -119,9 +119,17 @@ export function CreateDetector(props: CreateADProps) {
         `/detectors/${detectorResp.data.response.id}/configurations/`
       );
     } catch (err) {
-      toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem creating detector')
+      const resp = await dispatch(
+        searchDetector({ query: { bool: { must_not: { match: { name: "" } } } } })
       );
+      const totalDetectors = resp.data.response.totalDetectors;
+      if (totalDetectors === MAX_DETECTORS) {
+        toastNotifications.addDanger('Cannot create detector - limit of ' + MAX_DETECTORS + ' detectors reached')
+      } else {
+        toastNotifications.addDanger(
+          getErrorMessage(err, 'There was a problem creating detector')
+        );
+      }
     }
   };
 
@@ -153,7 +161,7 @@ export function CreateDetector(props: CreateADProps) {
       },
     } = props;
     if (isEmpty(detectorName)) {
-      throw 'Detector name can not be empty';
+      throw 'Detector name cannot be empty';
     } else {
       const error = validateName(detectorName);
       if (error) {
