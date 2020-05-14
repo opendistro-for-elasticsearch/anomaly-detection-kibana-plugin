@@ -12,10 +12,11 @@ exports[`<IndexOptions /> spec renders the component 1`] = `
     >
       <svg
         aria-hidden="true"
-        class="euiIcon euiIcon--medium euiIcon--success euiIcon-isLoading"
+        class="euiIcon euiIcon--medium euiIcon-isLoading"
         focusable="false"
         height="16"
         role="img"
+        style="fill: #7DE2D1;"
         viewBox="0 0 16 16"
         width="16"
         xmlns="http://www.w3.org/2000/svg"
@@ -48,10 +49,11 @@ exports[`<IndexOptions /> spec renders with highlight 1`] = `
     >
       <svg
         aria-hidden="true"
-        class="euiIcon euiIcon--medium euiIcon--success euiIcon-isLoading"
+        class="euiIcon euiIcon--medium euiIcon-isLoading"
         focusable="false"
         height="16"
         role="img"
+        style="fill: #7DE2D1;"
         viewBox="0 0 16 16"
         width="16"
         xmlns="http://www.w3.org/2000/svg"

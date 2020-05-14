@@ -17,7 +17,7 @@ import { get, isEmpty } from 'lodash';
 import React from 'react';
 import { EuiTitle } from '@elastic/eui';
 //@ts-ignore
-import { isAngularHttpError } from 'ui/notify/lib/format_angular_http_error';
+import { isAngularHttpError } from 'ui/notify';
 //@ts-ignore
 import { npStart } from 'ui/new_platform';
 import { darkModeEnabled } from '../utils/kibanaUtils';
