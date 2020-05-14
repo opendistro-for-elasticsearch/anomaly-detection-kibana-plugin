@@ -2,11 +2,11 @@
 Compatible with Kibana 7.6.1 and Open Distro for Elasticsearch 1.7.0.
 
 ## Initial Release
-The Anomaly Detection Kibana plugin provides a Kibana view for the [Anomaly Detection Elasticsearch plugin](https://github.com/opendistro-for-elasticsearch/anomaly-detection).
+The Anomaly Detection Kibana plugin provides a Kibana user interface for the [Anomaly Detection plugin](https://github.com/opendistro-for-elasticsearch/anomaly-detection) in Open Distro for Elasticsearch.
 
 Anomaly detection uses the Random Cut Forest (RCF) algorithm for detecting anomalous data points in streaming time series. 
 
-You can use the plugin with the same version of the [Open Distro Alerting Kibana plugin](https://github.com/opendistro-for-elasticsearch/alerting-kibana-plugin) to get alert notifications. You can create a monitor based on an anomaly detector directly on the Alerting Kibana plugin. Monitors run checks on the anomaly detection results regularly and trigger alerts based on custom trigger conditions.
+You can use the plugin with the same version of the [Open Distro for Elasticsearch Alerting Kibana plugin](https://github.com/opendistro-for-elasticsearch/alerting-kibana-plugin) to get alert notifications. You can create a monitor based on an anomaly detector directly on the Alerting Kibana plugin. Monitors run checks on the anomaly detection results regularly and trigger alerts based on custom trigger conditions.
 
 ## Features
 
