@@ -103,7 +103,7 @@ You can use the plugin with the same version of the [Open Distro Alerting Kibana
 - Fix more live chart bugs [PR #125](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/125)
 - Fix loading bug on live chart [PR #129](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/129)
 
-## Build & Workflow Changes
+## Infra Changes
 - Initial commit [here](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/commit/0e5ace28588d311ee9a632c4783ca3e06ad6b187)
 - Fix unit test issue [PR #14](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/14)
 - Update test snapshots [PR #44](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/44)
