@@ -33,6 +33,7 @@ import {
   GetDetectorsQueryParams,
   IndexAlias,
 } from '../../../../server/models/types';
+import { DetectorListItem } from '../../../models/interfaces';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { AppState } from '../../../redux/reducers';
@@ -88,7 +89,11 @@ export const DetectorList = (props: ListProps) => {
     (state: AppState) => state.elasticsearch
   );
 
-  const isLoading = useSelector((state: AppState) => state.ad.requesting);
+  const isRequestingFromES = useSelector((state: AppState) => state.ad.requesting);
+
+  const [selectedDetectors, setSelectedDetectors] = useState([] as DetectorListItem[]);
+  const [detectorsToDisplay, setDetectorsToDisplay] = useState([] as DetectorListItem[]);
+  const [isLoadingFinalDetectors, setIsLoadingFinalDetectors] = useState<boolean>(true);
 
   // Getting all initial indices
   const [indexQuery, setIndexQuery] = useState('');
@@ -133,13 +138,38 @@ export const DetectorList = (props: ListProps) => {
       search: queryString.stringify(updatedParams),
     });
 
-    // get all detectors again
     dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
+    setIsLoadingFinalDetectors(true);
   }, [
     state.page,
     state.queryParams,
     state.selectedDetectorStates,
     state.selectedIndices,
+  ]);
+
+  // Handle all filtering / sorting of detectors
+  useEffect(() => {
+    const curSelectedDetectors = filterAndSortDetectors(
+      Object.values(allDetectors),
+      state.queryParams.search,
+      state.selectedIndices,
+      state.selectedDetectorStates,
+      state.queryParams.sortField,
+      state.queryParams.sortDirection,
+    );
+    setSelectedDetectors(curSelectedDetectors);
+
+    const curDetectorsToDisplay = getDetectorsToDisplay(
+      curSelectedDetectors,
+      state.page,
+      state.queryParams.size
+    );
+    setDetectorsToDisplay(curDetectorsToDisplay);
+
+    setIsLoadingFinalDetectors(false);
+  },
+  [
+    allDetectors,
   ]);
 
   const handlePageChange = (pageNumber: number) => {
@@ -233,22 +263,6 @@ export const DetectorList = (props: ListProps) => {
     }));
   };
 
-  // get all selected detectors
-  const selectedDetectors = filterAndSortDetectors(
-    Object.values(allDetectors),
-    state.queryParams.search,
-    state.selectedIndices,
-    state.selectedDetectorStates,
-    state.queryParams.sortField,
-    state.queryParams.sortDirection,
-  );
-
-  // get detectors to display based on this page
-  const detectorsToDisplay = getDetectorsToDisplay(
-    selectedDetectors,
-    state.page,
-    state.queryParams.size
-  );
 
   const sorting = {
     sort: {
@@ -273,7 +287,7 @@ export const DetectorList = (props: ListProps) => {
     <EuiPage>
       <EuiPageBody>
         <ContentPanel
-          title={getTitleWithCount('Detectors', selectedDetectors.length)}
+          title={isLoadingFinalDetectors ? getTitleWithCount('Detectors', '...') : getTitleWithCount('Detectors', selectedDetectors.length)}
           actions={[
             <EuiButton fill href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
               Create detector
@@ -283,7 +297,7 @@ export const DetectorList = (props: ListProps) => {
           <ListControls
             activePage={state.page}
             pageCount={
-              Math.ceil(selectedDetectors.length / state.queryParams.size) || 1
+              isLoadingFinalDetectors ? 0 : Math.ceil(selectedDetectors.length / state.queryParams.size) || 1
             }
             search={state.queryParams.search}
             selectedDetectorStates={state.selectedDetectorStates}
@@ -297,13 +311,13 @@ export const DetectorList = (props: ListProps) => {
           />
           <EuiHorizontalRule margin="xs" />
           <EuiBasicTable<any>
-            items={detectorsToDisplay}
+            items={isLoadingFinalDetectors ? [] : detectorsToDisplay}
             columns={staticColumn}
             onChange={handleTableChange}
             sorting={sorting}
             pagination={pagination}
             noItemsMessage={
-              isLoading ? (
+              isRequestingFromES || isLoadingFinalDetectors ? (
                 'Loading detectors...'
               ) : (
                 <EmptyDetectorMessage

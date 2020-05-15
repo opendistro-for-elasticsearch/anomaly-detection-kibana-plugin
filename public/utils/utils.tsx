@@ -116,7 +116,7 @@ export interface Listener {
 
 const detectorCountFontColor = darkModeEnabled() ? '#98A2B3' : '#535966';
 
-export const getTitleWithCount = (title: string, count: number) => {
+export const getTitleWithCount = (title: string, count: number | string) => {
   return (
     <EuiTitle size={'s'} className={''}>
       <h3
