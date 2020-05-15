@@ -29,7 +29,6 @@ import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
 import configureStore from '../../../../redux/configureStore';
 import { httpClientMock } from '../../../../../test/mocks';
 import userEvent from '@testing-library/user-event';
-import { UNITS } from '../../../../models/interfaces';
 
 const renderWithRouter = (isEdit: boolean = false) => ({
   ...render(

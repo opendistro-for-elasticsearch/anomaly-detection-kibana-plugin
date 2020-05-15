@@ -19,9 +19,13 @@ import { AlertsFlyout } from '../AlertsFlyout';
 import { getRandomMonitor } from '../../../../../redux/reducers/__tests__/utils';
 
 describe('<AlertsFlyout /> spec', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   const detectorId = "GILVg3EBhaIh92zvX8uE";
   describe('Alerts Flyout', () => {
     test('renders component with monitor', () => {
+      console.error = jest.fn();
       const { container } = render(
         <AlertsFlyout
           detectorId={detectorId}
@@ -36,6 +40,7 @@ describe('<AlertsFlyout /> spec', () => {
     });
 
     test('renders component with undefined monitor', () => {
+      console.error = jest.fn();
       const { container } = render(
         <AlertsFlyout
           detectorId={detectorId}

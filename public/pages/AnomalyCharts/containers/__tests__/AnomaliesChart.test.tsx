@@ -60,7 +60,7 @@ const renderDataFilter = () => ({
         anomalySummary={undefined}
         dateRange={dateRange}
         isLoading={false}
-        anomalyGradeSeriesName="anoaly grade"
+        anomalyGradeSeriesName="anomaly grade"
         confidenceSeriesName="confidence"
         detectorId="testDetectorId"
         detectorName="testDetectorName"
@@ -72,7 +72,8 @@ const renderDataFilter = () => ({
 
 describe('<AnomaliesChart /> spec', () => {
   test('renders the component', () => {
+    console.error = jest.fn();
     const { getByText } = renderDataFilter();
-    expect(getByText('anoaly grade')).not.toBeNull();
+    expect(getByText('anomaly grade')).not.toBeNull();
   });
 });

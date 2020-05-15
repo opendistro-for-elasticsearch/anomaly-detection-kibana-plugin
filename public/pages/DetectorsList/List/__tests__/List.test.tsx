@@ -229,7 +229,7 @@ describe('<ListControls /> spec', () => {
       await wait();
       getByText('04/15/2020 7:30 AM');
       expect(queryByText('04/15/2020 7:00 AM')).toBeNull();
-    });
+    }, 20000);
     test('should be able to search', async () => {
       const randomDetectors = new Array(40).fill(null).map((_, index) => {
         const hasAnomaly = Math.random() > 0.5;

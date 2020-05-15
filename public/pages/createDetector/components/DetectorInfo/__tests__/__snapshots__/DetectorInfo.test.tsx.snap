@@ -96,7 +96,6 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
       </div>
       <div
         class="euiFormRow"
-        formattedtitle="[object Object]"
         hint="Describe the purpose of the detector."
         id="random_id-row"
       >

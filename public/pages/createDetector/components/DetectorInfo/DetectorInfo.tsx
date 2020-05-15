@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { EuiFieldText, EuiTextArea, EuiFormRow } from '@elastic/eui';
+import { EuiFieldText, EuiTextArea } from '@elastic/eui';
 import { Field, FieldProps } from 'formik';
 import React from 'react';
 import ContentPanel from '../../../../components/ContentPanel/ContentPanel';

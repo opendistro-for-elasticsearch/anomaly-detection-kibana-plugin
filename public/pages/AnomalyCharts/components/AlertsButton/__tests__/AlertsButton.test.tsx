@@ -19,8 +19,12 @@ import { AlertsButton } from '../AlertsButton';
 import { getRandomMonitor } from '../../../../../redux/reducers/__tests__/utils';
 
 describe('<AlertsButton /> spec', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   describe('Alerts Button', () => {
     test('renders component without monitor', () => {
+      console.error = jest.fn();
       const { container } = render(
         <AlertsButton
           detectorId="test-detector-id"
