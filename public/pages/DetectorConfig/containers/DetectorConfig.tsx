@@ -28,7 +28,7 @@ interface DetectorConfigProps extends RouteComponentProps {
   onEditDetector(): void;
 }
 
-export const DetectorConfig = (props: DetectorConfigProps) => {
+export function DetectorConfig(props: DetectorConfigProps) {
   const dispatch = useDispatch();
   const detector = useSelector(
     (state: AppState) => state.ad.detectors[props.detectorId]
@@ -40,20 +40,22 @@ export const DetectorConfig = (props: DetectorConfigProps) => {
 
   return (
     <EuiPage style={{ marginTop: '16px', paddingTop: '0px' }}>
-      <EuiPageBody>
-        <EuiSpacer size="l" />
-        <MetaData
-          detectorId={props.detectorId}
-          detector={detector}
-          onEditDetector={props.onEditDetector}
-        />
-        <EuiSpacer />
-        <Features
-          detectorId={props.detectorId}
-          detector={detector}
-          onEditFeatures={props.onEditFeatures}
-        />
-      </EuiPageBody>
+      {detector ? (
+        <EuiPageBody>
+          <EuiSpacer size="l" />
+          <MetaData
+            detectorId={props.detectorId}
+            detector={detector}
+            onEditDetector={props.onEditDetector}
+          />
+          <EuiSpacer />
+          <Features
+            detectorId={props.detectorId}
+            detector={detector}
+            onEditFeatures={props.onEditFeatures}
+          />
+        </EuiPageBody>
+      ) : null}
     </EuiPage>
   );
-};
+}
