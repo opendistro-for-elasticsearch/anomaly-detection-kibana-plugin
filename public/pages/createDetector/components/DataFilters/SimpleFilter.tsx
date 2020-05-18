@@ -100,7 +100,6 @@ export const SimpleFilter = (props: DataFilterProps) => {
               return (
                 <EuiPanel key={index} className="filter-container">
                   <EuiAccordion
-                    key={index}
                     id={'name'}
                     initialIsOpen={true}
                     buttonContent={displayText(filter)}
