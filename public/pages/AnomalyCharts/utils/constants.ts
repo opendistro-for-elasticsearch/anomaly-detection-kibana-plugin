@@ -88,3 +88,12 @@ export enum LIVE_CHART_CONFIG {
   REFRESH_INTERVAL_IN_SECONDS = 30 * 1000, //poll anomaly result every 30 seconds
   MONITORING_INTERVALS = 60,
 }
+
+export const DEFAULT_ANOMALY_SUMMARY = {
+  anomalyOccurrence: 0,
+  minAnomalyGrade: 0,
+  maxAnomalyGrade: 0,
+  minConfidence: 0,
+  maxConfidence: 0,
+  lastAnomalyOccurrence: '-',
+};
