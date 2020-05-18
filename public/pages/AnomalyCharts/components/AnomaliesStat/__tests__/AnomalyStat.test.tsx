@@ -64,8 +64,12 @@ describe('<AnomalyStatWithTooltip /> spec', () => {
 });
 
 describe('<AlertsStat /> spec', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   describe('Alert Stat', () => {
     test('renders component with undefined monitor and loading', () => {
+      console.error = jest.fn();
       const { container } = render(
         <AlertsStat
           monitor={undefined}
@@ -78,6 +82,7 @@ describe('<AlertsStat /> spec', () => {
     });
 
     test('renders component with undefined monitor and not loading', () => {
+      console.error = jest.fn();
       const { container } = render(
         <AlertsStat
           monitor={undefined}

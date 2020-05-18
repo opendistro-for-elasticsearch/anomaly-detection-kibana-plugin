@@ -52,6 +52,7 @@ describe('<FeatureBreakDown /> spec', () => {
     featureData: featureData,
   };
   test('renders the component', () => {
+    console.error = jest.fn();
     const { container } = render(
       <FeatureBreakDown
         title="test"

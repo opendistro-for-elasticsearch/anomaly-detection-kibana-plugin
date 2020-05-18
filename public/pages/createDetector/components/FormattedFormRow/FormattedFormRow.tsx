@@ -32,20 +32,21 @@ export const FormattedFormRow = (props: FormattedFormRowProps) => {
   if (props.hint) {
     const hintTexts = Array.isArray(props.hint) ? props.hint : [props.hint];
     hints = hintTexts.map((hint, i) => {
-      return <p className="sublabel">{hint}</p>;
+      return <p key={i} className="sublabel">{hint}</p>;
     });
   }
+  const {formattedTitle, ...euiFormRowProps} = props;
 
   return (
     <EuiFormRow
       label={
         <div style={{ lineHeight: '8px' }}>
-          {props.formattedTitle ? props.formattedTitle : <p>{props.title}</p>}
+          {formattedTitle ? formattedTitle : <p>{props.title}</p>}
           <br />
           {hints}
         </div>
       }
-      {...props}
+      {...euiFormRowProps}
     >
       {props.children}
     </EuiFormRow>

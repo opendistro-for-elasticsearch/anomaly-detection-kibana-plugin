@@ -125,7 +125,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
       setPreviewDone(true);
       setFirstPreview(false);
     } catch (err) {
-      console.error(`Fail to preivew detector ${detector.id}`, err);
+      console.error(`Fail to preview detector ${detector.id}`, err);
       setIsLoading(false);
       toastNotifications.addDanger(
         getPreviewErrorMessage(err, 'There was a problem previewing detector')

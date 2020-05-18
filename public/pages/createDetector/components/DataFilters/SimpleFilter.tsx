@@ -98,9 +98,8 @@ export const SimpleFilter = (props: DataFilterProps) => {
           <EuiPanel style={darkMode ? {} : lightModeStyles}>
             {values.filters.map((filter: UIFilter, index: number) => {
               return (
-                <EuiPanel className="filter-container">
+                <EuiPanel key={index} className="filter-container">
                   <EuiAccordion
-                    key={index}
                     id={'name'}
                     initialIsOpen={true}
                     buttonContent={displayText(filter)}

@@ -41,8 +41,6 @@ describe('formikToAd', () => {
       },
       {} as Detector
     );
-    console.log(ad);
-    console.log(randomDetector);
     expect(ad).toEqual({
       name: randomDetector.name,
       description: randomDetector.description,

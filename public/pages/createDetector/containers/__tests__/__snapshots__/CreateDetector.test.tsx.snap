@@ -115,7 +115,6 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
         </div>
         <div
           class="euiFormRow"
-          formattedtitle="[object Object]"
           hint="Describe the purpose of the detector."
           id="random_id-row"
         >
@@ -381,7 +380,6 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
         </div>
         <div
           class="euiFormRow euiFormRow--fullWidth"
-          formattedtitle="[object Object]"
           hint="Choose a subset of your data source to focus your data stream and reduce noisy data.,Use the visual editor to create a simple filter, or use the Elasticsearch query DSL to create more advanced filters."
           id="random_id-row"
         >

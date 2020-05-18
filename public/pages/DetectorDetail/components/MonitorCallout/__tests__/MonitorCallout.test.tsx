@@ -18,7 +18,11 @@ import { render } from '@testing-library/react';
 import { MonitorCallout } from '../MonitorCallout';
 
 describe('<MonitorCallout /> spec', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   describe('Monitor callout', () => {
+    console.error = jest.fn();
     test('renders component', () => {
       const { container } = render(
         <MonitorCallout
