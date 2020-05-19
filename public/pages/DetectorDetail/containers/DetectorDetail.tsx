@@ -64,12 +64,12 @@ interface DetectorDetailProps
 const tabs = [
   {
     id: DETECTOR_DETAIL_TABS.RESULTS,
-    name: 'Anomaly Results',
+    name: 'Anomaly results',
     route: DETECTOR_DETAIL_TABS.RESULTS,
   },
   {
     id: DETECTOR_DETAIL_TABS.CONFIGURATIONS,
-    name: 'Detector Configuration',
+    name: 'Detector configuration',
     route: DETECTOR_DETAIL_TABS.CONFIGURATIONS,
   },
 ];
