@@ -29,7 +29,7 @@ import {
 } from '@elastic/eui';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { RouteComponentProps, Switch, Route, Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useFetchDetectorInfo } from '../../createDetector/hooks/useFetchDetectorInfo';
@@ -52,6 +52,7 @@ import { MonitorCallout } from '../components/MonitorCallout/MonitorCallout';
 import { DETECTOR_DETAIL_TABS } from '../utils/constants';
 import { DetectorConfig } from '../../DetectorConfig/containers/DetectorConfig';
 import { AnomalyResults } from '../../DetectorResults/containers/AnomalyResults';
+import { EuiLoadingSpinner } from '@elastic/eui';
 
 export interface DetectorRouterProps {
   detectorId?: string;
@@ -255,92 +256,108 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   return (
     <React.Fragment>
-      <EuiFlexGroup
-        direction="column"
-        style={{
-          ...(isDark
-            ? { flexGrow: 'unset' }
-            : { ...lightStyles, flexGrow: 'unset' }),
-        }}
-      >
-        <EuiFlexGroup justifyContent="spaceBetween" style={{ padding: '10px' }}>
-          <EuiFlexItem grow={false}>
-            <EuiTitle size="l">
-              <h1>
-                {detector && detector.name}{' '}
-                {detector &&
-                detector.enabled &&
-                detector.curState === DETECTOR_STATE.RUNNING ? (
-                  <EuiHealth color="success">
-                    Running since{' '}
-                    {detector.enabledTime
-                      ? moment(detector.enabledTime).format('MM/DD/YY h:mm A')
-                      : '?'}
-                  </EuiHealth>
-                ) : detector.enabled &&
-                  detector.curState === DETECTOR_STATE.INIT ? (
-                  <EuiHealth color="primary">Initializing</EuiHealth>
-                ) : detector.curState === DETECTOR_STATE.INIT_FAILURE ||
-                  detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE ? (
-                  <EuiHealth color="danger">Initialization failure</EuiHealth>
-                ) : (
-                  <EuiHealth color="subdued">
-                    {detector.featureAttributes &&
-                    detector.featureAttributes.length
-                      ? detector.disabledTime
-                        ? `Stopped at ${moment(detector.disabledTime).format(
-                            'MM/DD/YY h:mm A'
-                          )}`
-                        : 'Detector is stopped'
-                      : 'Feature required to start the detector'}
-                  </EuiHealth>
-                )}
-              </h1>
-            </EuiTitle>
-          </EuiFlexItem>
+      {!isEmpty(detector) ? (
+        <EuiFlexGroup
+          direction="column"
+          style={{
+            ...(isDark
+              ? { flexGrow: 'unset' }
+              : { ...lightStyles, flexGrow: 'unset' }),
+          }}
+        >
+          <EuiFlexGroup
+            justifyContent="spaceBetween"
+            style={{ padding: '10px' }}
+          >
+            <EuiFlexItem grow={false}>
+              <EuiTitle size="l">
+                <h1>
+                  {detector && detector.name}{' '}
+                  {detector &&
+                  detector.enabled &&
+                  detector.curState === DETECTOR_STATE.RUNNING ? (
+                    <EuiHealth color="success">
+                      Running since{' '}
+                      {detector.enabledTime
+                        ? moment(detector.enabledTime).format('MM/DD/YY h:mm A')
+                        : '?'}
+                    </EuiHealth>
+                  ) : detector.enabled &&
+                    detector.curState === DETECTOR_STATE.INIT ? (
+                    <EuiHealth color="primary">Initializing</EuiHealth>
+                  ) : detector.curState === DETECTOR_STATE.INIT_FAILURE ||
+                    detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE ? (
+                    <EuiHealth color="danger">Initialization failure</EuiHealth>
+                  ) : (
+                    <EuiHealth color="subdued">
+                      {detector.featureAttributes &&
+                      detector.featureAttributes.length
+                        ? detector.disabledTime
+                          ? `Stopped at ${moment(detector.disabledTime).format(
+                              'MM/DD/YY h:mm A'
+                            )}`
+                          : 'Detector is stopped'
+                        : 'Feature required to start the detector'}
+                    </EuiHealth>
+                  )}
+                </h1>
+              </EuiTitle>
+            </EuiFlexItem>
 
-          <EuiFlexItem grow={false}>
-            <DetectorControls
-              onEditDetector={handleEditDetector}
-              onDelete={() =>
-                setDetectorDetailModel({
-                  ...detecorDetailModel,
-                  showDeleteDetectorModal: true,
-                })
-              }
-              onStartDetector={() => handleStartAdJob(detectorId)}
-              onStopDetector={() =>
-                monitor
-                  ? setDetectorDetailModel({
-                      ...detecorDetailModel,
-                      showMonitorCalloutModal: true,
-                    })
-                  : handleStopAdJob(detectorId)
-              }
-              onEditFeatures={handleEditFeature}
-              detector={detector}
-            />
-          </EuiFlexItem>
-        </EuiFlexGroup>
+            <EuiFlexItem grow={false}>
+              <DetectorControls
+                onEditDetector={handleEditDetector}
+                onDelete={() =>
+                  setDetectorDetailModel({
+                    ...detecorDetailModel,
+                    showDeleteDetectorModal: true,
+                  })
+                }
+                onStartDetector={() => handleStartAdJob(detectorId)}
+                onStopDetector={() =>
+                  monitor
+                    ? setDetectorDetailModel({
+                        ...detecorDetailModel,
+                        showMonitorCalloutModal: true,
+                      })
+                    : handleStopAdJob(detectorId)
+                }
+                onEditFeatures={handleEditFeature}
+                detector={detector}
+              />
+            </EuiFlexItem>
+          </EuiFlexGroup>
 
-        <EuiFlexGroup>
-          <EuiFlexItem>
-            <EuiTabs>
-              {tabs.map(tab => (
-                <EuiTab
-                  onClick={() => {
-                    handleTabChange(tab.route);
-                  }}
-                  isSelected={tab.id === detecorDetailModel.selectedTab}
-                  key={tab.id}
-                >
-                  {tab.name}
-                </EuiTab>
-              ))}
-            </EuiTabs>
-          </EuiFlexItem>
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiTabs>
+                {tabs.map(tab => (
+                  <EuiTab
+                    onClick={() => {
+                      handleTabChange(tab.route);
+                    }}
+                    isSelected={tab.id === detecorDetailModel.selectedTab}
+                    key={tab.id}
+                  >
+                    {tab.name}
+                  </EuiTab>
+                ))}
+              </EuiTabs>
+            </EuiFlexItem>
+          </EuiFlexGroup>
         </EuiFlexGroup>
-      </EuiFlexGroup>
+      ) : (
+        <div>
+          <EuiLoadingSpinner size="s" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="m" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="l" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="xl" />
+        </div>
+      )}
+
       {detecorDetailModel.showDeleteDetectorModal ? (
         <EuiOverlayMask>
           <ConfirmModal
