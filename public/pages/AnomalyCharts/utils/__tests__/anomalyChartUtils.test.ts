@@ -13,12 +13,14 @@
  * permissions and limitations under the License.
  */
 
+ //@ts-ignore
+import moment from 'moment';
 import { getAnomalySummary } from '../anomalyChartUtils';
 
 describe('anomalyChartUtils', () => {
   describe('getAnomalySummary', () => {
     test('test anomaly summary happy case', () => {
-      const latestAnomaly = getAnomalySummary([
+      const anomalySummary = getAnomalySummary([
         {
           anomalyGrade: 0.7,
           confidence: 0.87,
@@ -42,21 +44,19 @@ describe('anomalyChartUtils', () => {
         },
       ]);
 
-      console.log(latestAnomaly);
-      expect(latestAnomaly).toEqual({
+      expect(anomalySummary).toEqual({
         anomalyOccurrence: 3,
         minAnomalyGrade: 0.1,
         maxAnomalyGrade: 0.7,
         minConfidence: 0.86,
         maxConfidence: 0.98,
-        lastAnomalyOccurrence: '05/12/20 12:52 PM',
+        lastAnomalyOccurrence: moment(1589313164793).format('MM/DD/YY hh:mm A'),
       });
     });
     test('test anomaly summary with empty anomalies', () => {
-      const latestAnomaly = getAnomalySummary([]);
+      const anomalySummary = getAnomalySummary([]);
 
-      console.log(latestAnomaly);
-      expect(latestAnomaly).toEqual({
+      expect(anomalySummary).toEqual({
         anomalyOccurrence: 0,
         minAnomalyGrade: 0,
         maxAnomalyGrade: 0,
@@ -66,9 +66,8 @@ describe('anomalyChartUtils', () => {
       });
     });
     test('test anomaly summary with undefined anomalies', () => {
-      const latestAnomaly = getAnomalySummary(undefined);
-      console.log(latestAnomaly);
-      expect(latestAnomaly).toEqual({
+      const anomalySummary = getAnomalySummary(undefined);
+      expect(anomalySummary).toEqual({
         anomalyOccurrence: 0,
         minAnomalyGrade: 0,
         maxAnomalyGrade: 0,
