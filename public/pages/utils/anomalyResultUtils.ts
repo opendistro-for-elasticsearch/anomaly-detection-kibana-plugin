@@ -93,7 +93,16 @@ const calculateStep = (total: number): number => {
   return Math.ceil(total / MAX_DATA_POINTS);
 };
 
-//TODO: sorting and find the maximum value?
+// If array size is 100K, `findAnomalyWithMaxAnomalyGrade` 
+// takes less than 2ms by average, while `Array#reduce` 
+// takes about 16ms by average and`Array#sort` 
+// takes about 3ms by average.
+// If array size is 1M, `findAnomalyWithMaxAnomalyGrade` 
+// takes less than 6ms by average, while `Array#reduce` 
+// takes about 170ms by average and`Array#sort` takes about
+//  80ms by average.
+// Considering performance impact, will not change this
+// method currently.
 function findAnomalyWithMaxAnomalyGrade(anomalies: any[]) {
   let anomalyWithMaxGrade = anomalies[0];
   for (let i = 1, len = anomalies.length; i < len; i++) {
