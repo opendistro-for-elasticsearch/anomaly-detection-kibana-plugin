@@ -22,6 +22,7 @@ import {
 } from '../../../models/interfaces';
 import { dateFormatter, minuteDateFormatter } from '../../utils/helpers';
 import { RectAnnotationDatum } from '@elastic/charts';
+import { DEFAULT_ANOMALY_SUMMARY } from './constants';
 
 export const getAlertsQuery = (monitorId: string, startTime: number) => {
   return {
@@ -97,46 +98,42 @@ export const generateAlertAnnotations = (alerts: MonitorAlert[]): any[] => {
 };
 
 const findLatestAnomaly = (anomalies: any[]) => {
-  let latestAnomaly = anomalies[0];
-  for (let i = 1, len = anomalies.length; i < len; i++) {
-    let item = anomalies[i];
-    latestAnomaly =
-      item.startTime > latestAnomaly.startTime ? item : latestAnomaly;
-  }
+  const latestAnomaly = anomalies.reduce((prevAnomaly, curAnomaly) =>
+    prevAnomaly.startTime > curAnomaly.startTime ? prevAnomaly : curAnomaly
+  );
   return latestAnomaly;
 };
 
 export const getAnomalySummary = (totalAnomalies: any[]): AnomalySummary => {
-  let minConfidence = 1.0,
-    maxConfidence = 0.0;
-  let minAnomalyGrade = 1.0,
-    maxAnomalyGrade = 0.0;
-  const anomalies = totalAnomalies.filter(anomaly => anomaly.anomalyGrade>0)
-  const targetAnomalies = anomalies.filter(anomaly => {
-    if (anomaly.anomalyGrade < minAnomalyGrade) {
-      minAnomalyGrade = anomaly.anomalyGrade;
-    }
-    if (anomaly.anomalyGrade > maxAnomalyGrade) {
-      maxAnomalyGrade = anomaly.anomalyGrade;
-    }
-    if (anomaly.confidence < minConfidence) {
-      minConfidence = anomaly.confidence;
-    }
-    if (anomaly.confidence > maxConfidence) {
-      maxConfidence = anomaly.confidence;
-    }
-    if (anomaly.anomalyGrade > 0) {
-      return true;
-    }
-  });
+  if (totalAnomalies == undefined || totalAnomalies.length === 0) {
+    return DEFAULT_ANOMALY_SUMMARY;
+  }
+  const anomalies = totalAnomalies.filter(anomaly => anomaly.anomalyGrade > 0);
+  const maxConfidence = Math.max(
+    ...anomalies.map(anomaly => anomaly.confidence),
+    0.0
+  );
+  const minConfidence = Math.min(
+    ...anomalies.map(anomaly => anomaly.confidence),
+    1.0
+  );
+
+  const maxAnomalyGrade = Math.max(
+    ...anomalies.map(anomaly => anomaly.anomalyGrade),
+    0.0
+  );
+  const minAnomalyGrade = Math.min(
+    ...anomalies.map(anomaly => anomaly.anomalyGrade),
+    1.0
+  );
 
   const lastAnomalyOccurrence =
-    targetAnomalies.length > 0
-      ? minuteDateFormatter(findLatestAnomaly(targetAnomalies).endTime)
+    anomalies.length > 0
+      ? minuteDateFormatter(findLatestAnomaly(anomalies).endTime)
       : '-';
 
   return {
-    anomalyOccurrence: targetAnomalies.length,
+    anomalyOccurrence: anomalies.length,
     minAnomalyGrade: minAnomalyGrade > maxAnomalyGrade ? 0 : minAnomalyGrade,
     maxAnomalyGrade: maxAnomalyGrade,
     minConfidence: minConfidence > maxConfidence ? 0 : minConfidence,
