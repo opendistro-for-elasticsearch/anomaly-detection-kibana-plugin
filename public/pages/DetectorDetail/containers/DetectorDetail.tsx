@@ -26,6 +26,7 @@ import {
   EuiSpacer,
   EuiText,
   EuiFieldText,
+  EuiLoadingSpinner,
 } from '@elastic/eui';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
@@ -294,7 +295,9 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                   </EuiHealth>
                 ) : detector.curState === DETECTOR_STATE.FEATURE_REQUIRED ? (
                   <EuiHealth color={DETECTOR_STATE_COLOR.FEATURE_REQUIRED}>Feature required to start the detector</EuiHealth>
-                ) : isLoading ? 'Loading...' : ''}
+                ) : isLoading
+                ? <div><EuiLoadingSpinner size="xl" /></div>
+                : ''}
               </h1>
             </EuiTitle>
           </EuiFlexItem>
