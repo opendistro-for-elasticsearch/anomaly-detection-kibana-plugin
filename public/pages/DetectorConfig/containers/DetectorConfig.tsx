@@ -21,6 +21,7 @@ import { RouteComponentProps } from 'react-router';
 import { AppState } from '../../../redux/reducers';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDetector } from '../../../redux/reducers/ad';
+import { EuiLoadingSpinner } from '@elastic/eui';
 
 interface DetectorConfigProps extends RouteComponentProps {
   detectorId: string;
@@ -28,7 +29,7 @@ interface DetectorConfigProps extends RouteComponentProps {
   onEditDetector(): void;
 }
 
-export const DetectorConfig = (props: DetectorConfigProps) => {
+export function DetectorConfig(props: DetectorConfigProps) {
   const dispatch = useDispatch();
   const detector = useSelector(
     (state: AppState) => state.ad.detectors[props.detectorId]
@@ -40,20 +41,32 @@ export const DetectorConfig = (props: DetectorConfigProps) => {
 
   return (
     <EuiPage style={{ marginTop: '16px', paddingTop: '0px' }}>
-      <EuiPageBody>
-        <EuiSpacer size="l" />
-        <MetaData
-          detectorId={props.detectorId}
-          detector={detector}
-          onEditDetector={props.onEditDetector}
-        />
-        <EuiSpacer />
-        <Features
-          detectorId={props.detectorId}
-          detector={detector}
-          onEditFeatures={props.onEditFeatures}
-        />
-      </EuiPageBody>
+      {detector ? (
+        <EuiPageBody>
+          <EuiSpacer size="l" />
+          <MetaData
+            detectorId={props.detectorId}
+            detector={detector}
+            onEditDetector={props.onEditDetector}
+          />
+          <EuiSpacer />
+          <Features
+            detectorId={props.detectorId}
+            detector={detector}
+            onEditFeatures={props.onEditFeatures}
+          />
+        </EuiPageBody>
+      ) : (
+        <div>
+          <EuiLoadingSpinner size="s" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="m" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="l" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="xl" />
+        </div>
+      )}
     </EuiPage>
   );
-};
+}
