@@ -23,7 +23,12 @@ import { searchMonitors } from '../../../redux/reducers/alerting';
 //A hook which gets AD monitor.
 export const useFetchMonitorInfo = (
   detectorId: string
-): { monitor: Monitor | undefined; fetchMonitorError: boolean } => {
+):
+{
+  monitor: Monitor | undefined;
+  fetchMonitorError: boolean;
+  isLoadingMonitor: boolean
+} => {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchAdMonitors = async () => {
@@ -32,6 +37,7 @@ export const useFetchMonitorInfo = (
     fetchAdMonitors();
   }, []);
 
+  const isMonitorRequesting = useSelector((state: AppState) => state.alerting.requesting);
   const monitors = useSelector((state: AppState) => state.alerting.monitors);
   const monitor = get(monitors, `${detectorId}.0`);
   const hasError = useSelector(
@@ -40,5 +46,6 @@ export const useFetchMonitorInfo = (
   return {
     monitor: monitor,
     fetchMonitorError: !isEmpty(hasError) && isEmpty(monitor),
+    isLoadingMonitor: isMonitorRequesting,
   };
 };

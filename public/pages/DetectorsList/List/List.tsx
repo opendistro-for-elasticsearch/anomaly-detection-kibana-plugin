@@ -283,11 +283,13 @@ export const DetectorList = (props: ListProps) => {
     pageSizeOptions: [5, 10, 20, 50],
   };
 
+  const isLoading = isRequestingFromES || isLoadingFinalDetectors;
+
   return (
     <EuiPage>
       <EuiPageBody>
         <ContentPanel
-          title={isLoadingFinalDetectors ? getTitleWithCount('Detectors', '...') : getTitleWithCount('Detectors', selectedDetectors.length)}
+          title={isLoading ? getTitleWithCount('Detectors', '...') : getTitleWithCount('Detectors', selectedDetectors.length)}
           actions={[
             <EuiButton fill href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
               Create detector
@@ -297,7 +299,7 @@ export const DetectorList = (props: ListProps) => {
           <ListControls
             activePage={state.page}
             pageCount={
-              isLoadingFinalDetectors ? 0 : Math.ceil(selectedDetectors.length / state.queryParams.size) || 1
+              isLoading ? 0 : Math.ceil(selectedDetectors.length / state.queryParams.size) || 1
             }
             search={state.queryParams.search}
             selectedDetectorStates={state.selectedDetectorStates}
@@ -311,13 +313,13 @@ export const DetectorList = (props: ListProps) => {
           />
           <EuiHorizontalRule margin="xs" />
           <EuiBasicTable<any>
-            items={isLoadingFinalDetectors ? [] : detectorsToDisplay}
+            items={isLoading ? [] : detectorsToDisplay}
             columns={staticColumn}
             onChange={handleTableChange}
             sorting={sorting}
             pagination={pagination}
             noItemsMessage={
-              isRequestingFromES || isLoadingFinalDetectors ? (
+              isLoading ? (
                 'Loading detectors...'
               ) : (
                 <EmptyDetectorMessage

@@ -26,10 +26,11 @@ import {
   EuiSpacer,
   EuiText,
   EuiFieldText,
+  EuiLoadingSpinner,
 } from '@elastic/eui';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { RouteComponentProps, Switch, Route, Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useFetchDetectorInfo } from '../../createDetector/hooks/useFetchDetectorInfo';
@@ -52,6 +53,7 @@ import { MonitorCallout } from '../components/MonitorCallout/MonitorCallout';
 import { DETECTOR_DETAIL_TABS } from '../utils/constants';
 import { DetectorConfig } from '../../DetectorConfig/containers/DetectorConfig';
 import { AnomalyResults } from '../../DetectorResults/containers/AnomalyResults';
+import { DETECTOR_STATE_COLOR } from '../../utils/constants';
 
 export interface DetectorRouterProps {
   detectorId?: string;
@@ -62,7 +64,7 @@ interface DetectorDetailProps
 const tabs = [
   {
     id: DETECTOR_DETAIL_TABS.RESULTS,
-    name: 'Anomaly Results',
+    name: 'Anomaly results',
     route: DETECTOR_DETAIL_TABS.RESULTS,
   },
   {
@@ -89,13 +91,13 @@ interface DetectorDetailModel {
 export const DetectorDetail = (props: DetectorDetailProps) => {
   const dispatch = useDispatch();
   const detectorId = get(props, 'match.params.detectorId', '') as string;
-  const { detector, hasError } = useFetchDetectorInfo(detectorId);
-  const { monitor, fetchMonitorError } = useFetchMonitorInfo(detectorId);
+  const { detector, hasError, isLoadingDetector } = useFetchDetectorInfo(detectorId);
+  const { monitor, fetchMonitorError, isLoadingMonitor } = useFetchMonitorInfo(detectorId);
 
   //TODO: test dark mode once detector configuration and AD result page merged
   const isDark = darkModeEnabled();
 
-  const [detecorDetailModel, setDetectorDetailModel] = useState<
+  const [detectorDetailModel, setDetectorDetailModel] = useState<
     DetectorDetailModel
   >({
     selectedTab: getSelectedTabId(
@@ -128,7 +130,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   const handleSwitchToConfigurationTab = useCallback(() => {
     setDetectorDetailModel({
-      ...detecorDetailModel,
+      ...detectorDetailModel,
       selectedTab: DETECTOR_DETAIL_TABS.CONFIGURATIONS,
     });
     props.history.push(`/detectors/${detectorId}/configurations`);
@@ -136,7 +138,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   const handleTabChange = (route: DETECTOR_DETAIL_TABS) => {
     setDetectorDetailModel({
-      ...detecorDetailModel,
+      ...detectorDetailModel,
       selectedTab: route,
     });
     props.history.push(route);
@@ -144,21 +146,21 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   const hideMonitorCalloutModal = () => {
     setDetectorDetailModel({
-      ...detecorDetailModel,
+      ...detectorDetailModel,
       showMonitorCalloutModal: false,
     });
   };
 
   const hideStopDetectorModal = () => {
     setDetectorDetailModel({
-      ...detecorDetailModel,
+      ...detectorDetailModel,
       showStopDetectorModalFor: undefined,
     });
   };
 
   const hideDeleteDetectorModal = () => {
     setDetectorDetailModel({
-      ...detecorDetailModel,
+      ...detectorDetailModel,
       showDeleteDetectorModal: false,
     });
   };
@@ -166,7 +168,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const handleStopDetectorForEditing = (detectorId: string) => {
     const listener: Listener = {
       onSuccess: () => {
-        if (detecorDetailModel.showStopDetectorModalFor === 'detector') {
+        if (detectorDetailModel.showStopDetectorModalFor === 'detector') {
           props.history.push(`/detectors/${detectorId}/edit`);
         } else {
           props.history.push(`/detectors/${detectorId}/features`);
@@ -200,7 +202,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
       if (listener) listener.onSuccess();
     } catch (err) {
       toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem stoping detector job')
+        getErrorMessage(err, 'There was a problem stopping detector job')
       );
       if (listener) listener.onException();
     }
@@ -223,7 +225,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const handleEditDetector = () => {
     detector.enabled
       ? setDetectorDetailModel({
-          ...detecorDetailModel,
+          ...detectorDetailModel,
           showStopDetectorModalFor: 'detector',
         })
       : props.history.push(`/detectors/${detectorId}/edit`);
@@ -232,7 +234,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const handleEditFeature = () => {
     detector.enabled
       ? setDetectorDetailModel({
-          ...detecorDetailModel,
+          ...detectorDetailModel,
           showStopDetectorModalFor: 'features',
         })
       : props.history.push(`/detectors/${detectorId}/features`);
@@ -255,93 +257,102 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   return (
     <React.Fragment>
-      <EuiFlexGroup
-        direction="column"
-        style={{
-          ...(isDark
-            ? { flexGrow: 'unset' }
-            : { ...lightStyles, flexGrow: 'unset' }),
-        }}
-      >
-        <EuiFlexGroup justifyContent="spaceBetween" style={{ padding: '10px' }}>
-          <EuiFlexItem grow={false}>
-            <EuiTitle size="l">
-              <h1>
-                {detector && detector.name}{' '}
-                {detector &&
-                detector.enabled &&
-                detector.curState === DETECTOR_STATE.RUNNING ? (
-                  <EuiHealth color="success">
-                    Running since{' '}
-                    {detector.enabledTime
-                      ? moment(detector.enabledTime).format('MM/DD/YY h:mm A')
-                      : '?'}
-                  </EuiHealth>
-                ) : detector.enabled &&
-                  detector.curState === DETECTOR_STATE.INIT ? (
-                  <EuiHealth color="primary">Initializing</EuiHealth>
-                ) : detector.curState === DETECTOR_STATE.INIT_FAILURE ||
-                  detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE ? (
-                  <EuiHealth color="danger">Initialization failure</EuiHealth>
-                ) : (
-                  <EuiHealth color="subdued">
-                    {detector.featureAttributes &&
-                    detector.featureAttributes.length
-                      ? detector.disabledTime
-                        ? `Stopped at ${moment(detector.disabledTime).format(
-                            'MM/DD/YY h:mm A'
-                          )}`
-                        : 'Detector is stopped'
-                      : 'Feature required to start the detector'}
-                  </EuiHealth>
-                )}
-              </h1>
-            </EuiTitle>
-          </EuiFlexItem>
+      {!isEmpty(detector) && !hasError ? (
+        <EuiFlexGroup
+          direction="column"
+          style={{
+            ...(isDark
+              ? { flexGrow: 'unset' }
+              : { ...lightStyles, flexGrow: 'unset' }),
+          }}
+        >
+          <EuiFlexGroup justifyContent="spaceBetween" style={{ padding: '10px' }}>
+            <EuiFlexItem grow={false}>
+              <EuiTitle size="l">
+                <h1>
+                  {detector && detector.name}{' '}
+                  {detector &&
+                  detector.enabled &&
+                  detector.curState === DETECTOR_STATE.RUNNING ? (
+                    <EuiHealth color={DETECTOR_STATE_COLOR.RUNNING}>
+                      Running since{' '}
+                      {detector.enabledTime
+                        ? moment(detector.enabledTime).format('MM/DD/YY h:mm A')
+                        : '?'}
+                    </EuiHealth>
+                  ) : detector.enabled &&
+                    detector.curState === DETECTOR_STATE.INIT ? (
+                    <EuiHealth color={DETECTOR_STATE_COLOR.INIT}>Initializing</EuiHealth>
+                  ) : detector.curState === DETECTOR_STATE.INIT_FAILURE ||
+                    detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE ? (
+                    <EuiHealth color={DETECTOR_STATE_COLOR.INIT_FAILURE}>Initialization failure</EuiHealth>
+                  ) : detector.curState === DETECTOR_STATE.DISABLED ? (
+                    <EuiHealth color={DETECTOR_STATE_COLOR.DISABLED}>
+                      {detector.disabledTime
+                      ? `Stopped at ${moment(detector.disabledTime).format('MM/DD/YY h:mm A')}`
+                      : 'Detector is stopped'}
+                    </EuiHealth>
+                  ) : detector.curState === DETECTOR_STATE.FEATURE_REQUIRED ? (
+                    <EuiHealth color={DETECTOR_STATE_COLOR.FEATURE_REQUIRED}>Feature required to start the detector</EuiHealth>
+                  ) : ''}
+                </h1>
+              </EuiTitle>
+            </EuiFlexItem>
 
-          <EuiFlexItem grow={false}>
-            <DetectorControls
-              onEditDetector={handleEditDetector}
-              onDelete={() =>
-                setDetectorDetailModel({
-                  ...detecorDetailModel,
-                  showDeleteDetectorModal: true,
-                })
-              }
-              onStartDetector={() => handleStartAdJob(detectorId)}
-              onStopDetector={() =>
-                monitor
-                  ? setDetectorDetailModel({
-                      ...detecorDetailModel,
-                      showMonitorCalloutModal: true,
-                    })
-                  : handleStopAdJob(detectorId)
-              }
-              onEditFeatures={handleEditFeature}
-              detector={detector}
-            />
-          </EuiFlexItem>
-        </EuiFlexGroup>
+            <EuiFlexItem grow={false}>
+              <DetectorControls
+                onEditDetector={handleEditDetector}
+                onDelete={() =>
+                  setDetectorDetailModel({
+                    ...detectorDetailModel,
+                    showDeleteDetectorModal: true,
+                  })
+                }
+                onStartDetector={() => handleStartAdJob(detectorId)}
+                onStopDetector={() =>
+                  monitor
+                    ? setDetectorDetailModel({
+                        ...detectorDetailModel,
+                        showMonitorCalloutModal: true,
+                      })
+                    : handleStopAdJob(detectorId)
+                }
+                onEditFeatures={handleEditFeature}
+                detector={detector}
+              />
+            </EuiFlexItem>
+          </EuiFlexGroup>
 
-        <EuiFlexGroup>
-          <EuiFlexItem>
-            <EuiTabs>
-              {tabs.map(tab => (
-                <EuiTab
-                  onClick={() => {
-                    handleTabChange(tab.route);
-                  }}
-                  isSelected={tab.id === detecorDetailModel.selectedTab}
-                  key={tab.id}
-                >
-                  {tab.name}
-                </EuiTab>
-              ))}
-            </EuiTabs>
-          </EuiFlexItem>
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiTabs>
+                {tabs.map(tab => (
+                  <EuiTab
+                    onClick={() => {
+                      handleTabChange(tab.route);
+                    }}
+                    isSelected={tab.id === detectorDetailModel.selectedTab}
+                    key={tab.id}
+                  >
+                    {tab.name}
+                  </EuiTab>
+                ))}
+              </EuiTabs>
+            </EuiFlexItem>
+          </EuiFlexGroup>
         </EuiFlexGroup>
-      </EuiFlexGroup>
-      {detecorDetailModel.showDeleteDetectorModal ? (
+      ) : (
+        <div>
+          <EuiLoadingSpinner size="s" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="m" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="l" />
+          &nbsp;&nbsp;
+          <EuiLoadingSpinner size="xl" />
+        </div>
+      )}
+      {detectorDetailModel.showDeleteDetectorModal ? (
         <EuiOverlayMask>
           <ConfirmModal
             title="Delete detector?"
@@ -363,12 +374,12 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                     onChange={e => {
                       if (e.target.value === 'delete') {
                         setDetectorDetailModel({
-                          ...detecorDetailModel,
+                          ...detectorDetailModel,
                           deleteTyped: true,
                         });
                       } else {
                         setDetectorDetailModel({
-                          ...detecorDetailModel,
+                          ...detectorDetailModel,
                           deleteTyped: false,
                         });
                       }
@@ -386,7 +397,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
             }
             confirmButtonText="Delete"
             confirmButtonColor="danger"
-            confirmButtonDisabled={!detecorDetailModel.deleteTyped}
+            confirmButtonDisabled={!detectorDetailModel.deleteTyped}
             onClose={hideDeleteDetectorModal}
             onCancel={hideDeleteDetectorModal}
             onConfirm={() => {
@@ -406,7 +417,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
         </EuiOverlayMask>
       ) : null}
 
-      {detecorDetailModel.showStopDetectorModalFor ? (
+      {detectorDetailModel.showStopDetectorModalFor ? (
         <EuiOverlayMask>
           <ConfirmModal
             title="Stop detector to proceed?"
@@ -422,7 +433,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
         </EuiOverlayMask>
       ) : null}
 
-      {detecorDetailModel.showMonitorCalloutModal ? (
+      {detectorDetailModel.showMonitorCalloutModal ? (
         <EuiOverlayMask>
           <ConfirmModal
             title="Stop detector will impact associated monitor"
