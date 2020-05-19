@@ -16,7 +16,7 @@
 //@ts-ignore
 import { EuiHealth, EuiHighlight } from '@elastic/eui';
 import React from 'react';
-import { newSuccessColor, newWarningColor, newDangerColor, newSubduedColor } from '../../../utils/constants';
+import { customSuccessColor, customWarningColor, customDangerColor, customSubduedColor } from '../../../utils/constants';
 
 type IndexOptionProps = {
   option: any;
@@ -25,10 +25,10 @@ type IndexOptionProps = {
 };
 
 const healthToColor = {
-  green: newSuccessColor,
-  yellow: newWarningColor,
-  red: newDangerColor,
-  undefined: newSubduedColor,
+  green: customSuccessColor,
+  yellow: customWarningColor,
+  red: customDangerColor,
+  undefined: customSubduedColor,
 } as { [key: string]: string };
 
 function IndexOption({
