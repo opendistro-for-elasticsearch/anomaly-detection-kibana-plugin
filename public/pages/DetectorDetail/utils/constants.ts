@@ -69,7 +69,7 @@ export const DETECTOR_INIT_FAILURES = Object.freeze({
   },
   UNKNOWN_EXCEPTION: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L438
-    keyword: 'We might have bug',
+    keyword: 'We might have bugs',
     cause: 'of unknown error',
     actionItem: DEFAULT_ACTION_ITEM,
   },
