@@ -57,139 +57,143 @@ exports[`<AlertsFlyout /> spec Alerts Flyout renders component with monitor 1`] 
             class="euiFlyoutBody__overflow"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+              class="euiFlyoutBody__overflowContent"
             >
               <div
-                class="euiFlexItem"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
               >
                 <div
-                  class="euiText euiText--medium"
+                  class="euiFlexItem"
                 >
-                  <p
-                    class="alerts_flyout_p"
+                  <div
+                    class="euiText euiText--medium"
                   >
-                    Anomaly detector alerts are powered by the
-                    <a
-                      class="euiLink euiLink--primary"
-                      href="https://opendistro.github.io/for-elasticsearch-docs/docs/alerting"
-                      rel="noreferrer"
+                    <p
+                      class="alerts_flyout_p"
                     >
+                      Anomaly detector alerts are powered by the
+                      <a
+                        class="euiLink euiLink--primary"
+                        href="https://opendistro.github.io/for-elasticsearch-docs/docs/alerting"
+                        rel="noreferrer"
+                      >
+                         
+                        Alerting plugin
+                      </a>
+                      . If you don't see 
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
+                      Alerting in your navigation panel,
+                      <a
+                        class="euiLink euiLink--primary"
+                        href="https://opendistro.github.io/for-elasticsearch-docs/docs/install/plugins/#alerting"
+                        rel="noreferrer"
+                      >
+                         
+                        install it first
+                      </a>
                        
-                      Alerting plugin
-                    </a>
-                    . If you don't see 
-                    <svg
-                      aria-hidden="true"
-                      class="euiIcon euiIcon--medium euiIcon-isLoading"
-                      focusable="false"
-                      height="16"
-                      role="img"
-                      viewBox="0 0 16 16"
-                      width="16"
-                      xmlns="http://www.w3.org/2000/svg"
-                    />
-                    Alerting in your navigation panel,
-                    <a
-                      class="euiLink euiLink--primary"
-                      href="https://opendistro.github.io/for-elasticsearch-docs/docs/install/plugins/#alerting"
-                      rel="noreferrer"
-                    >
-                       
-                      install it first
-                    </a>
-                     
-                    and follow the instructions below to set up alerts.
-                  </p>
+                      and follow the instructions below to set up alerts.
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div
-                class="euiFlexItem"
-              >
                 <div
-                  class="euiSteps"
+                  class="euiFlexItem"
                 >
                   <div
-                    class="euiStep"
+                    class="euiSteps"
                   >
                     <div
-                      class="euiStep__titleWrapper"
+                      class="euiStep"
                     >
                       <div
-                        aria-label="Step 1"
-                        class="euiStepNumber euiStep__circle"
+                        class="euiStep__titleWrapper"
                       >
-                        1
+                        <div
+                          aria-label="Step 1"
+                          class="euiStepNumber euiStep__circle"
+                        >
+                          1
+                        </div>
+                        <p
+                          class="euiTitle euiTitle--small euiStep__title"
+                        >
+                          Create a monitor
+                        </p>
                       </div>
-                      <p
-                        class="euiTitle euiTitle--small euiStep__title"
+                      <div
+                        class="euiStep__content"
                       >
-                        Create a monitor
-                      </p>
+                        <p
+                          class="alerts_flyout_p"
+                        >
+                          A monitor queries a detector on a specific schedule. In Alerting, choose "Define using anomaly detector".
+                        </p>
+                      </div>
                     </div>
                     <div
-                      class="euiStep__content"
-                    >
-                      <p
-                        class="alerts_flyout_p"
-                      >
-                        A monitor queries a detector on a specific schedule. In Alerting, choose "Define using anomaly detector".
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    class="euiStep"
-                  >
-                    <div
-                      class="euiStep__titleWrapper"
+                      class="euiStep"
                     >
                       <div
-                        aria-label="Step 2"
-                        class="euiStepNumber euiStep__circle"
+                        class="euiStep__titleWrapper"
                       >
-                        2
+                        <div
+                          aria-label="Step 2"
+                          class="euiStepNumber euiStep__circle"
+                        >
+                          2
+                        </div>
+                        <p
+                          class="euiTitle euiTitle--small euiStep__title"
+                        >
+                          Define triggers and actions
+                        </p>
                       </div>
-                      <p
-                        class="euiTitle euiTitle--small euiStep__title"
+                      <div
+                        class="euiStep__content"
                       >
-                        Define triggers and actions
-                      </p>
+                        <p
+                          class="alerts_flyout_p"
+                        >
+                          Triggers specify the thresholds for anomalies to generate alerts. Actions specify the alert message and destination.
+                        </p>
+                      </div>
                     </div>
                     <div
-                      class="euiStep__content"
-                    >
-                      <p
-                        class="alerts_flyout_p"
-                      >
-                        Triggers specify the thresholds for anomalies to generate alerts. Actions specify the alert message and destination.
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    class="euiStep"
-                  >
-                    <div
-                      class="euiStep__titleWrapper"
+                      class="euiStep"
                     >
                       <div
-                        aria-label="Step 3"
-                        class="euiStepNumber euiStep__circle"
+                        class="euiStep__titleWrapper"
                       >
-                        3
+                        <div
+                          aria-label="Step 3"
+                          class="euiStepNumber euiStep__circle"
+                        >
+                          3
+                        </div>
+                        <p
+                          class="euiTitle euiTitle--small euiStep__title"
+                        >
+                          View alerts from detector and monitor
+                        </p>
                       </div>
-                      <p
-                        class="euiTitle euiTitle--small euiStep__title"
+                      <div
+                        class="euiStep__content"
                       >
-                        View alerts from detector and monitor
-                      </p>
-                    </div>
-                    <div
-                      class="euiStep__content"
-                    >
-                      <p
-                        class="alerts_flyout_p"
-                      >
-                        View anomaly detector alerts on the anomaly history graph. See details of all alerts over time from the monitor.
-                      </p>
+                        <p
+                          class="alerts_flyout_p"
+                        >
+                          View anomaly detector alerts on the anomaly history graph. See details of all alerts over time from the monitor.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -328,139 +332,143 @@ exports[`<AlertsFlyout /> spec Alerts Flyout renders component with undefined mo
             class="euiFlyoutBody__overflow"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+              class="euiFlyoutBody__overflowContent"
             >
               <div
-                class="euiFlexItem"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
               >
                 <div
-                  class="euiText euiText--medium"
+                  class="euiFlexItem"
                 >
-                  <p
-                    class="alerts_flyout_p"
+                  <div
+                    class="euiText euiText--medium"
                   >
-                    Anomaly detector alerts are powered by the
-                    <a
-                      class="euiLink euiLink--primary"
-                      href="https://opendistro.github.io/for-elasticsearch-docs/docs/alerting"
-                      rel="noreferrer"
+                    <p
+                      class="alerts_flyout_p"
                     >
+                      Anomaly detector alerts are powered by the
+                      <a
+                        class="euiLink euiLink--primary"
+                        href="https://opendistro.github.io/for-elasticsearch-docs/docs/alerting"
+                        rel="noreferrer"
+                      >
+                         
+                        Alerting plugin
+                      </a>
+                      . If you don't see 
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
+                      Alerting in your navigation panel,
+                      <a
+                        class="euiLink euiLink--primary"
+                        href="https://opendistro.github.io/for-elasticsearch-docs/docs/install/plugins/#alerting"
+                        rel="noreferrer"
+                      >
+                         
+                        install it first
+                      </a>
                        
-                      Alerting plugin
-                    </a>
-                    . If you don't see 
-                    <svg
-                      aria-hidden="true"
-                      class="euiIcon euiIcon--medium euiIcon-isLoading"
-                      focusable="false"
-                      height="16"
-                      role="img"
-                      viewBox="0 0 16 16"
-                      width="16"
-                      xmlns="http://www.w3.org/2000/svg"
-                    />
-                    Alerting in your navigation panel,
-                    <a
-                      class="euiLink euiLink--primary"
-                      href="https://opendistro.github.io/for-elasticsearch-docs/docs/install/plugins/#alerting"
-                      rel="noreferrer"
-                    >
-                       
-                      install it first
-                    </a>
-                     
-                    and follow the instructions below to set up alerts.
-                  </p>
+                      and follow the instructions below to set up alerts.
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div
-                class="euiFlexItem"
-              >
                 <div
-                  class="euiSteps"
+                  class="euiFlexItem"
                 >
                   <div
-                    class="euiStep"
+                    class="euiSteps"
                   >
                     <div
-                      class="euiStep__titleWrapper"
+                      class="euiStep"
                     >
                       <div
-                        aria-label="Step 1"
-                        class="euiStepNumber euiStep__circle"
+                        class="euiStep__titleWrapper"
                       >
-                        1
+                        <div
+                          aria-label="Step 1"
+                          class="euiStepNumber euiStep__circle"
+                        >
+                          1
+                        </div>
+                        <p
+                          class="euiTitle euiTitle--small euiStep__title"
+                        >
+                          Create a monitor
+                        </p>
                       </div>
-                      <p
-                        class="euiTitle euiTitle--small euiStep__title"
+                      <div
+                        class="euiStep__content"
                       >
-                        Create a monitor
-                      </p>
+                        <p
+                          class="alerts_flyout_p"
+                        >
+                          A monitor queries a detector on a specific schedule. In Alerting, choose "Define using anomaly detector".
+                        </p>
+                      </div>
                     </div>
                     <div
-                      class="euiStep__content"
-                    >
-                      <p
-                        class="alerts_flyout_p"
-                      >
-                        A monitor queries a detector on a specific schedule. In Alerting, choose "Define using anomaly detector".
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    class="euiStep"
-                  >
-                    <div
-                      class="euiStep__titleWrapper"
+                      class="euiStep"
                     >
                       <div
-                        aria-label="Step 2"
-                        class="euiStepNumber euiStep__circle"
+                        class="euiStep__titleWrapper"
                       >
-                        2
+                        <div
+                          aria-label="Step 2"
+                          class="euiStepNumber euiStep__circle"
+                        >
+                          2
+                        </div>
+                        <p
+                          class="euiTitle euiTitle--small euiStep__title"
+                        >
+                          Define triggers and actions
+                        </p>
                       </div>
-                      <p
-                        class="euiTitle euiTitle--small euiStep__title"
+                      <div
+                        class="euiStep__content"
                       >
-                        Define triggers and actions
-                      </p>
+                        <p
+                          class="alerts_flyout_p"
+                        >
+                          Triggers specify the thresholds for anomalies to generate alerts. Actions specify the alert message and destination.
+                        </p>
+                      </div>
                     </div>
                     <div
-                      class="euiStep__content"
-                    >
-                      <p
-                        class="alerts_flyout_p"
-                      >
-                        Triggers specify the thresholds for anomalies to generate alerts. Actions specify the alert message and destination.
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    class="euiStep"
-                  >
-                    <div
-                      class="euiStep__titleWrapper"
+                      class="euiStep"
                     >
                       <div
-                        aria-label="Step 3"
-                        class="euiStepNumber euiStep__circle"
+                        class="euiStep__titleWrapper"
                       >
-                        3
+                        <div
+                          aria-label="Step 3"
+                          class="euiStepNumber euiStep__circle"
+                        >
+                          3
+                        </div>
+                        <p
+                          class="euiTitle euiTitle--small euiStep__title"
+                        >
+                          View alerts from detector and monitor
+                        </p>
                       </div>
-                      <p
-                        class="euiTitle euiTitle--small euiStep__title"
+                      <div
+                        class="euiStep__content"
                       >
-                        View alerts from detector and monitor
-                      </p>
-                    </div>
-                    <div
-                      class="euiStep__content"
-                    >
-                      <p
-                        class="alerts_flyout_p"
-                      >
-                        View anomaly detector alerts on the anomaly history graph. See details of all alerts over time from the monitor.
-                      </p>
+                        <p
+                          class="alerts_flyout_p"
+                        >
+                          View anomaly detector alerts on the anomaly history graph. See details of all alerts over time from the monitor.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

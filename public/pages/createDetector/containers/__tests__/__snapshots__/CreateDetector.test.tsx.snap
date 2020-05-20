@@ -265,6 +265,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                       style="font-size: 14px; display: inline-block;"
                     >
                       <input
+                        aria-controls=""
                         data-test-subj="comboBoxSearchInput"
                         id="random_id"
                         role="textbox"

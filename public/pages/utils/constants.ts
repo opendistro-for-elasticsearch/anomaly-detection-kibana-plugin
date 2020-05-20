@@ -16,13 +16,18 @@
 import { SORT_DIRECTION } from '../../../server/utils/constants';
 import { DETECTOR_STATE } from '../../utils/constants';
 
+export const customSubduedColor = '#98A2B3';
+export const customSuccessColor = '#7DE2D1';
+export const customWarningColor = '#FFCE7A';
+export const customDangerColor = '#F66';
+
 export enum DETECTOR_STATE_COLOR {
-  DISABLED = 'subdued',
+  DISABLED = '#98A2B3',
   INIT = 'primary',
-  RUNNING = 'success',
-  FEATURE_REQUIRED = 'subdued',
-  INIT_FAILURE = 'danger',
-  UNEXPECTED_FAILURE = 'danger',
+  RUNNING = '#7DE2D1',
+  FEATURE_REQUIRED = '#98A2B3',
+  INIT_FAILURE = '#F66',
+  UNEXPECTED_FAILURE = '#F66',
 }
 
 export const stateToColorMap = new Map<DETECTOR_STATE, DETECTOR_STATE_COLOR>()

@@ -72,6 +72,7 @@ exports[`<ListControls /> spec Empty results renders component with empty messag
               style="font-size: 14px; display: inline-block;"
             >
               <input
+                aria-controls=""
                 data-test-subj="comboBoxSearchInput"
                 id="selectedDetectorStates"
                 role="textbox"
@@ -138,6 +139,7 @@ exports[`<ListControls /> spec Empty results renders component with empty messag
               style="font-size: 14px; display: inline-block;"
             >
               <input
+                aria-controls=""
                 data-test-subj="comboBoxSearchInput"
                 id="selectedIndices"
                 role="textbox"

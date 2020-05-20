@@ -48,6 +48,7 @@ exports[`<AggregationSelector /> spec Empty results renders component with aggre
                 style="font-size: 14px; display: inline-block;"
               >
                 <input
+                  aria-controls=""
                   data-test-subj="comboBoxSearchInput"
                   id="random_id"
                   role="textbox"
