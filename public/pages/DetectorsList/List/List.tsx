@@ -28,6 +28,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 //@ts-ignore
 import chrome from 'ui/chrome';
+// @ts-ignore
+import { toastNotifications } from 'ui/notify';
 import {
   CatIndex,
   GetDetectorsQueryParams,
@@ -88,27 +90,26 @@ export const DetectorList = (props: ListProps) => {
   const elasticsearchState = useSelector(
     (state: AppState) => state.elasticsearch
   );
-
-  const isRequestingFromES = useSelector((state: AppState) => state.ad.requesting);
-
-  const [selectedDetectors, setSelectedDetectors] = useState([] as DetectorListItem[]);
-  const [detectorsToDisplay, setDetectorsToDisplay] = useState([] as DetectorListItem[]);
-  const [isLoadingFinalDetectors, setIsLoadingFinalDetectors] = useState<boolean>(true);
-
-  // Getting all initial indices
-  const [indexQuery, setIndexQuery] = useState('');
-  useEffect(() => {
-    const getInitialIndices = async () => {
-      await dispatch(getIndices(indexQuery));
-    };
-    getInitialIndices();
-  }, []);
-
-  // Updating displayed indices (initializing to first 20 for now)
+  const isRequestingFromES = useSelector(
+    (state: AppState) => state.ad.requesting
+  );
   const visibleIndices = get(elasticsearchState, 'indices', []) as CatIndex[];
   const visibleAliases = get(elasticsearchState, 'aliases', []) as IndexAlias[];
   const indexOptions = getVisibleOptions(visibleIndices, visibleAliases);
+  const fetchDetectorsError = useSelector(
+    (state: AppState) => state.ad.errorMessages.getDetectorList
+  );
 
+  const [indexQuery, setIndexQuery] = useState('');
+  const [selectedDetectors, setSelectedDetectors] = useState(
+    [] as DetectorListItem[]
+  );
+  const [detectorsToDisplay, setDetectorsToDisplay] = useState(
+    [] as DetectorListItem[]
+  );
+  const [isLoadingFinalDetectors, setIsLoadingFinalDetectors] = useState<
+    boolean
+  >(true);
   const [state, setState] = useState<ListState>({
     page: 0,
     queryParams: getURLQueryParams(props.location),
@@ -116,7 +117,24 @@ export const DetectorList = (props: ListProps) => {
     selectedIndices: ALL_INDICES,
   });
 
-  // Set breadcrumbs on page initialization
+  // Getting all initial indices
+  useEffect(() => {
+    const getInitialIndices = async () => {
+      await dispatch(getIndices(indexQuery));
+    };
+    getInitialIndices();
+  }, []);
+
+  // Getting all initial detectors
+  useEffect(() => {
+    const getInitialDetectors = async () => {
+      dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
+      setIsLoadingFinalDetectors(true);
+    };
+    getInitialDetectors();
+  }, []);
+
+  // Setting initial breadcrumbs
   useEffect(() => {
     chrome.breadcrumbs.set([
       BREADCRUMBS.ANOMALY_DETECTOR,
@@ -155,7 +173,7 @@ export const DetectorList = (props: ListProps) => {
       state.selectedIndices,
       state.selectedDetectorStates,
       state.queryParams.sortField,
-      state.queryParams.sortDirection,
+      state.queryParams.sortDirection
     );
     setSelectedDetectors(curSelectedDetectors);
 
@@ -167,10 +185,17 @@ export const DetectorList = (props: ListProps) => {
     setDetectorsToDisplay(curDetectorsToDisplay);
 
     setIsLoadingFinalDetectors(false);
-  },
-  [
-    allDetectors,
-  ]);
+  }, [allDetectors]);
+
+  // Notify user if error retrieving list of detectors
+  useEffect(() => {
+    if (fetchDetectorsError) {
+      toastNotifications.addDanger(
+        `Unable to retrieve all detectors: ${fetchDetectorsError}`
+      );
+      setIsLoadingFinalDetectors(false);
+    }
+  }, [fetchDetectorsError]);
 
   const handlePageChange = (pageNumber: number) => {
     setState({ ...state, page: pageNumber });
@@ -263,7 +288,6 @@ export const DetectorList = (props: ListProps) => {
     }));
   };
 
-
   const sorting = {
     sort: {
       direction: state.queryParams.sortDirection,
@@ -289,7 +313,11 @@ export const DetectorList = (props: ListProps) => {
     <EuiPage>
       <EuiPageBody>
         <ContentPanel
-          title={isLoading ? getTitleWithCount('Detectors', '...') : getTitleWithCount('Detectors', selectedDetectors.length)}
+          title={
+            isLoading
+              ? getTitleWithCount('Detectors', '...')
+              : getTitleWithCount('Detectors', selectedDetectors.length)
+          }
           actions={[
             <EuiButton fill href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
               Create detector
@@ -299,7 +327,11 @@ export const DetectorList = (props: ListProps) => {
           <ListControls
             activePage={state.page}
             pageCount={
-              isLoading ? 0 : Math.ceil(selectedDetectors.length / state.queryParams.size) || 1
+              isLoading
+                ? 0
+                : Math.ceil(
+                    selectedDetectors.length / state.queryParams.size
+                  ) || 1
             }
             search={state.queryParams.search}
             selectedDetectorStates={state.selectedDetectorStates}

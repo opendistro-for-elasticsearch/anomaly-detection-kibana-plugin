@@ -48,9 +48,7 @@ describe('detector reducer actions', () => {
     });
     test('should invoke [REQUEST, FAILURE]', async () => {
       const detectorId = 'randomDetectorID';
-      httpMockedClient.get = jest
-        .fn()
-        .mockRejectedValue({ data: { ok: false, error: 'Not found' } });
+      httpMockedClient.get = jest.fn().mockRejectedValue('Not found');
       try {
         await store.dispatch(getDetector(detectorId));
       } catch (e) {
@@ -64,7 +62,10 @@ describe('detector reducer actions', () => {
         expect(reducer(initialDetectorsState, actions[1])).toEqual({
           ...initialDetectorsState,
           requesting: false,
-          errorMessage: 'Not found',
+          errorMessages: {
+            ...initialDetectorsState.errorMessages,
+            getDetector: 'Not found',
+          },
         });
         expect(httpMockedClient.get).toHaveBeenCalledWith(
           `..${BASE_NODE_API_PATH}/detectors/${detectorId}`
@@ -116,7 +117,10 @@ describe('detector reducer actions', () => {
         expect(reducer(initialDetectorsState, actions[1])).toEqual({
           ...initialDetectorsState,
           requesting: false,
-          errorMessage: 'Detector is consumed by Monitor',
+          errorMessages: {
+            ...initialDetectorsState.errorMessages,
+            deleteDetector: 'Detector is consumed by Monitor',
+          },
         });
         expect(httpMockedClient.delete).toHaveBeenCalledWith(
           `..${BASE_NODE_API_PATH}/detectors/${expectedDetector.id}`
@@ -174,7 +178,10 @@ describe('detector reducer actions', () => {
         expect(reducer(initialDetectorsState, actions[1])).toEqual({
           ...initialDetectorsState,
           requesting: false,
-          errorMessage: 'Internal server error',
+          errorMessages: {
+            ...initialDetectorsState.errorMessages,
+            createDetector: 'Internal server error',
+          },
         });
         expect(httpMockedClient.post).toHaveBeenCalledWith(
           `..${BASE_NODE_API_PATH}/detectors`,
@@ -206,7 +213,10 @@ describe('detector reducer actions', () => {
           [detectorId]: {
             ...randomDetector,
             id: detectorId,
-            lastUpdateTime: get(result, `detectors.${detectorId}.lastUpdateTime`)
+            lastUpdateTime: get(
+              result,
+              `detectors.${detectorId}.lastUpdateTime`
+            ),
           },
         },
       });
@@ -241,7 +251,10 @@ describe('detector reducer actions', () => {
         expect(reducer(initialDetectorsState, actions[1])).toEqual({
           ...initialDetectorsState,
           requesting: false,
-          errorMessage: 'Internal server error',
+          errorMessages: {
+            ...initialDetectorsState.errorMessages,
+            updateDetector: 'Internal server error',
+          },
         });
         expect(httpMockedClient.post).toHaveBeenCalledWith(
           `..${BASE_NODE_API_PATH}/detectors`,
@@ -310,7 +323,10 @@ describe('detector reducer actions', () => {
         expect(reducer(initialDetectorsState, actions[1])).toEqual({
           ...initialDetectorsState,
           requesting: false,
-          errorMessage: 'Internal server error',
+          errorMessages: {
+            ...initialDetectorsState.errorMessages,
+            updateDetector: 'Internal server error',
+          },
         });
         expect(httpMockedClient.post).toHaveBeenCalledWith(
           `..${BASE_NODE_API_PATH}/detectors`,

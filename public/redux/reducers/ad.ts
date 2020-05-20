@@ -37,19 +37,43 @@ const START_DETECTOR = 'ad/START_DETECTOR';
 const STOP_DETECTOR = 'ad/STOP_DETECTOR';
 const GET_DETECTOR_PROFILE = 'ad/GET_DETECTOR_PROFILE';
 
+export interface ErrorMessages {
+  createDetector: string;
+  getDetector: string;
+  startDetector: string;
+  stopDetector: string;
+  searchDetector: string;
+  getDetectorList: string;
+  updateDetector: string;
+  deleteDetector: string;
+  getDetectorProfile: string;
+}
+
+export const initialErrorMessages: ErrorMessages = {
+  createDetector: '',
+  getDetector: '',
+  startDetector: '',
+  stopDetector: '',
+  searchDetector: '',
+  getDetectorList: '',
+  updateDetector: '',
+  deleteDetector: '',
+  getDetectorProfile: '',
+};
+
 export interface Detectors {
   requesting: boolean;
   detectors: { [key: string]: Detector };
   detectorList: { [key: string]: DetectorListItem };
   totalDetectors: number;
-  errorMessage: string;
+  errorMessages: ErrorMessages;
 }
 export const initialDetectorsState: Detectors = {
   requesting: false,
   detectors: {},
   detectorList: {},
-  errorMessage: '',
   totalDetectors: 0,
+  errorMessages: initialErrorMessages,
 };
 
 const reducer = handleActions<Detectors>(
@@ -58,11 +82,13 @@ const reducer = handleActions<Detectors>(
       REQUEST: (state: Detectors): Detectors => ({
         ...state,
         requesting: true,
-        errorMessage: '',
+        errorMessages: {
+          ...state.errorMessages,
+          createDetector: '',
+        },
       }),
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
-        errorMessage: '',
         requesting: false,
         detectors: {
           ...state.detectors,
@@ -72,14 +98,20 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessages: {
+          ...state.errorMessages,
+          createDetector: action.error.data.error,
+        },
       }),
     },
     [GET_DETECTOR]: {
       REQUEST: (state: Detectors): Detectors => ({
         ...state,
         requesting: true,
-        errorMessage: '',
+        errorMessages: {
+          ...state.errorMessages,
+          getDetector: '',
+        },
       }),
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
@@ -94,12 +126,22 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessages: {
+          ...state.errorMessages,
+          getDetector: action.error,
+        },
       }),
     },
     [START_DETECTOR]: {
       REQUEST: (state: Detectors): Detectors => {
-        const newState = { ...state, requesting: true, errorMessage: '' };
+        const newState = {
+          ...state,
+          requesting: true,
+          errorMessages: {
+            ...state.errorMessages,
+            startDetector: '',
+          },
+        };
         return newState;
       },
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
@@ -119,13 +161,23 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessages: {
+          ...state.errorMessages,
+          startDetector: action.error,
+        },
       }),
     },
 
     [STOP_DETECTOR]: {
       REQUEST: (state: Detectors): Detectors => {
-        const newState = { ...state, requesting: true, errorMessage: '' };
+        const newState = {
+          ...state,
+          requesting: true,
+          errorMessages: {
+            ...state.errorMessages,
+            stopDetector: '',
+          },
+        };
         return newState;
       },
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
@@ -145,14 +197,20 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessages: {
+          ...state.errorMessages,
+          stopDetector: action.error,
+        },
       }),
     },
     [SEARCH_DETECTOR]: {
       REQUEST: (state: Detectors): Detectors => ({
         ...state,
         requesting: true,
-        errorMessage: '',
+        errorMessages: {
+          ...state.errorMessages,
+          searchDetector: '',
+        },
       }),
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
@@ -168,16 +226,23 @@ const reducer = handleActions<Detectors>(
           ),
         },
       }),
-      FAILURE: (state: Detectors): Detectors => ({
+      FAILURE: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
         requesting: false,
+        errorMessages: {
+          ...state.errorMessages,
+          searchDetector: action.error,
+        },
       }),
     },
     [GET_DETECTOR_LIST]: {
       REQUEST: (state: Detectors): Detectors => ({
         ...state,
         requesting: true,
-        errorMessage: '',
+        errorMessages: {
+          ...state.errorMessages,
+          getDetectorList: '',
+        },
       }),
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
@@ -191,14 +256,25 @@ const reducer = handleActions<Detectors>(
         ),
         totalDetectors: action.result.data.response.totalDetectors,
       }),
-      FAILURE: (state: Detectors): Detectors => ({
+      FAILURE: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
         requesting: false,
+        errorMessages: {
+          ...state.errorMessages,
+          getDetectorList: action.error,
+        },
       }),
     },
     [UPDATE_DETECTOR]: {
       REQUEST: (state: Detectors): Detectors => {
-        const newState = { ...state, requesting: true, errorMessage: '' };
+        const newState = {
+          ...state,
+          requesting: true,
+          errorMessages: {
+            ...state.errorMessages,
+            updateDetector: '',
+          },
+        };
         return newState;
       },
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
@@ -213,15 +289,26 @@ const reducer = handleActions<Detectors>(
           },
         },
       }),
-      FAILURE: (state: Detectors): Detectors => ({
+      FAILURE: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
         requesting: false,
+        errorMessages: {
+          ...state.errorMessages,
+          updateDetector: action.error,
+        },
       }),
     },
 
     [DELETE_DETECTOR]: {
       REQUEST: (state: Detectors): Detectors => {
-        const newState = { ...state, requesting: true, errorMessage: '' };
+        const newState = {
+          ...state,
+          requesting: true,
+          errorMessages: {
+            ...state.errorMessages,
+            deleteDetector: '',
+          },
+        };
         return newState;
       },
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
@@ -235,13 +322,23 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessages: {
+          ...state.errorMessages,
+          deleteDetector: action.error,
+        },
       }),
     },
 
     [GET_DETECTOR_PROFILE]: {
       REQUEST: (state: Detectors): Detectors => {
-        const newState = { ...state, requesting: true, errorMessage: '' };
+        const newState = {
+          ...state,
+          requesting: true,
+          errorMessages: {
+            ...state.errorMessages,
+            getDetectorProfile: '',
+          },
+        };
         return newState;
       },
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
@@ -258,7 +355,10 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessages: {
+          ...state.errorMessages,
+          getDetectorProfile: action.error,
+        },
       }),
     },
   },

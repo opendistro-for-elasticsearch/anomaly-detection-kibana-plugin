@@ -32,7 +32,12 @@ import {
 } from '../models/types';
 import { Router } from '../router';
 import { SORT_DIRECTION, AD_DOC_FIELDS } from '../utils/constants';
-import { mapKeysDeep, toCamel, toSnake, toFixedNumberForAnomaly } from '../utils/helpers';
+import {
+  mapKeysDeep,
+  toCamel,
+  toSnake,
+  toFixedNumberForAnomaly,
+} from '../utils/helpers';
 import {
   anomalyResultMapper,
   convertDetectorKeysToCamelCase,
@@ -203,7 +208,7 @@ const getDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - Unable to get detector', err);
-    return { ok: false, error: err.message };
+    return { ok: false, error: err };
   }
 };
 
@@ -445,43 +450,53 @@ const getDetectors = async (
         );
     }
 
-    // Get detector state as well: loop through the ids to get each detector's state using profile api
+    // Get detector state as well: loop through the ids to get each detector's state using profile api.
+    // Handle errors when resolving all of the promises.
     const allIds = finalDetectors.map(detector => detector.id);
-
     const detectorStatePromises = allIds.map(async (id: string) => {
-      try {
-        const detectorStateResp = await callWithRequest(
-          req,
-          'ad.detectorProfile',
-          {
-            detectorId: id,
-          }
-        );
-        return detectorStateResp;
-      } catch (err) {
-        console.log(
-          'Anomaly detector - Unable to retrieve detector state',
-          err
-        );
-      }
-    });
-    const detectorStateResponses = await Promise.all(detectorStatePromises);
-    const finalDetectorStates = getFinalDetectorStates(
-      detectorStateResponses,
-      finalDetectors
-    );
-    // update the final detectors to include the detector state
-    finalDetectors.forEach((detector, i) => {
-      detector.curState = finalDetectorStates[i].state;
+      const detectorStateResp = await callWithRequest(
+        req,
+        'ad.detectorProfile',
+        {
+          detectorId: id,
+        }
+      );
+      return detectorStateResp;
     });
 
-    return {
-      ok: true,
-      response: {
-        totalDetectors,
-        detectorList: Object.values(finalDetectors),
-      },
-    };
+    let errorFetchingProfiles = false;
+    let errorFetchingProfilesMessage = '';
+    const detectorStateResponses = await Promise.all(
+      detectorStatePromises
+    ).catch(err => {
+      console.log(
+        'Anomaly detector - Unable to retrieve detector state',
+        err.response
+      );
+      errorFetchingProfiles = true;
+      errorFetchingProfilesMessage = err.response;
+    });
+
+    if (!errorFetchingProfiles) {
+      const finalDetectorStates = getFinalDetectorStates(
+        detectorStateResponses as any[],
+        finalDetectors
+      );
+      // update the final detectors to include the detector state
+      finalDetectors.forEach((detector, i) => {
+        detector.curState = finalDetectorStates[i].state;
+      });
+
+      return {
+        ok: true,
+        response: {
+          totalDetectors,
+          detectorList: Object.values(finalDetectors),
+        },
+      };
+    } else {
+      return { ok: false, error: errorFetchingProfilesMessage };
+    }
   } catch (err) {
     console.log('Anomaly detector - Unable to list detectors', err);
     return { ok: false, error: err.message };
@@ -593,13 +608,17 @@ const getAnomalyResults = async (
           result._source.confidence != null &&
           result._source.confidence !== 'NaN' &&
           result._source.confidence > 0
-            ? toFixedNumberForAnomaly(Number.parseFloat(result._source.confidence))
+            ? toFixedNumberForAnomaly(
+                Number.parseFloat(result._source.confidence)
+              )
             : 0,
         anomalyGrade:
           result._source.anomaly_grade != null &&
           result._source.anomaly_grade !== 'NaN' &&
           result._source.anomaly_grade > 0
-            ? toFixedNumberForAnomaly(Number.parseFloat(result._source.anomaly_grade))
+            ? toFixedNumberForAnomaly(
+                Number.parseFloat(result._source.anomaly_grade)
+              )
             : 0,
       });
       result._source.feature_data.forEach((featureData: any) => {

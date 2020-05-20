@@ -32,6 +32,8 @@ import {
 } from '@elastic/eui';
 //@ts-ignore
 import chrome from 'ui/chrome';
+// @ts-ignore
+import { toastNotifications } from 'ui/notify';
 import { AnomalousDetectorsList } from '../Components/AnomalousDetectorsList';
 import {
   GET_ALL_DETECTORS_QUERY_PARAMS,
@@ -51,6 +53,10 @@ export function DashboardOverview() {
   const dispatch = useDispatch();
 
   const adState = useSelector((state: AppState) => state.ad);
+
+  const fetchDetectorsError = useSelector(
+    (state: AppState) => state.ad.errorMessages.getDetectorList
+  );
 
   const allDetectorList = adState.detectorList;
 
@@ -136,9 +142,9 @@ export function DashboardOverview() {
     if (allDetectorsSelected) {
       detectorsToFilter = cloneDeep(Object.values(allDetectorList));
     } else {
-      detectorsToFilter = cloneDeep(Object.values(allDetectorList)).filter(
-        detectorItem => selectedNameList.includes(detectorItem.name)
-      );
+      detectorsToFilter = cloneDeep(
+        Object.values(allDetectorList)
+      ).filter(detectorItem => selectedNameList.includes(detectorItem.name));
     }
 
     let filteredDetectorItemsByNamesAndIndex = detectorsToFilter;
@@ -170,6 +176,14 @@ export function DashboardOverview() {
     dispatch(getIndices(''));
     dispatch(getAliases(''));
   };
+
+  useEffect(() => {
+    if (fetchDetectorsError) {
+      toastNotifications.addDanger(
+        `Unable to retrieve all detectors: ${fetchDetectorsError}`
+      );
+    }
+  }, [fetchDetectorsError]);
 
   useEffect(() => {
     intializeDetectors();
