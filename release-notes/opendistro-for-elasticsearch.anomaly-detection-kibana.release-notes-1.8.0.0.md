@@ -1,4 +1,4 @@
-## Open Distro for Elasticsearch 1.7.0 Release Notes
+## Open Distro for Elasticsearch 1.8.0 Release Notes
 Compatible with Kibana 7.7.0 and Open Distro for Elasticsearch 1.8.0.
 
 ## Enhancements
