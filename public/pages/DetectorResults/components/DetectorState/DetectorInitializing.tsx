@@ -52,8 +52,8 @@ export const DetectorInitializing = (props: DetectorInitializingProps) => {
             ? [
                 <p>
                   Based on your latest update to the detector configuration, the
-                  detector is collecting sufficient data to generate accurate
-                  real-time anomalies.
+                  detector is collecting data to generate accurate real-time
+                  anomalies.
                 </p>,
                 <p>
                   The longer the detector interval is, the more time this will
