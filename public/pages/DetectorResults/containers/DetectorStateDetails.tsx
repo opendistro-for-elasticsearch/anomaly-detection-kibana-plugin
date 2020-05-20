@@ -19,6 +19,7 @@ import { DetectorStopped } from '../components/DetectorState/DetectorStopped';
 import { DetectorInitializing } from '../components/DetectorState/DetectorInitializing';
 import { DetectorInitializationFailure } from '../components/DetectorState/DetectorInitializationFailure';
 import { DetectorFeatureRequired } from '../components/DetectorState/DetectorFeatureRequired';
+import { DetectorUnknownState } from '../components/DetectorState/DetectorUnknownState';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
 import { getDetector } from '../../../redux/reducers/ad';
@@ -55,6 +56,7 @@ export const DetectorStateDetails = (props: DetectorStateDetailsProp) => {
           onSwitchToConfiguration={props.onSwitchToConfiguration}
         />
       );
+    case DETECTOR_STATE.UNEXPECTED_FAILURE:
     case DETECTOR_STATE.INIT_FAILURE:
       const failureDetail = getInitFailureMessageAndActionItem(
         detector.initializationError
@@ -75,7 +77,13 @@ export const DetectorStateDetails = (props: DetectorStateDetailsProp) => {
         />
       );
     default:
+      // ideally we shoul not reach here
       console.log('Unknown detector state', currentState);
-      return null;
+      return (
+        <DetectorUnknownState
+          onStartDetector={props.onStartDetector}
+          onSwitchToConfiguration={props.onSwitchToConfiguration}
+        />
+      );
   }
 };
