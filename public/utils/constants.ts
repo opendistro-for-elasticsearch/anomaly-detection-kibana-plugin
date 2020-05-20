@@ -18,6 +18,7 @@ export enum DATA_TYPES {
   TEXT = 'text',
   BOOLEAN = 'boolean',
   KEYWORD = 'keyword',
+  DATE = 'date',
 }
 
 export const BREADCRUMBS = Object.freeze({
