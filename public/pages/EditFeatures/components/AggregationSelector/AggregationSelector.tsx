@@ -15,9 +15,13 @@
 
 import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
+import { get } from 'lodash';
 import { EuiFormRow, EuiSelect, EuiComboBox } from '@elastic/eui';
 import { getAllFields } from '../../../../redux/selectors/elasticsearch';
-import { getNumberFields } from '../../utils/helpers';
+import {
+  getNumberFieldOptions,
+  getCountableFieldOptions,
+} from '../../utils/helpers';
 import { Field, FieldProps } from 'formik';
 import { AGGREGATION_TYPES } from '../../utils/constants';
 import {
@@ -31,9 +35,51 @@ interface AggregationSelectorProps {
   index?: number;
 }
 export const AggregationSelector = (props: AggregationSelectorProps) => {
-  const numberFields = getNumberFields(useSelector(getAllFields));
+  const numberFields = getNumberFieldOptions(useSelector(getAllFields));
+  const countableFields = getCountableFieldOptions(useSelector(getAllFields));
   return (
     <Fragment>
+      <Field
+        id={`featureList.${props.index}.aggregationBy`}
+        name={`featureList.${props.index}.aggregationBy`}
+        validate={required}
+      >
+        {({ field, form }: FieldProps) => (
+          <EuiFormRow
+            label="Aggregation method"
+            helpText="The aggregation method determines what constitutes an anomaly. For example, if you choose min(), the detector focuses on finding anomalies based on the minimum values of your feature."
+            isInvalid={isInvalid(field.name, form)}
+            error={getError(field.name, form)}
+          >
+            <EuiSelect
+              id={`featureList.${props.index}.aggregationBy`}
+              {...field}
+              name={`featureList.${props.index}.aggregationBy`}
+              options={AGGREGATION_TYPES}
+              onChange={e => {
+                debugger;
+                const currentValue = field.value;
+                const aggregationOf = get(
+                  form,
+                  `values.featureList.${props.index}.aggregationOf.0.type`
+                );
+                if (
+                  currentValue === 'value_count' &&
+                  aggregationOf !== 'number'
+                ) {
+                  form.setFieldValue(
+                    `featureList.${props.index}.aggregationOf`,
+                    undefined
+                  );
+                }
+                field.onChange(e);
+              }}
+              data-test-subj="aggregationType"
+            />
+          </EuiFormRow>
+        )}
+      </Field>
+
       <Field
         id={`featureList.${props.index}.aggregationOf`}
         name={`featureList.${props.index}.aggregationOf`}
@@ -50,7 +96,12 @@ export const AggregationSelector = (props: AggregationSelectorProps) => {
               singleSelection
               selectedOptions={field.value}
               //@ts-ignore
-              options={numberFields}
+              options={
+                get(form, `values.featureList.${props.index}.aggregationBy`) ===
+                'value_count'
+                  ? countableFields
+                  : numberFields
+              }
               {...field}
               onClick={() => {
                 form.setFieldTouched(
@@ -64,29 +115,6 @@ export const AggregationSelector = (props: AggregationSelectorProps) => {
                   options
                 );
               }}
-            />
-          </EuiFormRow>
-        )}
-      </Field>
-
-      <Field
-        id={`featureList.${props.index}.aggregationBy`}
-        name={`featureList.${props.index}.aggregationBy`}
-        validate={required}
-      >
-        {({ field, form }: FieldProps) => (
-          <EuiFormRow
-            label="Aggregation method"
-            helpText="The aggregation method determines what constitutes an anomaly. For example, if you choose min(), the detector focuses on finding anomalies based on the minimum values of your feature."
-            isInvalid={isInvalid(field.name, form)}
-            error={getError(field.name, form)}
-          >
-            <EuiSelect
-              id={`featureList.${props.index}.aggregationBy`}
-              name={`featureList.${props.index}.aggregationBy`}
-              options={AGGREGATION_TYPES}
-              {...field}
-              data-test-subj="aggregationType"
             />
           </EuiFormRow>
         )}

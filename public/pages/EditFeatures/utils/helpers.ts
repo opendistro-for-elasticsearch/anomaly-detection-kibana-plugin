@@ -23,8 +23,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { get, forOwn } from 'lodash';
 import { FeaturesFormikValues } from '../containers/utils/formikToFeatures';
 
-export const getNumberFields = (allFields: { [key: string]: string[] }) =>
-  [DATA_TYPES.NUMBER]
+export const getFieldOptions = (
+  allFields: { [key: string]: string[] },
+  validTypes: DATA_TYPES[]
+) =>
+  validTypes
     .map(dataType =>
       allFields[dataType]
         ? {
@@ -37,6 +40,26 @@ export const getNumberFields = (allFields: { [key: string]: string[] }) =>
         : []
     )
     .filter(Boolean);
+
+export const getNumberFieldOptions = (allFields: { [key: string]: string[] }) =>
+  getFieldOptions(allFields, [DATA_TYPES.NUMBER]);
+
+export const getCountableFieldOptions = (allFields: {
+  [key: string]: string[];
+}) => {
+  const countableDataTypes = [
+    DATA_TYPES.NUMBER,
+    DATA_TYPES.BOOLEAN,
+    DATA_TYPES.KEYWORD,
+    DATA_TYPES.DATE,
+  ];
+  return getFieldOptions(
+    allFields,
+    Object.keys(allFields)
+      .map(field => field as DATA_TYPES)
+      .filter(field => countableDataTypes.includes(field))
+  );
+};
 
 export const initialFeatureValue = () => ({
   featureId: uuidv4(),
