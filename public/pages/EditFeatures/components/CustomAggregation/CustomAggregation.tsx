@@ -19,8 +19,6 @@ import { EuiFormRow, EuiCodeEditor } from '@elastic/eui';
 import { Field, FieldProps } from 'formik';
 import { isInvalid, getError } from '../../../../utils/utils';
 
-import 'brace/ext/language_tools';
-
 interface CustomAggregationProps {
   index: number;
 }
