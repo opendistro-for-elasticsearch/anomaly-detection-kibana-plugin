@@ -14,6 +14,91 @@ exports[`<AggregationSelector /> spec Empty results renders component with aggre
         class="euiFormLabel euiFormRow__label"
         for="random_id"
       >
+        Aggregation method
+      </label>
+    </div>
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormControlLayout"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <select
+            aria-describedby="random_id-help"
+            class="euiSelect"
+            data-test-subj="aggregationType"
+            id="random_id"
+            name="featureList.undefined.aggregationBy"
+          >
+            <option
+              value="avg"
+            >
+              average()
+            </option>
+            <option
+              value="value_count"
+            >
+              count()
+            </option>
+            <option
+              value="sum"
+            >
+              sum()
+            </option>
+            <option
+              value="min"
+            >
+              min()
+            </option>
+            <option
+              value="max"
+            >
+              max()
+            </option>
+          </select>
+          <div
+            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+          >
+            <span
+              class="euiFormControlLayoutCustomIcon"
+            >
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFormHelpText euiFormRow__text"
+        id="random_id-help"
+      >
+        The aggregation method determines what constitutes an anomaly. For example, if you choose min(), the detector focuses on finding anomalies based on the minimum values of your feature.
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFormRow"
+    id="random_id-row"
+  >
+    <div
+      class="euiFormRow__labelWrapper"
+    >
+      <label
+        aria-invalid="false"
+        class="euiFormLabel euiFormRow__label"
+        for="random_id"
+      >
         Field
       </label>
     </div>
@@ -83,86 +168,6 @@ exports[`<AggregationSelector /> spec Empty results renders component with aggre
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div
-    class="euiFormRow"
-    id="random_id-row"
-  >
-    <div
-      class="euiFormRow__labelWrapper"
-    >
-      <label
-        aria-invalid="false"
-        class="euiFormLabel euiFormRow__label"
-        for="random_id"
-      >
-        Aggregation method
-      </label>
-    </div>
-    <div
-      class="euiFormRow__fieldWrapper"
-    >
-      <div
-        class="euiFormControlLayout"
-      >
-        <div
-          class="euiFormControlLayout__childrenWrapper"
-        >
-          <select
-            aria-describedby="random_id-help"
-            class="euiSelect"
-            data-test-subj="aggregationType"
-            id="random_id"
-            name="featureList.undefined.aggregationBy"
-          >
-            <option
-              value="avg"
-            >
-              average()
-            </option>
-            <option
-              value="sum"
-            >
-              sum()
-            </option>
-            <option
-              value="min"
-            >
-              min()
-            </option>
-            <option
-              value="max"
-            >
-              max()
-            </option>
-          </select>
-          <div
-            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-          >
-            <span
-              class="euiFormControlLayoutCustomIcon"
-            >
-              <svg
-                aria-hidden="true"
-                class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
-                focusable="false"
-                height="16"
-                role="img"
-                viewBox="0 0 16 16"
-                width="16"
-                xmlns="http://www.w3.org/2000/svg"
-              />
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        class="euiFormHelpText euiFormRow__text"
-        id="random_id-help"
-      >
-        The aggregation method determines what constitutes an anomaly. For example, if you choose min(), the detector focuses on finding anomalies based on the minimum values of your feature.
       </div>
     </div>
   </div>

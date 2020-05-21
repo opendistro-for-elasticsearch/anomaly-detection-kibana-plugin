@@ -33,6 +33,7 @@ export enum SAVE_FEATURE_OPTIONS {
 
 export const AGGREGATION_TYPES = [
   { value: 'avg', text: 'average()' },
+  { value: 'value_count', text: 'count()' },
   { value: 'sum', text: 'sum()' },
   { value: 'min', text: 'min()' },
   { value: 'max', text: 'max()' },
