@@ -56,7 +56,7 @@ export const getCountableFieldOptions = (allFields: {
   return getFieldOptions(
     allFields,
     Object.keys(allFields)
-      .map(filed => filed as DATA_TYPES)
+      .map(field => field as DATA_TYPES)
       .filter(field => countableDataTypes.includes(field))
   );
 };

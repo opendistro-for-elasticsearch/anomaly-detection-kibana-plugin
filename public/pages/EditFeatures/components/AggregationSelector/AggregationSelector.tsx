@@ -104,7 +104,6 @@ export const AggregationSelector = (props: AggregationSelectorProps) => {
               }
               {...field}
               onClick={() => {
-                console.log('form', form);
                 form.setFieldTouched(
                   `featureList.${props.index}.aggregationOf`,
                   true
