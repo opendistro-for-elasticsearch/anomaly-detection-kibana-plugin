@@ -1,6 +1,9 @@
 ## Open Distro for Elasticsearch 1.8.0 Release Notes
 Compatible with Kibana 7.7.0 and Open Distro for Elasticsearch 1.8.0.
 
+## Major changes
+- Support count aggregation [PR #169](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/169)
+
 ## Enhancements
 - Make callout message more readable when error creating new detector [PR #130](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/130)
 - Add loading state for live chart on detector details page [PR #131](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/131)
@@ -16,6 +19,7 @@ Compatible with Kibana 7.7.0 and Open Distro for Elasticsearch 1.8.0.
 ## Infra Changes
 - Fix and clean up unit tests [PR #147](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/147)
 - Fix single unit test so workflow passes [PR #163](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/163)
+- Remove unused language_tools import [PR #171](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/171)
 
 ## Version Upgrades
 - Upgrade Kibana to 7.7.0 [PR #164](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/164)
