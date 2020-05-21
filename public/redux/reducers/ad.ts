@@ -94,7 +94,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessage: action.error,
       }),
     },
     [START_DETECTOR]: {
