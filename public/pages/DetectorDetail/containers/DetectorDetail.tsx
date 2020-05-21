@@ -91,8 +91,12 @@ interface DetectorDetailModel {
 export const DetectorDetail = (props: DetectorDetailProps) => {
   const dispatch = useDispatch();
   const detectorId = get(props, 'match.params.detectorId', '') as string;
-  const { detector, hasError, isLoadingDetector } = useFetchDetectorInfo(detectorId);
-  const { monitor, fetchMonitorError, isLoadingMonitor } = useFetchMonitorInfo(detectorId);
+  const { detector, hasError, isLoadingDetector } = useFetchDetectorInfo(
+    detectorId
+  );
+  const { monitor, fetchMonitorError, isLoadingMonitor } = useFetchMonitorInfo(
+    detectorId
+  );
 
   //TODO: test dark mode once detector configuration and AD result page merged
   const isDark = darkModeEnabled();
@@ -266,7 +270,10 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
               : { ...lightStyles, flexGrow: 'unset' }),
           }}
         >
-          <EuiFlexGroup justifyContent="spaceBetween" style={{ padding: '10px' }}>
+          <EuiFlexGroup
+            justifyContent="spaceBetween"
+            style={{ padding: '10px' }}
+          >
             <EuiFlexItem grow={false}>
               <EuiTitle size="l">
                 <h1>
@@ -282,19 +289,29 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                     </EuiHealth>
                   ) : detector.enabled &&
                     detector.curState === DETECTOR_STATE.INIT ? (
-                    <EuiHealth color={DETECTOR_STATE_COLOR.INIT}>Initializing</EuiHealth>
+                    <EuiHealth color={DETECTOR_STATE_COLOR.INIT}>
+                      Initializing
+                    </EuiHealth>
                   ) : detector.curState === DETECTOR_STATE.INIT_FAILURE ||
                     detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE ? (
-                    <EuiHealth color={DETECTOR_STATE_COLOR.INIT_FAILURE}>Initialization failure</EuiHealth>
+                    <EuiHealth color={DETECTOR_STATE_COLOR.INIT_FAILURE}>
+                      Initialization failure
+                    </EuiHealth>
                   ) : detector.curState === DETECTOR_STATE.DISABLED ? (
                     <EuiHealth color={DETECTOR_STATE_COLOR.DISABLED}>
                       {detector.disabledTime
-                      ? `Stopped at ${moment(detector.disabledTime).format('MM/DD/YY h:mm A')}`
-                      : 'Detector is stopped'}
+                        ? `Stopped at ${moment(detector.disabledTime).format(
+                            'MM/DD/YY h:mm A'
+                          )}`
+                        : 'Detector is stopped'}
                     </EuiHealth>
                   ) : detector.curState === DETECTOR_STATE.FEATURE_REQUIRED ? (
-                    <EuiHealth color={DETECTOR_STATE_COLOR.FEATURE_REQUIRED}>Feature required to start the detector</EuiHealth>
-                  ) : ''}
+                    <EuiHealth color={DETECTOR_STATE_COLOR.FEATURE_REQUIRED}>
+                      Feature required to start the detector
+                    </EuiHealth>
+                  ) : (
+                    ''
+                  )}
                 </h1>
               </EuiTitle>
             </EuiFlexItem>

@@ -48,9 +48,7 @@ describe('detector reducer actions', () => {
     });
     test('should invoke [REQUEST, FAILURE]', async () => {
       const detectorId = 'randomDetectorID';
-      httpMockedClient.get = jest
-        .fn()
-        .mockRejectedValue({ data: { ok: false, error: 'Not found' } });
+      httpMockedClient.get = jest.fn().mockRejectedValue('Not found');
       try {
         await store.dispatch(getDetector(detectorId));
       } catch (e) {
@@ -206,7 +204,10 @@ describe('detector reducer actions', () => {
           [detectorId]: {
             ...randomDetector,
             id: detectorId,
-            lastUpdateTime: get(result, `detectors.${detectorId}.lastUpdateTime`)
+            lastUpdateTime: get(
+              result,
+              `detectors.${detectorId}.lastUpdateTime`
+            ),
           },
         },
       });
