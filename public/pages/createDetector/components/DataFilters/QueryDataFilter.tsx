@@ -24,7 +24,6 @@ import {
 import { Field, FieldProps } from 'formik';
 import { isInvalid, getError } from '../../../../utils/utils';
 import 'brace/mode/json';
-import 'brace/ext/language_tools';
 import 'brace/theme/github';
 import { validFilterQuery } from './utils/helpers';
 
