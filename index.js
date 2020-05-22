@@ -24,12 +24,17 @@ export default kibana => {
     name: 'opendistro-anomaly-detection-kibana',
     uiExports: {
       app: {
-        title: 'Open Distro for Elasticsearch Anomaly Detection Kibana plugin',
+        title: 'Anomaly Detection',
         description:
           'Open Distro for Elasticsearch Anomaly Detection Kibana plugin',
         main: 'plugins/opendistro-anomaly-detection-kibana/app',
+        /*
+          Commenting out custom svg icon for now. Will use default plugin icon until
+          issue is figured out, or we get a new icon.
+
         icon:
           'plugins/opendistro-anomaly-detection-kibana/images/anomaly_detection_icon.svg',
+        */
       },
       styleSheetPaths: [
         resolve(__dirname, 'public/app.scss'),
