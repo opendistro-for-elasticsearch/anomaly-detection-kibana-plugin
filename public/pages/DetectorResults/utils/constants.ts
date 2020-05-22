@@ -39,3 +39,13 @@ export const LIVE_ANOMALY_CHART_THEME = [
     },
   },
 ];
+
+//https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/master/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L307
+export const NO_FULL_SHINGLE_ERROR_MESSAGE =
+  'No full shingle in current detection window';
+//https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/master/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L295
+export const NO_DATA_IN_WINDOW_ERROR_MESSAGE =
+  'No data in current detection window';
+//https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/master/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L81
+export const NO_RCF_MODEL_ERROR_MESSAGE =
+  'No RCF models are available either because RCF models are not ready or all nodes are unresponsive or the system might have bugs';

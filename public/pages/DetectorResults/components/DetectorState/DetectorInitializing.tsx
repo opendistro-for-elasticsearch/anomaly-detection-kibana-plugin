@@ -16,6 +16,14 @@ import React from 'react';
 import { EuiButton, EuiEmptyPrompt, EuiLoadingSpinner } from '@elastic/eui';
 import { Fragment } from 'react';
 import { Detector } from '../../../../models/interfaces';
+import {
+  getDetectorInitializationInfo,
+  IS_INIT_OVERTIME_FIELD,
+  INIT_DETAILS_FIELD,
+  INIT_ERROR_MESSAGE_FIELD,
+  INIT_ACTION_ITEM_FIELD,
+} from '../../utils/utils';
+import { get } from 'lodash';
 
 export interface DetectorInitializingProps {
   detector: Detector;
@@ -23,6 +31,12 @@ export interface DetectorInitializingProps {
 }
 
 export const DetectorInitializing = (props: DetectorInitializingProps) => {
+  const initializationInfo = getDetectorInitializationInfo(props.detector);
+  const isInitOvertime = get(initializationInfo, IS_INIT_OVERTIME_FIELD, false);
+  const initDetails = get(initializationInfo, INIT_DETAILS_FIELD, {});
+  const initErrorMessage = get(initDetails, INIT_ERROR_MESSAGE_FIELD, '');
+  const initActionItem = get(initDetails, INIT_ACTION_ITEM_FIELD, '');
+
   return (
     <EuiEmptyPrompt
       style={{ maxWidth: '75%' }}
@@ -34,14 +48,24 @@ export const DetectorInitializing = (props: DetectorInitializingProps) => {
       }
       body={
         <Fragment>
-          <p>
-            Based on your latest update to the detector configuration, the
-            detector is collecting sufficient data to generate accurate
-            real-time anomalies.
-          </p>
-          <p>
-            The longer the detector interval is, the more time this will take.
-          </p>
+          {!isInitOvertime
+            ? [
+                <p>
+                  Based on your latest update to the detector configuration, the
+                  detector is collecting data to generate accurate real-time
+                  anomalies.
+                </p>,
+                <p>
+                  The longer the detector interval is, the more time this will
+                  take.
+                </p>,
+              ]
+            : [
+                <p>
+                  {`Detector initialization is not complete because ${initErrorMessage}.`}
+                </p>,
+                <p>{`${initActionItem}`}</p>,
+              ]}
         </Fragment>
       }
       actions={

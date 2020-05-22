@@ -33,6 +33,13 @@ import { BREADCRUMBS, DETECTOR_STATE } from '../../../utils/constants';
 import { AnomalyResultsLiveChart } from './AnomalyResultsLiveChart';
 import { AnomalyHistory } from './AnomalyHistory';
 import { DetectorStateDetails } from './DetectorStateDetails';
+import {
+  getDetectorInitializationInfo,
+  IS_INIT_OVERTIME_FIELD,
+  INIT_DETAILS_FIELD,
+  INIT_ERROR_MESSAGE_FIELD,
+  INIT_ACTION_ITEM_FIELD,
+} from '../utils/utils';
 
 interface AnomalyResultsProps extends RouteComponentProps {
   detectorId: string;
@@ -77,6 +84,12 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     detector.enabled &&
     detector.disabledTime;
 
+  const initializationInfo = getDetectorInitializationInfo(detector);
+  const isInitOvertime = get(initializationInfo, IS_INIT_OVERTIME_FIELD, false);
+  const initDetails = get(initializationInfo, INIT_DETAILS_FIELD, {});
+  const initErrorMessage = get(initDetails, INIT_ERROR_MESSAGE_FIELD, '');
+  const initActionItem = get(initDetails, INIT_ACTION_ITEM_FIELD, '');
+
   return (
     <Fragment>
       <EuiPage style={{ marginTop: '16px', paddingTop: '0px' }}>
@@ -93,7 +106,9 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       title={
                         isDetectorUpdated
                           ? 'There are change(s) to the detector configuration after the detector is stopped.'
-                          : 'The detector is being re-initialized based on the latest configuration changes.'
+                          : !isInitOvertime
+                          ? 'The detector is being re-initialized based on the latest configuration changes.'
+                          : `Detector initialization is not complete because ${initErrorMessage}.`
                       }
                       color="warning"
                       iconType="alert"
@@ -104,12 +119,14 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                           Restart the detector to see accurate anomalies based
                           on your latest configuration.
                         </p>
-                      ) : (
+                      ) : !isInitOvertime ? (
                         <p>
                           After the initialization is complete, you will see the
                           anomaly results based on your latest configuration
                           changes.
                         </p>
+                      ) : (
+                        <p>{`${initActionItem}`}</p>
                       )}
                       <EuiButton
                         onClick={props.onSwitchToConfiguration}
