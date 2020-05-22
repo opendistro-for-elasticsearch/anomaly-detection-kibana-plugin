@@ -89,11 +89,19 @@ export const DetectorList = (props: ListProps) => {
     (state: AppState) => state.elasticsearch
   );
 
-  const isRequestingFromES = useSelector((state: AppState) => state.ad.requesting);
+  const isRequestingFromES = useSelector(
+    (state: AppState) => state.ad.requesting
+  );
 
-  const [selectedDetectors, setSelectedDetectors] = useState([] as DetectorListItem[]);
-  const [detectorsToDisplay, setDetectorsToDisplay] = useState([] as DetectorListItem[]);
-  const [isLoadingFinalDetectors, setIsLoadingFinalDetectors] = useState<boolean>(true);
+  const [selectedDetectors, setSelectedDetectors] = useState(
+    [] as DetectorListItem[]
+  );
+  const [detectorsToDisplay, setDetectorsToDisplay] = useState(
+    [] as DetectorListItem[]
+  );
+  const [isLoadingFinalDetectors, setIsLoadingFinalDetectors] = useState<
+    boolean
+  >(true);
 
   // Getting all initial indices
   const [indexQuery, setIndexQuery] = useState('');
@@ -138,8 +146,16 @@ export const DetectorList = (props: ListProps) => {
       search: queryString.stringify(updatedParams),
     });
 
-    dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
+    const getUpdatedDetectors = async () => {
+      try {
+        await dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
+      } catch (error) {
+        console.log('Error is found during getting detector list', error);
+        setIsLoadingFinalDetectors(false);
+      }
+    };
     setIsLoadingFinalDetectors(true);
+    getUpdatedDetectors();
   }, [
     state.page,
     state.queryParams,
@@ -155,7 +171,7 @@ export const DetectorList = (props: ListProps) => {
       state.selectedIndices,
       state.selectedDetectorStates,
       state.queryParams.sortField,
-      state.queryParams.sortDirection,
+      state.queryParams.sortDirection
     );
     setSelectedDetectors(curSelectedDetectors);
 
@@ -167,10 +183,7 @@ export const DetectorList = (props: ListProps) => {
     setDetectorsToDisplay(curDetectorsToDisplay);
 
     setIsLoadingFinalDetectors(false);
-  },
-  [
-    allDetectors,
-  ]);
+  }, [allDetectors]);
 
   const handlePageChange = (pageNumber: number) => {
     setState({ ...state, page: pageNumber });
@@ -263,7 +276,6 @@ export const DetectorList = (props: ListProps) => {
     }));
   };
 
-
   const sorting = {
     sort: {
       direction: state.queryParams.sortDirection,
@@ -289,7 +301,11 @@ export const DetectorList = (props: ListProps) => {
     <EuiPage>
       <EuiPageBody>
         <ContentPanel
-          title={isLoading ? getTitleWithCount('Detectors', '...') : getTitleWithCount('Detectors', selectedDetectors.length)}
+          title={
+            isLoading
+              ? getTitleWithCount('Detectors', '...')
+              : getTitleWithCount('Detectors', selectedDetectors.length)
+          }
           actions={[
             <EuiButton fill href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
               Create detector
@@ -299,7 +315,11 @@ export const DetectorList = (props: ListProps) => {
           <ListControls
             activePage={state.page}
             pageCount={
-              isLoading ? 0 : Math.ceil(selectedDetectors.length / state.queryParams.size) || 1
+              isLoading
+                ? 0
+                : Math.ceil(
+                    selectedDetectors.length / state.queryParams.size
+                  ) || 1
             }
             search={state.queryParams.search}
             selectedDetectorStates={state.selectedDetectorStates}
