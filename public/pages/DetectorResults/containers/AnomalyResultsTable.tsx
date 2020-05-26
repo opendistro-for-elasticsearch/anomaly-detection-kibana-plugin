@@ -127,7 +127,7 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
       <ListControls
         activePage={state.page}
         pageCount={
-          Math.ceil(targetAnomalies.length / state.queryParams.size) || 1
+          Math.ceil(totalAnomalies.length / state.queryParams.size) || 1
         }
         onPageClick={handlePageChange}
       />
