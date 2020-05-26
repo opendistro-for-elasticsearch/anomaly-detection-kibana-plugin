@@ -1,0 +1,60 @@
+name: Build and upload artifacts
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  Build-and-upload:
+    name: Build and upload artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Checkout Kibana
+        uses: actions/checkout@v2
+        with:
+          repository: opendistro-for-elasticsearch/kibana-oss
+          ref: 7.7.0
+          token: ${{ secrets.KIBANA_OSS_ACCESS }}
+          path: kibana
+      - name: Get node and yarn versions
+        id: versions_step
+        run: |
+          echo "::set-output name=node_version::$(node -p "(require('./kibana/package.json').engines.node).match(/[.0-9]+/)[0]")"
+          echo "::set-output name=yarn_version::$(node -p "(require('./kibana/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.versions_step.outputs.node_version }}
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install correct yarn version for Kibana
+        run: |
+          npm uninstall -g yarn
+          echo "Installing yarn ${{ steps.versions_step.outputs.yarn_version }}"
+          npm i -g yarn@${{ steps.versions_step.outputs.yarn_version }}
+      - name: Checkout Anomaly Detection Kibana plugin
+        uses: actions/checkout@v2
+        with:
+          path: kibana/plugins/anomaly-detection-kibana-plugin
+      - name: Attempt to bootstrap the plugin
+        continue-on-error: true
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn kbn bootstrap
+      - name: Bootstrap the plugin again
+        if: ${{ always() }}
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn kbn bootstrap
+      - name: Build the artifact
+        if: ${{ always() }}
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn build
+          artifact = `ls build/*.zip`
+          aws s3 cp $artifact s3://artifacts.opendistroforelasticsearch.amazon.com/downloads/kibana-plugins/opendistro-anomaly-detection/
