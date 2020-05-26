@@ -171,7 +171,7 @@ export const AnomalyResultsLiveChart = (
 
   const liveAnomaliesDescription = () => (
     <EuiText className={'anomaly-distribution-subtitle'}>
-      Live anomaly shows anomaly results during the last{' '}
+      View anomaly results during the last{' '}
       {LIVE_CHART_CONFIG.MONITORING_INTERVALS} intervals (
       {LIVE_CHART_CONFIG.MONITORING_INTERVALS *
         props.detector.detectionInterval.period.interval}{' '}

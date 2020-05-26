@@ -29,9 +29,7 @@ export const DetectorStopped = (props: DetectorStoppedProps) => {
       title={<h2>The detector is stopped</h2>}
       body={
         <Fragment>
-          <p>
-            The detector is not started. Start the detector to see anomalies.
-          </p>
+          <p>Start the detector to see anomalies.</p>
         </Fragment>
       }
       actions={[

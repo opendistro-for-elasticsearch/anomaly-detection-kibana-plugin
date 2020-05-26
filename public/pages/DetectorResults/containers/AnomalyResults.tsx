@@ -105,7 +105,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     <EuiCallOut
                       title={
                         isDetectorUpdated
-                          ? 'There are change(s) to the detector configuration after the detector is stopped.'
+                          ? 'The detector configuration has changed since it was last stopped.'
                           : !isInitOvertime
                           ? 'The detector is being re-initialized based on the latest configuration changes.'
                           : `Detector initialization is not complete because ${initErrorMessage}.`
@@ -117,7 +117,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       {isDetectorUpdated ? (
                         <p>
                           Restart the detector to see accurate anomalies based
-                          on your latest configuration.
+                          on configuration changes.
                         </p>
                       ) : !isInitOvertime ? (
                         <p>
