@@ -27,13 +27,15 @@ export const ListControls = (props: ListControlsProps) => (
     alignItems="center"
     justifyContent="flexEnd"
   >
-    <EuiFlexItem grow={false}>
-      <EuiPagination
-        pageCount={props.pageCount}
-        activePage={props.activePage}
-        onPageClick={props.onPageClick}
-        data-test-subj="anomaliesPageControls"
-      />
-    </EuiFlexItem>
+    {props.pageCount > 1 ? (
+      <EuiFlexItem grow={false} style={{ justifyContent: 'center' }}>
+        <EuiPagination
+          pageCount={props.pageCount}
+          activePage={props.activePage}
+          onPageClick={props.onPageClick}
+          data-test-subj="anomaliesPageControls"
+        />
+      </EuiFlexItem>
+    ) : null}
   </EuiFlexGroup>
 );
