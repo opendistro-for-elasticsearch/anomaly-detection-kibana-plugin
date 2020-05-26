@@ -56,5 +56,5 @@ jobs:
         run: |
           cd kibana/plugins/anomaly-detection-kibana-plugin
           yarn build
-          artifact = `ls build/*.zip`
+          artifact=`ls build/*.zip`
           aws s3 cp $artifact s3://artifacts.opendistroforelasticsearch.amazon.com/downloads/kibana-plugins/opendistro-anomaly-detection/
