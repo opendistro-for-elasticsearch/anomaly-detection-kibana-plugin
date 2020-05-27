@@ -19,8 +19,8 @@ import {
   NO_RCF_MODEL_ERROR_MESSAGE,
 } from './constants';
 import { DETECTOR_STATE, SHINGLE_SIZE } from '../../../utils/constants';
-import { DETECTOR_INIT_FAILURES } from '../../../pages/DetectorDetail/utils/constants';
 import moment, { Moment } from 'moment';
+import { DETECTOR_INIT_FAILURES } from '../../../pages/DetectorDetail/utils/constants';
 
 export const IS_INIT_OVERTIME_FIELD = 'isInitOvertime';
 export const INIT_DETAILS_FIELD = 'initDetails';
@@ -67,15 +67,15 @@ const getInitOverTimeDetails = (detector: Detector) => {
     return result;
   }
   if (detector.initializationError.includes(NO_FULL_SHINGLE_ERROR_MESSAGE)) {
-    result[INIT_ERROR_MESSAGE_FIELD] = 'collected data is insufficient';
+    result[INIT_ERROR_MESSAGE_FIELD] = 'of insufficient data';
     result[INIT_ACTION_ITEM_FIELD] =
       DETECTOR_INIT_FAILURES.NO_TRAINING_DATA.actionItem;
   } else if (
     detector.initializationError.includes(NO_DATA_IN_WINDOW_ERROR_MESSAGE)
   ) {
-    result[INIT_ERROR_MESSAGE_FIELD] = 'no data exists in current time window';
+    result[INIT_ERROR_MESSAGE_FIELD] = 'no data could be found';
     result[INIT_ACTION_ITEM_FIELD] =
-      'Make sure data exists in data source index in current time window.';
+      'Make sure your source index has sufficient data in the current detector interval and try again.';
   }
   return result;
 };
