@@ -25,7 +25,7 @@ export const DETECTOR_INIT_FAILURES = Object.freeze({
   NO_TRAINING_DATA: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L801
     keyword: 'Cannot get training data',
-    cause: 'sufficient data is not ingested',
+    cause: 'no sufficient data is ingested',
     actionItem:
       'Make sure your data is ingested correctly. If your data source has infrequent ingestion, increase the detector time interval and try again.',
   },
