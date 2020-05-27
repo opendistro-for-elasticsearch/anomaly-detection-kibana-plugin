@@ -14,10 +14,13 @@
  */
 
 import queryString from 'query-string';
+import { get } from 'lodash';
 import { GetDetectorsQueryParams } from '../../../../server/models/types';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import { DEFAULT_QUERY_PARAMS } from '../../utils/constants';
 import { DETECTOR_STATE } from '../../../utils/constants';
+import { DetectorListItem } from '../../../models/interfaces';
+import { Monitor } from '../../../models/interfaces';
 
 export const getURLQueryParams = (location: {
   search: string;
@@ -55,4 +58,22 @@ export const getDetectorStateOptions = () => {
     label: detectorState,
     text: detectorState,
   }));
+};
+
+export const getAssociatedMonitors = (
+  detectors: DetectorListItem[],
+  monitors: { [key: string]: Monitor }
+) => {
+  let associatedMonitors = [] as Monitor[];
+  detectors.forEach(detector => {
+    const monitor = get(monitors, `${detector.id}.0`);
+    if (
+      monitor &&
+      (detector.curState === DETECTOR_STATE.INIT ||
+        detector.curState === DETECTOR_STATE.RUNNING)
+    ) {
+      associatedMonitors.push(monitor);
+    }
+  });
+  return associatedMonitors;
 };

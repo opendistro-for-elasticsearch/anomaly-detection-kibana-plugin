@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MonitorsCallout /> spec Monitors callout renders component with multiple monitors 1`] = `
+<div
+  class="euiCallOut euiCallOut--warning"
+>
+  <div
+    class="euiCallOutHeader"
+  >
+    <svg
+      aria-hidden="true"
+      class="euiIcon euiIcon--medium euiIcon-isLoading euiCallOutHeader__icon"
+      focusable="false"
+      height="16"
+      role="img"
+      viewBox="0 0 16 16"
+      width="16"
+      xmlns="http://www.w3.org/2000/svg"
+    />
+    <span
+      class="euiCallOutHeader__title"
+    >
+      There are monitors associated with the selected detectors.  You will not be able to receive any anomaly results from the following monitors:
+    </span>
+  </div>
+  <div
+    class="euiText euiText--small"
+  >
+    <div>
+      <li>
+        <a
+          class="euiLink euiLink--primary"
+          href="/dnexZXEBemUf2kpaW2CK"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          test-monitor
+           
+          <svg
+            aria-hidden="true"
+            class="euiIcon euiIcon--small euiIcon-isLoading"
+            focusable="false"
+            height="16"
+            role="img"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          />
+        </a>
+         
+      </li>
+      <li>
+        <a
+          class="euiLink euiLink--primary"
+          href="/pjejULE5fmbf2t8aw5Ck"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          test-monitor-2
+           
+          <svg
+            aria-hidden="true"
+            class="euiIcon euiIcon--small euiIcon-isLoading"
+            focusable="false"
+            height="16"
+            role="img"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          />
+        </a>
+         
+      </li>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<MonitorsCallout /> spec Monitors callout renders component with single monitor 1`] = `
+<div
+  class="euiCallOut euiCallOut--warning"
+>
+  <div
+    class="euiCallOutHeader"
+  >
+    <svg
+      aria-hidden="true"
+      class="euiIcon euiIcon--medium euiIcon-isLoading euiCallOutHeader__icon"
+      focusable="false"
+      height="16"
+      role="img"
+      viewBox="0 0 16 16"
+      width="16"
+      xmlns="http://www.w3.org/2000/svg"
+    />
+    <span
+      class="euiCallOutHeader__title"
+    >
+      There are monitors associated with the selected detectors.  You will not be able to receive any anomaly results from the following monitors:
+    </span>
+  </div>
+  <div
+    class="euiText euiText--small"
+  >
+    <div>
+      <li>
+        <a
+          class="euiLink euiLink--primary"
+          href="/dnexZXEBemUf2kpaW2CK"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          test-monitor
+           
+          <svg
+            aria-hidden="true"
+            class="euiIcon euiIcon--small euiIcon-isLoading"
+            focusable="false"
+            height="16"
+            role="img"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          />
+        </a>
+         
+      </li>
+    </div>
+  </div>
+</div>
+`;

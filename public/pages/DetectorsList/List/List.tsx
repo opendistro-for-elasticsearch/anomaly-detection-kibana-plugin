@@ -20,6 +20,7 @@ import {
   EuiHorizontalRule,
   EuiPage,
   EuiPageBody,
+  EuiOverlayMask,
 } from '@elastic/eui';
 import { debounce, get, isEmpty } from 'lodash';
 import queryString from 'query-string';
@@ -28,6 +29,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 //@ts-ignore
 import chrome from 'ui/chrome';
+// @ts-ignore
+import { toastNotifications } from 'ui/notify';
 import {
   CatIndex,
   GetDetectorsQueryParams,
@@ -37,7 +40,12 @@ import { DetectorListItem } from '../../../models/interfaces';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { AppState } from '../../../redux/reducers';
-import { getDetectorList } from '../../../redux/reducers/ad';
+import {
+  getDetectorList,
+  startDetector,
+  stopDetector,
+  deleteDetector,
+} from '../../../redux/reducers/ad';
 import {
   getIndices,
   getPrioritizedIndices,
@@ -49,7 +57,7 @@ import {
 } from '../../../utils/constants';
 import { getVisibleOptions, sanitizeSearchText } from '../../utils/helpers';
 import { EmptyDetectorMessage } from '../Components/EmptyMessage/EmptyMessage';
-import { ListControls } from '../Components/ListControls/ListControls';
+import { ListFilters } from '../Components/ListFilters/ListFilters';
 import {
   MAX_DETECTORS,
   MAX_SELECTED_INDICES,
@@ -58,13 +66,17 @@ import {
   ALL_INDICES,
 } from '../../utils/constants';
 import { BREADCRUMBS } from '../../../utils/constants';
-import { getURLQueryParams } from '../utils/helpers';
+import { getURLQueryParams, getAssociatedMonitors } from '../utils/helpers';
 import {
   filterAndSortDetectors,
   getDetectorsToDisplay,
 } from '../../utils/helpers';
 import { staticColumn } from '../utils/tableUtils';
 import { getTitleWithCount } from '../../../utils/utils';
+import { ListActions } from '../Components/ListActions/ListActions';
+import { searchMonitors } from '../../../redux/reducers/alerting';
+import { MonitorsCallout } from '../Components/MonitorsCallout/MonitorsCallout';
+import { ConfirmModal } from '../../DetectorDetail/components/ConfirmModal/ConfirmModal';
 
 export interface ListRouterParams {
   from: string;
@@ -85,10 +97,10 @@ interface ListState {
 export const DetectorList = (props: ListProps) => {
   const dispatch = useDispatch();
   const allDetectors = useSelector((state: AppState) => state.ad.detectorList);
+  const allMonitors = useSelector((state: AppState) => state.alerting.monitors);
   const elasticsearchState = useSelector(
     (state: AppState) => state.elasticsearch
   );
-
   const isRequestingFromES = useSelector(
     (state: AppState) => state.ad.requesting
   );
@@ -102,6 +114,13 @@ export const DetectorList = (props: ListProps) => {
   const [isLoadingFinalDetectors, setIsLoadingFinalDetectors] = useState<
     boolean
   >(true);
+  const [selectedDetectorsForAction, setSelectedDetectorsForAction] = useState(
+    [] as DetectorListItem[]
+  );
+  const [showMonitorCalloutModal, setShowMonitorCalloutModal] = useState<
+    boolean
+  >(false);
+  const [monitorsCallout, setMonitorsCallout] = useState<any>(null);
 
   // Getting all initial indices
   const [indexQuery, setIndexQuery] = useState('');
@@ -110,6 +129,14 @@ export const DetectorList = (props: ListProps) => {
       await dispatch(getIndices(indexQuery));
     };
     getInitialIndices();
+  }, []);
+
+  // Getting all initial monitors
+  useEffect(() => {
+    const getInitialMonitors = async () => {
+      dispatch(searchMonitors());
+    };
+    getInitialMonitors();
   }, []);
 
   // Updating displayed indices (initializing to first 20 for now)
@@ -146,14 +173,6 @@ export const DetectorList = (props: ListProps) => {
       search: queryString.stringify(updatedParams),
     });
 
-    const getUpdatedDetectors = async () => {
-      try {
-        await dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
-      } catch (error) {
-        console.log('Error is found during getting detector list', error);
-        setIsLoadingFinalDetectors(false);
-      }
-    };
     setIsLoadingFinalDetectors(true);
     getUpdatedDetectors();
   }, [
@@ -184,6 +203,17 @@ export const DetectorList = (props: ListProps) => {
 
     setIsLoadingFinalDetectors(false);
   }, [allDetectors]);
+
+  const getUpdatedDetectors = async () => {
+    try {
+      dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
+    } catch (error) {
+      toastNotifications.addDanger(
+        `Error is found while getting detector list: ${error}`
+      );
+      setIsLoadingFinalDetectors(false);
+    }
+  };
 
   const handlePageChange = (pageNumber: number) => {
     setState({ ...state, page: pageNumber });
@@ -276,11 +306,94 @@ export const DetectorList = (props: ListProps) => {
     }));
   };
 
+  const handleSelectionChange = (currentSelected: DetectorListItem[]) => {
+    setSelectedDetectorsForAction(currentSelected);
+  };
+
+  const handleStartDetectorsAction = async () => {
+    if (!isEmpty(selectedDetectorsForAction)) {
+      const allIds = selectedDetectorsForAction.map(detector => detector.id);
+      const promises = allIds.map(async (id: string) => {
+        return dispatch(startDetector(id));
+      });
+      await Promise.all(promises)
+        .then(() => {
+          toastNotifications.addSuccess(
+            'All selected detectors have been started successfully'
+          );
+        })
+        .catch(error => {
+          toastNotifications.addDanger(
+            `Error starting all selected detectors: ${error}`
+          );
+        })
+        .finally(() => {
+          setIsLoadingFinalDetectors(true);
+          getUpdatedDetectors();
+        });
+    }
+  };
+
+  const handleStopDetectorsAction = () => {
+    if (!isEmpty(selectedDetectorsForAction)) {
+      const curMonitors = getAssociatedMonitors(
+        selectedDetectorsForAction,
+        allMonitors
+      );
+      if (!isEmpty(curMonitors)) {
+        setShowMonitorCalloutModal(true);
+        const curMonitorsCallout = <MonitorsCallout monitors={curMonitors} />;
+        setMonitorsCallout(curMonitorsCallout);
+      } else {
+        handleStopDetectorJobs();
+      }
+    }
+  };
+
+  const handleDeleteDetectorsAction = async () => {
+    // stub for now, will add implementation in later PR
+  };
+
+  const handleStopDetectorJobs = async () => {
+    const allIds = selectedDetectorsForAction.map(detector => detector.id);
+    const promises = allIds.map(async (id: string) => {
+      return dispatch(stopDetector(id));
+    });
+    await Promise.all(promises)
+      .then(() => {
+        toastNotifications.addSuccess(
+          'All selected detectors have been stopped successfully'
+        );
+      })
+      .catch(error => {
+        toastNotifications.addDanger(
+          `Error stopping all selected detectors: ${error}`
+        );
+      })
+      .finally(() => {
+        setIsLoadingFinalDetectors(true);
+        getUpdatedDetectors();
+      });
+  };
+
+  const getItemId = (item: any) => {
+    return `${item.id}-${item.currentTime}`;
+  };
+
+  const hideMonitorCalloutModal = () => {
+    setShowMonitorCalloutModal(false);
+    setMonitorsCallout(null);
+  };
+
   const sorting = {
     sort: {
       direction: state.queryParams.sortDirection,
       field: state.queryParams.sortField,
     },
+  };
+
+  const selection = {
+    onSelectionChange: handleSelectionChange,
   };
 
   const isFilterApplied =
@@ -307,12 +420,36 @@ export const DetectorList = (props: ListProps) => {
               : getTitleWithCount('Detectors', selectedDetectors.length)
           }
           actions={[
+            <ListActions
+              onStartDetectors={handleStartDetectorsAction}
+              onStopDetectors={handleStopDetectorsAction}
+              //onDeleteDetectors={handleDeleteDetectorsAction}
+              detectors={selectedDetectorsForAction}
+              isActionsDisabled={selectedDetectorsForAction.length === 0}
+            />,
             <EuiButton fill href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
               Create detector
             </EuiButton>,
           ]}
         >
-          <ListControls
+          {showMonitorCalloutModal ? (
+            <EuiOverlayMask>
+              <ConfirmModal
+                title="Are you sure you want to stop the selected detectors?"
+                description=""
+                callout={monitorsCallout}
+                confirmButtonText="Stop detectors"
+                confirmButtonColor="primary"
+                onClose={hideMonitorCalloutModal}
+                onCancel={hideMonitorCalloutModal}
+                onConfirm={() => {
+                  handleStopDetectorJobs();
+                  hideMonitorCalloutModal();
+                }}
+              />
+            </EuiOverlayMask>
+          ) : null}
+          <ListFilters
             activePage={state.page}
             pageCount={
               isLoading
@@ -334,8 +471,18 @@ export const DetectorList = (props: ListProps) => {
           <EuiHorizontalRule margin="xs" />
           <EuiBasicTable<any>
             items={isLoading ? [] : detectorsToDisplay}
+            /*
+              itemId here is used to keep track of the selected detectors and render appropriately.
+              Because the item id is dependent on the current time (see getItemID() above), all selected
+              detectors will be deselected once new detectors are retrieved because the page will
+              re-render with a new timestamp. This logic is borrowed from Alerting Kibana plugins' 
+              monitors list page.
+            */
+            itemId={getItemId}
             columns={staticColumn}
             onChange={handleTableChange}
+            isSelectable={true}
+            selection={selection}
             sorting={sorting}
             pagination={pagination}
             noItemsMessage={

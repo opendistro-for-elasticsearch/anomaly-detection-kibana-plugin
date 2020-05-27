@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import React from 'react';
 import { getDetectorStateOptions } from '../../utils/helpers';
 import { DETECTOR_STATE } from '../../../../utils/constants';
 
-interface ListControlsProps {
+interface ListFiltersProps {
   activePage: number;
   pageCount: number;
   search: string;
@@ -38,7 +38,7 @@ interface ListControlsProps {
   onSearchIndexChange: (searchValue: string) => void;
   onPageClick: (pageNumber: number) => void;
 }
-export const ListControls = (props: ListControlsProps) => (
+export const ListFilters = (props: ListFiltersProps) => (
   <EuiFlexGroup gutterSize="s">
     <EuiFlexItem grow={false} style={{ width: '40%' }}>
       <EuiFieldSearch
