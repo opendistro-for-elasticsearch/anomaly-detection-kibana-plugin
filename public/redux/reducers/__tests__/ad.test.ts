@@ -156,9 +156,9 @@ describe('detector reducer actions', () => {
 
     test('should invoke [REQUEST, FAILURE]', async () => {
       const expectedDetector = getRandomDetector();
-      httpMockedClient.post = jest.fn().mockRejectedValue({
-        data: { ok: false, error: 'Internal server error' },
-      });
+      httpMockedClient.post = jest
+        .fn()
+        .mockRejectedValue('Internal server error');
       try {
         await store.dispatch(createDetector(expectedDetector));
       } catch {

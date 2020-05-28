@@ -120,11 +120,17 @@ export function CreateDetector(props: CreateADProps) {
       );
     } catch (err) {
       const resp = await dispatch(
-        searchDetector({ query: { bool: { must_not: { match: { name: "" } } } } })
+        searchDetector({
+          query: { bool: { must_not: { match: { name: '' } } } },
+        })
       );
       const totalDetectors = resp.data.response.totalDetectors;
       if (totalDetectors === MAX_DETECTORS) {
-        toastNotifications.addDanger('Cannot create detector - limit of ' + MAX_DETECTORS + ' detectors reached')
+        toastNotifications.addDanger(
+          'Cannot create detector - limit of ' +
+            MAX_DETECTORS +
+            ' detectors reached'
+        );
       } else {
         toastNotifications.addDanger(
           getErrorMessage(err, 'There was a problem creating detector')

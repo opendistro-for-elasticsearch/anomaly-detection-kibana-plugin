@@ -32,7 +32,12 @@ import {
 } from '../models/types';
 import { Router } from '../router';
 import { SORT_DIRECTION, AD_DOC_FIELDS } from '../utils/constants';
-import { mapKeysDeep, toCamel, toSnake, toFixedNumberForAnomaly } from '../utils/helpers';
+import {
+  mapKeysDeep,
+  toCamel,
+  toSnake,
+  toFixedNumberForAnomaly,
+} from '../utils/helpers';
 import {
   anomalyResultMapper,
   convertDetectorKeysToCamelCase,
@@ -150,9 +155,9 @@ const putDetector = async (
     console.log('Anomaly detector - PutDetector', err);
     //FIXME: This is temporary as backend should send error message inside message instead of body
     if (err.statusCode === 400) {
-      return { ok: false, error: err.body };
+      return { ok: false, error: err.body.error.reason };
     }
-    return { ok: false, error: err.message };
+    return { ok: false, error: err.message.data.error };
   }
 };
 
@@ -593,13 +598,17 @@ const getAnomalyResults = async (
           result._source.confidence != null &&
           result._source.confidence !== 'NaN' &&
           result._source.confidence > 0
-            ? toFixedNumberForAnomaly(Number.parseFloat(result._source.confidence))
+            ? toFixedNumberForAnomaly(
+                Number.parseFloat(result._source.confidence)
+              )
             : 0,
         anomalyGrade:
           result._source.anomaly_grade != null &&
           result._source.anomaly_grade !== 'NaN' &&
           result._source.anomaly_grade > 0
-            ? toFixedNumberForAnomaly(Number.parseFloat(result._source.anomaly_grade))
+            ? toFixedNumberForAnomaly(
+                Number.parseFloat(result._source.anomaly_grade)
+              )
             : 0,
       });
       result._source.feature_data.forEach((featureData: any) => {
