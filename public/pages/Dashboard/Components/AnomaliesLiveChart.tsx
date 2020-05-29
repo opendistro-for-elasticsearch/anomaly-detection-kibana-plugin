@@ -239,7 +239,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
         </EuiFlexItem>
       }
       actions={[fullScreenButton()]}
-      contentPanelClassName={isFullScreen ? 'dashboard-full-screen' : undefined}
+      contentPanelClassName={isFullScreen ? 'full-screen' : undefined}
     >
       {isLoadingAnomalies ? (
         <EuiFlexGroup

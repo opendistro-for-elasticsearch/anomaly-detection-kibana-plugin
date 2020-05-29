@@ -67,7 +67,7 @@ export function Main(props: MainProps) {
   ];
 
   return (
-    <EuiPage>
+    <EuiPage style={{ height: '100%' }}>
       <EuiPageSideBar style={{ minWidth: 150 }} hidden={hideSideNavBar}>
         <EuiSideNav style={{ width: 150 }} items={sideNav} />
       </EuiPageSideBar>
