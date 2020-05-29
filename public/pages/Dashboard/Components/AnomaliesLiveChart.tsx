@@ -109,7 +109,10 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
         true
       );
     } catch (err) {
-      console.log('Error getting latest anomaly results - index may not exist yet', err);
+      console.log(
+        'Error getting latest anomaly results - index may not exist yet',
+        err
+      );
       setIsLoadingAnomalies(false);
     }
 
