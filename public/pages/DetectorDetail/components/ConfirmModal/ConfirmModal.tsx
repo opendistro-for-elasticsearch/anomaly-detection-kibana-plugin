@@ -44,7 +44,7 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
   return (
     <EuiModal onClose={props.onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>{props.title}</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>{props.title}&nbsp;</EuiModalHeaderTitle>
       </EuiModalHeader>
       <EuiModalBody>
         <EuiFlexGroup direction="column">

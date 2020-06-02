@@ -328,7 +328,7 @@ export const DetectorList = (props: ListProps) => {
     } else {
       toastNotifications.addDanger(
         'All selected detectors are unable to start. Make sure selected \
-          detectors are able to start and not already running'
+          detectors have features and are not already running'
       );
     }
   };

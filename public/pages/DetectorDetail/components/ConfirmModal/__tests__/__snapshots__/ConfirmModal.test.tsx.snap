@@ -45,6 +45,7 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with callout 1`] 
             class="euiModalHeader__title"
           >
             test confirm modal
+             
           </div>
         </div>
         <div
@@ -163,6 +164,7 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with empty callou
             class="euiModalHeader__title"
           >
             test confirm modal
+             
           </div>
         </div>
         <div
