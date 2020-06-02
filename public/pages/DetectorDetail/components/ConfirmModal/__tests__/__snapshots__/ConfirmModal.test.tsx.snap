@@ -80,6 +80,7 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with callout 1`] 
         >
           <button
             class="euiButtonEmpty euiButtonEmpty--primary"
+            data-test-subj="cancelButton"
             type="button"
           >
             <span
@@ -94,6 +95,7 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with callout 1`] 
           </button>
           <button
             class="euiButton euiButton--primary euiButton--fill"
+            data-test-subj="confirmButton"
             type="button"
           >
             <span
@@ -191,6 +193,7 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with empty callou
         >
           <button
             class="euiButtonEmpty euiButtonEmpty--primary"
+            data-test-subj="cancelButton"
             type="button"
           >
             <span
@@ -205,6 +208,7 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with empty callou
           </button>
           <button
             class="euiButton euiButton--primary euiButton--fill"
+            data-test-subj="confirmButton"
             type="button"
           >
             <span

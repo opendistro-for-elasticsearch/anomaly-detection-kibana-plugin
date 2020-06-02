@@ -14,14 +14,13 @@
  */
 
 import queryString from 'query-string';
-import { get } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { GetDetectorsQueryParams } from '../../../../server/models/types';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import { DEFAULT_QUERY_PARAMS } from '../../utils/constants';
 import { DETECTOR_STATE } from '../../../utils/constants';
 import { DetectorListItem } from '../../../models/interfaces';
-import { Monitor } from '../../../models/interfaces';
-
+import { DETECTOR_ACTION } from '../utils/constants';
 export const getURLQueryParams = (location: {
   search: string;
 }): GetDetectorsQueryParams => {
@@ -60,20 +59,32 @@ export const getDetectorStateOptions = () => {
   }));
 };
 
-export const getAssociatedMonitors = (
+export const getValidDetectors = (
   detectors: DetectorListItem[],
-  monitors: { [key: string]: Monitor }
+  action: DETECTOR_ACTION
 ) => {
-  let associatedMonitors = [] as Monitor[];
-  detectors.forEach(detector => {
-    const monitor = get(monitors, `${detector.id}.0`);
-    if (
-      monitor &&
-      (detector.curState === DETECTOR_STATE.INIT ||
-        detector.curState === DETECTOR_STATE.RUNNING)
-    ) {
-      associatedMonitors.push(monitor);
+  switch (action) {
+    case DETECTOR_ACTION.START: {
+      const validDetectors = detectors.filter(
+        detector =>
+          detector.curState === DETECTOR_STATE.DISABLED ||
+          detector.curState === DETECTOR_STATE.INIT_FAILURE ||
+          detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE
+      );
+      return validDetectors;
     }
-  });
-  return associatedMonitors;
+    case DETECTOR_ACTION.STOP: {
+      const validDetectors = detectors.filter(
+        detector =>
+          detector.curState === DETECTOR_STATE.RUNNING ||
+          detector.curState === DETECTOR_STATE.INIT
+      );
+      return validDetectors;
+    }
+    case DETECTOR_ACTION.DELETE: {
+      return cloneDeep(detectors);
+    }
+    default:
+      return [];
+  }
 };

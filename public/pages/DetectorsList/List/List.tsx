@@ -20,7 +20,6 @@ import {
   EuiHorizontalRule,
   EuiPage,
   EuiPageBody,
-  EuiOverlayMask,
 } from '@elastic/eui';
 import { debounce, get, isEmpty } from 'lodash';
 import queryString from 'query-string';
@@ -66,17 +65,20 @@ import {
   ALL_INDICES,
 } from '../../utils/constants';
 import { BREADCRUMBS } from '../../../utils/constants';
-import { getURLQueryParams, getAssociatedMonitors } from '../utils/helpers';
+import { getURLQueryParams, getValidDetectors } from '../utils/helpers';
 import {
   filterAndSortDetectors,
   getDetectorsToDisplay,
 } from '../../utils/helpers';
 import { staticColumn } from '../utils/tableUtils';
+import { DETECTOR_ACTION } from '../utils/constants';
 import { getTitleWithCount } from '../../../utils/utils';
 import { ListActions } from '../Components/ListActions/ListActions';
 import { searchMonitors } from '../../../redux/reducers/alerting';
-import { MonitorsCallout } from '../Components/MonitorsCallout/MonitorsCallout';
-import { ConfirmModal } from '../../DetectorDetail/components/ConfirmModal/ConfirmModal';
+import {
+  ConfirmStartDetectorsModal,
+  ConfirmStopDetectorsModal,
+} from '../Components/ConfirmActionModals/ConfirmActionModals';
 
 export interface ListRouterParams {
   from: string;
@@ -117,10 +119,8 @@ export const DetectorList = (props: ListProps) => {
   const [selectedDetectorsForAction, setSelectedDetectorsForAction] = useState(
     [] as DetectorListItem[]
   );
-  const [showMonitorCalloutModal, setShowMonitorCalloutModal] = useState<
-    boolean
-  >(false);
-  const [monitorsCallout, setMonitorsCallout] = useState<any>(null);
+  const [confirmModal, setConfirmModal] = useState<any>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
 
   // Getting all initial indices
   const [indexQuery, setIndexQuery] = useState('');
@@ -310,43 +310,50 @@ export const DetectorList = (props: ListProps) => {
     setSelectedDetectorsForAction(currentSelected);
   };
 
-  const handleStartDetectorsAction = async () => {
-    if (!isEmpty(selectedDetectorsForAction)) {
-      const allIds = selectedDetectorsForAction.map(detector => detector.id);
-      const promises = allIds.map(async (id: string) => {
-        return dispatch(startDetector(id));
-      });
-      await Promise.all(promises)
-        .then(() => {
-          toastNotifications.addSuccess(
-            'All selected detectors have been started successfully'
-          );
-        })
-        .catch(error => {
-          toastNotifications.addDanger(
-            `Error starting all selected detectors: ${error}`
-          );
-        })
-        .finally(() => {
-          setIsLoadingFinalDetectors(true);
-          getUpdatedDetectors();
-        });
+  const handleStartDetectorsAction = () => {
+    const validDetectors = getValidDetectors(
+      selectedDetectorsForAction,
+      DETECTOR_ACTION.START
+    );
+    if (!isEmpty(validDetectors)) {
+      const confirmStartDetectorsModal = (
+        <ConfirmStartDetectorsModal
+          detectors={validDetectors}
+          hideModal={hideConfirmModal}
+          onStartDetectors={handleStartDetectorJobs}
+        />
+      );
+      setShowConfirmModal(true);
+      setConfirmModal(confirmStartDetectorsModal);
+    } else {
+      toastNotifications.addDanger(
+        'All selected detectors are unable to start. Make sure selected \
+          detectors are able to start and not already running'
+      );
     }
   };
 
   const handleStopDetectorsAction = () => {
-    if (!isEmpty(selectedDetectorsForAction)) {
-      const curMonitors = getAssociatedMonitors(
-        selectedDetectorsForAction,
-        allMonitors
+    const validDetectors = getValidDetectors(
+      selectedDetectorsForAction,
+      DETECTOR_ACTION.STOP
+    );
+    if (!isEmpty(validDetectors)) {
+      const confirmStopDetectorsModal = (
+        <ConfirmStopDetectorsModal
+          detectors={validDetectors}
+          monitors={allMonitors}
+          hideModal={hideConfirmModal}
+          onStopDetectors={handleStopDetectorJobs}
+        />
       );
-      if (!isEmpty(curMonitors)) {
-        setShowMonitorCalloutModal(true);
-        const curMonitorsCallout = <MonitorsCallout monitors={curMonitors} />;
-        setMonitorsCallout(curMonitorsCallout);
-      } else {
-        handleStopDetectorJobs();
-      }
+      setShowConfirmModal(true);
+      setConfirmModal(confirmStopDetectorsModal);
+    } else {
+      toastNotifications.addDanger(
+        'All selected detectors are unable to stop. Make sure selected \
+          detectors are already running'
+      );
     }
   };
 
@@ -354,9 +361,37 @@ export const DetectorList = (props: ListProps) => {
     // stub for now, will add implementation in later PR
   };
 
+  const handleStartDetectorJobs = async () => {
+    const validIds = getValidDetectors(
+      selectedDetectorsForAction,
+      DETECTOR_ACTION.START
+    ).map(detector => detector.id);
+    const promises = validIds.map(async (id: string) => {
+      return dispatch(startDetector(id));
+    });
+    await Promise.all(promises)
+      .then(() => {
+        toastNotifications.addSuccess(
+          'All selected detectors have been started successfully'
+        );
+      })
+      .catch(error => {
+        toastNotifications.addDanger(
+          `Error starting all selected detectors: ${error}`
+        );
+      })
+      .finally(() => {
+        setIsLoadingFinalDetectors(true);
+        getUpdatedDetectors();
+      });
+  };
+
   const handleStopDetectorJobs = async () => {
-    const allIds = selectedDetectorsForAction.map(detector => detector.id);
-    const promises = allIds.map(async (id: string) => {
+    const validIds = getValidDetectors(
+      selectedDetectorsForAction,
+      DETECTOR_ACTION.STOP
+    ).map(detector => detector.id);
+    const promises = validIds.map(async (id: string) => {
       return dispatch(stopDetector(id));
     });
     await Promise.all(promises)
@@ -380,9 +415,9 @@ export const DetectorList = (props: ListProps) => {
     return `${item.id}-${item.currentTime}`;
   };
 
-  const hideMonitorCalloutModal = () => {
-    setShowMonitorCalloutModal(false);
-    setMonitorsCallout(null);
+  const hideConfirmModal = () => {
+    setShowConfirmModal(false);
+    setConfirmModal(null);
   };
 
   const sorting = {
@@ -432,23 +467,7 @@ export const DetectorList = (props: ListProps) => {
             </EuiButton>,
           ]}
         >
-          {showMonitorCalloutModal ? (
-            <EuiOverlayMask>
-              <ConfirmModal
-                title="Are you sure you want to stop the selected detectors?"
-                description=""
-                callout={monitorsCallout}
-                confirmButtonText="Stop detectors"
-                confirmButtonColor="primary"
-                onClose={hideMonitorCalloutModal}
-                onCancel={hideMonitorCalloutModal}
-                onConfirm={() => {
-                  handleStopDetectorJobs();
-                  hideMonitorCalloutModal();
-                }}
-              />
-            </EuiOverlayMask>
-          ) : null}
+          {showConfirmModal ? confirmModal : null}
           <ListFilters
             activePage={state.page}
             pageCount={
