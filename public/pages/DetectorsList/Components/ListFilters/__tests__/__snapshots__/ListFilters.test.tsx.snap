@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ListControls /> spec Empty results renders component with empty message 1`] = `
+exports[`<ListFilters /> spec Empty results renders component with empty message 1`] = `
 <div
   class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
 >
