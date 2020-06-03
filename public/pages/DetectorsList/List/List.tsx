@@ -65,7 +65,7 @@ import {
   ALL_INDICES,
 } from '../../utils/constants';
 import { BREADCRUMBS } from '../../../utils/constants';
-import { getURLQueryParams, getValidDetectors } from '../utils/helpers';
+import { getURLQueryParams, getDetectorsForAction } from '../utils/helpers';
 import {
   filterAndSortDetectors,
   getDetectorsToDisplay,
@@ -311,7 +311,7 @@ export const DetectorList = (props: ListProps) => {
   };
 
   const handleStartDetectorsAction = () => {
-    const validDetectors = getValidDetectors(
+    const validDetectors = getDetectorsForAction(
       selectedDetectorsForAction,
       DETECTOR_ACTION.START
     );
@@ -334,7 +334,7 @@ export const DetectorList = (props: ListProps) => {
   };
 
   const handleStopDetectorsAction = () => {
-    const validDetectors = getValidDetectors(
+    const validDetectors = getDetectorsForAction(
       selectedDetectorsForAction,
       DETECTOR_ACTION.STOP
     );
@@ -362,7 +362,7 @@ export const DetectorList = (props: ListProps) => {
   };
 
   const handleStartDetectorJobs = async () => {
-    const validIds = getValidDetectors(
+    const validIds = getDetectorsForAction(
       selectedDetectorsForAction,
       DETECTOR_ACTION.START
     ).map(detector => detector.id);
@@ -387,7 +387,7 @@ export const DetectorList = (props: ListProps) => {
   };
 
   const handleStopDetectorJobs = async () => {
-    const validIds = getValidDetectors(
+    const validIds = getDetectorsForAction(
       selectedDetectorsForAction,
       DETECTOR_ACTION.STOP
     ).map(detector => detector.id);

@@ -59,27 +59,27 @@ export const getDetectorStateOptions = () => {
   }));
 };
 
-export const getValidDetectors = (
+export const getDetectorsForAction = (
   detectors: DetectorListItem[],
   action: DETECTOR_ACTION
 ) => {
   switch (action) {
     case DETECTOR_ACTION.START: {
-      const validDetectors = detectors.filter(
+      const detectorsForAction = detectors.filter(
         detector =>
           detector.curState === DETECTOR_STATE.DISABLED ||
           detector.curState === DETECTOR_STATE.INIT_FAILURE ||
           detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE
       );
-      return validDetectors;
+      return detectorsForAction;
     }
     case DETECTOR_ACTION.STOP: {
-      const validDetectors = detectors.filter(
+      const detectorsForAction = detectors.filter(
         detector =>
           detector.curState === DETECTOR_STATE.RUNNING ||
           detector.curState === DETECTOR_STATE.INIT
       );
-      return validDetectors;
+      return detectorsForAction;
     }
     case DETECTOR_ACTION.DELETE: {
       return cloneDeep(detectors);
