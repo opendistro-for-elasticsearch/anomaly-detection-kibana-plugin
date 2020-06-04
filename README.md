@@ -56,6 +56,10 @@ Example output: `./build/opendistro-anomaly-detection-kibana-1.8.0.0.zip`
 
   Runs the plugin tests.
 
+- `yarn test:e2e`
+
+  Start Kibana, wait for it to be available on `localhost:5601`, and runs end-to-end tests.
+
 ## Contributing to Open Distro for Elasticsearch Anomaly detection Kibana
 
 We welcome you to get involved in development, documentation, testing the anomaly detection plugin. See our [CONTRIBUTING.md](./CONTRIBUTING.md) and join in.
