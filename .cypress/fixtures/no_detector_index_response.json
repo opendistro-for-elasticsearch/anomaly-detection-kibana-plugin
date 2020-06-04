@@ -1,0 +1,4 @@
+{
+  "ok": false,
+  "error": "[index_not_found_exception] no such index [.opendistro-anomaly-detectors], with { resource.type=\"index_or_alias\" & resource.id=\".opendistro-anomaly-detectors\" & index_uuid=\"_na_\" & index=\".opendistro-anomaly-detectors\" }"
+}

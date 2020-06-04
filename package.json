@@ -16,7 +16,11 @@
     "test:browser": "plugin-helpers test:browser",
     "test:jest": "../../node_modules/.bin/jest --config ./test/jest.config.js",
     "build": "plugin-helpers build",
-    "release": "./tasks/release.sh"
+    "release": "./tasks/release.sh",
+    "start-cy-server": "yarn start --no-base-path --oss",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test:e2e": "WAIT_ON_TIMEOUT=900000 start-server-and-test 'yarn start-cy-server' http-get://localhost:5601/app/opendistro-anomaly-detection-kibana 'yarn cy:run'"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,md}": [
@@ -53,6 +57,7 @@
     "babel-jest": "^24.8.0",
     "babel-polyfill": "^6.26.0",
     "chance": "^1.1.0",
+    "cypress": "^4.6.0",
     "eslint": "^5.6.0",
     "eslint-plugin-babel": "^5.2.0",
     "eslint-plugin-import": "^2.14.0",
@@ -67,11 +72,13 @@
     "moment-timezone": "^0.5.26",
     "react-router-dom": "^5.0.1",
     "redux-mock-store": "^1.5.3",
+    "start-server-and-test": "^1.11.0",
     "typescript": "3.0.3"
   },
   "dependencies": {
     "@elastic/charts": "^18.2.2",
     "babel-polyfill": "^6.26.0",
+    "eslint-plugin-cypress": "^2.11.1",
     "formik": "^1.5.8",
     "query-string": "^6.8.2",
     "react-redux": "^7.1.0",

@@ -5,12 +5,8 @@
     "paths": {
       // Allows for importing from `kibana` package for the exported types.
       "kibana": ["./kibana"],
-      "ui/*": [
-        "src/legacy/ui/public/*"
-      ],
-      "test_utils/*": [
-        "src/test_utils/public/*"
-      ]
+      "ui/*": ["src/legacy/ui/public/*"],
+      "test_utils/*": ["src/test_utils/public/*"]
     },
     // Support .tsx files and transform JSX into calls to React.createElement
     "jsx": "react",
@@ -49,12 +45,14 @@
     // import tslib helpers rather than inlining helpers for iteration or spreading, for instance
     "importHelpers": true,
     // adding global typings
-    "types": [
-      "node",
-      "jest",
-      "react"
-    ]
+    "types": ["node", "jest", "react"]
   },
-  "include": ["server/**/*", "public/**/*", "utils/**/*", "models/**/*", "test/**/*"],
-  "exclude": ["node_modules", "*/node_modules/"],
+  "include": [
+    "server/**/*",
+    "public/**/*",
+    "utils/**/*",
+    "models/**/*",
+    "test/**/*"
+  ],
+  "exclude": ["node_modules", "*/node_modules/"]
 }
