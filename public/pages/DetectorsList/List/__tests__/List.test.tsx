@@ -55,7 +55,7 @@ const renderWithRouter = (
   ),
 });
 
-describe('<ListControls /> spec', () => {
+describe('<ListFilters /> spec', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -294,15 +294,18 @@ describe('<ListControls /> spec', () => {
         },
       });
 
-      const { getByText, getByPlaceholderText, queryByText, getAllByTestId } = renderWithRouter(
-        {
-          ...initialDetectorsState,
-          requesting: true,
-        }
-      );
+      const {
+        getByText,
+        getByPlaceholderText,
+        queryByText,
+        getAllByTestId,
+      } = renderWithRouter({
+        ...initialDetectorsState,
+        requesting: true,
+      });
       // Initial load, only first 20 items
       await wait();
-      getByText('detector_name_0')
+      getByText('detector_name_0');
 
       // Go to next page
       userEvent.click(getAllByTestId('pagination-button-next')[0]);

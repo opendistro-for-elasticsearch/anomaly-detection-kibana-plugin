@@ -48,7 +48,7 @@ interface AnomalyResultsProps extends RouteComponentProps {
 }
 
 export function AnomalyResults(props: AnomalyResultsProps) {
-  const detectorId = get(props, 'match.params.detectorId', '') as string;
+  const detectorId = props.detectorId;
   const detector = useSelector(
     (state: AppState) => state.ad.detectors[detectorId]
   );
@@ -160,7 +160,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
               ) : detector && detector.curState !== DETECTOR_STATE.RUNNING ? (
                 <Fragment>
                   <DetectorStateDetails
-                    detectorId={detector.id}
+                    detectorId={detectorId}
                     onStartDetector={props.onStartDetector}
                     onSwitchToConfiguration={props.onSwitchToConfiguration}
                   />

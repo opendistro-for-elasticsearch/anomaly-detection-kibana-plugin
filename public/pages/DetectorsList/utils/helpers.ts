@@ -14,11 +14,13 @@
  */
 
 import queryString from 'query-string';
+import { cloneDeep } from 'lodash';
 import { GetDetectorsQueryParams } from '../../../../server/models/types';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import { DEFAULT_QUERY_PARAMS } from '../../utils/constants';
 import { DETECTOR_STATE } from '../../../utils/constants';
-
+import { DetectorListItem } from '../../../models/interfaces';
+import { DETECTOR_ACTION } from '../utils/constants';
 export const getURLQueryParams = (location: {
   search: string;
 }): GetDetectorsQueryParams => {
@@ -55,4 +57,34 @@ export const getDetectorStateOptions = () => {
     label: detectorState,
     text: detectorState,
   }));
+};
+
+export const getDetectorsForAction = (
+  detectors: DetectorListItem[],
+  action: DETECTOR_ACTION
+) => {
+  switch (action) {
+    case DETECTOR_ACTION.START: {
+      const detectorsForAction = detectors.filter(
+        detector =>
+          detector.curState === DETECTOR_STATE.DISABLED ||
+          detector.curState === DETECTOR_STATE.INIT_FAILURE ||
+          detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE
+      );
+      return detectorsForAction;
+    }
+    case DETECTOR_ACTION.STOP: {
+      const detectorsForAction = detectors.filter(
+        detector =>
+          detector.curState === DETECTOR_STATE.RUNNING ||
+          detector.curState === DETECTOR_STATE.INIT
+      );
+      return detectorsForAction;
+    }
+    case DETECTOR_ACTION.DELETE: {
+      return cloneDeep(detectors);
+    }
+    default:
+      return [];
+  }
 };

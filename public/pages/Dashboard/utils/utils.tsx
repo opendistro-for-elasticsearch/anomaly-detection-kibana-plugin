@@ -371,7 +371,7 @@ export const visualizeAnomalyResultForXYChart = (
   return {
     ...anomalyResult,
     [AD_DOC_FIELDS.PLOT_TIME]: getFloorPlotTime(
-      get(anomalyResult, AD_DOC_FIELDS.DATA_START_TIME, 0)
+      get(anomalyResult, AD_DOC_FIELDS.DATA_END_TIME, 0)
     ),
     [AD_DOC_FIELDS.ANOMALY_GRADE]:
       actualAnomalyGrade < SHOW_DECIMAL_NUMBER_THRESHOLD

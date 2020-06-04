@@ -44,7 +44,7 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
   return (
     <EuiModal onClose={props.onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>{props.title}</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>{props.title}&nbsp;</EuiModalHeaderTitle>
       </EuiModalHeader>
       <EuiModalBody>
         <EuiFlexGroup direction="column">
@@ -64,9 +64,12 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty onClick={props.onCancel}>Cancel</EuiButtonEmpty>
+        <EuiButtonEmpty data-test-subj="cancelButton" onClick={props.onCancel}>
+          Cancel
+        </EuiButtonEmpty>
 
         <EuiButton
+          data-test-subj="confirmButton"
           color={props.confirmButtonColor}
           fill
           onClick={props.onConfirm}
