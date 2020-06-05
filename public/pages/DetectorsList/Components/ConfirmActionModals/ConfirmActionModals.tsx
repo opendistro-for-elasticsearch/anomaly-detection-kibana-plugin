@@ -26,6 +26,7 @@ import {
   EuiModalFooter,
   EuiModalBody,
   EuiModalHeaderTitle,
+  EuiSpacer,
   EuiDataGrid,
 } from '@elastic/eui';
 // @ts-ignore
@@ -67,6 +68,7 @@ export const ConfirmStartDetectorsModal = (
           color="success"
           iconType="play"
         ></EuiCallOut>
+        <EuiSpacer size="m" />
         <div>{getNamesGrid(props.detectors)}</div>
       </EuiModalBody>
       <EuiModalFooter>
@@ -106,6 +108,7 @@ export const ConfirmStopDetectorsModal = (
           color="warning"
           iconType="alert"
         ></EuiCallOut>
+        <EuiSpacer size="m" />
         <div>{getNamesAndMonitorsGrid(props.detectors, props.monitors)}</div>
       </EuiModalBody>
       <EuiModalFooter>
