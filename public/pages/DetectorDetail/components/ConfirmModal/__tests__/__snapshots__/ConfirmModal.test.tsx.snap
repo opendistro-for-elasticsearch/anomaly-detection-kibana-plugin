@@ -74,6 +74,9 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with callout 1`] 
                 </div>
               </div>
             </div>
+            <div
+              class="euiSpacer euiSpacer--s"
+            />
           </div>
         </div>
         <div
@@ -188,6 +191,9 @@ exports[`<ConfirmModal /> spec Confirm Modal renders component with empty callou
                 </div>
               </div>
             </div>
+            <div
+              class="euiSpacer euiSpacer--s"
+            />
           </div>
         </div>
         <div

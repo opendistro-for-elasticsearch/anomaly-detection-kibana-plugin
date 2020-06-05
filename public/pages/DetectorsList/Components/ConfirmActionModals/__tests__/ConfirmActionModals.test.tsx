@@ -100,11 +100,11 @@ describe('<ConfirmStopDetectorsModal /> spec', () => {
       getByText('Stop detectors');
       getByText('detector-0');
       getByText('detector-1');
-      expect(getAllByText('(No associated monitors)')).toHaveLength(2);
+      expect(getAllByText('-')).toHaveLength(2);
     });
     test('renders modal with detectors and 1 monitor', async () => {
       console.error = jest.fn();
-      const { getByText, getAllByText } = render(
+      const { getByText } = render(
         <ConfirmStopDetectorsModal
           {...defaultStopProps}
           monitors={testMonitor}
@@ -115,8 +115,7 @@ describe('<ConfirmStopDetectorsModal /> spec', () => {
       getByText('detector-0');
       getByText('detector-1');
       getByText('monitor-0');
-      expect(getAllByText('(No associated monitors)')).toHaveLength(1);
-      expect(getAllByText('(Associated monitor:')).toHaveLength(1);
+      getByText('-');
     });
     test('should call onStopDetectors() when confirming', async () => {
       const { getByTestId } = render(
