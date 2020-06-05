@@ -22,6 +22,7 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiModalBody,
+  EuiSpacer,
   EuiText,
   EuiButtonEmpty,
   EuiButton,
@@ -61,6 +62,7 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
             )}
           </EuiFlexItem>
         </EuiFlexGroup>
+        <EuiSpacer size="s" />
       </EuiModalBody>
 
       <EuiModalFooter>
