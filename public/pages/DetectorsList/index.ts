@@ -13,4 +13,4 @@
  * permissions and limitations under the License.
  */
 
-export { DetectorList } from './List/List';
+export { DetectorList } from './Containers/List/List';

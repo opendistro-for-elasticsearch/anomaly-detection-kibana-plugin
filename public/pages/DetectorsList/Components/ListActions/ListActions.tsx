@@ -22,13 +22,11 @@ import {
   EuiFlexItem,
   EuiPopover,
 } from '@elastic/eui';
-import { DetectorListItem } from '../../../../models/interfaces';
 
 interface ListActionsProps {
   onStartDetectors(): void;
   onStopDetectors(): void;
-  //onDeleteDetectors(): void;
-  detectors: DetectorListItem[];
+  onDeleteDetectors(): void;
   isActionsDisabled: boolean;
 }
 
@@ -72,16 +70,13 @@ export const ListActions = (props: ListActionsProps) => {
               Stop
             </EuiContextMenuItem>
 
-            {
-              // TODO: will add back in later PR
-            }
-            {/* <EuiContextMenuItem
+            <EuiContextMenuItem
               key="deleteDetectors"
               data-test-subj="deleteDetectors"
               onClick={props.onDeleteDetectors}
             >
               Delete
-            </EuiContextMenuItem> */}
+            </EuiContextMenuItem>
           </EuiContextMenuPanel>
         </EuiPopover>
       </EuiFlexItem>

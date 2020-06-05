@@ -14,7 +14,7 @@
  */
 
 import queryString from 'query-string';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 import { GetDetectorsQueryParams } from '../../../../server/models/types';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import { DEFAULT_QUERY_PARAMS } from '../../utils/constants';
@@ -87,4 +87,13 @@ export const getDetectorsForAction = (
     default:
       return [];
   }
+};
+
+export const containsEnabledDetectors = (detectors: DetectorListItem[]) => {
+  const enabledDetectors = detectors.filter(
+    detector =>
+      detector.curState === DETECTOR_STATE.RUNNING ||
+      detector.curState === DETECTOR_STATE.INIT
+  );
+  return !isEmpty(enabledDetectors);
 };
