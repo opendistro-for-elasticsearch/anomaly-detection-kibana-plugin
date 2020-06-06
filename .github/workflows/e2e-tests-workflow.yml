@@ -31,6 +31,7 @@ jobs:
           ls -ltr build/distributions/
           ad_dir=`pwd`
           echo $ad_dir
+          ls -ltr
       - name: Pull and Run Docker
         run: |
           plugin=`ls build/distributions/*.zip`
