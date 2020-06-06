@@ -29,6 +29,8 @@ jobs:
         run: |
           ./gradlew build
           ls -ltr build/distributions/
+          ad_dir=`pwd`
+          echo $ad_dir
       - name: Pull and Run Docker
         run: |
           plugin=`ls build/distributions/*.zip`
