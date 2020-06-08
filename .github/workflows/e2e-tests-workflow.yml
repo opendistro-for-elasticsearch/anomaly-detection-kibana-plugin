@@ -15,13 +15,6 @@ jobs:
         java: [14]
     runs-on: ${{ matrix.os }}
     steps:
-      - shell: bash
-        env:
-          KIBANA_OSS_ACCESS: ${{ secrets.KIBANA_OSS_ACCESS }}
-        run: |
-          echo "$KIBANA_OSS_ACCESS"
-          echo "printing again"
-          echo $KIBANA_OSS_ACCESS
       - name: Checkout AD ES Plugin
         uses: actions/checkout@v2
         with:
@@ -65,9 +58,8 @@ jobs:
       - name: Checkout Kibana
         uses: actions/checkout@v2
         with:
-          repository: opendistro-for-elasticsearch/kibana-oss
-          ref: 7.7.0
-          token: ${{ secrets.KIBANA_OSS_ACCESS }}
+          repository: elastic/kibana
+          ref: v7.7.0
           path: kibana
       - name: Get node and yarn versions
         id: versions_step
