@@ -36,7 +36,7 @@ context('AD Dashboard', () => {
 
     cy.visit([APP_URL_PREFIX, AD_URL, DASHBOARD].join(SLASH));
 
-    cy.wait('@getDetectors');
+    cy.wait('@getDetectors', { requestTimeout: 60_000 });
 
     cy.contains('h2', 'You have no detectors');
   });

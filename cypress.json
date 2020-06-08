@@ -6,7 +6,5 @@
   "pluginsFile": ".cypress/plugins/index.js",
   "screenshotsFolder": ".cypress/screenshots",
   "supportFile": ".cypress/support/index.js",
-  "videosFolder": ".cypress/videos",
-  "requestTimeout": 60000,
-  "responseTimeout": 180000
+  "videosFolder": ".cypress/videos"
 }
