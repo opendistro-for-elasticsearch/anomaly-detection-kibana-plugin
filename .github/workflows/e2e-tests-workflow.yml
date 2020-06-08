@@ -15,6 +15,13 @@ jobs:
         java: [14]
     runs-on: ${{ matrix.os }}
     steps:
+      - shell: bash
+        env:
+          KIBANA_OSS_ACCESS: ${{ secrets.KIBANA_OSS_ACCESS }}
+        run: |
+          echo "$KIBANA_OSS_ACCESS"
+          echo "printing again"
+          echo $KIBANA_OSS_ACCESS
       - name: Checkout AD ES Plugin
         uses: actions/checkout@v2
         with:
