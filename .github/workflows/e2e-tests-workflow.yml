@@ -11,7 +11,7 @@ jobs:
     name: Run e2e tests
     strategy:
       matrix:
-        os: [ubuntu-16.04] # use ubuntu-16.04 as per required by cypress: https://github.com/marketplace/actions/cypress-io#important
+        os: [ubuntu-16.04] # use ubuntu-16.04 as required by cypress: https://github.com/marketplace/actions/cypress-io#important
         java: [14]
     runs-on: ${{ matrix.os }}
     steps:
@@ -30,7 +30,6 @@ jobs:
         run: |
           cd ad-es
           ./gradlew build
-          ls -ltr build/distributions/
       - name: Pull and Run Docker
         run: |
           cd ad-es
