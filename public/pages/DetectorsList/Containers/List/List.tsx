@@ -55,8 +55,8 @@ import {
   DETECTOR_STATE,
 } from '../../../../utils/constants';
 import { getVisibleOptions, sanitizeSearchText } from '../../../utils/helpers';
-import { EmptyDetectorMessage } from '../../Components/EmptyMessage/EmptyMessage';
-import { ListFilters } from '../../Components/ListFilters/ListFilters';
+import { EmptyDetectorMessage } from '../../components/EmptyMessage/EmptyMessage';
+import { ListFilters } from '../../components/ListFilters/ListFilters';
 import {
   MAX_DETECTORS,
   MAX_SELECTED_INDICES,
@@ -73,14 +73,12 @@ import {
 import { staticColumn } from '../../utils/tableUtils';
 import { DETECTOR_ACTION } from '../../utils/constants';
 import { getTitleWithCount, Listener } from '../../../../utils/utils';
-import { ListActions } from '../../Components/ListActions/ListActions';
+import { ListActions } from '../../components/ListActions/ListActions';
 import { searchMonitors } from '../../../../redux/reducers/alerting';
 import { Monitor } from '../../../../models/interfaces';
-import {
-  ConfirmStartDetectorsModal,
-  ConfirmStopDetectorsModal,
-  ConfirmDeleteDetectorsModal,
-} from '../ConfirmActionModals/ConfirmActionModals';
+import { ConfirmStartDetectorsModal } from '../ConfirmActionModals/ConfirmStartDetectorsModal';
+import { ConfirmStopDetectorsModal } from '../ConfirmActionModals/ConfirmStopDetectorsModal';
+import { ConfirmDeleteDetectorsModal } from '../ConfirmActionModals/ConfirmDeleteDetectorsModal';
 
 export interface ListRouterParams {
   from: string;
