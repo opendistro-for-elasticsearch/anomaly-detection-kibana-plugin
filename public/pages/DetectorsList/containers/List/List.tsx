@@ -363,7 +363,7 @@ export const DetectorList = (props: ListProps) => {
         affectedMonitors: {},
       });
     } else {
-      toastNotifications.addDanger(
+      toastNotifications.addWarning(
         'All selected detectors are unable to start. Make sure selected \
           detectors have features and are not already running'
       );
@@ -385,7 +385,7 @@ export const DetectorList = (props: ListProps) => {
         affectedMonitors: allMonitors,
       });
     } else {
-      toastNotifications.addDanger(
+      toastNotifications.addWarning(
         'All selected detectors are unable to stop. Make sure selected \
           detectors are already running'
       );
@@ -407,7 +407,7 @@ export const DetectorList = (props: ListProps) => {
         affectedMonitors: allMonitors,
       });
     } else {
-      toastNotifications.addDanger(
+      toastNotifications.addWarning(
         'No detectors selected. Please select detectors to delete'
       );
     }
@@ -593,7 +593,7 @@ export const DetectorList = (props: ListProps) => {
             </EuiButton>,
           ]}
         >
-          {confirmModal ? confirmModal : null}
+          {confirmModal}
           <ListFilters
             activePage={state.page}
             pageCount={

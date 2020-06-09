@@ -71,14 +71,17 @@ export const ConfirmDeleteDetectorsModal = (
             color="warning"
             iconType="alert"
           ></EuiCallOut>
-          {containsEnabled ? <EuiSpacer size="s" /> : null}
           {containsEnabled ? (
-            <EuiCallOut
-              title="Some of the selected detectors are currently running."
-              color="warning"
-              iconType="alert"
-            ></EuiCallOut>
+            <div>
+              <EuiSpacer size="s" />
+              <EuiCallOut
+                title="Some of the selected detectors are currently running."
+                color="warning"
+                iconType="alert"
+              ></EuiCallOut>
+            </div>
           ) : null}
+
           <EuiSpacer size="s" />
           <EuiText>
             <p>
