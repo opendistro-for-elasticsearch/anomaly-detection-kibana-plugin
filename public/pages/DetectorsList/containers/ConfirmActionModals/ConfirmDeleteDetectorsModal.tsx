@@ -37,7 +37,7 @@ import { DetectorListItem } from '../../../../models/interfaces';
 import { Listener } from '../../../../utils/utils';
 import { EuiSpacer } from '@elastic/eui';
 import {
-  getNamesAndMonitorsGrid,
+  getNamesAndMonitorsAndStatesGrid,
   containsEnabledDetectors,
 } from './utils/helpers';
 
@@ -65,20 +65,20 @@ export const ConfirmDeleteDetectorsModal = (
           </EuiModalHeaderTitle>
         </EuiModalHeader>
         <EuiModalBody>
+          <EuiCallOut
+            title="The following detectors and feature configurations will be permanently removed. Any associated monitors will
+              not be able to receive any anomaly results to generate alerts."
+            color="warning"
+            iconType="alert"
+          ></EuiCallOut>
+          {containsEnabled ? <EuiSpacer size="s" /> : null}
           {containsEnabled ? (
             <EuiCallOut
-              title="Some of the selected detectors are currently running"
+              title="Some of the selected detectors are currently running."
               color="warning"
               iconType="alert"
             ></EuiCallOut>
           ) : null}
-          {containsEnabled ? <EuiSpacer size="s" /> : null}
-          <EuiCallOut
-            title="The following detectors and feature configurations will be permanently removed. Any associated monitors will
-              not be able to receive any anomaly results to generate alerts"
-            color="warning"
-            iconType="alert"
-          ></EuiCallOut>
           <EuiSpacer size="s" />
           <EuiText>
             <p>
@@ -102,7 +102,7 @@ export const ConfirmDeleteDetectorsModal = (
             {props.isListLoading ? (
               <EuiLoadingSpinner size="xl" />
             ) : (
-              getNamesAndMonitorsGrid(props.detectors, props.monitors)
+              getNamesAndMonitorsAndStatesGrid(props.detectors, props.monitors)
             )}
           </div>
         </EuiModalBody>

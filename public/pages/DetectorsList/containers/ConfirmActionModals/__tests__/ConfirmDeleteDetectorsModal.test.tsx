@@ -101,16 +101,17 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       await wait();
       expect(defaultDeleteProps.hideModal).toHaveBeenCalled();
     });
-    test('should not show running callout if no detectors are running', async () => {
-      const { queryByText } = render(
+    test('should not show callout and set running to no if no detectors are running', async () => {
+      const { queryByText, getAllByText } = render(
         <ConfirmDeleteDetectorsModal {...defaultDeleteProps} />
       );
       expect(
-        queryByText('Some of the selected detectors are currently running')
+        queryByText('Some of the selected detectors are currently running.')
       ).toBeNull();
+      expect(getAllByText('No')).toHaveLength(2);
     });
-    test('should show callout if any detectors are running', async () => {
-      const { queryByText } = render(
+    test('should show callout and set running to yes if detectors are running', async () => {
+      const { queryByText, getAllByText } = render(
         <ConfirmDeleteDetectorsModal
           {...defaultDeleteProps}
           detectors={
@@ -118,19 +119,26 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
               {
                 id: 'detector-id-0',
                 name: 'detector-0',
-                curState: DETECTOR_STATE.RUNNING,
+                curState: DETECTOR_STATE.INIT,
               },
               {
                 id: 'detector-id-1',
                 name: 'detector-1',
+                curState: DETECTOR_STATE.RUNNING,
+              },
+              {
+                id: 'detector-id-2',
+                name: 'detector-2',
               },
             ] as DetectorListItem[]
           }
         />
       );
       expect(
-        queryByText('Some of the selected detectors are currently running')
+        queryByText('Some of the selected detectors are currently running.')
       ).not.toBeNull();
+      expect(getAllByText('No')).toHaveLength(1);
+      expect(getAllByText('Yes')).toHaveLength(2);
     });
     test('should call hideModal() when closing', async () => {
       const { getByTestId } = render(

@@ -59,7 +59,7 @@ export const ConfirmStopDetectorsModal = (
         <EuiModalBody>
           <EuiCallOut
             title="The following detectors will be stopped. Any associated monitors will
-           not be able to receive any anomaly results to generate alerts:"
+           not be able to receive any anomaly results to generate alerts."
             color="warning"
             iconType="alert"
           ></EuiCallOut>

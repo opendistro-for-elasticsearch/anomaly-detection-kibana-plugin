@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { EuiLink, EuiIcon, EuiDataGrid } from '@elastic/eui';
+import { EuiLink, EuiText, EuiIcon, EuiDataGrid } from '@elastic/eui';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
 //@ts-ignore
@@ -26,10 +26,10 @@ import { PLUGIN_NAME } from '../../../../../utils/constants';
 import { get, isEmpty } from 'lodash';
 import { DETECTOR_STATE } from '../../../../../utils/constants';
 
-const getNamesData = (detectors: DetectorListItem[]) => {
-  let namesData = [];
+const getNames = (detectors: DetectorListItem[]) => {
+  let data = [];
   for (let i = 0; i < detectors.length; i++) {
-    namesData.push({
+    data.push({
       Detector: (
         <EuiLink
           href={`${PLUGIN_NAME}#/detectors/${detectors[i].id}`}
@@ -40,18 +40,18 @@ const getNamesData = (detectors: DetectorListItem[]) => {
       ),
     });
   }
-  return namesData;
+  return data;
 };
 
-const getNamesAndMonitorsData = (
+const getNamesAndMonitors = (
   detectors: DetectorListItem[],
   monitors: { [key: string]: Monitor }
 ) => {
-  let namesAndMonitorsData = [];
+  let data = [];
   for (let i = 0; i < detectors.length; i++) {
     const relatedMonitor = get(monitors, `${detectors[i].id}.0`);
     if (relatedMonitor) {
-      namesAndMonitorsData.push({
+      data.push({
         Detector: (
           <EuiLink
             href={`${PLUGIN_NAME}#/detectors/${detectors[i].id}`}
@@ -70,7 +70,7 @@ const getNamesAndMonitorsData = (
         ),
       });
     } else {
-      namesAndMonitorsData.push({
+      data.push({
         Detector: (
           <EuiLink
             href={`${PLUGIN_NAME}#/detectors/${detectors[i].id}`}
@@ -83,11 +83,59 @@ const getNamesAndMonitorsData = (
       });
     }
   }
-  return namesAndMonitorsData;
+  return data;
+};
+
+const getNamesAndMonitorsAndStates = (
+  detectors: DetectorListItem[],
+  monitors: { [key: string]: Monitor }
+) => {
+  let data = [];
+  for (let i = 0; i < detectors.length; i++) {
+    const relatedMonitor = get(monitors, `${detectors[i].id}.0`);
+    const isRunning =
+      detectors[i].curState === DETECTOR_STATE.INIT ||
+      detectors[i].curState === DETECTOR_STATE.RUNNING;
+    if (relatedMonitor) {
+      data.push({
+        Detector: (
+          <EuiLink
+            href={`${PLUGIN_NAME}#/detectors/${detectors[i].id}`}
+            target="_blank"
+          >
+            {detectors[i].name} <EuiIcon type="popout" size="s" />
+          </EuiLink>
+        ),
+        Monitor: (
+          <EuiLink
+            href={`${getAlertingMonitorListLink()}/${relatedMonitor.id}`}
+            target="_blank"
+          >
+            {relatedMonitor.name} <EuiIcon type="popout" size="s" />
+          </EuiLink>
+        ),
+        Running: <EuiText>{isRunning ? 'Yes' : 'No'}</EuiText>,
+      });
+    } else {
+      data.push({
+        Detector: (
+          <EuiLink
+            href={`${PLUGIN_NAME}#/detectors/${detectors[i].id}`}
+            target="_blank"
+          >
+            {detectors[i].name} <EuiIcon type="popout" size="s" />
+          </EuiLink>
+        ),
+        Monitor: '-',
+        Running: <EuiText>{isRunning ? 'Yes' : 'No'}</EuiText>,
+      });
+    }
+  }
+  return data;
 };
 
 export const getNamesGrid = (detectors: DetectorListItem[]) => {
-  const detectorNames = getNamesData(detectors);
+  const gridData = getNames(detectors);
   return (
     <EuiDataGrid
       aria-label="Detector names"
@@ -103,10 +151,10 @@ export const getNamesGrid = (detectors: DetectorListItem[]) => {
         visibleColumns: ['Detector'],
         setVisibleColumns: () => {},
       }}
-      rowCount={detectorNames.length}
+      rowCount={gridData.length}
       renderCellValue={({ rowIndex, columnId }) =>
         //@ts-ignore
-        detectorNames[rowIndex][columnId]
+        gridData[rowIndex][columnId]
       }
       gridStyle={{
         border: 'horizontal',
@@ -123,10 +171,10 @@ export const getNamesAndMonitorsGrid = (
   detectors: DetectorListItem[],
   monitors: { [key: string]: Monitor }
 ) => {
-  const detectorNamesAndMonitors = getNamesAndMonitorsData(detectors, monitors);
+  const gridData = getNamesAndMonitors(detectors, monitors);
   return (
     <EuiDataGrid
-      aria-label="Detector names"
+      aria-label="Detector names and monitors"
       columns={[
         {
           id: 'Detector',
@@ -145,10 +193,58 @@ export const getNamesAndMonitorsGrid = (
         visibleColumns: ['Detector', 'Monitor'],
         setVisibleColumns: () => {},
       }}
-      rowCount={detectorNamesAndMonitors.length}
+      rowCount={gridData.length}
       renderCellValue={({ rowIndex, columnId }) =>
         //@ts-ignore
-        detectorNamesAndMonitors[rowIndex][columnId]
+        gridData[rowIndex][columnId]
+      }
+      gridStyle={{
+        border: 'horizontal',
+        header: 'shade',
+        rowHover: 'highlight',
+        stripes: true,
+      }}
+      toolbarVisibility={false}
+    />
+  );
+};
+
+export const getNamesAndMonitorsAndStatesGrid = (
+  detectors: DetectorListItem[],
+  monitors: { [key: string]: Monitor }
+) => {
+  const gridData = getNamesAndMonitorsAndStates(detectors, monitors);
+  return (
+    <EuiDataGrid
+      aria-label="Detector names and monitors and state"
+      columns={[
+        {
+          id: 'Detector',
+          isResizable: false,
+          isExpandable: false,
+          isSortable: false,
+        },
+        {
+          id: 'Monitor',
+          isResizable: false,
+          isExpandable: false,
+          isSortable: false,
+        },
+        {
+          id: 'Running',
+          isResizable: false,
+          isExpandable: false,
+          isSortable: false,
+        },
+      ]}
+      columnVisibility={{
+        visibleColumns: ['Detector', 'Monitor', 'Running'],
+        setVisibleColumns: () => {},
+      }}
+      rowCount={gridData.length}
+      renderCellValue={({ rowIndex, columnId }) =>
+        //@ts-ignore
+        gridData[rowIndex][columnId]
       }
       gridStyle={{
         border: 'horizontal',
