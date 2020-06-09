@@ -25,14 +25,14 @@ import {
   RouteComponentProps,
   Switch,
 } from 'react-router-dom';
-import { httpClientMock } from '../../../../../test/mocks';
-import configureStore from '../../../../redux/configureStore';
+import { httpClientMock } from '../../../../../../test/mocks';
+import configureStore from '../../../../../redux/configureStore';
 import {
   Detectors,
   initialDetectorsState,
-} from '../../../../redux/reducers/ad';
+} from '../../../../../redux/reducers/ad';
 import { DetectorList, ListRouterParams } from '../List';
-import { DETECTOR_STATE } from '../../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../../utils/constants';
 
 const renderWithRouter = (
   initialAdState: Detectors = initialDetectorsState

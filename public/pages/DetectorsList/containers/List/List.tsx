@@ -34,51 +34,51 @@ import {
   CatIndex,
   GetDetectorsQueryParams,
   IndexAlias,
-} from '../../../../server/models/types';
-import { DetectorListItem } from '../../../models/interfaces';
-import { SORT_DIRECTION } from '../../../../server/utils/constants';
-import ContentPanel from '../../../components/ContentPanel/ContentPanel';
-import { AppState } from '../../../redux/reducers';
+} from '../../../../../server/models/types';
+import { DetectorListItem } from '../../../../models/interfaces';
+import { SORT_DIRECTION } from '../../../../../server/utils/constants';
+import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
+import { AppState } from '../../../../redux/reducers';
 import {
   getDetectorList,
   startDetector,
   stopDetector,
   deleteDetector,
-} from '../../../redux/reducers/ad';
+} from '../../../../redux/reducers/ad';
 import {
   getIndices,
   getPrioritizedIndices,
-} from '../../../redux/reducers/elasticsearch';
+} from '../../../../redux/reducers/elasticsearch';
 import {
   APP_PATH,
   PLUGIN_NAME,
   DETECTOR_STATE,
-} from '../../../utils/constants';
-import { getVisibleOptions, sanitizeSearchText } from '../../utils/helpers';
-import { EmptyDetectorMessage } from '../Components/EmptyMessage/EmptyMessage';
-import { ListFilters } from '../Components/ListFilters/ListFilters';
+} from '../../../../utils/constants';
+import { getVisibleOptions, sanitizeSearchText } from '../../../utils/helpers';
+import { EmptyDetectorMessage } from '../../components/EmptyMessage/EmptyMessage';
+import { ListFilters } from '../../components/ListFilters/ListFilters';
 import {
   MAX_DETECTORS,
   MAX_SELECTED_INDICES,
   GET_ALL_DETECTORS_QUERY_PARAMS,
   ALL_DETECTOR_STATES,
   ALL_INDICES,
-} from '../../utils/constants';
-import { BREADCRUMBS } from '../../../utils/constants';
-import { getURLQueryParams, getDetectorsForAction } from '../utils/helpers';
+} from '../../../utils/constants';
+import { BREADCRUMBS } from '../../../../utils/constants';
+import { getURLQueryParams, getDetectorsForAction } from '../../utils/helpers';
 import {
   filterAndSortDetectors,
   getDetectorsToDisplay,
-} from '../../utils/helpers';
-import { staticColumn } from '../utils/tableUtils';
-import { DETECTOR_ACTION } from '../utils/constants';
-import { getTitleWithCount } from '../../../utils/utils';
-import { ListActions } from '../Components/ListActions/ListActions';
-import { searchMonitors } from '../../../redux/reducers/alerting';
-import {
-  ConfirmStartDetectorsModal,
-  ConfirmStopDetectorsModal,
-} from '../Components/ConfirmActionModals/ConfirmActionModals';
+} from '../../../utils/helpers';
+import { staticColumn } from '../../utils/tableUtils';
+import { DETECTOR_ACTION } from '../../utils/constants';
+import { getTitleWithCount, Listener } from '../../../../utils/utils';
+import { ListActions } from '../../components/ListActions/ListActions';
+import { searchMonitors } from '../../../../redux/reducers/alerting';
+import { Monitor } from '../../../../models/interfaces';
+import { ConfirmStartDetectorsModal } from '../ConfirmActionModals/ConfirmStartDetectorsModal';
+import { ConfirmStopDetectorsModal } from '../ConfirmActionModals/ConfirmStopDetectorsModal';
+import { ConfirmDeleteDetectorsModal } from '../ConfirmActionModals/ConfirmDeleteDetectorsModal';
 
 export interface ListRouterParams {
   from: string;
@@ -94,6 +94,14 @@ interface ListState {
   queryParams: GetDetectorsQueryParams;
   selectedDetectorStates: DETECTOR_STATE[];
   selectedIndices: string[];
+}
+interface ConfirmModalState {
+  isOpen: boolean;
+  action: DETECTOR_ACTION;
+  isListLoading: boolean;
+  isRequestingToClose: boolean;
+  affectedDetectors: DetectorListItem[];
+  affectedMonitors: { [key: string]: Monitor };
 }
 
 export const DetectorList = (props: ListProps) => {
@@ -119,8 +127,19 @@ export const DetectorList = (props: ListProps) => {
   const [selectedDetectorsForAction, setSelectedDetectorsForAction] = useState(
     [] as DetectorListItem[]
   );
-  const [confirmModal, setConfirmModal] = useState<any>(null);
-  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+  const isLoading = isRequestingFromES || isLoadingFinalDetectors;
+
+  const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(
+    {
+      isOpen: false,
+      //@ts-ignore
+      action: null,
+      isListLoading: false,
+      isRequestingToClose: false,
+      affectedDetectors: [],
+      affectedMonitors: {},
+    }
+  );
 
   // Getting all initial indices
   const [indexQuery, setIndexQuery] = useState('');
@@ -214,6 +233,25 @@ export const DetectorList = (props: ListProps) => {
       setIsLoadingFinalDetectors(false);
     }
   };
+
+  // Update modal state if user decides to close
+  useEffect(() => {
+    if (confirmModalState.isRequestingToClose) {
+      if (isLoading) {
+        setConfirmModalState({
+          ...confirmModalState,
+          isListLoading: true,
+        });
+      } else {
+        setConfirmModalState({
+          ...confirmModalState,
+          isOpen: false,
+          isListLoading: false,
+          isRequestingToClose: false,
+        });
+      }
+    }
+  }, [confirmModalState.isRequestingToClose, isLoading]);
 
   const handlePageChange = (pageNumber: number) => {
     setState({ ...state, page: pageNumber });
@@ -316,17 +354,16 @@ export const DetectorList = (props: ListProps) => {
       DETECTOR_ACTION.START
     );
     if (!isEmpty(validDetectors)) {
-      const confirmStartDetectorsModal = (
-        <ConfirmStartDetectorsModal
-          detectors={validDetectors}
-          hideModal={hideConfirmModal}
-          onStartDetectors={handleStartDetectorJobs}
-        />
-      );
-      setShowConfirmModal(true);
-      setConfirmModal(confirmStartDetectorsModal);
+      setConfirmModalState({
+        isOpen: true,
+        action: DETECTOR_ACTION.START,
+        isListLoading: false,
+        isRequestingToClose: false,
+        affectedDetectors: validDetectors,
+        affectedMonitors: {},
+      });
     } else {
-      toastNotifications.addDanger(
+      toastNotifications.addWarning(
         'All selected detectors are unable to start. Make sure selected \
           detectors have features and are not already running'
       );
@@ -339,18 +376,16 @@ export const DetectorList = (props: ListProps) => {
       DETECTOR_ACTION.STOP
     );
     if (!isEmpty(validDetectors)) {
-      const confirmStopDetectorsModal = (
-        <ConfirmStopDetectorsModal
-          detectors={validDetectors}
-          monitors={allMonitors}
-          hideModal={hideConfirmModal}
-          onStopDetectors={handleStopDetectorJobs}
-        />
-      );
-      setShowConfirmModal(true);
-      setConfirmModal(confirmStopDetectorsModal);
+      setConfirmModalState({
+        isOpen: true,
+        action: DETECTOR_ACTION.STOP,
+        isListLoading: false,
+        isRequestingToClose: false,
+        affectedDetectors: validDetectors,
+        affectedMonitors: allMonitors,
+      });
     } else {
-      toastNotifications.addDanger(
+      toastNotifications.addWarning(
         'All selected detectors are unable to stop. Make sure selected \
           detectors are already running'
       );
@@ -358,10 +393,28 @@ export const DetectorList = (props: ListProps) => {
   };
 
   const handleDeleteDetectorsAction = async () => {
-    // stub for now, will add implementation in later PR
+    const validDetectors = getDetectorsForAction(
+      selectedDetectorsForAction,
+      DETECTOR_ACTION.DELETE
+    );
+    if (!isEmpty(validDetectors)) {
+      setConfirmModalState({
+        isOpen: true,
+        action: DETECTOR_ACTION.DELETE,
+        isListLoading: false,
+        isRequestingToClose: false,
+        affectedDetectors: validDetectors,
+        affectedMonitors: allMonitors,
+      });
+    } else {
+      toastNotifications.addWarning(
+        'No detectors selected. Please select detectors to delete'
+      );
+    }
   };
 
   const handleStartDetectorJobs = async () => {
+    setIsLoadingFinalDetectors(true);
     const validIds = getDetectorsForAction(
       selectedDetectorsForAction,
       DETECTOR_ACTION.START
@@ -381,12 +434,12 @@ export const DetectorList = (props: ListProps) => {
         );
       })
       .finally(() => {
-        setIsLoadingFinalDetectors(true);
         getUpdatedDetectors();
       });
   };
 
-  const handleStopDetectorJobs = async () => {
+  const handleStopDetectorJobs = async (listener?: Listener) => {
+    setIsLoadingFinalDetectors(true);
     const validIds = getDetectorsForAction(
       selectedDetectorsForAction,
       DETECTOR_ACTION.STOP
@@ -399,14 +452,40 @@ export const DetectorList = (props: ListProps) => {
         toastNotifications.addSuccess(
           'All selected detectors have been stopped successfully'
         );
+        if (listener) listener.onSuccess();
       })
       .catch(error => {
         toastNotifications.addDanger(
           `Error stopping all selected detectors: ${error}`
         );
+        if (listener) listener.onException();
       })
       .finally(() => {
-        setIsLoadingFinalDetectors(true);
+        getUpdatedDetectors();
+      });
+  };
+
+  const handleDeleteDetectorJobs = async () => {
+    setIsLoadingFinalDetectors(true);
+    const validIds = getDetectorsForAction(
+      selectedDetectorsForAction,
+      DETECTOR_ACTION.DELETE
+    ).map(detector => detector.id);
+    const promises = validIds.map(async (id: string) => {
+      return dispatch(deleteDetector(id));
+    });
+    await Promise.all(promises)
+      .then(() => {
+        toastNotifications.addSuccess(
+          'All selected detectors have been deleted successfully'
+        );
+      })
+      .catch(error => {
+        toastNotifications.addDanger(
+          `Error deleting all selected detectors: ${error}`
+        );
+      })
+      .finally(() => {
         getUpdatedDetectors();
       });
   };
@@ -416,8 +495,56 @@ export const DetectorList = (props: ListProps) => {
   };
 
   const hideConfirmModal = () => {
-    setShowConfirmModal(false);
-    setConfirmModal(null);
+    setConfirmModalState({
+      ...confirmModalState,
+      isRequestingToClose: true,
+    });
+  };
+
+  const getConfirmModal = () => {
+    if (confirmModalState.isOpen) {
+      //@ts-ignore
+      switch (confirmModalState.action) {
+        case DETECTOR_ACTION.START: {
+          return (
+            <ConfirmStartDetectorsModal
+              detectors={confirmModalState.affectedDetectors}
+              onStartDetectors={handleStartDetectorJobs}
+              hideModal={hideConfirmModal}
+              isListLoading={isLoading}
+            />
+          );
+        }
+        case DETECTOR_ACTION.STOP: {
+          return (
+            <ConfirmStopDetectorsModal
+              detectors={confirmModalState.affectedDetectors}
+              monitors={confirmModalState.affectedMonitors}
+              onStopDetectors={handleStopDetectorJobs}
+              hideModal={hideConfirmModal}
+              isListLoading={isLoading}
+            />
+          );
+        }
+        case DETECTOR_ACTION.DELETE: {
+          return (
+            <ConfirmDeleteDetectorsModal
+              detectors={confirmModalState.affectedDetectors}
+              monitors={confirmModalState.affectedMonitors}
+              onStopDetectors={handleStopDetectorJobs}
+              onDeleteDetectors={handleDeleteDetectorJobs}
+              hideModal={hideConfirmModal}
+              isListLoading={isLoading}
+            />
+          );
+        }
+        default: {
+          return null;
+        }
+      }
+    } else {
+      return null;
+    }
   };
 
   const sorting = {
@@ -443,7 +570,7 @@ export const DetectorList = (props: ListProps) => {
     pageSizeOptions: [5, 10, 20, 50],
   };
 
-  const isLoading = isRequestingFromES || isLoadingFinalDetectors;
+  const confirmModal = getConfirmModal();
 
   return (
     <EuiPage>
@@ -458,8 +585,7 @@ export const DetectorList = (props: ListProps) => {
             <ListActions
               onStartDetectors={handleStartDetectorsAction}
               onStopDetectors={handleStopDetectorsAction}
-              //onDeleteDetectors={handleDeleteDetectorsAction}
-              detectors={selectedDetectorsForAction}
+              onDeleteDetectors={handleDeleteDetectorsAction}
               isActionsDisabled={selectedDetectorsForAction.length === 0}
             />,
             <EuiButton fill href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
@@ -467,7 +593,7 @@ export const DetectorList = (props: ListProps) => {
             </EuiButton>,
           ]}
         >
-          {showConfirmModal ? confirmModal : null}
+          {confirmModal}
           <ListFilters
             activePage={state.page}
             pageCount={

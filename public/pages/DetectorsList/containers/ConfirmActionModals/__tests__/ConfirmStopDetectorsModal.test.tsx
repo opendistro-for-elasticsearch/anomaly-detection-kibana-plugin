@@ -15,10 +15,7 @@
 
 import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
-import {
-  ConfirmStartDetectorsModal,
-  ConfirmStopDetectorsModal,
-} from '../ConfirmActionModals';
+import { ConfirmStopDetectorsModal } from '../ConfirmStopDetectorsModal';
 import { DetectorListItem, Monitor } from '../../../../../models/interfaces';
 
 const testDetectors = [
@@ -41,51 +38,13 @@ testMonitor['detector-id-0'] = [
   },
 ];
 
-const defaultStartProps = {
-  detectors: testDetectors,
-  hideModal: jest.fn(),
-  onStartDetectors: jest.fn(),
-};
-
 const defaultStopProps = {
   detectors: testDetectors,
   monitors: {},
   hideModal: jest.fn(),
   onStopDetectors: jest.fn(),
+  isListLoading: false,
 };
-
-describe('<ConfirmStartDetectorsModal /> spec', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-  describe('ConfirmStartDetectorsModal', () => {
-    test('renders modal with detectors', async () => {
-      const { getByText } = render(
-        <ConfirmStartDetectorsModal {...defaultStartProps} />
-      );
-      getByText('Are you sure you want to start the selected detectors?');
-      getByText('Start detectors');
-      getByText('detector-0');
-      getByText('detector-1');
-    });
-    test('should call onStartDetectors() when confirming', async () => {
-      const { getByTestId } = render(
-        <ConfirmStartDetectorsModal {...defaultStartProps} />
-      );
-      fireEvent.click(getByTestId('confirmButton'));
-      await wait();
-      expect(defaultStartProps.onStartDetectors).toHaveBeenCalled();
-    });
-    test('should call hideModal() when closing', async () => {
-      const { getByTestId } = render(
-        <ConfirmStartDetectorsModal {...defaultStartProps} />
-      );
-      fireEvent.click(getByTestId('cancelButton'));
-      await wait();
-      expect(defaultStartProps.hideModal).toHaveBeenCalled();
-    });
-  });
-});
 
 describe('<ConfirmStopDetectorsModal /> spec', () => {
   beforeEach(() => {
