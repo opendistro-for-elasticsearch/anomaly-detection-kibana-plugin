@@ -38,18 +38,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: kibana/plugins/anomaly-detection-kibana-plugin
-      - name: Attempt to bootstrap the plugin
-        continue-on-error: true
-        run: |
-          cd kibana/plugins/anomaly-detection-kibana-plugin
-          yarn kbn bootstrap
-      - name: Bootstrap the plugin again
-        if: ${{ always() }}
+      - name: Bootstrap the plugin
         run: |
           cd kibana/plugins/anomaly-detection-kibana-plugin
           yarn kbn bootstrap
       - name: Run tests
-        if: ${{ always() }}
         run: |
           cd kibana/plugins/anomaly-detection-kibana-plugin
           yarn run test:jest
