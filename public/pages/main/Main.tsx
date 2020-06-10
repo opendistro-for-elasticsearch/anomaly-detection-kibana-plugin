@@ -18,7 +18,7 @@ import React from 'react';
 import { AppState } from '../../redux/reducers';
 import { CreateDetector } from '../createDetector';
 import { DetectorList } from '../DetectorsList';
-import { ListRouterParams } from '../DetectorsList/Containers/List/List';
+import { ListRouterParams } from '../DetectorsList/containers/List/List';
 // @ts-ignore
 import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from '@elastic/eui';
 import { useSelector } from 'react-redux';
