@@ -44,7 +44,8 @@ import {
 interface ConfirmDeleteDetectorsModalProps {
   detectors: DetectorListItem[];
   monitors: { [key: string]: Monitor };
-  hideModal(): void;
+  onHide(): void;
+  onConfirm(): void;
   onStopDetectors(listener?: Listener): void;
   onDeleteDetectors(): void;
   isListLoading: boolean;
@@ -55,10 +56,11 @@ export const ConfirmDeleteDetectorsModal = (
 ) => {
   const containsEnabled = containsEnabledDetectors(props.detectors);
   const [deleteTyped, setDeleteTyped] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModalLoading, setIsModalLoading] = useState<boolean>(false);
+  const isLoading = isModalLoading || props.isListLoading;
   return (
     <EuiOverlayMask>
-      <EuiModal onClose={props.hideModal}>
+      <EuiModal onClose={props.onHide}>
         <EuiModalHeader>
           <EuiModalHeaderTitle>
             {'Are you sure you want to delete the selected detectors?'}&nbsp;
@@ -102,7 +104,7 @@ export const ConfirmDeleteDetectorsModal = (
           />
           <EuiSpacer size="m" />
           <div>
-            {props.isListLoading ? (
+            {isLoading ? (
               <EuiLoadingSpinner size="xl" />
             ) : (
               getNamesAndMonitorsAndStatesGrid(props.detectors, props.monitors)
@@ -110,32 +112,34 @@ export const ConfirmDeleteDetectorsModal = (
           </div>
         </EuiModalBody>
         <EuiModalFooter>
+          {isLoading ? null : (
           <EuiButtonEmpty
             data-test-subj="cancelButton"
-            onClick={props.hideModal}
+            onClick={props.onHide}
           >
             Cancel
           </EuiButtonEmpty>
+          )}
           <EuiButton
             data-test-subj="confirmButton"
             color="danger"
             disabled={!deleteTyped}
             fill
-            isLoading={isLoading || props.isListLoading}
+            isLoading={isLoading}
             onClick={async () => {
-              setIsLoading(true);
+              setIsModalLoading(true);
               if (containsEnabled) {
                 const listener: Listener = {
                   onSuccess: () => {
                     props.onDeleteDetectors();
-                    props.hideModal();
+                    props.onConfirm();
                   },
-                  onException: props.hideModal,
+                  onException: props.onConfirm,
                 };
                 props.onStopDetectors(listener);
               } else {
                 props.onDeleteDetectors();
-                props.hideModal();
+                props.onConfirm();
               }
             }}
           >

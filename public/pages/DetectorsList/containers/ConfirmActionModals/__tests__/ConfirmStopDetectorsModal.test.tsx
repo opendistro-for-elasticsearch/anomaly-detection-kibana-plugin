@@ -41,7 +41,8 @@ testMonitor['detector-id-0'] = [
 const defaultStopProps = {
   detectors: testDetectors,
   monitors: {},
-  hideModal: jest.fn(),
+  onHide: jest.fn(),
+  onConfirm: jest.fn(),
   onStopDetectors: jest.fn(),
   isListLoading: false,
 };
@@ -84,13 +85,13 @@ describe('<ConfirmStopDetectorsModal /> spec', () => {
       await wait();
       expect(defaultStopProps.onStopDetectors).toHaveBeenCalled();
     });
-    test('should call hideModal() when closing', async () => {
+    test('should call onHide() when closing', async () => {
       const { getByTestId } = render(
         <ConfirmStopDetectorsModal {...defaultStopProps} />
       );
       fireEvent.click(getByTestId('cancelButton'));
       await wait();
-      expect(defaultStopProps.hideModal).toHaveBeenCalled();
+      expect(defaultStopProps.onHide).toHaveBeenCalled();
     });
   });
 });

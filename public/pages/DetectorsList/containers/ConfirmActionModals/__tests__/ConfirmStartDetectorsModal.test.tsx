@@ -40,7 +40,8 @@ testMonitor['detector-id-0'] = [
 
 const defaultStartProps = {
   detectors: testDetectors,
-  hideModal: jest.fn(),
+  onHide: jest.fn(),
+  onConfirm: jest.fn(),
   onStartDetectors: jest.fn(),
   isListLoading: false,
 };
@@ -59,21 +60,22 @@ describe('<ConfirmStartDetectorsModal /> spec', () => {
       getByText('detector-0');
       getByText('detector-1');
     });
-    test('should call onStartDetectors() when confirming', async () => {
+    test('should call onStartDetectors() and onConfirm() when confirming', async () => {
       const { getByTestId } = render(
         <ConfirmStartDetectorsModal {...defaultStartProps} />
       );
       fireEvent.click(getByTestId('confirmButton'));
       await wait();
       expect(defaultStartProps.onStartDetectors).toHaveBeenCalled();
+      expect(defaultStartProps.onConfirm).toHaveBeenCalled();
     });
-    test('should call hideModal() when closing', async () => {
+    test('should call onHide() when closing', async () => {
       const { getByTestId } = render(
         <ConfirmStartDetectorsModal {...defaultStartProps} />
       );
       fireEvent.click(getByTestId('cancelButton'));
       await wait();
-      expect(defaultStartProps.hideModal).toHaveBeenCalled();
+      expect(defaultStartProps.onHide).toHaveBeenCalled();
     });
   });
 });
