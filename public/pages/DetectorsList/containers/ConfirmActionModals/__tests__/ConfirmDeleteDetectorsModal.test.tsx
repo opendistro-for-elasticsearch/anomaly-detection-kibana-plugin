@@ -43,7 +43,8 @@ testMonitor['detector-id-0'] = [
 const defaultDeleteProps = {
   detectors: testDetectors,
   monitors: {},
-  hideModal: jest.fn(),
+  onHide: jest.fn(),
+  onConfirm: jest.fn(),
   onStopDetectors: jest.fn(),
   onDeleteDetectors: jest.fn(),
   isListLoading: false,
@@ -89,7 +90,7 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       await wait();
       expect(defaultDeleteProps.onStopDetectors).not.toHaveBeenCalled();
       expect(defaultDeleteProps.onDeleteDetectors).not.toHaveBeenCalled();
-      expect(defaultDeleteProps.hideModal).not.toHaveBeenCalled();
+      expect(defaultDeleteProps.onConfirm).not.toHaveBeenCalled();
     });
     test('should have delete button enabled if delete typed', async () => {
       const { getByTestId, getByPlaceholderText } = render(
@@ -99,7 +100,7 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       await wait();
       userEvent.click(getByTestId('confirmButton'));
       await wait();
-      expect(defaultDeleteProps.hideModal).toHaveBeenCalled();
+      expect(defaultDeleteProps.onConfirm).toHaveBeenCalled();
     });
     test('should not show callout and set running to no if no detectors are running', async () => {
       const { queryByText, getAllByText } = render(
@@ -140,13 +141,13 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       expect(getAllByText('No')).toHaveLength(1);
       expect(getAllByText('Yes')).toHaveLength(2);
     });
-    test('should call hideModal() when closing', async () => {
+    test('should call onHide() when closing', async () => {
       const { getByTestId } = render(
         <ConfirmDeleteDetectorsModal {...defaultDeleteProps} />
       );
       fireEvent.click(getByTestId('cancelButton'));
       await wait();
-      expect(defaultDeleteProps.hideModal).toHaveBeenCalled();
+      expect(defaultDeleteProps.onHide).toHaveBeenCalled();
     });
   });
 });

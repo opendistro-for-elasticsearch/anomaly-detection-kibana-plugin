@@ -223,17 +223,6 @@ export const DetectorList = (props: ListProps) => {
     setIsLoadingFinalDetectors(false);
   }, [allDetectors]);
 
-  const getUpdatedDetectors = async () => {
-    try {
-      dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
-    } catch (error) {
-      toastNotifications.addDanger(
-        `Error is found while getting detector list: ${error}`
-      );
-      setIsLoadingFinalDetectors(false);
-    }
-  };
-
   // Update modal state if user decides to close
   useEffect(() => {
     if (confirmModalState.isRequestingToClose) {
@@ -252,6 +241,17 @@ export const DetectorList = (props: ListProps) => {
       }
     }
   }, [confirmModalState.isRequestingToClose, isLoading]);
+
+  const getUpdatedDetectors = async () => {
+    try {
+      dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
+    } catch (error) {
+      toastNotifications.addDanger(
+        `Error is found while getting detector list: ${error}`
+      );
+      setIsLoadingFinalDetectors(false);
+    }
+  };
 
   const handlePageChange = (pageNumber: number) => {
     setState({ ...state, page: pageNumber });
@@ -494,7 +494,14 @@ export const DetectorList = (props: ListProps) => {
     return `${item.id}-${item.currentTime}`;
   };
 
-  const hideConfirmModal = () => {
+  const handleHideModal = () => {
+    setConfirmModalState({
+      ...confirmModalState,
+      isOpen: false,
+    });
+  };
+
+  const handleConfirmModal = () => {
     setConfirmModalState({
       ...confirmModalState,
       isRequestingToClose: true,
@@ -510,7 +517,8 @@ export const DetectorList = (props: ListProps) => {
             <ConfirmStartDetectorsModal
               detectors={confirmModalState.affectedDetectors}
               onStartDetectors={handleStartDetectorJobs}
-              hideModal={hideConfirmModal}
+              onHide={handleHideModal}
+              onConfirm={handleConfirmModal}
               isListLoading={isLoading}
             />
           );
@@ -521,7 +529,8 @@ export const DetectorList = (props: ListProps) => {
               detectors={confirmModalState.affectedDetectors}
               monitors={confirmModalState.affectedMonitors}
               onStopDetectors={handleStopDetectorJobs}
-              hideModal={hideConfirmModal}
+              onHide={handleHideModal}
+              onConfirm={handleConfirmModal}
               isListLoading={isLoading}
             />
           );
@@ -533,7 +542,8 @@ export const DetectorList = (props: ListProps) => {
               monitors={confirmModalState.affectedMonitors}
               onStopDetectors={handleStopDetectorJobs}
               onDeleteDetectors={handleDeleteDetectorJobs}
-              hideModal={hideConfirmModal}
+              onHide={handleHideModal}
+              onConfirm={handleConfirmModal}
               isListLoading={isLoading}
             />
           );

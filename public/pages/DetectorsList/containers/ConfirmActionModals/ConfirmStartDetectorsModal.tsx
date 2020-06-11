@@ -36,7 +36,8 @@ import { getNamesGrid } from './utils/helpers';
 
 interface ConfirmStartDetectorsModalProps {
   detectors: DetectorListItem[];
-  hideModal(): void;
+  onHide(): void;
+  onConfirm(): void;
   onStartDetectors(): void;
   isListLoading: boolean;
 }
@@ -44,10 +45,11 @@ interface ConfirmStartDetectorsModalProps {
 export const ConfirmStartDetectorsModal = (
   props: ConfirmStartDetectorsModalProps
 ) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModalLoading, setIsModalLoading] = useState<boolean>(false);
+  const isLoading = isModalLoading || props.isListLoading;
   return (
     <EuiOverlayMask>
-      <EuiModal onClose={props.hideModal}>
+      <EuiModal onClose={props.onHide}>
         <EuiModalHeader>
           <EuiModalHeaderTitle>
             {'Are you sure you want to start the selected detectors?'}&nbsp;
@@ -61,7 +63,7 @@ export const ConfirmStartDetectorsModal = (
           ></EuiCallOut>
           <EuiSpacer size="m" />
           <div>
-            {props.isListLoading ? (
+            {isLoading ? (
               <EuiLoadingSpinner size="xl" />
             ) : (
               getNamesGrid(props.detectors)
@@ -69,21 +71,23 @@ export const ConfirmStartDetectorsModal = (
           </div>
         </EuiModalBody>
         <EuiModalFooter>
+          {isLoading ? null : (
           <EuiButtonEmpty
             data-test-subj="cancelButton"
-            onClick={props.hideModal}
+            onClick={props.onHide}
           >
             Cancel
           </EuiButtonEmpty>
+          )}
           <EuiButton
             data-test-subj="confirmButton"
             color="primary"
             fill
-            isLoading={isLoading || props.isListLoading}
+            isLoading={isLoading}
             onClick={async () => {
-              setIsLoading(true);
+              setIsModalLoading(true);
               props.onStartDetectors();
-              props.hideModal();
+              props.onConfirm();
             }}
           >
             {'Start detectors'}

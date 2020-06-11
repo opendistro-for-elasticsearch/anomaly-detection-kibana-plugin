@@ -39,7 +39,8 @@ import { getNamesAndMonitorsGrid } from './utils/helpers';
 interface ConfirmStopDetectorsModalProps {
   detectors: DetectorListItem[];
   monitors: { [key: string]: Monitor };
-  hideModal(): void;
+  onHide(): void;
+  onConfirm(): void;
   onStopDetectors(listener?: Listener): void;
   isListLoading: boolean;
 }
@@ -47,10 +48,11 @@ interface ConfirmStopDetectorsModalProps {
 export const ConfirmStopDetectorsModal = (
   props: ConfirmStopDetectorsModalProps
 ) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModalLoading, setIsModalLoading] = useState<boolean>(false);
+  const isLoading = isModalLoading || props.isListLoading;
   return (
     <EuiOverlayMask>
-      <EuiModal onClose={props.hideModal}>
+      <EuiModal onClose={props.onHide}>
         <EuiModalHeader>
           <EuiModalHeaderTitle>
             {'Are you sure you want to stop the selected detectors?'}&nbsp;
@@ -65,7 +67,7 @@ export const ConfirmStopDetectorsModal = (
           ></EuiCallOut>
           <EuiSpacer size="m" />
           <div>
-            {props.isListLoading ? (
+            {isLoading ? (
               <EuiLoadingSpinner size="xl" />
             ) : (
               getNamesAndMonitorsGrid(props.detectors, props.monitors)
@@ -73,21 +75,23 @@ export const ConfirmStopDetectorsModal = (
           </div>
         </EuiModalBody>
         <EuiModalFooter>
+          {isLoading ? null : (
           <EuiButtonEmpty
             data-test-subj="cancelButton"
-            onClick={props.hideModal}
+            onClick={props.onHide}
           >
             Cancel
           </EuiButtonEmpty>
+          )}
           <EuiButton
             data-test-subj="confirmButton"
             color="primary"
             fill
-            isLoading={isLoading || props.isListLoading}
+            isLoading={isLoading}
             onClick={async () => {
-              setIsLoading(true);
+              setIsModalLoading(true);
               props.onStopDetectors();
-              props.hideModal();
+              props.onConfirm();
             }}
           >
             {'Stop detectors'}
