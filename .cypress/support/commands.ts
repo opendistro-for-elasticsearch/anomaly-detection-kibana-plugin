@@ -21,7 +21,7 @@ import {
   MAPPINGS_PATH,
 } from '../utils/constants';
 
-Cypress.Commands.add('mockGetDetectorOnFunc', function(
+Cypress.Commands.add('mockGetDetectorOnAction', function(
   fixtureFileName: string,
   funcMockedOn: VoidFunction
 ) {
@@ -37,7 +37,7 @@ Cypress.Commands.add('mockGetDetectorOnFunc', function(
   cy.wait('@getDetectors');
 });
 
-Cypress.Commands.add('mockCreateDetectorOnFunc', function(
+Cypress.Commands.add('mockCreateDetectorOnAction', function(
   fixtureFileName: string,
   funcMockedOn: VoidFunction
 ) {
@@ -53,7 +53,7 @@ Cypress.Commands.add('mockCreateDetectorOnFunc', function(
   cy.wait('@createDetector');
 });
 
-Cypress.Commands.add('mockSearchIndexOnFunc', function(
+Cypress.Commands.add('mockSearchIndexOnAction', function(
   fixtureFileName: string,
   funcMockedOn: VoidFunction
 ) {
@@ -69,7 +69,7 @@ Cypress.Commands.add('mockSearchIndexOnFunc', function(
   cy.wait('@getIndices');
 });
 
-Cypress.Commands.add('mockGetIndexMappingsOnFunc', function(
+Cypress.Commands.add('mockGetIndexMappingsOnAction', function(
   fixtureFileName: string,
   funcMockedOn: VoidFunction
 ) {

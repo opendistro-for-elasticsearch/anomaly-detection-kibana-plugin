@@ -22,7 +22,7 @@ import {
 
 context('Detector list', () => {
   it.only('Empty detectors - no detector index', () => {
-    cy.mockGetDetectorOnFunc('no_detector_index_response.json', () => {
+    cy.mockGetDetectorOnAction('no_detector_index_response.json', () => {
       cy.visit([APP_URL_PREFIX, AD_URL, DETECTORS].join(SLASH));
     });
 
@@ -35,7 +35,7 @@ context('Detector list', () => {
   });
 
   it.only('Empty detectors - empty detector index', () => {
-    cy.mockGetDetectorOnFunc('empty_detector_index_response.json', () => {
+    cy.mockGetDetectorOnAction('empty_detector_index_response.json', () => {
       cy.visit([APP_URL_PREFIX, AD_URL, DETECTORS].join(SLASH));
     });
 

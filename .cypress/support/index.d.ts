@@ -14,19 +14,19 @@
  */
 declare namespace Cypress {
   interface Chainable<Subject> {
-    mockGetDetectorOnFunc(
+    mockGetDetectorOnAction(
       fixtureFileName: string,
       funcMockedOn: VoidFunction
     ): Chainable<any>;
-    mockCreateDetectorOnFunc(
+    mockCreateDetectorOnAction(
       fixtureFileName: string,
       funcMockedOn: VoidFunction
     ): Chainable<any>;
-    mockSearchIndexOnFunc(
+    mockSearchIndexOnAction(
       fixtureFileName: string,
       funcMockedOn: VoidFunction
     ): Chainable<any>;
-    mockGetIndexMappingsOnFunc(
+    mockGetIndexMappingsOnAction(
       fixtureFileName: string,
       funcMockedOn: VoidFunction
     ): Chainable<any>;
