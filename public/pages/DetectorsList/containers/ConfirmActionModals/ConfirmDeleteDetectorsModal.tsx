@@ -21,6 +21,7 @@ import {
   EuiFieldText,
   EuiButton,
   EuiButtonEmpty,
+  EuiFlexGroup,
   EuiModal,
   EuiModalHeader,
   EuiModalFooter,
@@ -83,8 +84,24 @@ export const ConfirmDeleteDetectorsModal = (
               ></EuiCallOut>
             </div>
           ) : null}
-
           <EuiSpacer size="s" />
+          <div>
+            {isLoading ? (
+              <EuiLoadingSpinner size="xl" />
+            ) : (
+              getNamesAndMonitorsAndStatesGrid(props.detectors, props.monitors)
+            )}
+          </div>
+        </EuiModalBody>
+        <EuiFlexGroup
+          direction="column"
+          style={{
+            marginTop: 16,
+            marginBottom: 8,
+            marginLeft: 24,
+            marginRight: 24,
+          }}
+        >
           <EuiText>
             <p>
               To confirm deletion, type <i>delete</i> in the field.
@@ -102,23 +119,15 @@ export const ConfirmDeleteDetectorsModal = (
               }
             }}
           />
-          <EuiSpacer size="m" />
-          <div>
-            {isLoading ? (
-              <EuiLoadingSpinner size="xl" />
-            ) : (
-              getNamesAndMonitorsAndStatesGrid(props.detectors, props.monitors)
-            )}
-          </div>
-        </EuiModalBody>
+        </EuiFlexGroup>
         <EuiModalFooter>
           {isLoading ? null : (
-          <EuiButtonEmpty
-            data-test-subj="cancelButton"
-            onClick={props.onHide}
-          >
-            Cancel
-          </EuiButtonEmpty>
+            <EuiButtonEmpty
+              data-test-subj="cancelButton"
+              onClick={props.onHide}
+            >
+              Cancel
+            </EuiButtonEmpty>
           )}
           <EuiButton
             data-test-subj="confirmButton"

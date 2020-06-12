@@ -65,7 +65,7 @@ export const ConfirmStopDetectorsModal = (
             color="warning"
             iconType="alert"
           ></EuiCallOut>
-          <EuiSpacer size="m" />
+          <EuiSpacer size="s" />
           <div>
             {isLoading ? (
               <EuiLoadingSpinner size="xl" />
@@ -76,12 +76,12 @@ export const ConfirmStopDetectorsModal = (
         </EuiModalBody>
         <EuiModalFooter>
           {isLoading ? null : (
-          <EuiButtonEmpty
-            data-test-subj="cancelButton"
-            onClick={props.onHide}
-          >
-            Cancel
-          </EuiButtonEmpty>
+            <EuiButtonEmpty
+              data-test-subj="cancelButton"
+              onClick={props.onHide}
+            >
+              Cancel
+            </EuiButtonEmpty>
           )}
           <EuiButton
             data-test-subj="confirmButton"
