@@ -84,7 +84,7 @@ export const ConfirmDeleteDetectorsModal = (
               ></EuiCallOut>
             </div>
           ) : null}
-          <EuiSpacer size="m" />
+          <EuiSpacer size="s" />
           <div>
             {isLoading ? (
               <EuiLoadingSpinner size="xl" />
@@ -94,10 +94,10 @@ export const ConfirmDeleteDetectorsModal = (
           </div>
         </EuiModalBody>
         <EuiFlexGroup
-          alignItems="center"
+          direction="column"
           style={{
             marginTop: 16,
-            marginBottom: -8,
+            marginBottom: 8,
             marginLeft: 24,
             marginRight: 24,
           }}
