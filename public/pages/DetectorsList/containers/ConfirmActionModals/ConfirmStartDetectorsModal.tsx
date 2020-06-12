@@ -15,8 +15,8 @@
 
 import React, { useState } from 'react';
 import {
+  EuiText,
   EuiOverlayMask,
-  EuiCallOut,
   EuiButton,
   EuiButtonEmpty,
   EuiModal,
@@ -56,11 +56,7 @@ export const ConfirmStartDetectorsModal = (
           </EuiModalHeaderTitle>
         </EuiModalHeader>
         <EuiModalBody>
-          <EuiCallOut
-            title="The following detectors will begin initializing:"
-            color="success"
-            iconType="play"
-          ></EuiCallOut>
+          <EuiText>The following detectors will begin initializing.</EuiText>
           <EuiSpacer size="s" />
           <div>
             {isLoading ? (

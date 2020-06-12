@@ -14,11 +14,12 @@
  */
 
 import queryString from 'query-string';
-import { cloneDeep } from 'lodash';
+import { get, cloneDeep } from 'lodash';
 import { GetDetectorsQueryParams } from '../../../../server/models/types';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import { DEFAULT_QUERY_PARAMS } from '../../utils/constants';
 import { DETECTOR_STATE } from '../../../utils/constants';
+import { Monitor } from '../../../models/interfaces';
 import { DetectorListItem } from '../../../models/interfaces';
 import { DETECTOR_ACTION } from '../utils/constants';
 export const getURLQueryParams = (location: {
@@ -87,4 +88,18 @@ export const getDetectorsForAction = (
     default:
       return [];
   }
+};
+
+export const getMonitorsForAction = (
+  detectorsForAction: DetectorListItem[],
+  monitors: { [key: string]: Monitor }
+) => {
+  let monitorsForAction = {} as { [key: string]: Monitor };
+  detectorsForAction.forEach(detector => {
+    const relatedMonitor = get(monitors, `${detector.id}.0`);
+    if (relatedMonitor) {
+      monitorsForAction[`${detector.id}`] = relatedMonitor;
+    }
+  });
+  return monitorsForAction;
 };

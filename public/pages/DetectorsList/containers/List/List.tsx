@@ -65,7 +65,11 @@ import {
   ALL_INDICES,
 } from '../../../utils/constants';
 import { BREADCRUMBS } from '../../../../utils/constants';
-import { getURLQueryParams, getDetectorsForAction } from '../../utils/helpers';
+import {
+  getURLQueryParams,
+  getDetectorsForAction,
+  getMonitorsForAction,
+} from '../../utils/helpers';
 import {
   filterAndSortDetectors,
   getDetectorsToDisplay,
@@ -376,13 +380,14 @@ export const DetectorList = (props: ListProps) => {
       DETECTOR_ACTION.STOP
     );
     if (!isEmpty(validDetectors)) {
+      const validMonitors = getMonitorsForAction(validDetectors, allMonitors);
       setConfirmModalState({
         isOpen: true,
         action: DETECTOR_ACTION.STOP,
         isListLoading: false,
         isRequestingToClose: false,
         affectedDetectors: validDetectors,
-        affectedMonitors: allMonitors,
+        affectedMonitors: validMonitors,
       });
     } else {
       toastNotifications.addWarning(
@@ -398,13 +403,14 @@ export const DetectorList = (props: ListProps) => {
       DETECTOR_ACTION.DELETE
     );
     if (!isEmpty(validDetectors)) {
+      const validMonitors = getMonitorsForAction(validDetectors, allMonitors);
       setConfirmModalState({
         isOpen: true,
         action: DETECTOR_ACTION.DELETE,
         isListLoading: false,
         isRequestingToClose: false,
         affectedDetectors: validDetectors,
-        affectedMonitors: allMonitors,
+        affectedMonitors: validMonitors,
       });
     } else {
       toastNotifications.addWarning(

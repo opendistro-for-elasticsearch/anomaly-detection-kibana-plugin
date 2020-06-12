@@ -15,6 +15,7 @@
 
 import React, { useState } from 'react';
 import {
+  EuiText,
   EuiOverlayMask,
   EuiCallOut,
   EuiButton,
@@ -35,6 +36,7 @@ import { DetectorListItem } from '../../../../models/interfaces';
 import { Listener } from '../../../../utils/utils';
 import { EuiSpacer } from '@elastic/eui';
 import { getNamesAndMonitorsGrid } from './utils/helpers';
+import { get, isEmpty } from 'lodash';
 
 interface ConfirmStopDetectorsModalProps {
   detectors: DetectorListItem[];
@@ -48,8 +50,16 @@ interface ConfirmStopDetectorsModalProps {
 export const ConfirmStopDetectorsModal = (
   props: ConfirmStopDetectorsModalProps
 ) => {
+  const containsMonitors = !isEmpty(props.monitors);
+  const detectorsToDisplay = containsMonitors
+    ? props.detectors.sort(detector =>
+        get(props.monitors, `${detector.id}`) ? -1 : 1
+      )
+    : props.detectors;
+
   const [isModalLoading, setIsModalLoading] = useState<boolean>(false);
   const isLoading = isModalLoading || props.isListLoading;
+
   return (
     <EuiOverlayMask>
       <EuiModal onClose={props.onHide}>
@@ -59,18 +69,23 @@ export const ConfirmStopDetectorsModal = (
           </EuiModalHeaderTitle>
         </EuiModalHeader>
         <EuiModalBody>
-          <EuiCallOut
-            title="The following detectors will be stopped. Any associated monitors will
-           not be able to receive any anomaly results to generate alerts."
-            color="warning"
-            iconType="alert"
-          ></EuiCallOut>
+          {containsMonitors ? (
+            <div>
+              <EuiCallOut
+                title="The monitors associated with these detectors will not receive any anomaly results."
+                color="warning"
+                iconType="alert"
+              ></EuiCallOut>
+              <EuiSpacer size="s" />
+            </div>
+          ) : null}
+          <EuiText>The following detectors will be stopped.</EuiText>
           <EuiSpacer size="s" />
           <div>
             {isLoading ? (
               <EuiLoadingSpinner size="xl" />
             ) : (
-              getNamesAndMonitorsGrid(props.detectors, props.monitors)
+              getNamesAndMonitorsGrid(detectorsToDisplay, props.monitors)
             )}
           </div>
         </EuiModalBody>

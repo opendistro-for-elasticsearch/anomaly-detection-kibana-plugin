@@ -33,12 +33,10 @@ const testDetectors = [
 
 let testMonitor = {} as { [key: string]: Monitor };
 //@ts-ignore
-testMonitor['detector-id-0'] = [
-  {
-    id: 'monitor-id-0',
-    name: 'monitor-0',
-  },
-];
+testMonitor['detector-id-0'] = {
+  id: 'monitor-id-0',
+  name: 'monitor-0',
+};
 
 const defaultDeleteProps = {
   detectors: testDetectors,
@@ -74,6 +72,9 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
         />
       );
       getByText('Are you sure you want to delete the selected detectors?');
+      getByText(
+        'The monitors associated with these detectors will not receive any anomaly results.'
+      );
       getByText('Delete detectors');
       getByText('detector-0');
       getByText('detector-1');
