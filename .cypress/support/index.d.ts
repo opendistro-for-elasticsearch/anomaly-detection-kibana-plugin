@@ -12,14 +12,23 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
-export const AD_URL = 'opendistro-anomaly-detection-kibana#';
-export const APP_URL_PREFIX = 'app';
-export const API_URL_PREFIX = 'api';
-export const AD_PATH = 'anomaly_detectors';
-export const INDICES_PATH = '_indices';
-export const MAPPINGS_PATH = '_mappings';
-export const SLASH = '/';
-
-export const DASHBOARD = 'dashboard';
-export const DETECTORS = 'detectors';
+declare namespace Cypress {
+  interface Chainable<Subject> {
+    mockGetDetectorOnFunc(
+      fixtureFileName: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+    mockCreateDetectorOnFunc(
+      fixtureFileName: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+    mockSearchIndexOnFunc(
+      fixtureFileName: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+    mockGetIndexMappingsOnFunc(
+      fixtureFileName: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+  }
+}

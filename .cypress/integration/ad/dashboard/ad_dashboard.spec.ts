@@ -13,31 +13,67 @@
  * permissions and limitations under the License.
  */
 
-/// <reference types="cypress" />
-
 import {
-  AD_PATH,
   AD_URL,
-  API_URL_PREFIX,
   APP_URL_PREFIX,
   DASHBOARD,
-  DETECTORS,
   SLASH,
 } from '../../../utils/constants';
 
 context('AD Dashboard', () => {
-  it('Empty dashboard - no detector', () => {
-    cy.server();
-    cy.route(
-      'GET',
-      [API_URL_PREFIX, AD_PATH, DETECTORS + '*'].join(SLASH),
-      'fixture:no_detector_index_response.json'
-    ).as('getDetectors');
-
-    cy.visit([APP_URL_PREFIX, AD_URL, DASHBOARD].join(SLASH));
-
-    cy.wait('@getDetectors', { requestTimeout: 60_000 });
-
+  it('Empty dashboard - no detector index', () => {
+    cy.mockGetDetectorOnFunc('no_detector_index_response.json', () => {
+      cy.visit([APP_URL_PREFIX, AD_URL, DASHBOARD].join(SLASH));
+    });
     cy.contains('h2', 'You have no detectors');
+  });
+
+  it('Empty dashboard - empty detector index', () => {
+    cy.mockGetDetectorOnFunc('empty_detector_index_response.json', () => {
+      cy.visit([APP_URL_PREFIX, AD_URL, DASHBOARD].join(SLASH));
+    });
+    cy.contains('h2', 'You have no detectors');
+  });
+
+  it('AD dashboard - single stopped detector', () => {
+    cy.mockGetDetectorOnFunc('single_detector_index_response.json', () => {
+      cy.visit([APP_URL_PREFIX, AD_URL, DASHBOARD].join(SLASH));
+    });
+
+    cy.contains('h3', 'Live anomalies');
+    cy.contains(
+      'p',
+      'All matching detectors are under initialization or stopped for the last 30 minutes. Please adjust filters or come back later.'
+    );
+  });
+
+  it('AD dashboard - create detector', () => {
+    cy.mockGetDetectorOnFunc('no_detector_index_response.json', () => {
+      cy.visit([APP_URL_PREFIX, AD_URL, DASHBOARD].join(SLASH));
+    });
+
+    cy.mockSearchIndexOnFunc('search_index_response.json', () => {
+      cy.get('.euiButton--primary.euiButton--fill:first').click({
+        force: true,
+      });
+    });
+
+    const detectorName = 'detector-name';
+    cy.get('input[name="detectorName"]').type(detectorName, { force: true });
+
+    cy.mockGetIndexMappingsOnFunc('index_mapping_response.json', () => {
+      cy.get('input[role="textbox"]').type('e2e-test-index{enter}', {
+        force: true,
+      });
+    });
+
+    cy.get('select[name="timeField"]').select('timestamp', { force: true });
+
+    cy.mockCreateDetectorOnFunc('post_detectors_response.json', () => {
+      cy.get('.euiButton--primary.euiButton--fill').click({ force: true });
+    });
+
+    cy.contains('h1', detectorName);
+    cy.contains('h3', 'Detector configuration');
   });
 });

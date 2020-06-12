@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "response": {
+    "name": "detector-name",
+    "description": "",
+    "timeField": "timestamp",
+    "indices": ["e2e-test-index"],
+    "detectionInterval": { "period": { "interval": 10, "unit": "Minutes" } },
+    "windowDelay": { "period": { "interval": 1, "unit": "Minutes" } },
+    "schemaVersion": 0,
+    "id": "MiSon3IBq0Ub5wDcgBII",
+    "primaryTerm": 3,
+    "seqNo": 41,
+    "filterQuery": { "match_all": { "boost": 1 } },
+    "featureAttributes": [],
+    "uiMetadata": {
+      "features": {},
+      "filters": [],
+      "filterType": "simple_filter"
+    },
+    "enabled": false
+  }
+}
