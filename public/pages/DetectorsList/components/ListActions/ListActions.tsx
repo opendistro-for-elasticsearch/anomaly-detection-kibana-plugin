@@ -28,6 +28,8 @@ interface ListActionsProps {
   onStopDetectors(): void;
   onDeleteDetectors(): void;
   isActionsDisabled: boolean;
+  isStartDisabled: boolean;
+  isStopDisabled: boolean;
 }
 
 export const ListActions = (props: ListActionsProps) => {
@@ -57,6 +59,7 @@ export const ListActions = (props: ListActionsProps) => {
             <EuiContextMenuItem
               key="startDetectors"
               data-test-subj="startDetectors"
+              disabled={props.isStartDisabled}
               onClick={props.onStartDetectors}
             >
               Start
@@ -65,6 +68,7 @@ export const ListActions = (props: ListActionsProps) => {
             <EuiContextMenuItem
               key="stopDetectors"
               data-test-subj="stopDetectors"
+              disabled={props.isStopDisabled}
               onClick={props.onStopDetectors}
             >
               Stop

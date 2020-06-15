@@ -107,6 +107,11 @@ interface ConfirmModalState {
   affectedDetectors: DetectorListItem[];
   affectedMonitors: { [key: string]: Monitor };
 }
+interface ListActionsState {
+  isDisabled: boolean;
+  isStartDisabled: boolean;
+  isStopDisabled: boolean;
+}
 
 export const DetectorList = (props: ListProps) => {
   const dispatch = useDispatch();
@@ -132,7 +137,6 @@ export const DetectorList = (props: ListProps) => {
     [] as DetectorListItem[]
   );
   const isLoading = isRequestingFromES || isLoadingFinalDetectors;
-
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(
     {
       isOpen: false,
@@ -144,6 +148,11 @@ export const DetectorList = (props: ListProps) => {
       affectedMonitors: {},
     }
   );
+  const [listActionsState, setListActionsState] = useState<ListActionsState>({
+    isDisabled: true,
+    isStartDisabled: false,
+    isStopDisabled: false,
+  });
 
   // Getting all initial indices
   const [indexQuery, setIndexQuery] = useState('');
@@ -350,6 +359,16 @@ export const DetectorList = (props: ListProps) => {
 
   const handleSelectionChange = (currentSelected: DetectorListItem[]) => {
     setSelectedDetectorsForAction(currentSelected);
+    setListActionsState({
+      ...listActionsState,
+      isDisabled: isEmpty(currentSelected),
+      isStartDisabled: isEmpty(
+        getDetectorsForAction(currentSelected, DETECTOR_ACTION.START)
+      ),
+      isStopDisabled: isEmpty(
+        getDetectorsForAction(currentSelected, DETECTOR_ACTION.STOP)
+      ),
+    });
   };
 
   const handleStartDetectorsAction = () => {
@@ -605,7 +624,9 @@ export const DetectorList = (props: ListProps) => {
               onStartDetectors={handleStartDetectorsAction}
               onStopDetectors={handleStopDetectorsAction}
               onDeleteDetectors={handleDeleteDetectorsAction}
-              isActionsDisabled={selectedDetectorsForAction.length === 0}
+              isActionsDisabled={listActionsState.isDisabled}
+              isStartDisabled={listActionsState.isStartDisabled}
+              isStopDisabled={listActionsState.isStopDisabled}
             />,
             <EuiButton fill href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
               Create detector
