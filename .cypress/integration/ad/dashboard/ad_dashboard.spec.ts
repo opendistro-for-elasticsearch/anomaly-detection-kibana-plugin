@@ -49,7 +49,7 @@ context('AD Dashboard', () => {
     });
 
     cy.mockSearchIndexOnAction('search_index_response.json', () => {
-      cy.get('.euiButton--primary.euiButton--fill:first').click({
+      cy.get('a[data-test-subj="add_detector"]').click({
         force: true,
       });
     });
