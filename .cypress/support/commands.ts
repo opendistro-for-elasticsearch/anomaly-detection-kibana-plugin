@@ -12,14 +12,8 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import {
-  API_URL_PREFIX,
-  AD_PATH,
-  DETECTORS,
-  SLASH,
-  INDICES_PATH,
-  MAPPINGS_PATH,
-} from '../utils/constants';
+import { DETECTORS, INDICES_PATH, MAPPINGS_PATH } from '../utils/constants';
+import { buildAdApiUrl } from '../utils/helpers';
 
 Cypress.Commands.add('mockGetDetectorOnAction', function(
   fixtureFileName: string,
@@ -28,7 +22,7 @@ Cypress.Commands.add('mockGetDetectorOnAction', function(
   cy.server();
   cy.route(
     'GET',
-    [API_URL_PREFIX, AD_PATH, DETECTORS + '*'].join(SLASH),
+    buildAdApiUrl(DETECTORS + '*'),
     `fixture:${fixtureFileName}`
   ).as('getDetectors');
 
@@ -44,7 +38,7 @@ Cypress.Commands.add('mockCreateDetectorOnAction', function(
   cy.server();
   cy.route(
     'POST',
-    [API_URL_PREFIX, AD_PATH, DETECTORS + '*'].join(SLASH),
+    buildAdApiUrl(DETECTORS + '*'),
     `fixture:${fixtureFileName}`
   ).as('createDetector');
 
@@ -60,7 +54,7 @@ Cypress.Commands.add('mockSearchIndexOnAction', function(
   cy.server();
   cy.route(
     'GET',
-    [API_URL_PREFIX, AD_PATH, INDICES_PATH + '*'].join(SLASH),
+    buildAdApiUrl(INDICES_PATH + '*'),
     `fixture:${fixtureFileName}`
   ).as('getIndices');
 
@@ -76,7 +70,7 @@ Cypress.Commands.add('mockGetIndexMappingsOnAction', function(
   cy.server();
   cy.route(
     'GET',
-    [API_URL_PREFIX, AD_PATH, MAPPINGS_PATH + '*'].join(SLASH),
+    buildAdApiUrl(MAPPINGS_PATH + '*'),
     `fixture:${fixtureFileName}`
   ).as('getMappings');
 

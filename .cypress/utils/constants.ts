@@ -23,3 +23,4 @@ export const SLASH = '/';
 
 export const DASHBOARD = 'dashboard';
 export const DETECTORS = 'detectors';
+export const CREATE_AD = 'create-ad';

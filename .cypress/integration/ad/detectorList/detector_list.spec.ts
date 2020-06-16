@@ -13,17 +13,13 @@
  * permissions and limitations under the License.
  */
 
-import {
-  AD_URL,
-  APP_URL_PREFIX,
-  SLASH,
-  DETECTORS,
-} from '../../../utils/constants';
+import { DETECTORS } from '../../../utils/constants';
+import { buildAdAppUrl } from '../../../utils/helpers';
 
 context('Detector list', () => {
   it.only('Empty detectors - no detector index', () => {
     cy.mockGetDetectorOnAction('no_detector_index_response.json', () => {
-      cy.visit([APP_URL_PREFIX, AD_URL, DETECTORS].join(SLASH));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
 
     cy.contains('p', '(0)');
@@ -36,7 +32,7 @@ context('Detector list', () => {
 
   it.only('Empty detectors - empty detector index', () => {
     cy.mockGetDetectorOnAction('empty_detector_index_response.json', () => {
-      cy.visit([APP_URL_PREFIX, AD_URL, DETECTORS].join(SLASH));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
 
     cy.contains('p', '(0)');
