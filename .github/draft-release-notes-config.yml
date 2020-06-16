@@ -20,6 +20,7 @@ categories:
   - title: 'Bug Fixes'
     labels:
       - 'bug'
+      - 'bug fix'
   - title: 'Infra Changes'
     labels:
       - 'infra'
