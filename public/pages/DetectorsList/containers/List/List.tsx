@@ -461,7 +461,10 @@ export const DetectorList = (props: ListProps) => {
         if (listener) listener.onException();
       })
       .finally(() => {
-        getUpdatedDetectors();
+        // only need to get updated list if we're just stopping (no need if deleting also)
+        if (confirmModalState.action === DETECTOR_ACTION.STOP) {
+          getUpdatedDetectors();
+        }
       });
   };
 
