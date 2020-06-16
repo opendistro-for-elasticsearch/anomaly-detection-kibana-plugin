@@ -13,31 +13,47 @@
  * permissions and limitations under the License.
  */
 
-/// <reference types="cypress" />
-
-import {
-  AD_PATH,
-  AD_URL,
-  API_URL_PREFIX,
-  APP_URL_PREFIX,
-  DASHBOARD,
-  DETECTORS,
-  SLASH,
-} from '../../../utils/constants';
+import { DASHBOARD } from '../../../utils/constants';
+import { buildAdAppUrl } from '../../../utils/helpers';
 
 context('AD Dashboard', () => {
-  it('Empty dashboard - no detector', () => {
-    cy.server();
-    cy.route(
-      'GET',
-      [API_URL_PREFIX, AD_PATH, DETECTORS + '*'].join(SLASH),
-      'fixture:no_detector_index_response.json'
-    ).as('getDetectors');
-
-    cy.visit([APP_URL_PREFIX, AD_URL, DASHBOARD].join(SLASH));
-
-    cy.wait('@getDetectors', { requestTimeout: 60_000 });
-
+  it('Empty dashboard - no detector index', () => {
+    cy.mockGetDetectorOnAction('no_detector_index_response.json', () => {
+      cy.visit(buildAdAppUrl(DASHBOARD));
+    });
     cy.contains('h2', 'You have no detectors');
+  });
+
+  it('Empty dashboard - empty detector index', () => {
+    cy.mockGetDetectorOnAction('empty_detector_index_response.json', () => {
+      cy.visit(buildAdAppUrl(DASHBOARD));
+    });
+    cy.contains('h2', 'You have no detectors');
+  });
+
+  it('AD dashboard - single stopped detector', () => {
+    cy.mockGetDetectorOnAction('single_detector_response.json', () => {
+      cy.visit(buildAdAppUrl(DASHBOARD));
+    });
+
+    cy.contains('h3', 'Live anomalies');
+    cy.contains(
+      'p',
+      'All matching detectors are under initialization or stopped for the last 30 minutes. Please adjust filters or come back later.'
+    );
+  });
+
+  it('AD dashboard - redirect to create detector', () => {
+    cy.mockGetDetectorOnAction('no_detector_index_response.json', () => {
+      cy.visit(buildAdAppUrl(DASHBOARD));
+    });
+
+    cy.mockSearchIndexOnAction('search_index_response.json', () => {
+      cy.get('a[data-test-subj="add_detector"]').click({
+        force: true,
+      });
+    });
+
+    cy.contains('h1', 'Create detector');
   });
 });

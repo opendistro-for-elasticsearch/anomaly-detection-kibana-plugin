@@ -12,5 +12,23 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
-import './commands';
+declare namespace Cypress {
+  interface Chainable<Subject> {
+    mockGetDetectorOnAction(
+      fixtureFileName: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+    mockCreateDetectorOnAction(
+      fixtureFileName: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+    mockSearchIndexOnAction(
+      fixtureFileName: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+    mockGetIndexMappingsOnAction(
+      fixtureFileName: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+  }
+}
