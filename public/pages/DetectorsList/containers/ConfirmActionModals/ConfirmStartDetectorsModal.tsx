@@ -47,6 +47,7 @@ export const ConfirmStartDetectorsModal = (
 ) => {
   const [isModalLoading, setIsModalLoading] = useState<boolean>(false);
   const isLoading = isModalLoading || props.isListLoading;
+
   return (
     <EuiOverlayMask>
       <EuiModal onClose={props.onHide}>
