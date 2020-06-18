@@ -142,7 +142,7 @@ describe('<ListFilters /> spec', () => {
           lastActiveAnomaly: moment('2020-04-15T09:00:00')
             .add(index, 'minutes')
             .valueOf(),
-          lastUpdateTime: moment('2020-04-15T07:00:00')
+          enabledTime: moment('2020-04-15T07:00:00')
             .add(index, 'minutes')
             .valueOf(),
         };
@@ -319,7 +319,7 @@ describe('<ListFilters /> spec', () => {
     });
     test('should display rows if there are data', async () => {
       const tempAnomalyTime = moment('2019-10-19T09:00:00');
-      const tempLastUpdateTime = moment('2019-10-19T07:00:00');
+      const tempEnabledTime = moment('2019-10-19T07:00:00');
       const randomDetectors = [
         {
           id: 1,
@@ -328,7 +328,7 @@ describe('<ListFilters /> spec', () => {
           curState: DETECTOR_STATE.INIT,
           totalAnomalies: 5,
           lastActiveAnomaly: tempAnomalyTime.valueOf(),
-          lastUpdateTime: tempLastUpdateTime.valueOf(),
+          enabledTime: tempEnabledTime.valueOf(),
         },
         {
           id: 2,
@@ -337,7 +337,7 @@ describe('<ListFilters /> spec', () => {
           curState: DETECTOR_STATE.DISABLED,
           totalAnomalies: 10,
           lastActiveAnomaly: tempAnomalyTime.add(10, 'minutes').valueOf(),
-          lastUpdateTime: tempLastUpdateTime.add(10, 'minutes').valueOf(),
+          enabledTime: tempEnabledTime.add(10, 'minutes').valueOf(),
         },
         {
           id: 3,
@@ -346,7 +346,7 @@ describe('<ListFilters /> spec', () => {
           curState: DETECTOR_STATE.RUNNING,
           totalAnomalies: 0,
           lastActiveAnomaly: tempAnomalyTime.add(20, 'minutes').valueOf(),
-          lastUpdateTime: tempLastUpdateTime.add(20, 'minutes').valueOf(),
+          enabledTime: tempEnabledTime.add(20, 'minutes').valueOf(),
         },
       ];
       httpClientMock.get = jest.fn().mockResolvedValue({

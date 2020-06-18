@@ -44,6 +44,7 @@ import {
   convertDetectorKeysToSnakeCase,
   getResultAggregationQuery,
   getFinalDetectorStates,
+  getDetectorsWithJob,
 } from './utils/adHelpers';
 import { set } from 'lodash';
 
@@ -478,6 +479,29 @@ const getDetectors = async (
     // update the final detectors to include the detector state
     finalDetectors.forEach((detector, i) => {
       detector.curState = finalDetectorStates[i].state;
+    });
+
+    // get ad job
+    const detectorsWithJobPromises = allIds.map(async (id: string) => {
+      try {
+        const detectorResp = await callWithRequest(req, 'ad.getDetector', {
+          detectorId: id,
+        });
+        return detectorResp;
+      } catch (err) {
+        console.log('Anomaly detector - Unable to get detector job', err);
+      }
+    });
+    const detectorsWithJobResponses = await Promise.all(
+      detectorsWithJobPromises
+    );
+    const finalDetectorsWithJob = getDetectorsWithJob(
+      detectorsWithJobResponses
+    );
+
+    // update the final detectors to include the detector enabledTime
+    finalDetectors.forEach((detector, i) => {
+      detector.enabledTime = finalDetectorsWithJob[i].enabledTime;
     });
 
     return {

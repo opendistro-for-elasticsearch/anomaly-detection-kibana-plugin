@@ -13,7 +13,12 @@
  * permissions and limitations under the License.
  */
 
-import { EuiLink, EuiToolTip, EuiHealth, EuiBasicTableColumn } from '@elastic/eui';
+import {
+  EuiLink,
+  EuiToolTip,
+  EuiHealth,
+  EuiBasicTableColumn,
+} from '@elastic/eui';
 //@ts-ignore
 import moment from 'moment';
 import get from 'lodash/get';
@@ -52,9 +57,7 @@ export const staticColumn = [
     field: 'name',
     name: (
       <EuiToolTip content="The name of the detector">
-        <span style={columnStyle}>
-          Detector{''}
-        </span>
+        <span style={columnStyle}>Detector{''}</span>
       </EuiToolTip>
     ),
     sortable: true,
@@ -72,9 +75,7 @@ export const staticColumn = [
     field: 'indices',
     name: (
       <EuiToolTip content="The index or index pattern used for the detector">
-        <span style={columnStyle}>
-          Indices{''}
-        </span>
+        <span style={columnStyle}>Indices{''}</span>
       </EuiToolTip>
     ),
     sortable: true,
@@ -88,9 +89,7 @@ export const staticColumn = [
     field: 'curState',
     name: (
       <EuiToolTip content="The current state of the detector">
-        <span style={columnStyle}>
-          Detector state{''}
-        </span>
+        <span style={columnStyle}>Detector state{''}</span>
       </EuiToolTip>
     ),
     sortable: true,
@@ -104,9 +103,7 @@ export const staticColumn = [
     field: 'totalAnomalies',
     name: (
       <EuiToolTip content="Total anomalies with a grade > 0 in last 24 hours">
-        <span style={columnStyle}>
-          Anomalies last 24 hours{''}
-        </span>
+        <span style={columnStyle}>Anomalies last 24 hours{''}</span>
       </EuiToolTip>
     ),
     sortable: true,
@@ -119,9 +116,7 @@ export const staticColumn = [
     field: 'lastActiveAnomaly',
     name: (
       <EuiToolTip content="Time of the last active anomaly with a grade > 0">
-        <span style={columnStyle}>
-          Last anomaly occurrence{''}
-        </span>
+        <span style={columnStyle}>Last anomaly occurrence{''}</span>
       </EuiToolTip>
     ),
     sortable: true,
@@ -132,12 +127,10 @@ export const staticColumn = [
     render: renderTime,
   },
   {
-    field: 'lastUpdateTime',
+    field: 'enabledTime',
     name: (
-      <EuiToolTip content="The time the detector was last updated">
-        <span style={columnStyle}>
-          Last updated{''}
-        </span>
+      <EuiToolTip content="The time the detector was last enabled">
+        <span style={columnStyle}>Last enabled time{''}</span>
       </EuiToolTip>
     ),
     sortable: true,
