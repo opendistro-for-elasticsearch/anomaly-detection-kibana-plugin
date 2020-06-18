@@ -21,6 +21,10 @@ import {
   EuiSpacer,
   EuiCallOut,
   EuiButton,
+  EuiProgress,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiText,
 } from '@elastic/eui';
 import { get } from 'lodash';
 import React, { useEffect, Fragment, useState } from 'react';
@@ -128,7 +132,6 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     detector && detector.curState === DETECTOR_STATE.INIT;
 
   const initializationInfo = getDetectorInitializationInfo(detector);
-
   const isInitOvertime = get(initializationInfo, IS_INIT_OVERTIME_FIELD, false);
   const initDetails = get(initializationInfo, INIT_DETAILS_FIELD, {});
   const initErrorMessage = get(initDetails, INIT_ERROR_MESSAGE_FIELD, '');
@@ -292,6 +295,17 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       </p>
     ) : isInitializingNormally ? (
       <p>
+        {detector.initProgress
+          ? `The detector needs to capture approximately
+                          ${
+                            //@ts-ignore
+                            detector.initProgress.neededShingles
+                          } data points for initializing. If your data stream is continuous, this process will take around
+                          ${
+                            //@ts-ignore
+                            detector.initProgress.estimatedMinutesLeft
+                          } minutes; if not, it may take even longer. `
+          : ''}
         After the initialization is complete, you will see the anomaly results
         based on your latest configuration changes.
       </p>
@@ -332,6 +346,35 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       style={{ marginBottom: '20px' }}
                     >
                       {getCalloutContent()}
+                      {isDetectorInitializing && detector.initProgress ? (
+                        <div>
+                          <EuiFlexGroup alignItems="center">
+                            <EuiFlexItem
+                              style={{ maxWidth: '20px', marginRight: '5px' }}
+                            >
+                              <EuiText>
+                                {
+                                  //@ts-ignore
+                                  detector.initProgress.percentageStr
+                                }
+                              </EuiText>
+                            </EuiFlexItem>
+                            <EuiFlexItem>
+                              <EuiProgress
+                                //@ts-ignore
+                                value={detector.initProgress.percentageStr.replace(
+                                  '%',
+                                  ''
+                                )}
+                                max={100}
+                                color="primary"
+                                size="xs"
+                              />
+                            </EuiFlexItem>
+                          </EuiFlexGroup>
+                          <EuiSpacer size="l" />
+                        </div>
+                      ) : null}
                       <EuiButton
                         onClick={props.onSwitchToConfiguration}
                         color={

@@ -86,6 +86,11 @@ export type UiMetaData = {
   };
 };
 
+export type InitProgress = {
+  percentageStr: string;
+  estimatedMinutesLeft: number;
+  neededShingles: number;
+};
 export type Detector = {
   primaryTerm: number;
   seqNo: number;
@@ -105,6 +110,7 @@ export type Detector = {
   disabledTime?: number;
   curState: DETECTOR_STATE;
   stateError: string;
+  initProgress?: InitProgress;
 };
 
 export type DetectorListItem = {

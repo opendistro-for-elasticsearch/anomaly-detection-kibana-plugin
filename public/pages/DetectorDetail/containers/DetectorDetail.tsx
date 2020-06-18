@@ -290,7 +290,10 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                   ) : detector.enabled &&
                     detector.curState === DETECTOR_STATE.INIT ? (
                     <EuiHealth color={DETECTOR_STATE_COLOR.INIT}>
-                      Initializing
+                      {detector.initProgress
+                        ? //@ts-ignore
+                          `Initializing (${detector.initProgress.percentageStr} complete)`
+                        : 'Initializing'}
                     </EuiHealth>
                   ) : detector.curState === DETECTOR_STATE.INIT_FAILURE ||
                     detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE ? (
@@ -343,7 +346,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
           <EuiFlexGroup>
             <EuiFlexItem>
               <EuiTabs>
-                {tabs.map(tab => (
+                {tabs.map((tab) => (
                   <EuiTab
                     onClick={() => {
                       handleTabChange(tab.route);
@@ -388,7 +391,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                   <EuiFieldText
                     fullWidth={true}
                     placeholder="delete"
-                    onChange={e => {
+                    onChange={(e) => {
                       if (e.target.value === 'delete') {
                         setDetectorDetailModel({
                           ...detectorDetailModel,
@@ -472,7 +475,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
         <Route
           exact
           path="/detectors/:detectorId/results"
-          render={props => (
+          render={(props) => (
             <AnomalyResults
               {...props}
               detectorId={detectorId}
@@ -484,7 +487,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
         <Route
           exact
           path="/detectors/:detectorId/configurations"
-          render={props => (
+          render={(props) => (
             <DetectorConfig
               {...props}
               detectorId={detectorId}
