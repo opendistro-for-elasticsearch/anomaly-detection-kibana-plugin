@@ -31,12 +31,14 @@ import {
 } from '@elastic/eui';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
+import { get, isEmpty } from 'lodash';
 //@ts-ignore
 import chrome from 'ui/chrome';
 import { Monitor } from '../../../../models/interfaces';
 import { DetectorListItem } from '../../../../models/interfaces';
 import { Listener } from '../../../../utils/utils';
 import { EuiSpacer } from '@elastic/eui';
+import { DETECTOR_STATE } from '../../../../utils/constants';
 import {
   getNamesAndMonitorsAndStatesGrid,
   containsEnabledDetectors,
@@ -55,10 +57,27 @@ interface ConfirmDeleteDetectorsModalProps {
 export const ConfirmDeleteDetectorsModal = (
   props: ConfirmDeleteDetectorsModalProps
 ) => {
+  const containsMonitors = !isEmpty(props.monitors);
   const containsEnabled = containsEnabledDetectors(props.detectors);
+  const detectorsToDisplay = containsEnabled
+    ? props.detectors
+        .sort(detector =>
+          detector.curState === DETECTOR_STATE.INIT ||
+          detector.curState === DETECTOR_STATE.RUNNING
+            ? -1
+            : 1
+        )
+        .sort(detector => (get(props.monitors, `${detector.id}`) ? -1 : 1))
+    : containsMonitors
+    ? props.detectors.sort(detector =>
+        get(props.monitors, `${detector.id}`) ? -1 : 1
+      )
+    : props.detectors;
+
   const [deleteTyped, setDeleteTyped] = useState<boolean>(false);
   const [isModalLoading, setIsModalLoading] = useState<boolean>(false);
   const isLoading = isModalLoading || props.isListLoading;
+
   return (
     <EuiOverlayMask>
       <EuiModal onClose={props.onHide}>
@@ -68,28 +87,35 @@ export const ConfirmDeleteDetectorsModal = (
           </EuiModalHeaderTitle>
         </EuiModalHeader>
         <EuiModalBody>
-          <EuiCallOut
-            title="The following detectors and feature configurations will be permanently removed. Any associated monitors will
-              not be able to receive any anomaly results to generate alerts."
-            color="warning"
-            iconType="alert"
-          ></EuiCallOut>
-          {containsEnabled ? (
-            <div>
-              <EuiSpacer size="s" />
-              <EuiCallOut
-                title="Some of the selected detectors are currently running."
-                color="warning"
-                iconType="alert"
-              ></EuiCallOut>
-            </div>
+          {containsMonitors ? (
+            <EuiCallOut
+              title="The monitors associated with these detectors will not receive any anomaly results."
+              color="warning"
+              iconType="alert"
+            ></EuiCallOut>
           ) : null}
+          {containsMonitors && containsEnabled ? <EuiSpacer size="s" /> : null}
+          {containsEnabled ? (
+            <EuiCallOut
+              title="Some of the selected detectors are currently running."
+              color="warning"
+              iconType="alert"
+            ></EuiCallOut>
+          ) : null}
+          {containsMonitors || containsEnabled ? <EuiSpacer size="s" /> : null}
+          <EuiText>
+            The following detectors and feature configurations will be
+            permanently removed. This action is irreversible.
+          </EuiText>
           <EuiSpacer size="s" />
           <div>
             {isLoading ? (
               <EuiLoadingSpinner size="xl" />
             ) : (
-              getNamesAndMonitorsAndStatesGrid(props.detectors, props.monitors)
+              getNamesAndMonitorsAndStatesGrid(
+                detectorsToDisplay,
+                props.monitors
+              )
             )}
           </div>
         </EuiModalBody>

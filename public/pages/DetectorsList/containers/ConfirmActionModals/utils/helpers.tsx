@@ -49,7 +49,7 @@ const getNamesAndMonitors = (
 ) => {
   let data = [];
   for (let i = 0; i < detectors.length; i++) {
-    const relatedMonitor = get(monitors, `${detectors[i].id}.0`);
+    const relatedMonitor = get(monitors, `${detectors[i].id}`);
     if (relatedMonitor) {
       data.push({
         Detector: (
@@ -92,7 +92,7 @@ const getNamesAndMonitorsAndStates = (
 ) => {
   let data = [];
   for (let i = 0; i < detectors.length; i++) {
-    const relatedMonitor = get(monitors, `${detectors[i].id}.0`);
+    const relatedMonitor = get(monitors, `${detectors[i].id}`);
     const isRunning =
       detectors[i].curState === DETECTOR_STATE.INIT ||
       detectors[i].curState === DETECTOR_STATE.RUNNING;
