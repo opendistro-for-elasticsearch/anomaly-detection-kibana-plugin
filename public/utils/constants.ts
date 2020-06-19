@@ -65,3 +65,14 @@ export const NAME_REGEX = RegExp('^[a-zA-Z0-9._-]+$');
 
 //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/master/src/main/java/com/amazon/opendistroforelasticsearch/ad/settings/AnomalyDetectorSettings.java#L186
 export const SHINGLE_SIZE = 8;
+
+export const FEATURE_DATA_POINTS_WINDOW = 3;
+
+export enum MISSING_FEATURE_DATA_SEVERITY {
+  // user attention not needed
+  GREEN = '0',
+  // needs user attention
+  YELLOW = '1',
+  // needs user attention and action
+  RED = '2',
+}

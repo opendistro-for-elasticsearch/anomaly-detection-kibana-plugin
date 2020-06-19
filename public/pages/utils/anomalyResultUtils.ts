@@ -22,17 +22,24 @@ import { getDetectorResults } from '../../redux/reducers/anomalyResults';
 import { getDetectorLiveResults } from '../../redux/reducers/liveAnomalyResults';
 import moment from 'moment';
 import { Dispatch } from 'redux';
-import { get } from 'lodash';
+import { get, orderBy, isEmpty } from 'lodash';
 import {
   AnomalyData,
   DateRange,
   AnomalySummary,
   FeatureAggregationData,
   Anomalies,
+  Detector,
+  FeatureAttributes,
 } from '../../models/interfaces';
-import { MAX_ANOMALIES } from '../../utils/constants';
-import { minuteDateFormatter } from './helpers';
+import {
+  MAX_ANOMALIES,
+  MISSING_FEATURE_DATA_SEVERITY,
+} from '../../utils/constants';
+import { minuteDateFormatter, dateFormatter } from './helpers';
 import { toFixedNumberForAnomaly } from '../../../server/utils/helpers';
+import { getFloorPlotTime } from '../Dashboard/utils/utils';
+import { DETECTOR_INIT_FAILURES } from '../DetectorDetail/utils/constants';
 
 export const getQueryParamsForLiveAnomalyResults = (
   detectionInterval: number,
@@ -67,13 +74,11 @@ export const getLiveAnomalyResults = (
   dispatch(getDetectorLiveResults(detectorId, queryParams));
 };
 
-export const getAnomalyResultsWithDateRange = (
-  dispatch: Dispatch<any>,
+export const buildParamsForGetAnomalyResultsWithDateRange = (
   startTime: number,
-  endTime: number,
-  detectorId: string
+  endTime: number
 ) => {
-  const updatedParams = {
+  return {
     from: 0,
     size: MAX_ANOMALIES,
     sortDirection: SORT_DIRECTION.DESC,
@@ -84,21 +89,57 @@ export const getAnomalyResultsWithDateRange = (
       fieldName: AD_DOC_FIELDS.DATA_START_TIME,
     },
   };
-  dispatch(getDetectorResults(detectorId, updatedParams));
+};
+
+export const getAnomalyResultsWithDateRange = (
+  dispatch: Dispatch<any>,
+  startTime: number,
+  endTime: number,
+  detectorId: string
+) => {
+  const params = buildParamsForGetAnomalyResultsWithDateRange(
+    startTime,
+    endTime
+  );
+  dispatch(getDetectorResults(detectorId, params));
 };
 
 const MAX_DATA_POINTS = 1000;
+const MAX_FEATURE_ANNOTATIONS = 100;
 
 const calculateStep = (total: number): number => {
   return Math.ceil(total / MAX_DATA_POINTS);
 };
 
-// If array size is 100K, `findAnomalyWithMaxAnomalyGrade` 
-// takes less than 2ms by average, while `Array#reduce` 
-// takes about 16ms by average and`Array#sort` 
+const calculateSampleWindowsWithMaxDataPoints = (
+  maxDataPoints: number,
+  dateRange: DateRange
+): DateRange[] => {
+  const resultSampleWindows = [] as DateRange[];
+  const rangeInMilliSec = dateRange.endDate - dateRange.startDate;
+  const windowSizeinMilliSec = Math.max(
+    Math.ceil(rangeInMilliSec / maxDataPoints),
+    MIN_IN_MILLI_SECS
+  );
+  for (
+    let currentTime = dateRange.startDate;
+    currentTime <= dateRange.endDate;
+    currentTime += windowSizeinMilliSec
+  ) {
+    resultSampleWindows.push({
+      startDate: currentTime,
+      endDate: Math.min(currentTime + windowSizeinMilliSec, dateRange.endDate),
+    } as DateRange);
+  }
+  return resultSampleWindows;
+};
+
+// If array size is 100K, `findAnomalyWithMaxAnomalyGrade`
+// takes less than 2ms by average, while `Array#reduce`
+// takes about 16ms by average and`Array#sort`
 // takes about 3ms by average.
-// If array size is 1M, `findAnomalyWithMaxAnomalyGrade` 
-// takes less than 6ms by average, while `Array#reduce` 
+// If array size is 1M, `findAnomalyWithMaxAnomalyGrade`
+// takes less than 6ms by average, while `Array#reduce`
 // takes about 170ms by average and`Array#sort` takes about
 //  80ms by average.
 // Considering performance impact, will not change this
@@ -161,20 +202,17 @@ export const prepareDataForLiveChart = (
   return anomalies;
 };
 
-export const prepareDataForChart = (
-  data: any[],
-  dateRange: DateRange,
-) => {
-  if (!data || data.length === 0) {
-    return [];
-  }
-  let anomalies = data.filter(
-    anomaly =>
-      anomaly.plotTime >= dateRange.startDate &&
-      anomaly.plotTime <= dateRange.endDate
-  );
-  if (anomalies.length > MAX_DATA_POINTS) {
-    anomalies = sampleMaxAnomalyGrade(anomalies);
+export const prepareDataForChart = (data: any[], dateRange: DateRange) => {
+  let anomalies = [];
+  if (data && data.length > 0) {
+    anomalies = data.filter(
+      anomaly =>
+        anomaly.plotTime >= dateRange.startDate &&
+        anomaly.plotTime <= dateRange.endDate
+    );
+    if (anomalies.length > MAX_DATA_POINTS) {
+      anomalies = sampleMaxAnomalyGrade(anomalies);
+    }
   }
   anomalies.push({
     startTime: dateRange.startDate,
@@ -379,7 +417,9 @@ export const parseBucketizedAnomalyResults = (result: any): Anomalies => {
       const rawAnomaly = get(item, 'top_anomaly_hits.hits.hits.0._source');
       if (get(rawAnomaly, 'anomaly_grade') !== undefined) {
         anomalies.push({
-          anomalyGrade: toFixedNumberForAnomaly(get(rawAnomaly, 'anomaly_grade')),
+          anomalyGrade: toFixedNumberForAnomaly(
+            get(rawAnomaly, 'anomaly_grade')
+          ),
           confidence: toFixedNumberForAnomaly(get(rawAnomaly, 'confidence')),
           startTime: get(rawAnomaly, 'data_start_time'),
           endTime: get(rawAnomaly, 'data_end_time'),
@@ -482,4 +522,275 @@ export const parsePureAnomalies = (
     });
   }
   return anomalies;
+};
+
+export type FeatureDataPoint = {
+  isMissing: boolean;
+  plotTime: number;
+  startTime: number;
+  endTime: number;
+};
+
+export const getFeatureDataPoints = (
+  featureData: FeatureAggregationData[],
+  interval: number,
+  dateRange: DateRange | undefined
+): FeatureDataPoint[] => {
+  const featureDataPoints = [] as FeatureDataPoint[];
+  if (!dateRange) {
+    return featureDataPoints;
+  }
+  const existingTimes = isEmpty(featureData)
+    ? []
+    : featureData
+        .map(feature => feature.endTime)
+        .filter(featureTime => featureTime != undefined);
+  for (
+    let currentTime = dateRange.startDate;
+    currentTime <
+    getFloorPlotTime(dateRange.endDate - interval * MIN_IN_MILLI_SECS);
+    currentTime += interval * MIN_IN_MILLI_SECS
+  ) {
+    const isExisting = findTimeExistsInWindow(
+      existingTimes,
+      currentTime,
+      currentTime + interval * MIN_IN_MILLI_SECS
+    );
+    featureDataPoints.push({
+      isMissing: !isExisting,
+      plotTime: currentTime + interval * MIN_IN_MILLI_SECS,
+      startTime: currentTime,
+      endTime: currentTime + interval * MIN_IN_MILLI_SECS,
+    });
+  }
+
+  return featureDataPoints;
+};
+
+const findTimeExistsInWindow = (
+  timestamps: any[],
+  startTime: number,
+  endTime: number
+): boolean => {
+  const result = timestamps.filter(
+    timestamp => timestamp >= startTime && timestamp <= endTime
+  );
+  return !isEmpty(result);
+};
+
+const sampleFeatureMissingDataPoints = (
+  featureMissingDataPoints: FeatureDataPoint[],
+  dateRange?: DateRange
+): FeatureDataPoint[] => {
+  if (!dateRange) {
+    return featureMissingDataPoints;
+  }
+  const sampleTimeWindows = calculateSampleWindowsWithMaxDataPoints(
+    MAX_FEATURE_ANNOTATIONS,
+    dateRange
+  );
+
+  const sampledResults = [] as FeatureDataPoint[];
+  for (const timeWindow of sampleTimeWindows) {
+    const sampledDataPoint = getMiddleDataPoint(
+      getDataPointsInWindow(featureMissingDataPoints, timeWindow)
+    );
+    if (sampledDataPoint) {
+      sampledResults.push({
+        ...sampledDataPoint,
+        startTime: Math.max(timeWindow.startDate, sampledDataPoint.startTime),
+        endTime: Math.max(timeWindow.endDate, sampledDataPoint.endTime),
+      } as FeatureDataPoint);
+    }
+  }
+
+  return sampledResults;
+};
+
+const getMiddleDataPoint = (arr: any[]) => {
+  if (arr && arr.length > 0) {
+    return arr[Math.floor(arr.length / 2)];
+  }
+  return undefined;
+};
+
+const getDataPointsInWindow = (
+  dataPoints: FeatureDataPoint[],
+  timeWindow: DateRange
+) => {
+  return dataPoints.filter(
+    dataPoint =>
+      get(dataPoint, 'plotTime', 0) >= timeWindow.startDate &&
+      get(dataPoint, 'plotTime', 0) < timeWindow.endDate
+  );
+};
+
+const generateFeatureMissingAnnotations = (
+  featureMissingDataPoints: FeatureDataPoint[]
+) => {
+  return featureMissingDataPoints.map(feature => ({
+    dataValue: feature.plotTime,
+    details: `There is feature data point missing between ${moment(
+      feature.startTime
+    ).format('MM/DD/YY h:mm A')} and ${moment(feature.endTime).format(
+      'MM/DD/YY h:mm A'
+    )}`,
+    header: dateFormatter(feature.plotTime),
+  }));
+};
+
+const finalizeFeatureMissingDataAnnotations = (
+  featureMissingDataPoints: any[],
+  dateRange?: DateRange
+) => {
+  const sampledFeatureMissingDataPoints = sampleFeatureMissingDataPoints(
+    featureMissingDataPoints,
+    dateRange
+  );
+
+  return generateFeatureMissingAnnotations(sampledFeatureMissingDataPoints);
+};
+
+export const getFeatureMissingDataAnnotations = (
+  featureData: FeatureAggregationData[],
+  interval: number,
+  queryDateRange?: DateRange,
+  displayDateRange?: DateRange
+) => {
+  const featureMissingDataPoints = getFeatureDataPoints(
+    featureData,
+    interval,
+    queryDateRange
+  ).filter(dataPoint => get(dataPoint, 'isMissing', false));
+
+  const featureMissingAnnotations = finalizeFeatureMissingDataAnnotations(
+    featureMissingDataPoints,
+    displayDateRange
+  );
+  return featureMissingAnnotations;
+};
+
+// returns feature data points(missing/existing both included) for detector in a map like
+// {
+//    'featureName': data points[]
+// }
+export const getFeatureDataPointsForDetector = (
+  detector: Detector,
+  featuresData: { [key: string]: FeatureAggregationData[] },
+  interval: number,
+  dateRange?: DateRange
+) => {
+  let featureDataPointsForDetector = {} as {
+    [key: string]: FeatureDataPoint[];
+  };
+
+  const allFeatures = get(
+    detector,
+    'featureAttributes',
+    [] as FeatureAttributes[]
+  );
+  allFeatures.forEach(feature => {
+    //@ts-ignore
+    const featureData = featuresData[feature.featureId];
+    const featureDataPoints = getFeatureDataPoints(
+      featureData,
+      interval,
+      dateRange
+    );
+
+    featureDataPointsForDetector = {
+      ...featureDataPointsForDetector,
+      [feature.featureName]: featureDataPoints,
+    };
+  });
+  return featureDataPointsForDetector;
+};
+
+export const getFeatureMissingSeverities = (featuresDataPoint: {
+  [key: string]: FeatureDataPoint[];
+}): Map<MISSING_FEATURE_DATA_SEVERITY, string[]> => {
+  const featureMissingSeverities = new Map();
+
+  for (const [featureName, featureDatePoints] of Object.entries(
+    featuresDataPoint
+  )) {
+    // all feature data points should have same length
+    let featuresWithMissingData = [] as string[];
+    if (featureDatePoints.length <= 1) {
+      // return empty map
+      return featureMissingSeverities;
+    }
+    if (
+      featureDatePoints.length === 2 &&
+      featureDatePoints[0].isMissing &&
+      featureDatePoints[1].isMissing
+    ) {
+      if (featureMissingSeverities.has(MISSING_FEATURE_DATA_SEVERITY.YELLOW)) {
+        featuresWithMissingData = featureMissingSeverities.get(
+          MISSING_FEATURE_DATA_SEVERITY.YELLOW
+        );
+      }
+      featuresWithMissingData.push(featureName);
+      featureMissingSeverities.set(
+        MISSING_FEATURE_DATA_SEVERITY.YELLOW,
+        featuresWithMissingData
+      );
+      continue;
+    }
+
+    const orderedFeatureDataPoints = orderBy(
+      featureDatePoints,
+      // sort by plot time in desc order
+      dataPoint => get(dataPoint, 'plotTime', 0),
+      SORT_DIRECTION.DESC
+    );
+    // feature has >= 3 data points
+    if (
+      orderedFeatureDataPoints.length >= 3 &&
+      orderedFeatureDataPoints[0].isMissing &&
+      orderedFeatureDataPoints[1].isMissing
+    ) {
+      // at least latest 2 ones are missing
+      let currentSeverity = MISSING_FEATURE_DATA_SEVERITY.YELLOW;
+      if (orderedFeatureDataPoints[2].isMissing) {
+        // all the latest 3 ones are missing
+        currentSeverity = MISSING_FEATURE_DATA_SEVERITY.RED;
+      }
+      if (featureMissingSeverities.has(currentSeverity)) {
+        featuresWithMissingData = featureMissingSeverities.get(currentSeverity);
+      }
+      featuresWithMissingData.push(featureName);
+      featureMissingSeverities.set(currentSeverity, featuresWithMissingData);
+    }
+  }
+
+  return featureMissingSeverities;
+};
+
+export const getFeatureDataMissingMessageAndActionItem = (
+  featureMissingSev: MISSING_FEATURE_DATA_SEVERITY | undefined,
+  featuresWithMissingData: string[]
+) => {
+  switch (featureMissingSev) {
+    case MISSING_FEATURE_DATA_SEVERITY.YELLOW:
+      return {
+        message: `Recent data is missing for feature ${featuresWithMissingData.join(
+          ', '
+        )}, anomaly result is missing at the same time because of that.`,
+        actionItem:
+          'Make sure your data is ingested correctly. See the feature data shown below for more details.',
+      };
+    case MISSING_FEATURE_DATA_SEVERITY.RED:
+      return {
+        message: `Data ingestion is not going well for feature ${featuresWithMissingData.join(
+          ', '
+        )}, anomaly result is missing at the same time because of that.`,
+        actionItem: `${DETECTOR_INIT_FAILURES.NO_TRAINING_DATA.actionItem} See the feature data shown below for more details.`,
+      };
+    default:
+      return {
+        message: '',
+        actionItem: '',
+      };
+  }
 };

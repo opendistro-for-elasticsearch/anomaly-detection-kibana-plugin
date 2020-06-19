@@ -35,6 +35,8 @@ interface FeatureBreakDownProps {
   isLoading: boolean;
   dateRange: DateRange;
   featureDataSeriesName: string;
+  showFeatureMissingDataPointAnnotation?: boolean;
+  rawAnomalyResults?: Anomalies;
 }
 
 export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
@@ -46,7 +48,7 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
             <EuiTitle size="s" className="preview-title">
               <h4>{props.title}</h4>
             </EuiTitle>
-          <EuiSpacer size="s" />
+            <EuiSpacer size="s" />
           </EuiFlexItem>
         </EuiFlexGroup>
       ) : null}
@@ -59,6 +61,11 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
               featureData={get(
                 props,
                 `anomaliesResult.featureData.${feature.featureId}`,
+                []
+              )}
+              rawFeatureData={get(
+                props,
+                `rawAnomalyResults.featureData.${feature.featureId}`,
                 []
               )}
               annotations={props.annotations}
@@ -97,8 +104,13 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
               onEdit={() => {
                 focusOnFeatureAccordion(index);
               }}
+              detectorInterval={props.detector.detectionInterval.period}
+              showFeatureMissingDataPointAnnotation={
+                props.showFeatureMissingDataPointAnnotation
+              }
+              detectorEnabledTime={props.detector.enabledTime}
             />
-            <EuiSpacer size='m'/>
+            <EuiSpacer size="m" />
           </React.Fragment>
         )
       )}
