@@ -32,7 +32,7 @@ context('AD Dashboard', () => {
   });
 
   it('AD dashboard - single stopped detector', () => {
-    cy.mockGetDetectorOnAction('single_detector_response.json', () => {
+    cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
       cy.visit(buildAdAppUrl(DASHBOARD));
     });
 
@@ -55,5 +55,46 @@ context('AD Dashboard', () => {
     });
 
     cy.contains('h1', 'Create detector');
+  });
+
+  it('Filter by detector', () => {
+    cy.mockGetDetectorOnAction('multiple_detectors_response.json', () => {
+      cy.visit(buildAdAppUrl(DASHBOARD));
+    });
+
+    cy.contains('stopped-detector');
+    cy.contains('running-detector');
+
+    cy.get('[data-test-subj=comboBoxToggleListButton]')
+      .first()
+      .click({ force: true });
+    cy.get('.euiFilterSelectItem')
+      .first()
+      .click({ force: true });
+    cy.get('.euiPageSideBar').click({ force: true });
+
+    cy.contains('feature-required-detector'); // first one in the list returned by multiple_detectors_response.json
+    cy.contains('stopped-detector').should('not.be.visible');
+    cy.contains('running-detector').should('not.be.visible');
+  });
+
+  it('Filter by detector state', () => {
+    cy.mockGetDetectorOnAction('multiple_detectors_response.json', () => {
+      cy.visit(buildAdAppUrl(DASHBOARD));
+    });
+
+    cy.contains('stopped-detector');
+    cy.contains('running-detector');
+
+    cy.get('[data-test-subj=comboBoxToggleListButton]')
+      .eq(1)
+      .click({ force: true });
+    cy.get('.euiFilterSelectItem')
+      .first()
+      .click({ force: true });
+    cy.get('.euiPageSideBar').click({ force: true });
+
+    cy.contains('stopped-detector'); // because stopped is the first item in the detector state dropdown
+    cy.contains('running-detector').should('not.be.visible');
   });
 });

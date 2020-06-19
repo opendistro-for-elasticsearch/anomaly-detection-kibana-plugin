@@ -12,7 +12,15 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import { DETECTORS, INDICES_PATH, MAPPINGS_PATH } from '../utils/constants';
+import {
+  DETECTORS,
+  INDICES_PATH,
+  MAPPINGS_PATH,
+  START_PATH,
+  STOP_PATH,
+  SLASH,
+  SEARCH_PATH,
+} from '../utils/constants';
 import { buildAdApiUrl } from '../utils/helpers';
 
 Cypress.Commands.add('mockGetDetectorOnAction', function(
@@ -63,6 +71,20 @@ Cypress.Commands.add('mockSearchIndexOnAction', function(
   cy.wait('@getIndices');
 });
 
+Cypress.Commands.add('mockSearchOnAction', function(
+  fixtureFileName: string,
+  funcMockedOn: VoidFunction
+) {
+  cy.server();
+  cy.route('POST', buildAdApiUrl(SEARCH_PATH), `fixture:${fixtureFileName}`).as(
+    'searchES'
+  );
+
+  funcMockedOn();
+
+  cy.wait('@searchES');
+});
+
 Cypress.Commands.add('mockGetIndexMappingsOnAction', function(
   fixtureFileName: string,
   funcMockedOn: VoidFunction
@@ -77,4 +99,55 @@ Cypress.Commands.add('mockGetIndexMappingsOnAction', function(
   funcMockedOn();
 
   cy.wait('@getMappings');
+});
+
+Cypress.Commands.add('mockStartDetectorOnAction', function(
+  fixtureFileName: string,
+  detectorId: string,
+  funcMockedOn: VoidFunction
+) {
+  cy.server();
+  cy.route(
+    'POST',
+    buildAdApiUrl([DETECTORS, detectorId, START_PATH].join(SLASH)),
+    `fixture:${fixtureFileName}`
+  ).as('startDetector');
+
+  funcMockedOn();
+
+  cy.wait('@startDetector');
+});
+
+Cypress.Commands.add('mockStopDetectorOnAction', function(
+  fixtureFileName: string,
+  detectorId: string,
+  funcMockedOn: VoidFunction
+) {
+  cy.server();
+  cy.route(
+    'POST',
+    buildAdApiUrl([DETECTORS, detectorId, STOP_PATH].join(SLASH)),
+    `fixture:${fixtureFileName}`
+  ).as('stopDetector');
+
+  funcMockedOn();
+
+  cy.wait('@stopDetector');
+});
+
+Cypress.Commands.add('mockDeleteDetectorOnAction', function(
+  fixtureFileName: string,
+  detectorId: string,
+  funcMockedOn: VoidFunction
+) {
+  cy.server();
+  cy.route(
+    'DELETE',
+    buildAdApiUrl([DETECTORS, detectorId].join(SLASH)),
+    `fixture:${fixtureFileName}`
+  ).as('deleteDetector');
+
+  funcMockedOn();
+
+  cy.wait('@deleteDetector');
 });

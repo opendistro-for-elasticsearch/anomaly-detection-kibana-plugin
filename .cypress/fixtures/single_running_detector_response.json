@@ -8,7 +8,7 @@
         "description": "test",
         "indices": ["test-index"],
         "lastUpdateTime": 1587614056945,
-        "name": "name-0",
+        "name": "running-detector",
         "timeField": "timestamp",
         "detectionInterval": { "period": { "interval": 1, "unit": "Minutes" } },
         "windowDelay": { "period": { "interval": 1, "unit": "Minutes" } },
@@ -33,10 +33,10 @@
           "filters": [],
           "filterType": "simple_filter"
         },
-        "enabled": false,
+        "enabled": true,
         "totalAnomalies": 0,
         "lastActiveAnomaly": 1591593056550,
-        "curState": "Stopped"
+        "curState": "Running"
       }
     ]
   }
