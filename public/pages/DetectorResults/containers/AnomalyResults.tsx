@@ -105,7 +105,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   const initErrorMessage = get(initDetails, INIT_ERROR_MESSAGE_FIELD, '');
   const initActionItem = get(initDetails, INIT_ACTION_ITEM_FIELD, '');
 
-  const isInitializingNormaly = isDetectorInitializing && !isInitOvertime;
+  const isInitializingNormally = isDetectorInitializing && !isInitOvertime;
 
   const isDetectorFailed =
     detector &&
@@ -131,11 +131,12 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       title={
                         isDetectorUpdated
                           ? 'The detector configuration has changed since it was last stopped.'
-                          : isInitializingNormaly
+                          : isInitializingNormally
                           ? 'The detector is being initialized based on the latest configuration changes.'
                           : isInitOvertime
                           ? `Detector initialization is not complete because ${initErrorMessage}.`
-                          : `The detector is not initialized because ${get(
+                          : // detector has failure
+                            `The detector is not initialized because ${get(
                               getInitFailureMessageAndActionItem(
                                 //@ts-ignore
                                 detector.stateError
@@ -145,13 +146,14 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                             )}.`
                       }
                       color={
-                        isInitializingNormaly
+                        isInitializingNormally
                           ? 'primary'
                           : isInitOvertime || isDetectorUpdated
                           ? 'warning'
-                          : 'danger'
+                          : // detector has failure
+                            'danger'
                       }
-                      iconType={isInitializingNormaly ? 'iInCircle' : 'alert'}
+                      iconType={isInitializingNormally ? 'iInCircle' : 'alert'}
                       style={{ marginBottom: '20px' }}
                     >
                       {isDetectorUpdated ? (
@@ -159,7 +161,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                           Restart the detector to see accurate anomalies based
                           on configuration changes.
                         </p>
-                      ) : isInitializingNormaly ? (
+                      ) : isInitializingNormally ? (
                         <p>
                           After the initialization is complete, you will see the
                           anomaly results based on your latest configuration
@@ -168,7 +170,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       ) : isInitOvertime ? (
                         <p>{`${initActionItem}`}</p>
                       ) : (
-                        // detector failure case
+                        // detector has failure
                         <p>{`${get(
                           getInitFailureMessageAndActionItem(
                             //@ts-ignore
@@ -181,11 +183,12 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       <EuiButton
                         onClick={props.onSwitchToConfiguration}
                         color={
-                          isInitializingNormaly
+                          isInitializingNormally
                             ? 'primary'
                             : isInitOvertime || isDetectorUpdated
                             ? 'warning'
-                            : 'danger'
+                            : // detector has failure
+                              'danger'
                         }
                         style={{ marginRight: '8px' }}
                       >
