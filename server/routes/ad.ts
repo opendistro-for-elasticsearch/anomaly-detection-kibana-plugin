@@ -199,7 +199,7 @@ const getDetector = async (
       ...(detectorState !== undefined ? { curState: detectorState.state } : {}),
       ...(detectorState !== undefined
         ? //@ts-ignore
-          { initializationError: detectorState.error }
+          { stateError: detectorState.error }
         : {}),
     };
     return {

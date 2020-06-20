@@ -26,11 +26,10 @@ import { getMappings } from '../../../redux/reducers/elasticsearch';
 // 2. Gets index mapping
 export const useFetchDetectorInfo = (
   detectorId: string
-):
-{
+): {
   detector: Detector;
   hasError: boolean;
-  isLoadingDetector: boolean; 
+  isLoadingDetector: boolean;
 } => {
   const dispatch = useDispatch();
   const detector = useSelector(
