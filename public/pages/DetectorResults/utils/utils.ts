@@ -45,8 +45,8 @@ const isDetectorInitOverTime = (currentTime: Moment, detector: Detector) => {
   return (
     detector &&
     detector.curState === DETECTOR_STATE.INIT &&
-    detector.initializationError &&
-    !detector.initializationError.includes(NO_RCF_MODEL_ERROR_MESSAGE) &&
+    detector.stateError &&
+    !detector.stateError.includes(NO_RCF_MODEL_ERROR_MESSAGE) &&
     //@ts-ignore
     currentTime
       .subtract(
@@ -63,16 +63,14 @@ const getInitOverTimeDetails = (detector: Detector) => {
     [INIT_ERROR_MESSAGE_FIELD]: '',
     [INIT_ACTION_ITEM_FIELD]: '',
   };
-  if (!detector.initializationError) {
+  if (!detector.stateError) {
     return result;
   }
-  if (detector.initializationError.includes(NO_FULL_SHINGLE_ERROR_MESSAGE)) {
+  if (detector.stateError.includes(NO_FULL_SHINGLE_ERROR_MESSAGE)) {
     result[INIT_ERROR_MESSAGE_FIELD] = 'of insufficient data';
     result[INIT_ACTION_ITEM_FIELD] =
       DETECTOR_INIT_FAILURES.NO_TRAINING_DATA.actionItem;
-  } else if (
-    detector.initializationError.includes(NO_DATA_IN_WINDOW_ERROR_MESSAGE)
-  ) {
+  } else if (detector.stateError.includes(NO_DATA_IN_WINDOW_ERROR_MESSAGE)) {
     result[INIT_ERROR_MESSAGE_FIELD] = 'no data could be found';
     result[INIT_ACTION_ITEM_FIELD] =
       'Make sure your source index has sufficient data in the current detector interval and try again.';

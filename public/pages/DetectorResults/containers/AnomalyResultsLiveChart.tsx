@@ -165,7 +165,7 @@ export const AnomalyResultsLiveChart = (
         clearInterval(intervalId);
       };
     }
-  }, []);
+  }, [props.detector]);
 
   const showLoader = useDelayedLoader(isLoading);
 
@@ -381,7 +381,15 @@ export const AnomalyResultsLiveChart = (
             </EuiFlexItem>
           </EuiFlexGroup>
         ) : (
-          <EuiText>{`Not available when the detector is ${props.detector.curState.toLowerCase()}.`}</EuiText>
+          <EuiText>
+            {'Not available when the detector ' +
+              `${
+                props.detector.curState === DETECTOR_STATE.INIT_FAILURE ||
+                props.detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE
+                  ? 'initialization has failed.'
+                  : `is ${props.detector.curState.toLowerCase()}.`
+              }`}
+          </EuiText>
         )}
       </ContentPanel>
     </React.Fragment>

@@ -24,7 +24,7 @@ import {
 } from '@elastic/eui';
 import { get } from 'lodash';
 import React, { useEffect, Fragment } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 //@ts-ignore
 import chrome from 'ui/chrome';
@@ -40,6 +40,9 @@ import {
   INIT_ERROR_MESSAGE_FIELD,
   INIT_ACTION_ITEM_FIELD,
 } from '../utils/utils';
+import { getDetector } from '../../../redux/reducers/ad';
+import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
+import { getInitFailureMessageAndActionItem } from '../../DetectorDetail/utils/helpers';
 
 interface AnomalyResultsProps extends RouteComponentProps {
   detectorId: string;
@@ -48,6 +51,7 @@ interface AnomalyResultsProps extends RouteComponentProps {
 }
 
 export function AnomalyResults(props: AnomalyResultsProps) {
+  const dispatch = useDispatch();
   const detectorId = props.detectorId;
   const detector = useSelector(
     (state: AppState) => state.ad.detectors[detectorId]
@@ -60,6 +64,19 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       { text: detector ? detector.name : '' },
     ]);
   }, []);
+
+  const fetchDetector = async () => {
+    await dispatch(getDetector(detectorId));
+  };
+
+  useEffect(() => {
+    if (detector && detector.curState === DETECTOR_STATE.INIT) {
+      const id = setInterval(fetchDetector, MIN_IN_MILLI_SECS);
+      return () => {
+        clearInterval(id);
+      };
+    }
+  }, [detector]);
 
   const monitors = useSelector((state: AppState) => state.alerting.monitors);
   const monitor = get(monitors, `${detectorId}.0`);
@@ -78,17 +95,22 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     // @ts-ignore
     isDetectorPaused && detector.lastUpdateTime > detector.disabledTime;
 
-  const isDetectorInitializingAgain =
-    detector &&
-    detector.curState === DETECTOR_STATE.INIT &&
-    detector.enabled &&
-    detector.disabledTime;
+  const isDetectorInitializing =
+    detector && detector.curState === DETECTOR_STATE.INIT;
 
   const initializationInfo = getDetectorInitializationInfo(detector);
+
   const isInitOvertime = get(initializationInfo, IS_INIT_OVERTIME_FIELD, false);
   const initDetails = get(initializationInfo, INIT_DETAILS_FIELD, {});
   const initErrorMessage = get(initDetails, INIT_ERROR_MESSAGE_FIELD, '');
   const initActionItem = get(initDetails, INIT_ACTION_ITEM_FIELD, '');
+
+  const isInitializingNormally = isDetectorInitializing && !isInitOvertime;
+
+  const isDetectorFailed =
+    detector &&
+    (detector.curState === DETECTOR_STATE.INIT_FAILURE ||
+      detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE);
 
   return (
     <Fragment>
@@ -99,19 +121,39 @@ export function AnomalyResults(props: AnomalyResultsProps) {
             <Fragment>
               {isDetectorRunning ||
               isDetectorPaused ||
-              isDetectorInitializingAgain ? (
+              isDetectorInitializing ||
+              isDetectorFailed ? (
                 <Fragment>
-                  {isDetectorUpdated || isDetectorInitializingAgain ? (
+                  {isDetectorUpdated ||
+                  isDetectorInitializing ||
+                  isDetectorFailed ? (
                     <EuiCallOut
                       title={
                         isDetectorUpdated
                           ? 'The detector configuration has changed since it was last stopped.'
-                          : !isInitOvertime
-                          ? 'The detector is being re-initialized based on the latest configuration changes.'
-                          : `Detector initialization is not complete because ${initErrorMessage}.`
+                          : isInitializingNormally
+                          ? 'The detector is being initialized based on the latest configuration changes.'
+                          : isInitOvertime
+                          ? `Detector initialization is not complete because ${initErrorMessage}.`
+                          : // detector has failure
+                            `The detector is not initialized because ${get(
+                              getInitFailureMessageAndActionItem(
+                                //@ts-ignore
+                                detector.stateError
+                              ),
+                              'cause',
+                              ''
+                            )}.`
                       }
-                      color="warning"
-                      iconType="alert"
+                      color={
+                        isInitializingNormally
+                          ? 'primary'
+                          : isInitOvertime || isDetectorUpdated
+                          ? 'warning'
+                          : // detector has failure
+                            'danger'
+                      }
+                      iconType={isInitializingNormally ? 'iInCircle' : 'alert'}
                       style={{ marginBottom: '20px' }}
                     >
                       {isDetectorUpdated ? (
@@ -119,25 +161,42 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                           Restart the detector to see accurate anomalies based
                           on configuration changes.
                         </p>
-                      ) : !isInitOvertime ? (
+                      ) : isInitializingNormally ? (
                         <p>
                           After the initialization is complete, you will see the
                           anomaly results based on your latest configuration
                           changes.
                         </p>
-                      ) : (
+                      ) : isInitOvertime ? (
                         <p>{`${initActionItem}`}</p>
+                      ) : (
+                        // detector has failure
+                        <p>{`${get(
+                          getInitFailureMessageAndActionItem(
+                            //@ts-ignore
+                            detector.stateError
+                          ),
+                          'actionItem',
+                          ''
+                        )}`}</p>
                       )}
                       <EuiButton
                         onClick={props.onSwitchToConfiguration}
-                        color="warning"
+                        color={
+                          isInitializingNormally
+                            ? 'primary'
+                            : isInitOvertime || isDetectorUpdated
+                            ? 'warning'
+                            : // detector has failure
+                              'danger'
+                        }
                         style={{ marginRight: '8px' }}
                       >
                         View detector configuration
                       </EuiButton>
-                      {isDetectorUpdated ? (
+                      {isDetectorUpdated || isDetectorFailed ? (
                         <EuiButton
-                          color="warning"
+                          color={isDetectorFailed ? 'danger' : 'warning'}
                           onClick={props.onStartDetector}
                           iconType={'play'}
                           style={{ marginLeft: '8px' }}
@@ -157,7 +216,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     }
                   />
                 </Fragment>
-              ) : detector && detector.curState !== DETECTOR_STATE.RUNNING ? (
+              ) : detector ? (
                 <Fragment>
                   <DetectorStateDetails
                     detectorId={detectorId}

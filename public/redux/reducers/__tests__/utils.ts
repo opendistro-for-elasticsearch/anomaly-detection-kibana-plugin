@@ -105,7 +105,7 @@ export const getRandomDetector = (isCreate: boolean = true): Detector => {
       .subtract(1, 'days')
       .valueOf(),
     curState: DETECTOR_STATE.INIT,
-    initializationError: '',
+    stateError: '',
   };
 };
 

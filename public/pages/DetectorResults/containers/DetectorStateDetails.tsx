@@ -13,11 +13,8 @@
  * permissions and limitations under the License.
  */
 import React, { useEffect } from 'react';
-import { getInitFailureMessageAndActionItem } from '../../DetectorDetail/utils/helpers';
 import { DETECTOR_STATE } from '../../../utils/constants';
 import { DetectorStopped } from '../components/DetectorState/DetectorStopped';
-import { DetectorInitializing } from '../components/DetectorState/DetectorInitializing';
-import { DetectorInitializationFailure } from '../components/DetectorState/DetectorInitializationFailure';
 import { DetectorFeatureRequired } from '../components/DetectorState/DetectorFeatureRequired';
 import { DetectorUnknownState } from '../components/DetectorState/DetectorUnknownState';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,26 +43,6 @@ export const DetectorStateDetails = (props: DetectorStateDetailsProp) => {
       return (
         <DetectorStopped
           onStartDetector={props.onStartDetector}
-          onSwitchToConfiguration={props.onSwitchToConfiguration}
-        />
-      );
-    case DETECTOR_STATE.INIT:
-      return (
-        <DetectorInitializing
-          detector={detector}
-          onSwitchToConfiguration={props.onSwitchToConfiguration}
-        />
-      );
-    case DETECTOR_STATE.UNEXPECTED_FAILURE:
-    case DETECTOR_STATE.INIT_FAILURE:
-      const failureDetail = getInitFailureMessageAndActionItem(
-        detector.initializationError
-      );
-      return (
-        <DetectorInitializationFailure
-          detector={detector}
-          onStartDetector={props.onStartDetector}
-          failureDetail={failureDetail}
           onSwitchToConfiguration={props.onSwitchToConfiguration}
         />
       );

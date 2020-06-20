@@ -85,6 +85,7 @@ export type UiMetaData = {
     [key: string]: UiFeature;
   };
 };
+
 export type Detector = {
   primaryTerm: number;
   seqNo: number;
@@ -103,7 +104,7 @@ export type Detector = {
   enabledTime?: number;
   disabledTime?: number;
   curState: DETECTOR_STATE;
-  initializationError: string;
+  stateError: string;
 };
 
 export type DetectorListItem = {
