@@ -197,7 +197,7 @@ export const getDetectorsWithJob = (
   detectorsWithJobResponses: any[]
 ): any[] => {
   const finalDetectorsWithJobResponses = cloneDeep(detectorsWithJobResponses);
-  const resultDetetorWithJobs = [] as any[];
+  const resultDetectorWithJobs = [] as any[];
   finalDetectorsWithJobResponses.forEach(detectorWithJobResponse => {
     const resp = {
       ...detectorWithJobResponse.anomaly_detector,
@@ -206,8 +206,8 @@ export const getDetectorsWithJob = (
       seqNo: detectorWithJobResponse._seq_no,
       adJob: { ...detectorWithJobResponse.anomaly_detector_job },
     };
-    resultDetetorWithJobs.push(convertDetectorKeysToCamelCase(resp));
+    resultDetectorWithJobs.push(convertDetectorKeysToCamelCase(resp));
   });
 
-  return resultDetetorWithJobs;
+  return resultDetectorWithJobs;
 };
