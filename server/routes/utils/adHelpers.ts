@@ -192,3 +192,22 @@ export const getFinalDetectorStates = (
 
   return finalDetectorStates;
 };
+
+export const getDetectorsWithJob = (
+  detectorsWithJobResponses: any[]
+): any[] => {
+  const finalDetectorsWithJobResponses = cloneDeep(detectorsWithJobResponses);
+  const resultDetectorWithJobs = [] as any[];
+  finalDetectorsWithJobResponses.forEach(detectorWithJobResponse => {
+    const resp = {
+      ...detectorWithJobResponse.anomaly_detector,
+      id: detectorWithJobResponse._id,
+      primaryTerm: detectorWithJobResponse._primary_term,
+      seqNo: detectorWithJobResponse._seq_no,
+      adJob: { ...detectorWithJobResponse.anomaly_detector_job },
+    };
+    resultDetectorWithJobs.push(convertDetectorKeysToCamelCase(resp));
+  });
+
+  return resultDetectorWithJobs;
+};
