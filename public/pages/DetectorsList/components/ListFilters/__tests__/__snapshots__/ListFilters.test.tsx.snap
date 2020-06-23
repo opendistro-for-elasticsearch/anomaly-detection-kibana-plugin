@@ -49,6 +49,7 @@ exports[`<ListFilters /> spec Empty results renders component with empty message
       aria-expanded="false"
       aria-haspopup="listbox"
       class="euiComboBox euiComboBox--fullWidth"
+      data-test-subj="detectorStateFilter"
       role="combobox"
     >
       <div
@@ -116,6 +117,7 @@ exports[`<ListFilters /> spec Empty results renders component with empty message
       aria-expanded="false"
       aria-haspopup="listbox"
       class="euiComboBox euiComboBox--fullWidth"
+      data-test-subj="indicesFilter"
       role="combobox"
     >
       <div

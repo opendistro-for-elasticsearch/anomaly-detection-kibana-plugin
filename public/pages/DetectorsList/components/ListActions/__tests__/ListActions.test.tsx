@@ -24,8 +24,11 @@ describe('<ListActions /> spec', () => {
   const defaultProps = {
     onStartDetectors: jest.fn(),
     onStopDetectors: jest.fn(),
+    onDeleteDetectors: jest.fn(),
     detectors: [],
     isActionsDisabled: true,
+    isStartDisabled: false,
+    isStopDisabled: false,
   };
   describe('List actions', () => {
     console.error = jest.fn();
@@ -43,7 +46,7 @@ describe('<ListActions /> spec', () => {
       const { getByTestId } = render(
         <ListActions {...defaultProps} isActionsDisabled={false} />
       );
-      fireEvent.click(getByTestId('actionsButton'));
+      fireEvent.click(getByTestId('listActionsButton'));
       await wait();
       fireEvent.click(getByTestId('startDetectors'));
       expect(defaultProps.onStartDetectors).toHaveBeenCalled();
@@ -52,10 +55,19 @@ describe('<ListActions /> spec', () => {
       const { getByTestId } = render(
         <ListActions {...defaultProps} isActionsDisabled={false} />
       );
-      fireEvent.click(getByTestId('actionsButton'));
+      fireEvent.click(getByTestId('listActionsButton'));
       await wait();
       fireEvent.click(getByTestId('stopDetectors'));
       expect(defaultProps.onStopDetectors).toHaveBeenCalled();
+    });
+    test('should call onDeleteDetectors when clicking on delete action', async () => {
+      const { getByTestId } = render(
+        <ListActions {...defaultProps} isActionsDisabled={false} />
+      );
+      fireEvent.click(getByTestId('listActionsButton'));
+      await wait();
+      fireEvent.click(getByTestId('deleteDetectors'));
+      expect(defaultProps.onDeleteDetectors).toHaveBeenCalled();
     });
   });
 });
