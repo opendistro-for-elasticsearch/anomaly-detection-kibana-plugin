@@ -20,7 +20,7 @@
     "start-cy-server": "yarn start --no-base-path --oss",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "test:e2e": "WAIT_ON_TIMEOUT=900000 start-server-and-test 'yarn start-cy-server' http-get://localhost:5601/app/opendistro-anomaly-detection-kibana 'yarn cy:run'"
+    "test:e2e": "CHOKIDAR_USEPOLLING=1 CYPRESS_responseTimeout=180000 WAIT_ON_TIMEOUT=900000 start-server-and-test 'yarn start-cy-server' http-get://localhost:5601/app/opendistro-anomaly-detection-kibana 'echo sleeping to wait for server to get ready && sleep 180 && yarn cy:run'"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,md}": [

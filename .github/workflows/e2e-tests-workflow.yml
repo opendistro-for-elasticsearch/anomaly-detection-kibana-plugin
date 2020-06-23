@@ -1,0 +1,67 @@
+name: E2E tests workflow
+on:
+  push:
+    branches:
+      - master
+jobs:
+  tests:
+    name: Run e2e tests
+    strategy:
+      matrix:
+        os: [ubuntu-16.04] # use ubuntu-16.04 as required by cypress: https://github.com/marketplace/actions/cypress-io#important
+        java: [14]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Pull and Run Docker
+        run: |
+          version=1.8.0
+          echo $version
+          if docker pull opendistroforelasticsearch/opendistroforelasticsearch:$version
+          then
+            echo "FROM opendistroforelasticsearch/opendistroforelasticsearch:$version" >> Dockerfile
+            ## The ESRestTest Client uses http by default.
+            ## Need to disable the security plugin to call the rest api over http.
+            echo "RUN if [ -d /usr/share/elasticsearch/plugins/opendistro_security ]; then /usr/share/elasticsearch/bin/elasticsearch-plugin remove opendistro_security; fi" >> Dockerfile
+            docker build -t odfe-ad:test .
+          fi
+      - name: Run Docker Image
+        run: |
+          docker run -p 9200:9200 -d -p 9600:9600 -e "discovery.type=single-node" odfe-ad:test
+          sleep 90
+          curl -XGET http://localhost:9200/_cat/plugins
+
+      - name: Checkout Kibana
+        uses: actions/checkout@v2
+        with:
+          repository: opendistro-for-elasticsearch/kibana-oss
+          ref: 7.7.0
+          token: ${{ secrets.KIBANA_OSS_ACCESS }}
+          path: kibana
+      - name: Get node and yarn versions
+        id: versions_step
+        run: |
+          echo "::set-output name=node_version::$(node -p "(require('./kibana/package.json').engines.node).match(/[.0-9]+/)[0]")"
+          echo "::set-output name=yarn_version::$(node -p "(require('./kibana/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.versions_step.outputs.node_version }}
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install correct yarn version for Kibana
+        run: |
+          npm uninstall -g yarn
+          echo "Installing yarn ${{ steps.versions_step.outputs.yarn_version }}"
+          npm i -g yarn@${{ steps.versions_step.outputs.yarn_version }}
+      - name: Checkout Anomaly Detection Kibana plugin
+        uses: actions/checkout@v2
+        with:
+          path: kibana/plugins/anomaly-detection-kibana-plugin
+      - name: Bootstrap the plugin
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn kbn bootstrap
+      - name: Run e2e tests
+        uses: cypress-io/github-action@v1
+        with:
+          working-directory: kibana/plugins/anomaly-detection-kibana-plugin
+          command: yarn test:e2e
