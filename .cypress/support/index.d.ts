@@ -26,8 +26,27 @@ declare namespace Cypress {
       fixtureFileName: string,
       funcMockedOn: VoidFunction
     ): Chainable<any>;
+    mockSearchOnAction(
+      fixtureFileName: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
     mockGetIndexMappingsOnAction(
       fixtureFileName: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+    mockStartDetectorOnAction(
+      fixtureFileName: string,
+      detectorId: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+    mockStopDetectorOnAction(
+      fixtureFileName: string,
+      detectorId: string,
+      funcMockedOn: VoidFunction
+    ): Chainable<any>;
+    mockDeleteDetectorOnAction(
+      fixtureFileName: string,
+      detectorId: string,
       funcMockedOn: VoidFunction
     ): Chainable<any>;
   }

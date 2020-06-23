@@ -52,6 +52,7 @@ export const ListFilters = (props: ListFiltersProps) => (
     <EuiFlexItem>
       <EuiComboBox
         id="selectedDetectorStates"
+        data-test-subj="detectorStateFilter"
         placeholder="All detector states"
         isClearable={true}
         singleSelection={false}
@@ -68,6 +69,7 @@ export const ListFilters = (props: ListFiltersProps) => (
     <EuiFlexItem>
       <EuiComboBox
         id="selectedIndices"
+        data-test-subj="indicesFilter"
         placeholder="All indices"
         isClearable={true}
         singleSelection={false}

@@ -628,7 +628,11 @@ export const DetectorList = (props: ListProps) => {
               isStartDisabled={listActionsState.isStartDisabled}
               isStopDisabled={listActionsState.isStopDisabled}
             />,
-            <EuiButton fill href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}>
+            <EuiButton
+              data-test-subj="addDetector"
+              fill
+              href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
+            >
               Create detector
             </EuiButton>,
           ]}

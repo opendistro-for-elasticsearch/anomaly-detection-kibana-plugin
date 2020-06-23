@@ -41,10 +41,10 @@ export const ListActions = (props: ListActionsProps) => {
           id="actionsPopover"
           button={
             <EuiButton
+              data-test-subj="listActionsButton"
               disabled={props.isActionsDisabled}
               iconType="arrowDown"
               iconSide="right"
-              data-test-subj="actionsButton"
               onClick={() => setIsOpen(!isOpen)}
             >
               Actions

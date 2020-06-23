@@ -1,0 +1,135 @@
+{
+  "ok": true,
+  "response": {
+    "totalDetectors": 1,
+    "detectorList": [
+      {
+        "id": "ulgqpXEBqtadYz7j2MHG",
+        "description": "test",
+        "indices": ["feature-required-index"],
+        "lastUpdateTime": 1587614056945,
+        "name": "feature-required-detector",
+        "timeField": "timestamp",
+        "detectionInterval": { "period": { "interval": 1, "unit": "Minutes" } },
+        "windowDelay": { "period": { "interval": 1, "unit": "Minutes" } },
+        "schemaVersion": 0,
+        "filterQuery": { "match_all": { "boost": 1 } },
+        "featureAttributes": [],
+        "uiMetadata": {
+          "features": {},
+          "filters": [],
+          "filterType": "simple_filter"
+        },
+        "enabled": false,
+        "totalAnomalies": 0,
+        "lastActiveAnomaly": 1591593056550,
+        "curState": "Feature required"
+      },
+      {
+        "id": "ulgqpXEBqtadYz6j2MHG",
+        "description": "test",
+        "indices": ["initializing-index"],
+        "lastUpdateTime": 1587614056945,
+        "name": "initializing-detector",
+        "timeField": "timestamp",
+        "detectionInterval": { "period": { "interval": 1, "unit": "Minutes" } },
+        "windowDelay": { "period": { "interval": 1, "unit": "Minutes" } },
+        "schemaVersion": 0,
+        "filterQuery": { "match_all": { "boost": 1 } },
+        "featureAttributes": [
+          {
+            "featureId": "1mMspXEBcngjFp58AS_u",
+            "featureName": "test-f",
+            "featureEnabled": true,
+            "aggregationQuery": { "aa": { "sum": { "field": "value" } } }
+          }
+        ],
+        "uiMetadata": {
+          "features": {
+            "aa": {
+              "aggregationBy": "sum",
+              "aggregationOf": "value",
+              "featureType": "simple_aggs"
+            }
+          },
+          "filters": [],
+          "filterType": "simple_filter"
+        },
+        "enabled": true,
+        "totalAnomalies": 0,
+        "lastActiveAnomaly": 1591593056550,
+        "curState": "Initializing"
+      },
+      {
+        "id": "ulgqpXEBqtadYz8j2MHG",
+        "description": "test",
+        "indices": ["running-index"],
+        "lastUpdateTime": 1587614056945,
+        "name": "running-detector",
+        "timeField": "timestamp",
+        "detectionInterval": { "period": { "interval": 1, "unit": "Minutes" } },
+        "windowDelay": { "period": { "interval": 1, "unit": "Minutes" } },
+        "schemaVersion": 0,
+        "filterQuery": { "match_all": { "boost": 1 } },
+        "featureAttributes": [
+          {
+            "featureId": "1mMspXEBcngjFp58AS_u",
+            "featureName": "test-f",
+            "featureEnabled": true,
+            "aggregationQuery": { "aa": { "sum": { "field": "value" } } }
+          }
+        ],
+        "uiMetadata": {
+          "features": {
+            "aa": {
+              "aggregationBy": "sum",
+              "aggregationOf": "value",
+              "featureType": "simple_aggs"
+            }
+          },
+          "filters": [],
+          "filterType": "simple_filter"
+        },
+        "enabled": true,
+        "totalAnomalies": 0,
+        "lastActiveAnomaly": 1591593056550,
+        "curState": "Running"
+      },
+      {
+        "id": "ulgqpXEBqtadYz9j2MHG",
+        "description": "test",
+        "indices": ["stopped-index"],
+        "lastUpdateTime": 1587614056945,
+        "name": "stopped-detector",
+        "timeField": "timestamp",
+        "detectionInterval": { "period": { "interval": 1, "unit": "Minutes" } },
+        "windowDelay": { "period": { "interval": 1, "unit": "Minutes" } },
+        "schemaVersion": 0,
+        "filterQuery": { "match_all": { "boost": 1 } },
+        "featureAttributes": [
+          {
+            "featureId": "1mMspXEBcngjFp58AS_u",
+            "featureName": "test-f",
+            "featureEnabled": true,
+            "aggregationQuery": { "aa": { "sum": { "field": "value" } } }
+          }
+        ],
+        "uiMetadata": {
+          "features": {
+            "aa": {
+              "aggregationBy": "sum",
+              "aggregationOf": "value",
+              "featureType": "simple_aggs"
+            }
+          },
+          "filters": [],
+          "filterType": "simple_filter"
+        },
+        "enabled": false,
+        "totalAnomalies": 0,
+        "lastActiveAnomaly": 1591593056550,
+        "curState": "Stopped"
+      }
+    ]
+  }
+}

@@ -136,9 +136,9 @@ export function DashboardOverview() {
     if (allDetectorsSelected) {
       detectorsToFilter = cloneDeep(Object.values(allDetectorList));
     } else {
-      detectorsToFilter = cloneDeep(Object.values(allDetectorList)).filter(
-        detectorItem => selectedNameList.includes(detectorItem.name)
-      );
+      detectorsToFilter = cloneDeep(
+        Object.values(allDetectorList)
+      ).filter(detectorItem => selectedNameList.includes(detectorItem.name));
     }
 
     let filteredDetectorItemsByNamesAndIndex = detectorsToFilter;
@@ -215,6 +215,7 @@ export function DashboardOverview() {
             <EuiFlexItem>
               <EuiComboBox
                 id="detectorFilter"
+                data-test-subj="detectorFilter"
                 placeholder={ALL_DETECTORS_MESSAGE}
                 options={getDetectorOptions(allDetectorList)}
                 onChange={handleDetectorsFilterChange}
@@ -226,6 +227,7 @@ export function DashboardOverview() {
             <EuiFlexItem>
               <EuiComboBox
                 id="detectorStateFilter"
+                data-test-subj="detectorStateFilter"
                 placeholder={ALL_DETECTOR_STATES_MESSAGE}
                 options={getDetectorStateOptions()}
                 onChange={handleDetectorStateFilterChange}
@@ -237,6 +239,7 @@ export function DashboardOverview() {
             <EuiFlexItem>
               <EuiComboBox
                 id="indicesFilter"
+                data-test-subj="indicesFilter"
                 placeholder={ALL_INDICES_MESSAGE}
                 options={getVisibleOptions(visibleIndices, visibleAliases)}
                 onChange={handleIndicesFilterChange}

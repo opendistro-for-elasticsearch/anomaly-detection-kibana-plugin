@@ -1,0 +1,15 @@
+{
+  "_index": ".opendistro-anomaly-detectors",
+  "_type": "_doc",
+  "_id": "ulgqpXEBqtadYz9j2MHG",
+  "_version": 2,
+  "result": "deleted",
+  "forced_refresh": true,
+  "_shards": {
+    "total": 2,
+    "successful": 2,
+    "failed": 0
+  },
+  "_seq_no": 6,
+  "_primary_term": 1
+}

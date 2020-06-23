@@ -135,6 +135,7 @@ export const ConfirmDeleteDetectorsModal = (
           </EuiText>
           <EuiSpacer size="s" />
           <EuiFieldText
+            data-test-subj="typeDeleteField"
             fullWidth={true}
             placeholder="delete"
             onChange={e => {
