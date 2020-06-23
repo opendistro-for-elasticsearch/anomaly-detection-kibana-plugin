@@ -17,7 +17,7 @@ exports[`<ListActions /> spec List actions renders component when disabled 1`] =
       >
         <button
           class="euiButton euiButton--primary euiButton--iconRight"
-          data-test-subj="actionsButton"
+          data-test-subj="listActionsButton"
           disabled=""
           type="button"
         >
@@ -64,7 +64,7 @@ exports[`<ListActions /> spec List actions renders component when enabled 1`] = 
       >
         <button
           class="euiButton euiButton--primary euiButton--iconRight"
-          data-test-subj="actionsButton"
+          data-test-subj="listActionsButton"
           type="button"
         >
           <span
