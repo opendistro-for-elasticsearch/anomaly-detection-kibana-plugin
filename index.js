@@ -17,8 +17,9 @@ import 'babel-polyfill';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { ADPlugin } from './server/plugin';
+import { DEFAULT_APP_CATEGORIES } from '../../src/core/utils';
 
-export default kibana => {
+export default (kibana) => {
   return new kibana.Plugin({
     require: ['kibana', 'elasticsearch'],
     name: 'opendistro-anomaly-detection-kibana',
@@ -30,11 +31,12 @@ export default kibana => {
         main: 'plugins/opendistro-anomaly-detection-kibana/app',
         icon:
           'plugins/opendistro-anomaly-detection-kibana/images/anomaly_detection_icon.svg',
+        category: DEFAULT_APP_CATEGORIES.kibana,
       },
       styleSheetPaths: [
         resolve(__dirname, 'public/app.scss'),
         resolve(__dirname, 'public/app.css'),
-      ].find(p => existsSync(p)),
+      ].find((p) => existsSync(p)),
       hacks: [],
     },
 
@@ -61,9 +63,9 @@ export default kibana => {
         logger: {
           get() {
             return {
-              info: log => console.log(log),
-              error: log => console.error(log),
-              warn: log => console.warn(log),
+              info: (log) => console.log(log),
+              error: (log) => console.error(log),
+              warn: (log) => console.warn(log),
             };
           },
         },
