@@ -21,6 +21,7 @@ import { default as createRouter, Router } from './router';
 import registerADRoutes from './routes/ad';
 import registerAlertingRoutes from './routes/alerting';
 import registerElasticsearchRoute from './routes/elasticsearch';
+import registerSampleDataRoutes from './routes/sampleData';
 
 interface CoreSetup {
   elasticsearch: Legacy.Plugins.elasticsearch.Plugin;
@@ -46,6 +47,7 @@ export class ADPlugin {
     registerElasticsearchRoute(apiRouter);
     registerADRoutes(apiRouter);
     registerAlertingRoutes(apiRouter);
+    registerSampleDataRoutes(apiRouter);
   }
 
   public start() {}

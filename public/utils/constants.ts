@@ -24,6 +24,7 @@ export enum DATA_TYPES {
 export const BREADCRUMBS = Object.freeze({
   ANOMALY_DETECTOR: { text: 'Anomaly detection', href: '#/' },
   DETECTORS: { text: 'Detectors', href: '#/detectors' },
+  SAMPLE_DATA: { text: 'Sample data', href: '#/sample-data' },
   CREATE_DETECTOR: { text: 'Create detector' },
   EDIT_DETECTOR: { text: 'Edit detector' },
   DASHBOARD: { text: 'Dashboard', href: '#/' },
@@ -33,6 +34,7 @@ export const BREADCRUMBS = Object.freeze({
 export const APP_PATH = {
   DASHBOARD: '/dashboard',
   LIST_DETECTORS: '/detectors',
+  SAMPLE_DATA: '/sample-data',
   CREATE_DETECTOR: '/create-ad/',
   EDIT_DETECTOR: '/detectors/:detectorId/edit',
   EDIT_FEATURES: '/detectors/:detectorId/features/',
@@ -55,6 +57,12 @@ export enum DETECTOR_STATE {
   FEATURE_REQUIRED = 'Feature required',
   INIT_FAILURE = 'Initialization failure',
   UNEXPECTED_FAILURE = 'Unexpected failure',
+}
+
+export enum SAMPLE_TYPE {
+  HTTP_RESPONSES = 'http-responses',
+  HOST_HEALTH = 'host-health',
+  ECOMMERCE = 'ecommerce',
 }
 
 export const MAX_FEATURE_NUM = 5;

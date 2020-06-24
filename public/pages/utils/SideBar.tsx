@@ -42,6 +42,9 @@ export class SideBar extends Component<{}, SideBarState> {
           this.createItem('Detectors', 2, {
             href: `#${APP_PATH.LIST_DETECTORS}`,
           }),
+          this.createItem('Sample Data', 3, {
+            href: `#${APP_PATH.SAMPLE_DATA}`,
+          }),
         ],
       },
     ];

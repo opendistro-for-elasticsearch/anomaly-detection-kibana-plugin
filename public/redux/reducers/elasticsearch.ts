@@ -30,6 +30,9 @@ const GET_INDICES = 'elasticsearch/GET_INDICES';
 const GET_ALIASES = 'elasticsearch/GET_ALIASES';
 const GET_MAPPINGS = 'elasticsearch/GET_MAPPINGS';
 const SEARCH_ES = 'elasticsearch/SEARCH_ES';
+const CREATE_INDEX = 'elasticsearch/CREATE_INDEX';
+const BULK = 'elasticsearch/BULK';
+const DELETE_INDEX = 'elasticsearch/DELETE_INDEX';
 
 export type Mappings = {
   [key: string]: any;
@@ -170,7 +173,76 @@ const reducer = handleActions<ElasticsearchState>(
         ...state,
         requesting: false,
         errorMessage: get(action, 'error.data.error', action.error),
-        dataTypes: {}
+        dataTypes: {},
+      }),
+    },
+    [CREATE_INDEX]: {
+      REQUEST: (state: ElasticsearchState): ElasticsearchState => {
+        return { ...state, requesting: true, errorMessage: '' };
+      },
+      SUCCESS: (
+        state: ElasticsearchState,
+        action: APIResponseAction
+      ): ElasticsearchState => {
+        return {
+          ...state,
+          requesting: false,
+          indices: state.indices.concat(action.result.data.response.indices),
+        };
+      },
+      FAILURE: (
+        state: ElasticsearchState,
+        action: APIErrorAction
+      ): ElasticsearchState => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
+      }),
+    },
+    [BULK]: {
+      REQUEST: (state: ElasticsearchState): ElasticsearchState => {
+        return { ...state, requesting: true, errorMessage: '' };
+      },
+      SUCCESS: (
+        state: ElasticsearchState,
+        action: APIResponseAction
+      ): ElasticsearchState => {
+        return {
+          ...state,
+          requesting: false,
+        };
+      },
+      FAILURE: (
+        state: ElasticsearchState,
+        action: APIErrorAction
+      ): ElasticsearchState => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
+      }),
+    },
+    [DELETE_INDEX]: {
+      REQUEST: (state: ElasticsearchState): ElasticsearchState => {
+        return { ...state, requesting: true, errorMessage: '' };
+      },
+      SUCCESS: (
+        state: ElasticsearchState,
+        action: APIResponseAction
+      ): ElasticsearchState => {
+        return {
+          ...state,
+          requesting: false,
+          //TODO: update indices to be the same as before, but without cur index
+          //indices: state.indices.concat(action.result.data.response.indices),
+        };
+      },
+      FAILURE: (
+        state: ElasticsearchState,
+        action: APIErrorAction
+      ): ElasticsearchState => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
       }),
     },
   },
@@ -202,6 +274,24 @@ export const searchES = (requestData: any): APIAction => ({
   type: SEARCH_ES,
   request: (client: IHttpService) =>
     client.post(`..${AD_NODE_API._SEARCH}`, requestData),
+});
+
+export const createIndex = (indexConfig: any): APIAction => ({
+  type: CREATE_INDEX,
+  request: (client: IHttpService) =>
+    client.put(`..${AD_NODE_API.CREATE_INDEX}`, { indexConfig }),
+});
+
+export const bulk = (body: any): APIAction => ({
+  type: BULK,
+  request: (client: IHttpService) =>
+    client.post(`..${AD_NODE_API.BULK}`, { body }),
+});
+
+export const deleteIndex = (index: string): APIAction => ({
+  type: DELETE_INDEX,
+  request: (client: IHttpService) =>
+    client.post(`..${AD_NODE_API.DELETE_INDEX}`, { index }),
 });
 
 export const getPrioritizedIndices = (searchKey: string): ThunkAction => async (

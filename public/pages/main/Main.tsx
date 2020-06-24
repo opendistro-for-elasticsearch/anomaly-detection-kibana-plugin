@@ -18,6 +18,7 @@ import React from 'react';
 import { AppState } from '../../redux/reducers';
 import { CreateDetector } from '../createDetector';
 import { DetectorList } from '../DetectorsList';
+import { SampleData } from '../SampleData';
 import { ListRouterParams } from '../DetectorsList/containers/List/List';
 // @ts-ignore
 import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from '@elastic/eui';
@@ -31,11 +32,13 @@ enum Navigation {
   AnomalyDetection = 'Anomaly detection',
   Dashboard = 'Dashboard',
   Detectors = 'Detectors',
+  SampleData = 'Sample Data',
 }
 
 enum Pathname {
   Dashboard = '/dashboard',
   Detectors = '/detectors',
+  SampleData = '/sample-data',
 }
 
 interface MainProps extends RouteComponentProps {}
@@ -62,6 +65,12 @@ export function Main(props: MainProps) {
           href: `#${Pathname.Detectors}`,
           isSelected: props.location.pathname === Pathname.Detectors,
         },
+        {
+          name: Navigation.SampleData,
+          id: 3,
+          href: `#${Pathname.SampleData}`,
+          isSelected: props.location.pathname === Pathname.SampleData,
+        },
       ],
     },
   ];
@@ -83,6 +92,11 @@ export function Main(props: MainProps) {
             render={(props: RouteComponentProps<ListRouterParams>) => (
               <DetectorList {...props} />
             )}
+          />
+          <Route
+            exact
+            path={APP_PATH.SAMPLE_DATA}
+            render={() => <SampleData />}
           />
           <Route
             exact
