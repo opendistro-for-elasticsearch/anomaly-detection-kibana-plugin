@@ -57,7 +57,6 @@ export const AggregationSelector = (props: AggregationSelectorProps) => {
               name={`featureList.${props.index}.aggregationBy`}
               options={AGGREGATION_TYPES}
               onChange={e => {
-                debugger;
                 const currentValue = field.value;
                 const aggregationOf = get(
                   form,
@@ -95,6 +94,15 @@ export const AggregationSelector = (props: AggregationSelectorProps) => {
               placeholder="Select field"
               singleSelection
               selectedOptions={field.value}
+              onCreateOption={(createdOption: string) => {
+                const normalizedOptions = createdOption.trim();
+                if (!normalizedOptions) return;
+                const customOption = [{ label: normalizedOptions }];
+                form.setFieldValue(
+                  `featureList.${props.index}.aggregationOf`,
+                  customOption
+                );
+              }}
               //@ts-ignore
               options={
                 get(form, `values.featureList.${props.index}.aggregationBy`) ===

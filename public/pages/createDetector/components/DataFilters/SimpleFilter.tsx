@@ -141,6 +141,17 @@ export const SimpleFilter = (props: DataFilterProps) => {
                                     isClearable
                                     //@ts-ignore
                                     options={indexFields}
+                                    onCreateOption={(createdOption: string) => {
+                                      const normalizedOptions = createdOption.trim();
+                                      if (!normalizedOptions) return;
+                                      const customOption = [
+                                        { label: normalizedOptions },
+                                      ];
+                                      form.setFieldValue(
+                                        `filters.${index}.fieldInfo`,
+                                        customOption
+                                      );
+                                    }}
                                     selectedOptions={field.value}
                                     {...field}
                                     onChange={options => {
