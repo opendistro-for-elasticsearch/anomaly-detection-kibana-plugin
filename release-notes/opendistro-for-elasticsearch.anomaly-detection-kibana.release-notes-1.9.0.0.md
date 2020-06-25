@@ -6,7 +6,7 @@ Compatible with Kibana 7.8.0 and Open Distro for Elasticsearch 1.9.0
 
 - Add start/stop batch actions on detector list page (PR [#195](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/195))
 - Feature: AD: Add delete batch action (PR [#204](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/204))
-- support remote cluster indices (PR [#244](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/244))
+- Support remote cluster indices (PR [#244](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/244))
 
 ## Enhancements
 
