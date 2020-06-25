@@ -24,6 +24,7 @@ import handleActions from '../utils/handleActions';
 import { getPathsPerDataType } from './mapper';
 import { CatIndex, IndexAlias } from '../../../server/models/types';
 import { AD_NODE_API } from '../../../utils/constants';
+import { get } from 'lodash';
 
 const GET_INDICES = 'elasticsearch/GET_INDICES';
 const GET_ALIASES = 'elasticsearch/GET_ALIASES';
@@ -93,7 +94,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessage: get(action, 'error.data.error', action.error),
       }),
     },
     [GET_ALIASES]: {
@@ -118,7 +119,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessage: get(action, 'error.data.error', action.error),
       }),
     },
     [SEARCH_ES]: {
@@ -143,8 +144,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-
-        errorMessage: action.error.data.error,
+        errorMessage: get(action, 'error.data.error', action.error),
       }),
     },
     [GET_MAPPINGS]: {
@@ -169,7 +169,8 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessage: get(action, 'error.data.error', action.error),
+        dataTypes: {}
       }),
     },
   },

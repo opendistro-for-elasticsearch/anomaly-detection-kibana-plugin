@@ -27,6 +27,8 @@ import {
   EuiOverlayMask,
   EuiButtonEmpty,
   EuiIcon,
+  EuiCallOut,
+  EuiSpacer,
 } from '@elastic/eui';
 import { FieldArray, FieldArrayRenderProps, Form, Formik } from 'formik';
 import { get, isEmpty, forOwn } from 'lodash';
@@ -121,6 +123,17 @@ export function EditFeatures(props: EditFeaturesProps) {
           setFirstLoad(false);
           return (
             <Fragment>
+              {get(detector, 'indices.0', '').includes(':') ? (
+                <div>
+                  <EuiCallOut
+                    title="This detector is using a remote cluster index, so you need to manually input the field."
+                    color="warning"
+                    iconType="alert"
+                  />
+                  <EuiSpacer size="m" />
+                </div>
+              ) : null}
+
               {values.featureList.map((feature: any, index: number) => (
                 <FeatureAccordion
                   onDelete={() => {

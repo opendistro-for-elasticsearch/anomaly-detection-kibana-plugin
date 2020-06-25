@@ -25,6 +25,7 @@ import {
   EuiPanel,
   EuiText,
   EuiSpacer,
+  EuiCallOut,
 } from '@elastic/eui';
 import {
   Field,
@@ -99,6 +100,17 @@ export const SimpleFilter = (props: DataFilterProps) => {
             {values.filters.map((filter: UIFilter, index: number) => {
               return (
                 <EuiPanel key={index} className="filter-container">
+                  {get(props, 'formikProps.values.index.0.label', '').includes(':') ? (
+                    <div>
+                      <EuiCallOut
+                        title="This detector is using a remote cluster index, so you need to manually input the filter field."
+                        color="warning"
+                        iconType="alert"
+                      />
+                      <EuiSpacer size="m" />
+                    </div>
+                  ) : null}
+
                   <EuiAccordion
                     id={'name'}
                     initialIsOpen={true}
@@ -141,9 +153,20 @@ export const SimpleFilter = (props: DataFilterProps) => {
                                     isClearable
                                     //@ts-ignore
                                     options={indexFields}
+                                    onCreateOption={(createdOption: string) => {
+                                      const normalizedOptions = createdOption.trim();
+                                      if (!normalizedOptions) return;
+                                      const customOption = [
+                                        { label: normalizedOptions },
+                                      ];
+                                      form.setFieldValue(
+                                        `filters.${index}.fieldInfo`,
+                                        customOption
+                                      );
+                                    }}
                                     selectedOptions={field.value}
                                     {...field}
-                                    onChange={options => {
+                                    onChange={(options) => {
                                       //Reset operator and values
                                       replace(
                                         index,

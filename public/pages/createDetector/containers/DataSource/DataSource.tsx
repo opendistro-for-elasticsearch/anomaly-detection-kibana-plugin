@@ -13,9 +13,9 @@
  * permissions and limitations under the License.
  */
 
-import { EuiComboBox, EuiSelect } from '@elastic/eui';
+import { EuiComboBox, EuiCallOut, EuiSpacer } from '@elastic/eui';
 import { Field, FieldProps } from 'formik';
-import { debounce, get } from 'lodash';
+import { debounce, get, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CatIndex, IndexAlias } from '../../../../../server/models/types';
@@ -39,6 +39,7 @@ import { FormattedFormRow } from '../../components/FormattedFormRow/FormattedFor
 function DataSource(props: DataFilterProps) {
   const dispatch = useDispatch();
   const [queryText, setQueryText] = useState('');
+  const [indexName, setIndexName] = useState(undefined);
   const elasticsearchState = useSelector(
     (state: AppState) => state.elasticsearch
   );
@@ -57,26 +58,48 @@ function DataSource(props: DataFilterProps) {
     }
   }, 300);
 
-  const handleChange = (selectedOptions: any) => {
+  const handleIndexNameChange = (selectedOptions: any) => {
     const indexName = get(selectedOptions, '0.label', '');
+    setIndexName(indexName);
     if (indexName !== '') {
       dispatch(getMappings(indexName));
     }
   };
 
-  const dateFields = Array.from(get(
-    elasticsearchState,
-    'dataTypes.date',
-    []
-  ) as string[]);
-  const timeStampFieldOptions = ['']
-    .concat(dateFields)
-    .map(dateField => ({ value: dateField, text: dateField }));
+  const dateFields = Array.from(
+    get(elasticsearchState, 'dataTypes.date', []) as string[]
+  );
+
+  const timeStampFieldOptions = isEmpty(dateFields)
+    ? []
+    : dateFields.map(dateField => ({ label: dateField }));
+
   const visibleIndices = get(elasticsearchState, 'indices', []) as CatIndex[];
   const visibleAliases = get(elasticsearchState, 'aliases', []) as IndexAlias[];
 
+  const isRemoteIndex = () => {
+    const initialIndex = get(
+      props.formikProps,
+      'initialValues.index.0.label',
+      ''
+    );
+    return indexName !== undefined
+      ? indexName.includes(':')
+      : initialIndex.includes(':');
+  };
+
   return (
     <ContentPanel title="Data Source" titleSize="s">
+      {isRemoteIndex() ? (
+        <div>
+          <EuiCallOut
+            title="This detector is using a remote cluster index, so you need to manually input the time field."
+            color="warning"
+            iconType="alert"
+          />
+          <EuiSpacer size="m" />
+        </div>
+      ) : null}
       <Field name="index" validate={validateIndex}>
         {({ field, form }: FieldProps) => {
           return (
@@ -95,18 +118,19 @@ function DataSource(props: DataFilterProps) {
                 options={getVisibleOptions(visibleIndices, visibleAliases)}
                 onSearchChange={handleSearchChange}
                 onCreateOption={(createdOption: string) => {
-                  const normalizedOptions = createdOption.trim().toLowerCase();
+                  const normalizedOptions = createdOption.trim();
                   if (!normalizedOptions) return;
                   const customOption = [{ label: normalizedOptions }];
                   form.setFieldValue('index', customOption);
-                  handleChange(customOption);
+                  handleIndexNameChange(customOption);
                 }}
                 onBlur={() => {
                   form.setFieldTouched('index', true);
                 }}
                 onChange={options => {
                   form.setFieldValue('index', options);
-                  handleChange(options);
+                  form.setFieldValue('timeField', undefined);
+                  handleIndexNameChange(options);
                 }}
                 selectedOptions={field.value}
                 singleSelection={true}
@@ -131,11 +155,25 @@ function DataSource(props: DataFilterProps) {
             isInvalid={isInvalid(field.name, form)}
             error={getError(field.name, form)}
           >
-            <EuiSelect
-              {...field}
+            <EuiComboBox
               id="timeField"
               placeholder="Find timestamp"
               options={timeStampFieldOptions}
+              onSearchChange={handleSearchChange}
+              onCreateOption={(createdOption: string) => {
+                const normalizedOptions = createdOption.trim();
+                if (!normalizedOptions) return;
+                form.setFieldValue('timeField', normalizedOptions);
+              }}
+              onBlur={() => {
+                form.setFieldTouched('timeField', true);
+              }}
+              onChange={options => {
+                form.setFieldValue('timeField', get(options, '0.label'));
+              }}
+              selectedOptions={(field.value && [{ label: field.value }]) || []}
+              singleSelection={true}
+              isClearable={false}
             />
           </FormattedFormRow>
         )}

@@ -146,6 +146,6 @@ const getMapping = async (
     return { ok: true, response: { mappings: response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to get mappings', err);
-    return { ok: false, error: err.message };
+    return { ok: false, error: err };
   }
 };
