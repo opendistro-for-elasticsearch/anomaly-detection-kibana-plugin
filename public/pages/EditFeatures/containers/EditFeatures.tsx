@@ -126,7 +126,7 @@ export function EditFeatures(props: EditFeaturesProps) {
               {get(detector, 'indices.0', '').includes(':') ? (
                 <div>
                   <EuiCallOut
-                    title="This detector is using remote cluster index. Please input field manually."
+                    title="This detector is using a remote cluster index, so you need to manually input the field."
                     color="warning"
                     iconType="alert"
                   />

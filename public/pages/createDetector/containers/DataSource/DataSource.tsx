@@ -93,7 +93,7 @@ function DataSource(props: DataFilterProps) {
       {isRemoteIndex() ? (
         <div>
           <EuiCallOut
-            title="This detector is using remote cluster index. Please input time field and filter field manually."
+            title="This detector is using a remote cluster index, so you need to manually input the time field."
             color="warning"
             iconType="alert"
           />
