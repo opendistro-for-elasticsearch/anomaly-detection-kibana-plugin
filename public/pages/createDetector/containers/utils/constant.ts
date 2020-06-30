@@ -24,7 +24,7 @@ export const INITIAL_VALUES: ADFormikValues = {
   filters: [],
   index: [],
   filterType: FILTER_TYPES.SIMPLE,
-  filterQuery: JSON.stringify({ query: { bool: { filter: [] } } }, null, 4),
+  filterQuery: JSON.stringify({ bool: { filter: [] } }, null, 4),
   detectionInterval: 10,
   windowDelay: 1,
 };
