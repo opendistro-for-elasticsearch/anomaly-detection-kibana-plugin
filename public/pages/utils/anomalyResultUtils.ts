@@ -716,19 +716,19 @@ export const getFeatureMissingSeverities = (featuresDataPoint: {
 }): Map<MISSING_FEATURE_DATA_SEVERITY, string[]> => {
   const featureMissingSeverities = new Map();
 
-  for (const [featureName, featureDatePoints] of Object.entries(
+  for (const [featureName, featureDataPoints] of Object.entries(
     featuresDataPoint
   )) {
     // all feature data points should have same length
     let featuresWithMissingData = [] as string[];
-    if (featureDatePoints.length <= 1) {
+    if (featureDataPoints.length <= 1) {
       // return empty map
       return featureMissingSeverities;
     }
     if (
-      featureDatePoints.length === 2 &&
-      featureDatePoints[0].isMissing &&
-      featureDatePoints[1].isMissing
+      featureDataPoints.length === 2 &&
+      featureDataPoints[0].isMissing &&
+      featureDataPoints[1].isMissing
     ) {
       if (featureMissingSeverities.has(MISSING_FEATURE_DATA_SEVERITY.YELLOW)) {
         featuresWithMissingData = featureMissingSeverities.get(
@@ -744,7 +744,7 @@ export const getFeatureMissingSeverities = (featuresDataPoint: {
     }
 
     const orderedFeatureDataPoints = orderBy(
-      featureDatePoints,
+      featureDataPoints,
       // sort by plot time in desc order
       dataPoint => get(dataPoint, 'plotTime', 0),
       SORT_DIRECTION.DESC
