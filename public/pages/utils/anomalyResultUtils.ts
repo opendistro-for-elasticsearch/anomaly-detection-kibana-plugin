@@ -779,17 +779,21 @@ export const getFeatureDataMissingMessageAndActionItem = (
   switch (featureMissingSev) {
     case MISSING_FEATURE_DATA_SEVERITY.YELLOW:
       return {
-        message: `Recent data is missing for feature ${featuresWithMissingData.join(
+        message: `Recent data is missing for feature${
+          featuresWithMissingData.length > 1 ? 's' : ''
+        }: ${featuresWithMissingData.join(
           ', '
-        )}, anomaly result is missing at the same time because of that.`,
+        )}. So, anomaly result is missing during this time.`,
         actionItem:
           'Make sure your data is ingested correctly. See the feature data shown below for more details.',
       };
     case MISSING_FEATURE_DATA_SEVERITY.RED:
       return {
-        message: `Data ingestion is not going well for feature ${featuresWithMissingData.join(
+        message: `Data is not being ingested correctly for feature${
+          featuresWithMissingData.length > 1 ? 's' : ''
+        }: ${featuresWithMissingData.join(
           ', '
-        )}, anomaly result is missing at the same time because of that.`,
+        )}. So, anomaly result is missing during this time.`,
         actionItem: `${DETECTOR_INIT_FAILURES.NO_TRAINING_DATA.actionItem} See the feature data shown below for more details.`,
       };
     default:
