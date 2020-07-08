@@ -603,7 +603,7 @@ const sampleFeatureMissingDataPoints = (
     if (sampledDataPoint) {
       sampledResults.push({
         ...sampledDataPoint,
-        startTime: Math.max(timeWindow.startDate, sampledDataPoint.startTime),
+        startTime: Math.min(timeWindow.startDate, sampledDataPoint.startTime),
         endTime: Math.max(timeWindow.endDate, sampledDataPoint.endTime),
       } as FeatureDataPoint);
     }
