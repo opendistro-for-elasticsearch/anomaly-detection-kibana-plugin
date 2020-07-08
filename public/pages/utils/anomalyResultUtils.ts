@@ -123,7 +123,7 @@ const calculateSampleWindowsWithMaxDataPoints = (
   );
   for (
     let currentTime = dateRange.startDate;
-    currentTime <= dateRange.endDate;
+    currentTime < dateRange.endDate - windowSizeinMilliSec;
     currentTime += windowSizeinMilliSec
   ) {
     resultSampleWindows.push({
@@ -540,21 +540,22 @@ export const getFeatureDataPoints = (
   if (!dateRange) {
     return featureDataPoints;
   }
+
   const existingTimes = isEmpty(featureData)
     ? []
     : featureData
-        .map(feature => feature.endTime)
+        .map(feature => getFloorPlotTime(feature.startTime))
         .filter(featureTime => featureTime != undefined);
   for (
-    let currentTime = dateRange.startDate;
+    let currentTime = getRoundedTimeInMin(dateRange.startDate);
     currentTime <
-    getFloorPlotTime(dateRange.endDate - interval * MIN_IN_MILLI_SECS);
+    getRoundedTimeInMin(dateRange.endDate - interval * MIN_IN_MILLI_SECS);
     currentTime += interval * MIN_IN_MILLI_SECS
   ) {
     const isExisting = findTimeExistsInWindow(
       existingTimes,
-      currentTime,
-      currentTime + interval * MIN_IN_MILLI_SECS
+      getRoundedTimeInMin(currentTime),
+      getRoundedTimeInMin(currentTime) + interval * MIN_IN_MILLI_SECS
     );
     featureDataPoints.push({
       isMissing: !isExisting,
@@ -573,9 +574,13 @@ const findTimeExistsInWindow = (
   endTime: number
 ): boolean => {
   const result = timestamps.filter(
-    timestamp => timestamp >= startTime && timestamp <= endTime
+    timestamp => timestamp >= startTime && timestamp < endTime
   );
   return !isEmpty(result);
+};
+
+const getRoundedTimeInMin = (timestamp: number): number => {
+  return Math.round(timestamp / MIN_IN_MILLI_SECS) * MIN_IN_MILLI_SECS;
 };
 
 const sampleFeatureMissingDataPoints = (

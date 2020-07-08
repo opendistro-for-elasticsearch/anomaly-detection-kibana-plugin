@@ -117,20 +117,24 @@ export const FeatureChart = (props: FeatureChartProps) => {
   const featureData = prepareDataForChart(props.featureData, props.dateRange);
 
   // return undefined if featureMissingDataPointAnnotationStartDate is missing
+  // OR it is even behind the specified date range
   const getFeatureMissingAnnotationDateRange = (
     dateRange: DateRange,
     featureMissingDataPointAnnotationStartDate?: number
   ) => {
-    if (!featureMissingDataPointAnnotationStartDate) {
-      return undefined;
+    if (
+      featureMissingDataPointAnnotationStartDate &&
+      dateRange.endDate > featureMissingDataPointAnnotationStartDate
+    ) {
+      return {
+        startDate: Math.max(
+          dateRange.startDate,
+          featureMissingDataPointAnnotationStartDate
+        ),
+        endDate: dateRange.endDate,
+      };
     }
-    return {
-      startDate: Math.max(
-        dateRange.startDate,
-        featureMissingDataPointAnnotationStartDate
-      ),
-      endDate: dateRange.endDate,
-    };
+    return undefined;
   };
 
   return (
