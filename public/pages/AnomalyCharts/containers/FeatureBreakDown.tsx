@@ -64,7 +64,7 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
       props.detector.enabledTime &&
       props.isFeatureDataMissing ? (
         <EuiCallOut
-          title={`Show missing data only after last enabled time: ${moment(
+          title={`Missing data is only shown since last enabled time: ${moment(
             props.detector.enabledTime
           ).format('MM/DD/YY h:mm A')}`}
           color={'warning'}
