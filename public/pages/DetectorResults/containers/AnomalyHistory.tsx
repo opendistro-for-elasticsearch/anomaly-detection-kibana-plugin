@@ -39,6 +39,7 @@ import {
   parseAnomalySummary,
   parsePureAnomalies,
   buildParamsForGetAnomalyResultsWithDateRange,
+  FEATURE_DATA_CHECK_WINDOW_OFFSET,
 } from '../../utils/anomalyResultUtils';
 import { get } from 'lodash';
 import { AnomalyResultsTable } from './AnomalyResultsTable';
@@ -56,6 +57,7 @@ interface AnomalyHistoryProps {
   detector: Detector;
   monitor: Monitor | undefined;
   createFeature(): void;
+  isFeatureDataMissing?: boolean;
 }
 
 export const AnomalyHistory = (props: AnomalyHistoryProps) => {
@@ -153,7 +155,10 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
 
     try {
       const params = buildParamsForGetAnomalyResultsWithDateRange(
-        dateRange.startDate - detectorInterval * MIN_IN_MILLI_SECS,
+        dateRange.startDate -
+          FEATURE_DATA_CHECK_WINDOW_OFFSET *
+            detectorInterval *
+            MIN_IN_MILLI_SECS,
         dateRange.endDate
       );
       const detectorResultResponse = await dispatch(
@@ -301,7 +306,8 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                 isLoading={isLoading}
                 dateRange={zoomRange}
                 featureDataSeriesName="Feature output"
-                showFeatureMissingDataPointAnnotation={true}
+                showFeatureMissingDataPointAnnotation={props.detector.enabled}
+                isFeatureDataMissing={props.isFeatureDataMissing}
               />
             ) : (
               <AnomalyResultsTable

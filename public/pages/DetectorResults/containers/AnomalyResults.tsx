@@ -55,6 +55,7 @@ import {
   buildParamsForGetAnomalyResultsWithDateRange,
   getFeatureMissingSeverities,
   getFeatureDataMissingMessageAndActionItem,
+  FEATURE_DATA_CHECK_WINDOW_OFFSET,
 } from '../../utils/anomalyResultUtils';
 import { getDetectorResults } from '../../../redux/reducers/anomalyResults';
 
@@ -165,7 +166,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       startDate: Math.max(
         moment()
           .subtract(
-            (FEATURE_DATA_POINTS_WINDOW + 1) * detectorIntervalInMin,
+            (FEATURE_DATA_POINTS_WINDOW + FEATURE_DATA_CHECK_WINDOW_OFFSET) *
+              detectorIntervalInMin,
             'minutes'
           )
           .valueOf(),
@@ -184,7 +186,6 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       const detectorResultResponse = await dispatch(
         getDetectorResults(detectorId, params)
       );
-
       const featuresData = get(
         detectorResultResponse,
         'data.response.featureResults',
@@ -318,8 +319,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
               isDetectorFailed ? (
                 <Fragment>
                   {isDetectorUpdated ||
-                  (isDetectorInitializing &&
-                    isDetectorMissingData != undefined) ||
+                  ((isDetectorInitializing || isDetectorRunning) &&
+                    isDetectorMissingData) ||
                   isDetectorFailed ? (
                     <EuiCallOut
                       title={getCalloutTitle()}
@@ -366,6 +367,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     createFeature={() =>
                       props.history.push(`/detectors/${detectorId}/features`)
                     }
+                    isFeatureDataMissing={isDetectorMissingData}
                   />
                 </Fragment>
               ) : detector ? (

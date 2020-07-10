@@ -123,7 +123,7 @@ const calculateSampleWindowsWithMaxDataPoints = (
   );
   for (
     let currentTime = dateRange.startDate;
-    currentTime < dateRange.endDate - windowSizeinMilliSec;
+    currentTime < dateRange.endDate;
     currentTime += windowSizeinMilliSec
   ) {
     resultSampleWindows.push({
@@ -531,6 +531,8 @@ export type FeatureDataPoint = {
   endTime: number;
 };
 
+export const FEATURE_DATA_CHECK_WINDOW_OFFSET = 2;
+
 export const getFeatureDataPoints = (
   featureData: FeatureAggregationData[],
   interval: number,
@@ -549,7 +551,11 @@ export const getFeatureDataPoints = (
   for (
     let currentTime = getRoundedTimeInMin(dateRange.startDate);
     currentTime <
-    getRoundedTimeInMin(dateRange.endDate - interval * MIN_IN_MILLI_SECS);
+    // skip checking for latest interval as data point for it may not be delivered in time
+    getRoundedTimeInMin(
+      dateRange.endDate -
+        FEATURE_DATA_CHECK_WINDOW_OFFSET * interval * MIN_IN_MILLI_SECS
+    );
     currentTime += interval * MIN_IN_MILLI_SECS
   ) {
     const isExisting = findTimeExistsInWindow(
@@ -702,7 +708,6 @@ export const getFeatureDataPointsForDetector = (
       interval,
       dateRange
     );
-
     featureDataPointsForDetector = {
       ...featureDataPointsForDetector,
       [feature.featureName]: featureDataPoints,

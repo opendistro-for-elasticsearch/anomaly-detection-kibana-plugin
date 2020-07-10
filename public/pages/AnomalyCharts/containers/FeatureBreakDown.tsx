@@ -15,7 +15,13 @@
 
 import React from 'react';
 import { get } from 'lodash';
-import { EuiFlexItem, EuiFlexGroup, EuiTitle, EuiSpacer } from '@elastic/eui';
+import {
+  EuiFlexItem,
+  EuiFlexGroup,
+  EuiTitle,
+  EuiSpacer,
+  EuiCallOut,
+} from '@elastic/eui';
 import { FeatureChart } from '../components/FeatureChart/FeatureChart';
 import {
   Detector,
@@ -26,6 +32,7 @@ import {
 } from '../../../models/interfaces';
 import { NoFeaturePrompt } from '../components/FeatureChart/NoFeaturePrompt';
 import { focusOnFeatureAccordion } from '../../EditFeatures/utils/helpers';
+import moment from 'moment';
 
 interface FeatureBreakDownProps {
   title?: string;
@@ -37,6 +44,7 @@ interface FeatureBreakDownProps {
   featureDataSeriesName: string;
   showFeatureMissingDataPointAnnotation?: boolean;
   rawAnomalyResults?: Anomalies;
+  isFeatureDataMissing?: boolean;
 }
 
 export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
@@ -52,7 +60,18 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
           </EuiFlexItem>
         </EuiFlexGroup>
       ) : null}
-
+      {props.showFeatureMissingDataPointAnnotation &&
+      props.detector.enabledTime &&
+      props.isFeatureDataMissing ? (
+        <EuiCallOut
+          title={`Show missing data only after last enable time: ${moment(
+            props.detector.enabledTime
+          ).format('MM/DD/YY h:mm A')}`}
+          color={'warning'}
+          iconType={'alert'}
+          style={{ marginBottom: '20px' }}
+        />
+      ) : null}
       {get(props, 'detector.featureAttributes', []).map(
         (feature: FeatureAttributes, index: number) => (
           <React.Fragment key={`${feature.featureName}-${feature.featureId}`}>
