@@ -24,12 +24,16 @@ context('Create detector', () => {
     cy.contains('h1', 'Create detector');
 
     const detectorName = 'detector-name';
-    cy.get('input[name="detectorName"]').type(detectorName, { force: true });
+    cy.get('input[name="detectorName"]')
+      .first()
+      .type(detectorName, { force: true });
 
     cy.mockGetIndexMappingsOnAction('index_mapping_response.json', () => {
-      cy.get('input[role="textbox"]').type('e2e-test-index{enter}', {
-        force: true,
-      });
+      cy.get('input[role="textbox"]')
+        .first()
+        .type('e2e-test-index{enter}', {
+          force: true,
+        });
     });
 
     cy.get('select[name="timeField"]').select('timestamp', { force: true });
