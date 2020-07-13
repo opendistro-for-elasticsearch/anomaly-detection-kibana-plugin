@@ -546,7 +546,7 @@ export const getFeatureDataPoints = (
   const existingTimes = isEmpty(featureData)
     ? []
     : featureData
-        .map(feature => getFloorPlotTime(feature.startTime))
+        .map(feature => getRoundedTimeInMin(feature.startTime))
         .filter(featureTime => featureTime != undefined);
   for (
     let currentTime = getRoundedTimeInMin(dateRange.startDate);
@@ -579,10 +579,28 @@ const findTimeExistsInWindow = (
   startTime: number,
   endTime: number
 ): boolean => {
-  const result = timestamps.filter(
-    timestamp => timestamp >= startTime && timestamp < endTime
-  );
-  return !isEmpty(result);
+  // timestamps is in desc order
+  let result = false;
+  if (isEmpty(timestamps)) {
+    return result;
+  }
+
+  let left = 0;
+  let right = timestamps.length - 1;
+  while (left <= right) {
+    let middle = Math.floor((right + left) / 2);
+    if (timestamps[middle] >= startTime && timestamps[middle] < endTime) {
+      result = true;
+      break;
+    }
+    if (timestamps[middle] < startTime) {
+      right = middle - 1;
+    }
+    if (timestamps[middle] >= endTime) {
+      left = middle + 1;
+    }
+  }
+  return result;
 };
 
 const getRoundedTimeInMin = (timestamp: number): number => {
