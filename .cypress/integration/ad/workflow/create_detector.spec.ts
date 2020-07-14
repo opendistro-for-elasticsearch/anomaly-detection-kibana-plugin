@@ -27,12 +27,14 @@ context('Create detector', () => {
     cy.get('input[name="detectorName"]').type(detectorName, { force: true });
 
     cy.mockGetIndexMappingsOnAction('index_mapping_response.json', () => {
-      cy.get('input[role="textbox"]').type('e2e-test-index{enter}', {
+      cy.get('input[role="textbox"]').first().type('e2e-test-index{enter}', {
         force: true,
       });
     });
 
-    cy.get('select[name="timeField"]').select('timestamp', { force: true });
+    cy.get('input[role="textbox"]').last().type('timestamp{enter}', {
+      force: true,
+    });
 
     cy.mockCreateDetectorOnAction('post_detector_response.json', () => {
       cy.get('.euiButton--primary.euiButton--fill').click({ force: true });
