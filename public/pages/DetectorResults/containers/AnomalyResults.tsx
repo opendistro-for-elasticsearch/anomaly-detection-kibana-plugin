@@ -159,7 +159,10 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     : undefined;
 
   const isInitializingNormally =
-    isDetectorInitializing && !isInitOvertime && !isDetectorMissingData;
+    isDetectorInitializing &&
+    !isInitOvertime &&
+    isDetectorMissingData != undefined &&
+    !isDetectorMissingData;
 
   const checkLatestFeatureDataPoints = async () => {
     const featureDataPointsRange = {
@@ -319,8 +322,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
               isDetectorFailed ? (
                 <Fragment>
                   {isDetectorUpdated ||
-                  ((isDetectorInitializing || isDetectorRunning) &&
-                    isDetectorMissingData) ||
+                  isDetectorMissingData ||
+                  isInitializingNormally ||
                   isDetectorFailed ? (
                     <EuiCallOut
                       title={getCalloutTitle()}
