@@ -22,8 +22,7 @@ import {
   EuiLoadingSpinner,
 } from '@elastic/eui';
 import moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from 'public/redux/reducers';
+import { useDispatch } from 'react-redux';
 import {
   AnomalyData,
   Detector,
@@ -33,13 +32,14 @@ import {
   Anomalies,
 } from '../../../models/interfaces';
 import {
-  getAnomalyResultsWithDateRange,
   filterWithDateRange,
   getAnomalySummaryQuery,
   getBucketizedAnomalyResultsQuery,
   parseBucketizedAnomalyResults,
   parseAnomalySummary,
   parsePureAnomalies,
+  buildParamsForGetAnomalyResultsWithDateRange,
+  FEATURE_DATA_CHECK_WINDOW_OFFSET,
 } from '../../utils/anomalyResultUtils';
 import { get } from 'lodash';
 import { AnomalyResultsTable } from './AnomalyResultsTable';
@@ -51,18 +51,19 @@ import { searchES } from '../../../redux/reducers/elasticsearch';
 import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
 import { INITIAL_ANOMALY_SUMMARY } from '../../AnomalyCharts/utils/constants';
 import { MAX_ANOMALIES } from '../../../utils/constants';
+import { getDetectorResults } from '../../../redux/reducers/anomalyResults';
 
 interface AnomalyHistoryProps {
   detector: Detector;
   monitor: Monitor | undefined;
   createFeature(): void;
+  isFeatureDataMissing?: boolean;
 }
 
 export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(
-    (state: AppState) => state.anomalyResults.requesting
-  );
+
+  const [isLoading, setIsLoading] = useState(false);
   const initialStartDate = moment().subtract(7, 'days');
   const initialEndDate = moment();
   const [dateRange, setDateRange] = useState<DateRange>({
@@ -124,30 +125,71 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         );
       } finally {
         setIsLoadingAnomalyResults(false);
+        fetchRawAnomalyResults(false);
       }
     }
 
     if (
       dateRange.endDate - dateRange.startDate >
-      get(props.detector, 'detectionInterval.period.interval', 1) *
-        MIN_IN_MILLI_SECS *
-        MAX_ANOMALIES
+      detectorInterval * MIN_IN_MILLI_SECS * MAX_ANOMALIES
     ) {
       getBucketizedAnomalyResults();
     } else {
       setBucketizedAnomalyResults(undefined);
-      getAnomalyResultsWithDateRange(
-        dispatch,
-        dateRange.startDate,
-        dateRange.endDate,
-        props.detector.id
-      );
+      fetchRawAnomalyResults(true);
     }
   }, [dateRange]);
 
-  const atomicAnomalyResults = useSelector(
-    (state: AppState) => state.anomalyResults
+  const detectorInterval = get(
+    props.detector,
+    'detectionInterval.period.interval',
+    1
   );
+
+  const fetchRawAnomalyResults = async (
+    shouldSetAtomicAnomalyResults: boolean
+  ) => {
+    if (shouldSetAtomicAnomalyResults) {
+      setIsLoading(true);
+    }
+
+    try {
+      const params = buildParamsForGetAnomalyResultsWithDateRange(
+        dateRange.startDate -
+          FEATURE_DATA_CHECK_WINDOW_OFFSET *
+            detectorInterval *
+            MIN_IN_MILLI_SECS,
+        dateRange.endDate
+      );
+      const detectorResultResponse = await dispatch(
+        getDetectorResults(props.detector.id, params)
+      );
+      const anomaliesData = get(detectorResultResponse, 'data.response', []);
+
+      if (shouldSetAtomicAnomalyResults) {
+        setAtomicAnomalyResults({
+          anomalies: get(anomaliesData, 'results', []),
+          featureData: get(anomaliesData, 'featureResults', []),
+        });
+      }
+      setRawAnomalyResults({
+        anomalies: get(anomaliesData, 'results', []),
+        featureData: get(anomaliesData, 'featureResults', []),
+      });
+    } catch (err) {
+      console.error(
+        `Failed to get atomic anomaly results for ${props.detector.id}`,
+        err
+      );
+    } finally {
+      if (shouldSetAtomicAnomalyResults) {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const [atomicAnomalyResults, setAtomicAnomalyResults] = useState<Anomalies>();
+  const [rawAnomalyResults, setRawAnomalyResults] = useState<Anomalies>();
 
   const anomalyResults = bucketizedAnomalyResults
     ? bucketizedAnomalyResults
@@ -224,7 +266,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         dateRange={dateRange}
         onDateRangeChange={handleDateRangeChange}
         onZoomRangeChange={handleZoomChange}
-        anomalies={anomalyResults.anomalies}
+        anomalies={anomalyResults ? anomalyResults.anomalies : []}
         bucketizedAnomalies={bucketizedAnomalyResults !== undefined}
         anomalySummary={bucketizedAnomalySummary}
         isLoading={isLoading || isLoadingAnomalyResults}
@@ -259,20 +301,25 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                 detector={props.detector}
                 // @ts-ignore
                 anomaliesResult={anomalyResults}
+                rawAnomalyResults={rawAnomalyResults}
                 annotations={annotations}
                 isLoading={isLoading}
                 dateRange={zoomRange}
                 featureDataSeriesName="Feature output"
+                showFeatureMissingDataPointAnnotation={props.detector.enabled}
+                isFeatureDataMissing={props.isFeatureDataMissing}
               />
             ) : (
               <AnomalyResultsTable
                 anomalies={
                   bucketizedAnomalyResults === undefined
-                    ? filterWithDateRange(
-                        anomalyResults.anomalies,
-                        zoomRange,
-                        'plotTime'
-                      )
+                    ? anomalyResults
+                      ? filterWithDateRange(
+                          anomalyResults.anomalies,
+                          zoomRange,
+                          'plotTime'
+                        )
+                      : []
                     : pureAnomalies
                 }
               />
