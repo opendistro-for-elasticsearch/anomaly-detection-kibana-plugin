@@ -23,13 +23,18 @@ import {
   EuiButton,
 } from '@elastic/eui';
 import { get } from 'lodash';
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 //@ts-ignore
 import chrome from 'ui/chrome';
 import { AppState } from '../../../redux/reducers';
-import { BREADCRUMBS, DETECTOR_STATE } from '../../../utils/constants';
+import {
+  BREADCRUMBS,
+  DETECTOR_STATE,
+  FEATURE_DATA_POINTS_WINDOW,
+  MISSING_FEATURE_DATA_SEVERITY,
+} from '../../../utils/constants';
 import { AnomalyResultsLiveChart } from './AnomalyResultsLiveChart';
 import { AnomalyHistory } from './AnomalyHistory';
 import { DetectorStateDetails } from './DetectorStateDetails';
@@ -43,6 +48,16 @@ import {
 import { getDetector } from '../../../redux/reducers/ad';
 import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
 import { getInitFailureMessageAndActionItem } from '../../DetectorDetail/utils/helpers';
+import moment from 'moment';
+import { DateRange } from '../../../models/interfaces';
+import {
+  getFeatureDataPointsForDetector,
+  buildParamsForGetAnomalyResultsWithDateRange,
+  getFeatureMissingSeverities,
+  getFeatureDataMissingMessageAndActionItem,
+  FEATURE_DATA_CHECK_WINDOW_OFFSET,
+} from '../../utils/anomalyResultUtils';
+import { getDetectorResults } from '../../../redux/reducers/anomalyResults';
 
 interface AnomalyResultsProps extends RouteComponentProps {
   detectorId: string;
@@ -78,6 +93,20 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     }
   }, [detector]);
 
+  useEffect(() => {
+    if (
+      detector &&
+      (detector.curState === DETECTOR_STATE.INIT ||
+        detector.curState === DETECTOR_STATE.RUNNING)
+    ) {
+      checkLatestFeatureDataPoints();
+      const id = setInterval(checkLatestFeatureDataPoints, MIN_IN_MILLI_SECS);
+      return () => {
+        clearInterval(id);
+      };
+    }
+  }, [detector]);
+
   const monitors = useSelector((state: AppState) => state.alerting.monitors);
   const monitor = get(monitors, `${detectorId}.0`);
 
@@ -105,13 +134,181 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   const initErrorMessage = get(initDetails, INIT_ERROR_MESSAGE_FIELD, '');
   const initActionItem = get(initDetails, INIT_ACTION_ITEM_FIELD, '');
 
-  const isInitializingNormally = isDetectorInitializing && !isInitOvertime;
-
   const isDetectorFailed =
     detector &&
     (detector.curState === DETECTOR_STATE.INIT_FAILURE ||
       detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE);
 
+  const detectorIntervalInMin = get(
+    detector,
+    'detectionInterval.period.interval',
+    1
+  );
+
+  const [featureMissingSeverity, setFeatureMissingSeverity] = useState<
+    MISSING_FEATURE_DATA_SEVERITY
+  >();
+
+  const [featureNamesAtHighSev, setFeatureNamesAtHighSev] = useState(
+    [] as string[]
+  );
+
+  const isDetectorMissingData = featureMissingSeverity
+    ? (isDetectorInitializing || isDetectorRunning) &&
+      featureMissingSeverity > MISSING_FEATURE_DATA_SEVERITY.GREEN
+    : undefined;
+
+  const isInitializingNormally =
+    isDetectorInitializing &&
+    !isInitOvertime &&
+    isDetectorMissingData != undefined &&
+    !isDetectorMissingData;
+
+  const checkLatestFeatureDataPoints = async () => {
+    const featureDataPointsRange = {
+      startDate: Math.max(
+        moment()
+          .subtract(
+            (FEATURE_DATA_POINTS_WINDOW + FEATURE_DATA_CHECK_WINDOW_OFFSET) *
+              detectorIntervalInMin,
+            'minutes'
+          )
+          .valueOf(),
+        //@ts-ignore
+        detector.enabledTime
+      ),
+      endDate: moment().valueOf(),
+    } as DateRange;
+
+    const params = buildParamsForGetAnomalyResultsWithDateRange(
+      featureDataPointsRange.startDate,
+      featureDataPointsRange.endDate
+    );
+
+    try {
+      const detectorResultResponse = await dispatch(
+        getDetectorResults(detectorId, params)
+      );
+      const featuresData = get(
+        detectorResultResponse,
+        'data.response.featureResults',
+        []
+      );
+      const featureDataPoints = getFeatureDataPointsForDetector(
+        detector,
+        featuresData,
+        detectorIntervalInMin,
+        featureDataPointsRange
+      );
+
+      const featureMissingSeveritiesMap = getFeatureMissingSeverities(
+        featureDataPoints
+      );
+      let highestSeverity = MISSING_FEATURE_DATA_SEVERITY.GREEN;
+      let featuresAtHighestSev = [] as string[];
+      featureMissingSeveritiesMap.forEach((featureNames, severity, map) => {
+        if (severity > highestSeverity) {
+          highestSeverity = severity;
+          featuresAtHighestSev = featureNames;
+        }
+      });
+
+      setFeatureMissingSeverity(highestSeverity);
+      setFeatureNamesAtHighSev(featuresAtHighestSev);
+    } catch (err) {
+      console.error(
+        `Failed to get anomaly results for ${detectorId} during getting latest feature data points`,
+        err
+      );
+    }
+  };
+
+  const getCalloutTitle = () => {
+    if (isDetectorUpdated) {
+      return 'The detector configuration has changed since it was last stopped.';
+    }
+    if (isDetectorMissingData) {
+      return get(
+        getFeatureDataMissingMessageAndActionItem(
+          featureMissingSeverity,
+          featureNamesAtHighSev
+        ),
+        'message',
+        ''
+      );
+    }
+    if (isInitializingNormally) {
+      return 'The detector is being initialized based on the latest configuration changes.';
+    }
+    if (isInitOvertime) {
+      return `Detector initialization is not complete because ${initErrorMessage}.`;
+    }
+    if (isDetectorFailed) {
+      return `The detector is not initialized because ${get(
+        getInitFailureMessageAndActionItem(
+          //@ts-ignore
+          detector.stateError
+        ),
+        'cause',
+        ''
+      )}.`;
+    }
+  };
+  const getCalloutColor = () => {
+    if (
+      isDetectorFailed ||
+      featureMissingSeverity === MISSING_FEATURE_DATA_SEVERITY.RED
+    ) {
+      return 'danger';
+    }
+    if (
+      isInitOvertime ||
+      isDetectorUpdated ||
+      featureMissingSeverity === MISSING_FEATURE_DATA_SEVERITY.YELLOW
+    ) {
+      return 'warning';
+    }
+    if (isInitializingNormally) {
+      return 'primary';
+    }
+  };
+
+  const getCalloutContent = () => {
+    return isDetectorUpdated ? (
+      <p>
+        Restart the detector to see accurate anomalies based on configuration
+        changes.
+      </p>
+    ) : isDetectorMissingData ? (
+      <p>
+        {get(
+          getFeatureDataMissingMessageAndActionItem(
+            featureMissingSeverity,
+            featureNamesAtHighSev
+          ),
+          'actionItem',
+          ''
+        )}
+      </p>
+    ) : isInitializingNormally ? (
+      <p>
+        After the initialization is complete, you will see the anomaly results
+        based on your latest configuration changes.
+      </p>
+    ) : isInitOvertime ? (
+      <p>{`${initActionItem}`}</p>
+    ) : (
+      // detector has failure
+      <p>{`${get(
+        getInitFailureMessageAndActionItem(
+          //@ts-ignore
+          detector.stateError
+        ),
+        'actionItem',
+        ''
+      )}`}</p>
+    );
+  };
   return (
     <Fragment>
       <EuiPage style={{ marginTop: '16px', paddingTop: '0px' }}>
@@ -125,70 +322,29 @@ export function AnomalyResults(props: AnomalyResultsProps) {
               isDetectorFailed ? (
                 <Fragment>
                   {isDetectorUpdated ||
-                  isDetectorInitializing ||
+                  isDetectorMissingData ||
+                  isInitializingNormally ||
                   isDetectorFailed ? (
                     <EuiCallOut
-                      title={
-                        isDetectorUpdated
-                          ? 'The detector configuration has changed since it was last stopped.'
-                          : isInitializingNormally
-                          ? 'The detector is being initialized based on the latest configuration changes.'
-                          : isInitOvertime
-                          ? `Detector initialization is not complete because ${initErrorMessage}.`
-                          : // detector has failure
-                            `The detector is not initialized because ${get(
-                              getInitFailureMessageAndActionItem(
-                                //@ts-ignore
-                                detector.stateError
-                              ),
-                              'cause',
-                              ''
-                            )}.`
-                      }
-                      color={
-                        isInitializingNormally
-                          ? 'primary'
-                          : isInitOvertime || isDetectorUpdated
-                          ? 'warning'
-                          : // detector has failure
-                            'danger'
-                      }
+                      title={getCalloutTitle()}
+                      color={getCalloutColor()}
                       iconType={isInitializingNormally ? 'iInCircle' : 'alert'}
                       style={{ marginBottom: '20px' }}
                     >
-                      {isDetectorUpdated ? (
-                        <p>
-                          Restart the detector to see accurate anomalies based
-                          on configuration changes.
-                        </p>
-                      ) : isInitializingNormally ? (
-                        <p>
-                          After the initialization is complete, you will see the
-                          anomaly results based on your latest configuration
-                          changes.
-                        </p>
-                      ) : isInitOvertime ? (
-                        <p>{`${initActionItem}`}</p>
-                      ) : (
-                        // detector has failure
-                        <p>{`${get(
-                          getInitFailureMessageAndActionItem(
-                            //@ts-ignore
-                            detector.stateError
-                          ),
-                          'actionItem',
-                          ''
-                        )}`}</p>
-                      )}
+                      {getCalloutContent()}
                       <EuiButton
                         onClick={props.onSwitchToConfiguration}
                         color={
-                          isInitializingNormally
-                            ? 'primary'
-                            : isInitOvertime || isDetectorUpdated
+                          featureMissingSeverity ===
+                            MISSING_FEATURE_DATA_SEVERITY.RED ||
+                          isDetectorFailed
+                            ? 'danger'
+                            : isInitOvertime ||
+                              isDetectorUpdated ||
+                              featureMissingSeverity ===
+                                MISSING_FEATURE_DATA_SEVERITY.YELLOW
                             ? 'warning'
-                            : // detector has failure
-                              'danger'
+                            : 'primary'
                         }
                         style={{ marginRight: '8px' }}
                       >
@@ -214,6 +370,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     createFeature={() =>
                       props.history.push(`/detectors/${detectorId}/features`)
                     }
+                    isFeatureDataMissing={isDetectorMissingData}
                   />
                 </Fragment>
               ) : detector ? (
