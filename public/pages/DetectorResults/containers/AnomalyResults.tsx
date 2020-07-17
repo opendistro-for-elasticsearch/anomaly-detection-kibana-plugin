@@ -114,6 +114,13 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   const monitors = useSelector((state: AppState) => state.alerting.monitors);
   const monitor = get(monitors, `${detectorId}.0`);
 
+  const [featureMissingSeverity, setFeatureMissingSeverity] = useState<
+    MISSING_FEATURE_DATA_SEVERITY
+  >();
+
+  const [featureNamesAtHighSev, setFeatureNamesAtHighSev] = useState(
+    [] as string[]
+  );
   const isDetectorRunning =
     detector && detector.curState === DETECTOR_STATE.RUNNING;
 
@@ -131,8 +138,16 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   const isDetectorInitializing =
     detector && detector.curState === DETECTOR_STATE.INIT;
 
-  const initializationInfo = getDetectorInitializationInfo(detector);
-  const isInitOvertime = get(initializationInfo, IS_INIT_OVERTIME_FIELD, false);
+  const isDetectorMissingData = featureMissingSeverity
+    ? (isDetectorInitializing || isDetectorRunning) &&
+      featureMissingSeverity > MISSING_FEATURE_DATA_SEVERITY.GREEN
+    : undefined;
+
+  const initializationInfo = featureMissingSeverity
+    ? getDetectorInitializationInfo(detector)
+    : undefined;
+
+  const isInitOvertime = get(initializationInfo, IS_INIT_OVERTIME_FIELD);
   const initDetails = get(initializationInfo, INIT_DETAILS_FIELD, {});
   const initErrorMessage = get(initDetails, INIT_ERROR_MESSAGE_FIELD, '');
   const initActionItem = get(initDetails, INIT_ACTION_ITEM_FIELD, '');
@@ -148,21 +163,9 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     1
   );
 
-  const [featureMissingSeverity, setFeatureMissingSeverity] = useState<
-    MISSING_FEATURE_DATA_SEVERITY
-  >();
-
-  const [featureNamesAtHighSev, setFeatureNamesAtHighSev] = useState(
-    [] as string[]
-  );
-
-  const isDetectorMissingData = featureMissingSeverity
-    ? (isDetectorInitializing || isDetectorRunning) &&
-      featureMissingSeverity > MISSING_FEATURE_DATA_SEVERITY.GREEN
-    : undefined;
-
   const isInitializingNormally =
     isDetectorInitializing &&
+    isInitOvertime != undefined &&
     !isInitOvertime &&
     isDetectorMissingData != undefined &&
     !isDetectorMissingData;
@@ -276,6 +279,14 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     }
   };
 
+  const getInitProgressMessage = () => {
+    return detector && isDetectorInitializing && detector.initProgress
+      ? `The detector needs to capture approximately
+                  ${detector.initProgress.neededShingles} data points for initializing. If your data stream is continuous, this process will take around
+                  ${detector.initProgress.estimatedMinutesLeft} minutes; if not, it may take even longer. `
+      : '';
+  };
+
   const getCalloutContent = () => {
     return isDetectorUpdated ? (
       <p>
@@ -284,6 +295,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       </p>
     ) : isDetectorMissingData ? (
       <p>
+        {getInitProgressMessage()}
         {get(
           getFeatureDataMissingMessageAndActionItem(
             featureMissingSeverity,
@@ -295,22 +307,11 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       </p>
     ) : isInitializingNormally ? (
       <p>
-        {detector.initProgress
-          ? `The detector needs to capture approximately
-                          ${
-                            //@ts-ignore
-                            detector.initProgress.neededShingles
-                          } data points for initializing. If your data stream is continuous, this process will take around
-                          ${
-                            //@ts-ignore
-                            detector.initProgress.estimatedMinutesLeft
-                          } minutes; if not, it may take even longer. `
-          : ''}
-        After the initialization is complete, you will see the anomaly results
-        based on your latest configuration changes.
+        {getInitProgressMessage()}After the initialization is complete, you will
+        see the anomaly results based on your latest configuration changes.
       </p>
     ) : isInitOvertime ? (
-      <p>{`${initActionItem}`}</p>
+      <p>{`${getInitProgressMessage()}${initActionItem}`}</p>
     ) : (
       // detector has failure
       <p>{`${get(
@@ -338,6 +339,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                   {isDetectorUpdated ||
                   isDetectorMissingData ||
                   isInitializingNormally ||
+                  isInitOvertime ||
                   isDetectorFailed ? (
                     <EuiCallOut
                       title={getCalloutTitle()}

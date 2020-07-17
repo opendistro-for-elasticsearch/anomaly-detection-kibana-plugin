@@ -196,15 +196,12 @@ const getDetector = async (
       primaryTerm: response._primary_term,
       seqNo: response._seq_no,
       adJob: { ...response.anomaly_detector_job },
-      //@ts-ignore
-      ...(detectorState !== undefined ? { curState: detectorState.state } : {}),
       ...(detectorState !== undefined
-        ? //@ts-ignore
-          { stateError: detectorState.error }
-        : {}),
-      ...(detectorState !== undefined
-        ? //@ts-ignore
-          { initProgress: getDetectorInitProgress(detectorState) }
+        ? {
+            curState: detectorState.state,
+            stateError: detectorState.error,
+            initProgress: getDetectorInitProgress(detectorState),
+          }
         : {}),
     };
     return {
