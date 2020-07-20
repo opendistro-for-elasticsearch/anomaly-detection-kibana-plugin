@@ -18,6 +18,7 @@ import { AnomalyResults } from 'server/models/interfaces';
 import { GetDetectorsQueryParams } from '../../models/types';
 import { mapKeysDeep, toCamel, toSnake } from '../../utils/helpers';
 import { DETECTOR_STATE } from '../../../public/utils/constants';
+import { InitProgress } from 'public/models/interfaces';
 
 export const convertDetectorKeysToSnakeCase = (payload: any) => {
   return {
@@ -151,12 +152,26 @@ export const anomalyResultMapper = (anomalyResults: any[]): AnomalyResults => {
   return resultData;
 };
 
+export const getDetectorInitProgress = (
+  detectorStateResponse: any
+): InitProgress | undefined => {
+  if (detectorStateResponse.init_progress) {
+    return {
+      percentageStr: detectorStateResponse.init_progress.percentage,
+      estimatedMinutesLeft:
+        detectorStateResponse.init_progress.estimated_minutes_left,
+      neededShingles: detectorStateResponse.init_progress.needed_shingles,
+    };
+  }
+  return undefined;
+};
+
 export const getFinalDetectorStates = (
   detectorStateResponses: any[],
   finalDetectors: any[]
 ) => {
   let finalDetectorStates = cloneDeep(detectorStateResponses);
-  finalDetectorStates.forEach(detectorState => {
+  finalDetectorStates.forEach((detectorState) => {
     //@ts-ignore
     detectorState.state = DETECTOR_STATE[detectorState.state];
   });
@@ -198,7 +213,7 @@ export const getDetectorsWithJob = (
 ): any[] => {
   const finalDetectorsWithJobResponses = cloneDeep(detectorsWithJobResponses);
   const resultDetectorWithJobs = [] as any[];
-  finalDetectorsWithJobResponses.forEach(detectorWithJobResponse => {
+  finalDetectorsWithJobResponses.forEach((detectorWithJobResponse) => {
     const resp = {
       ...detectorWithJobResponse.anomaly_detector,
       id: detectorWithJobResponse._id,

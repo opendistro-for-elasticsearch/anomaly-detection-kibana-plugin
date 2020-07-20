@@ -129,7 +129,7 @@ export default function adPlugin(Client: any, config: any, components: any) {
 
   ad.detectorProfile = ca({
     url: {
-      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/_profile`,
+      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>/_profile/init_progress,state,error`,
       req: {
         detectorId: {
           type: 'string',
