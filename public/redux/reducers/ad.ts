@@ -139,6 +139,7 @@ const reducer = handleActions<Detectors>(
             disabledTime: moment().valueOf(),
             curState: DETECTOR_STATE.DISABLED,
             stateError: '',
+            initProgress: undefined,
           },
         },
       }),

@@ -45,6 +45,7 @@ import {
   getResultAggregationQuery,
   getFinalDetectorStates,
   getDetectorsWithJob,
+  getDetectorInitProgress,
 } from './utils/adHelpers';
 import { set } from 'lodash';
 
@@ -55,7 +56,7 @@ type PutDetectorParams = {
   body: string;
 };
 
-export default function(apiRouter: Router) {
+export default function (apiRouter: Router) {
   apiRouter.post('/detectors', putDetector);
   apiRouter.put('/detectors/{detectorId}', putDetector);
   apiRouter.post('/detectors/_search', searchDetector);
@@ -181,7 +182,6 @@ const getDetector = async (
           detectorId: detectorId,
         }
       );
-
       const detectorStates = getFinalDetectorStates(
         [detectorStateResp],
         [convertDetectorKeysToCamelCase(response.anomaly_detector)]
@@ -196,11 +196,12 @@ const getDetector = async (
       primaryTerm: response._primary_term,
       seqNo: response._seq_no,
       adJob: { ...response.anomaly_detector_job },
-      //@ts-ignore
-      ...(detectorState !== undefined ? { curState: detectorState.state } : {}),
       ...(detectorState !== undefined
-        ? //@ts-ignore
-          { stateError: detectorState.error }
+        ? {
+            curState: detectorState.state,
+            stateError: detectorState.error,
+            initProgress: getDetectorInitProgress(detectorState),
+          }
         : {}),
     };
     return {
@@ -333,10 +334,7 @@ const getDetectors = async (
         query_string: {
           fields: ['name', 'description'],
           default_operator: 'AND',
-          query: `*${search
-            .trim()
-            .split(' ')
-            .join('* *')}*`,
+          query: `*${search.trim().split(' ').join('* *')}*`,
         },
       });
     }
@@ -345,10 +343,7 @@ const getDetectors = async (
         query_string: {
           fields: ['indices'],
           default_operator: 'OR',
-          query: `*${indices
-            .trim()
-            .split(' ')
-            .join('* *')}*`,
+          query: `*${indices.trim().split(' ').join('* *')}*`,
         },
       });
     }
@@ -452,7 +447,7 @@ const getDetectors = async (
     }
 
     // Get detector state as well: loop through the ids to get each detector's state using profile api
-    const allIds = finalDetectors.map(detector => detector.id);
+    const allIds = finalDetectors.map((detector) => detector.id);
 
     const detectorStatePromises = allIds.map(async (id: string) => {
       try {

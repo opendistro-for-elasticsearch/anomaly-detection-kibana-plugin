@@ -17,7 +17,7 @@ import { DETECTOR_INIT_FAILURES } from './constants';
 
 export const getInitFailureMessageAndActionItem = (error: string): object => {
   const failureDetails = Object.values(DETECTOR_INIT_FAILURES);
-  const failureDetail = failureDetails.find(failure =>
+  const failureDetail = failureDetails.find((failure) =>
     error.includes(failure.keyword)
   );
   if (!failureDetail) {
