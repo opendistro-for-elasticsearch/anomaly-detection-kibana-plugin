@@ -14,6 +14,7 @@
  */
 declare namespace Cypress {
   interface Chainable<Subject> {
+    visitWithAuth(appUrl: string): Chainable<any>;
     mockGetDetectorOnAction(
       fixtureFileName: string,
       funcMockedOn: VoidFunction

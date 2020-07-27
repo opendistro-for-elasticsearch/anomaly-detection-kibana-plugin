@@ -18,7 +18,7 @@ import { buildAdAppUrl } from '../../../utils/helpers';
 context('Create detector', () => {
   it('Create detector - from dashboard', () => {
     cy.mockSearchIndexOnAction('search_index_response.json', () => {
-      cy.visit(buildAdAppUrl(CREATE_AD));
+      cy.visitWithAuth(buildAdAppUrl(CREATE_AD));
     });
 
     cy.contains('h1', 'Create detector');
