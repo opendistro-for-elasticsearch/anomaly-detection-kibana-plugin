@@ -38,6 +38,7 @@ import {
   AnnotationDomainTypes,
   RectAnnotation,
   ScaleType,
+  XYBrushArea,
 } from '@elastic/charts';
 import { useDelayedLoader } from '../../../hooks/useDelayedLoader';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
@@ -345,7 +346,9 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                       //TODO: research more why only set this old property will work.
                       showLegendDisplayValue={false}
                       legendPosition={Position.Right}
-                      onBrushEnd={(start: number, end: number) => {
+                      onBrushEnd={(brushArea: XYBrushArea) => {
+                        const start = get(brushArea, 'x.0', datePickerRange.start);
+                        const end = get(brushArea,'x.1',datePickerRange.start);
                         !props.bucketizedAnomalies
                           ? handleZoomRangeChange(start, end)
                           : handleDateRangeChange(start, end);
