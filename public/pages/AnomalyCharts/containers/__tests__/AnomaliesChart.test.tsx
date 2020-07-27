@@ -74,6 +74,6 @@ describe('<AnomaliesChart /> spec', () => {
   test('renders the component', () => {
     console.error = jest.fn();
     const { getByText } = renderDataFilter();
-    expect(getByText('anomaly grade')).not.toBeNull();
+    expect(getByText('Sample anomaly grade')).not.toBeNull();
   });
 });
