@@ -45,4 +45,10 @@ jobs:
       - name: Run tests
         run: |
           cd kibana/plugins/anomaly-detection-kibana-plugin
-          yarn run test:jest
+          yarn run test:jest --coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./kibana/plugins/anomaly-detection-kibana-plugin/coverage/cobertura-coverage.xml
+          flags: unittests
+          name: ad-kibana-ut-codecov
