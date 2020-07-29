@@ -20,7 +20,7 @@ import { buildAdAppUrl } from '../../../utils/helpers';
 context('Detector list', () => {
   it('Empty detectors - no detector index', () => {
     cy.mockGetDetectorOnAction('no_detector_index_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DETECTORS));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
 
     cy.contains('p', '(0)');
@@ -33,7 +33,7 @@ context('Detector list', () => {
 
   it('Empty detectors - empty detector index', () => {
     cy.mockGetDetectorOnAction('empty_detector_index_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DETECTORS));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
 
     cy.contains('p', '(0)');
@@ -46,7 +46,7 @@ context('Detector list', () => {
 
   it('One detector - single stopped detector index', () => {
     cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DETECTORS));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
 
     cy.contains('p', '(1)');
@@ -58,7 +58,7 @@ context('Detector list', () => {
 
   it('Multiple detectors - multiple detectors index', () => {
     cy.mockGetDetectorOnAction('multiple_detectors_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DETECTORS));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
 
     cy.contains('p', '(4)');
@@ -79,7 +79,7 @@ context('Detector list', () => {
 
   it('Redirect to create detector', () => {
     cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DETECTORS));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
     cy.get('[data-test-subj=addDetector]').click({ force: true });
     cy.contains('h1', 'Create detector');
@@ -87,7 +87,7 @@ context('Detector list', () => {
 
   it('Start single detector', () => {
     cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DETECTORS));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
     cy.get('.euiCheckbox__input').last().click({ force: true });
     cy.get('[data-test-subj=listActionsButton]').click({ force: true });
@@ -106,7 +106,7 @@ context('Detector list', () => {
 
   it('Stop single detector', () => {
     cy.mockGetDetectorOnAction('single_running_detector_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DETECTORS));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
     cy.get('.euiCheckbox__input').last().click({ force: true });
     cy.get('[data-test-subj=listActionsButton]').click({ force: true });
@@ -125,7 +125,7 @@ context('Detector list', () => {
 
   it('Delete single detector', () => {
     cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DETECTORS));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
     cy.get('.euiCheckbox__input').last().click({ force: true });
     cy.get('[data-test-subj=listActionsButton]').click({ force: true });
@@ -151,7 +151,7 @@ context('Detector list', () => {
 
   it('Filter by detector search', () => {
     cy.mockGetDetectorOnAction('multiple_detectors_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DETECTORS));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
 
     cy.contains('stopped-detector');
@@ -168,7 +168,7 @@ context('Detector list', () => {
 
   it('Filter by detector state', () => {
     cy.mockGetDetectorOnAction('multiple_detectors_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DETECTORS));
+      cy.visit(buildAdAppUrl(DETECTORS));
     });
 
     cy.contains('stopped-detector');

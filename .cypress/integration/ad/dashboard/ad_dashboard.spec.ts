@@ -19,21 +19,21 @@ import { buildAdAppUrl } from '../../../utils/helpers';
 context('AD Dashboard', () => {
   it('Empty dashboard - no detector index', () => {
     cy.mockGetDetectorOnAction('no_detector_index_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DASHBOARD));
+      cy.visit(buildAdAppUrl(DASHBOARD));
     });
     cy.contains('h2', 'You have no detectors');
   });
 
   it('Empty dashboard - empty detector index', () => {
     cy.mockGetDetectorOnAction('empty_detector_index_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DASHBOARD));
+      cy.visit(buildAdAppUrl(DASHBOARD));
     });
     cy.contains('h2', 'You have no detectors');
   });
 
   it('AD dashboard - single stopped detector', () => {
     cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DASHBOARD));
+      cy.visit(buildAdAppUrl(DASHBOARD));
     });
 
     cy.contains('h3', 'Live anomalies');
@@ -45,7 +45,7 @@ context('AD Dashboard', () => {
 
   it('AD dashboard - redirect to create detector', () => {
     cy.mockGetDetectorOnAction('no_detector_index_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DASHBOARD));
+      cy.visit(buildAdAppUrl(DASHBOARD));
     });
 
     cy.mockSearchIndexOnAction('search_index_response.json', () => {
@@ -59,7 +59,7 @@ context('AD Dashboard', () => {
 
   it('Filter by detector', () => {
     cy.mockGetDetectorOnAction('multiple_detectors_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DASHBOARD));
+      cy.visit(buildAdAppUrl(DASHBOARD));
     });
 
     cy.contains('stopped-detector');
@@ -78,7 +78,7 @@ context('AD Dashboard', () => {
 
   it('Filter by detector state', () => {
     cy.mockGetDetectorOnAction('multiple_detectors_response.json', () => {
-      cy.visitWithAuth(buildAdAppUrl(DASHBOARD));
+      cy.visit(buildAdAppUrl(DASHBOARD));
     });
 
     cy.contains('stopped-detector');

@@ -9,5 +9,8 @@
   "videosFolder": ".cypress/videos",
   "requestTimeout": 90000,
   "responseTimeout": 90000,
-  "defaultCommandTimeout": 90000
+  "defaultCommandTimeout": 90000,
+  "env": {
+    "SECURITY_ENABLED": false
+  }
 }

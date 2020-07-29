@@ -23,13 +23,17 @@ import {
 } from '../utils/constants';
 import { buildAdApiUrl } from '../utils/helpers';
 
-Cypress.Commands.add('visitWithAuth', function (appUrl: string) {
-  cy.visit(appUrl, {
-    auth: {
-      username: 'admin',
-      password: 'admin',
-    },
-  });
+Cypress.Commands.overwrite('visit', (orig, url, options) => {
+  if (Cypress.env('SECURITY_ENABLED')) {
+    orig(url, options, {
+      auth: {
+        username: 'admin',
+        password: 'admin',
+      },
+    });
+  } else {
+    orig(url, options);
+  }
 });
 
 Cypress.Commands.add('mockGetDetectorOnAction', function (
