@@ -1,7 +1,7 @@
-[![Unit tests](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/workflows/Unit%20tests%20workflow/badge.svg)](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/actions)
-[![Integration tests](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/workflows/E2E%20tests%20workflow/badge.svg)](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/actions)
+[![Unit tests](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/workflows/Unit%20tests%20workflow/badge.svg)](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/actions?query=workflow%3A%22Unit+tests+workflow%22)
+[![Integration tests](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/workflows/E2E%20tests%20workflow/badge.svg)](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/actions?query=workflow%3A%22E2E+tests+workflow%22)
 [![codecov](https://codecov.io/gh/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin)
-[![Documentation](https://img.shields.io/badge/api-reference-blue.svg)](https://opendistro.github.io/for-elasticsearch-docs/docs/ad/api/)
+[![Documentation](https://img.shields.io/badge/doc-reference-blue)](https://opendistro.github.io/for-elasticsearch-docs/docs/ad/)
 [![Forum](https://img.shields.io/badge/chat-on%20forums-blue)](https://discuss.opendistrocommunity.dev/c/Use-this-category-for-all-questions-around-machine-learning-plugins)
 ![PRs welcome!](https://img.shields.io/badge/PRs-welcome!-success)
 
