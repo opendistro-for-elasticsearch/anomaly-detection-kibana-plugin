@@ -25,12 +25,21 @@ import { buildAdApiUrl } from '../utils/helpers';
 
 Cypress.Commands.overwrite('visit', (orig, url, options) => {
   if (Cypress.env('SECURITY_ENABLED')) {
-    orig(url, options, {
-      auth: {
+    let newOptions = options;
+    if (options) {
+      newOptions['auth'] = {
         username: 'admin',
         password: 'admin',
-      },
-    });
+      };
+    } else {
+      newOptions = {
+        auth: {
+          username: 'admin',
+          password: 'admin',
+        },
+      };
+    }
+    orig(url, newOptions);
   } else {
     orig(url, options);
   }
