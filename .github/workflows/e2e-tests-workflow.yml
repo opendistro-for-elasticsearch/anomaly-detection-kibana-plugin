@@ -2,10 +2,99 @@ name: E2E tests workflow
 on:
   push:
     branches:
-      - master
+      - securityCI
+env:
+  KIBANA_VERSION: 7.8.0
+  ODFE_VERSION: 1.9.0
 jobs:
-  tests:
-    name: Run e2e tests
+  test-with-security:
+    name: Run e2e tests with security
+    strategy:
+      matrix:
+        os: [ubuntu-16.04] # use ubuntu-16.04 as required by cypress: https://github.com/marketplace/actions/cypress-io#important
+        java: [14]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout Kibana
+        uses: actions/checkout@v2
+        with:
+          repository: opendistro-for-elasticsearch/kibana-oss
+          ref: ${{ env.KIBANA_VERSION }}
+          token: ${{ secrets.KIBANA_OSS_ACCESS }}
+          path: kibana
+
+      - name: Get node and yarn versions
+        id: versions_step
+        run: |
+          echo "::set-output name=node_version::$(node -p "(require('./kibana/package.json').engines.node).match(/[.0-9]+/)[0]")"
+          echo "::set-output name=yarn_version::$(node -p "(require('./kibana/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.versions_step.outputs.node_version }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install correct yarn version for Kibana
+        run: |
+          npm uninstall -g yarn
+          echo "Installing yarn ${{ steps.versions_step.outputs.yarn_version }}"
+          npm i -g yarn@${{ steps.versions_step.outputs.yarn_version }}
+
+      - name: Checkout Anomaly Detection Kibana plugin
+        uses: actions/checkout@v2
+        with:
+          path: kibana/plugins/anomaly-detection-kibana-plugin
+
+      - name: Bootstrap the plugin
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn kbn bootstrap
+
+      - name: Build the artifact
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn build
+
+      - name: Create tagged images for ES and Kibana
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          odfe_version=$ODFE_VERSION
+          plugin_version=$(node -pe "require('./package.json').version")
+          echo odfe version: $odfe_version
+          echo plugin version: $plugin_version
+          if docker pull opendistroforelasticsearch/opendistroforelasticsearch:$odfe_version
+          then
+            ## Populate the Dockerfiles
+            echo "FROM opendistroforelasticsearch/opendistroforelasticsearch:$odfe_version" >> Dockerfile-AD
+            echo "FROM opendistroforelasticsearch/opendistroforelasticsearch-kibana:$odfe_version" >> Dockerfile-AD-Kibana
+            echo "COPY build/opendistro-anomaly-detection-kibana-$plugin_version.zip ." >> Dockerfile-AD-Kibana
+            ## Uninstall existing AD artifact and install new one
+            echo "RUN if [ -d /usr/share/kibana/plugins/opendistro-anomaly-detection-kibana ]; then /usr/share/kibana/bin/kibana-plugin remove opendistro-anomaly-detection-kibana; fi" >> Dockerfile-AD-Kibana
+            echo "RUN bin/kibana-plugin install file:///usr/share/kibana/opendistro-anomaly-detection-kibana-$plugin_version.zip;" >> Dockerfile-AD-Kibana
+
+            ## Create the tagged images
+            docker build -f ./Dockerfile-AD -t odfe-ad:test .
+            docker build -f ./Dockerfile-AD-Kibana -t odfe-ad-kibana:test .
+          fi
+          docker images
+
+      - name: Start ES and Kibana
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin/.github/configurations
+          ## Need to increase max map count for running the docker container
+          sudo sysctl -w vm.max_map_count=262144
+          docker-compose up -d
+          sleep 180
+
+      - name: Run e2e tests
+        uses: cypress-io/github-action@v1
+        with:
+          working-directory: kibana/plugins/anomaly-detection-kibana-plugin
+          command: yarn cy:run --env SECURITY_ENABLED=true
+
+  test-without-security:
+    name: Run e2e tests without security
     strategy:
       matrix:
         os: [ubuntu-16.04] # use ubuntu-16.04 as required by cypress: https://github.com/marketplace/actions/cypress-io#important
@@ -14,11 +103,11 @@ jobs:
     steps:
       - name: Pull and Run Docker
         run: |
-          version=1.9.0
-          echo $version
-          if docker pull opendistroforelasticsearch/opendistroforelasticsearch:$version
+          odfe_version=$ODFE_VERSION
+          echo odfe version: $odfe_version
+          if docker pull opendistroforelasticsearch/opendistroforelasticsearch:$odfe_version
           then
-            echo "FROM opendistroforelasticsearch/opendistroforelasticsearch:$version" >> Dockerfile
+            echo "FROM opendistroforelasticsearch/opendistroforelasticsearch:$odfe_version" >> Dockerfile
             ## The ESRestTest Client uses http by default.
             ## Need to disable the security plugin to call the rest api over http.
             echo "RUN if [ -d /usr/share/elasticsearch/plugins/opendistro_security ]; then /usr/share/elasticsearch/bin/elasticsearch-plugin remove opendistro_security; fi" >> Dockerfile
@@ -29,12 +118,11 @@ jobs:
           docker run -p 9200:9200 -d -p 9600:9600 -e "discovery.type=single-node" odfe-ad:test
           sleep 90
           curl -XGET http://localhost:9200/_cat/plugins
-
       - name: Checkout Kibana
         uses: actions/checkout@v2
         with:
           repository: opendistro-for-elasticsearch/kibana-oss
-          ref: 7.8.0
+          ref: ${{ env.KIBANA_VERSION }}
           token: ${{ secrets.KIBANA_OSS_ACCESS }}
           path: kibana
       - name: Get node and yarn versions

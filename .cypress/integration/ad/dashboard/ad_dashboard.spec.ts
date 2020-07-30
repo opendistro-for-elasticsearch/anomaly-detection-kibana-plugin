@@ -68,9 +68,7 @@ context('AD Dashboard', () => {
     cy.get('[data-test-subj=comboBoxToggleListButton]')
       .first()
       .click({ force: true });
-    cy.get('.euiFilterSelectItem')
-      .first()
-      .click({ force: true });
+    cy.get('.euiFilterSelectItem').first().click({ force: true });
     cy.get('.euiPageSideBar').click({ force: true });
 
     cy.contains('feature-required-detector'); // first one in the list returned by multiple_detectors_response.json
@@ -89,9 +87,7 @@ context('AD Dashboard', () => {
     cy.get('[data-test-subj=comboBoxToggleListButton]')
       .eq(1)
       .click({ force: true });
-    cy.get('.euiFilterSelectItem')
-      .first()
-      .click({ force: true });
+    cy.get('.euiFilterSelectItem').first().click({ force: true });
     cy.get('.euiPageSideBar').click({ force: true });
 
     cy.contains('stopped-detector'); // because stopped is the first item in the detector state dropdown
