@@ -23,7 +23,29 @@ import {
 } from '../utils/constants';
 import { buildAdApiUrl } from '../utils/helpers';
 
-Cypress.Commands.add('mockGetDetectorOnAction', function(
+Cypress.Commands.overwrite('visit', (orig, url, options) => {
+  if (Cypress.env('SECURITY_ENABLED')) {
+    let newOptions = options;
+    if (options) {
+      newOptions['auth'] = {
+        username: 'admin',
+        password: 'admin',
+      };
+    } else {
+      newOptions = {
+        auth: {
+          username: 'admin',
+          password: 'admin',
+        },
+      };
+    }
+    orig(url, newOptions);
+  } else {
+    orig(url, options);
+  }
+});
+
+Cypress.Commands.add('mockGetDetectorOnAction', function (
   fixtureFileName: string,
   funcMockedOn: VoidFunction
 ) {
@@ -39,7 +61,7 @@ Cypress.Commands.add('mockGetDetectorOnAction', function(
   cy.wait('@getDetectors');
 });
 
-Cypress.Commands.add('mockCreateDetectorOnAction', function(
+Cypress.Commands.add('mockCreateDetectorOnAction', function (
   fixtureFileName: string,
   funcMockedOn: VoidFunction
 ) {
@@ -55,7 +77,7 @@ Cypress.Commands.add('mockCreateDetectorOnAction', function(
   cy.wait('@createDetector');
 });
 
-Cypress.Commands.add('mockSearchIndexOnAction', function(
+Cypress.Commands.add('mockSearchIndexOnAction', function (
   fixtureFileName: string,
   funcMockedOn: VoidFunction
 ) {
@@ -71,7 +93,7 @@ Cypress.Commands.add('mockSearchIndexOnAction', function(
   cy.wait('@getIndices');
 });
 
-Cypress.Commands.add('mockSearchOnAction', function(
+Cypress.Commands.add('mockSearchOnAction', function (
   fixtureFileName: string,
   funcMockedOn: VoidFunction
 ) {
@@ -85,7 +107,7 @@ Cypress.Commands.add('mockSearchOnAction', function(
   cy.wait('@searchES');
 });
 
-Cypress.Commands.add('mockGetIndexMappingsOnAction', function(
+Cypress.Commands.add('mockGetIndexMappingsOnAction', function (
   fixtureFileName: string,
   funcMockedOn: VoidFunction
 ) {
@@ -101,7 +123,7 @@ Cypress.Commands.add('mockGetIndexMappingsOnAction', function(
   cy.wait('@getMappings');
 });
 
-Cypress.Commands.add('mockStartDetectorOnAction', function(
+Cypress.Commands.add('mockStartDetectorOnAction', function (
   fixtureFileName: string,
   detectorId: string,
   funcMockedOn: VoidFunction
@@ -118,7 +140,7 @@ Cypress.Commands.add('mockStartDetectorOnAction', function(
   cy.wait('@startDetector');
 });
 
-Cypress.Commands.add('mockStopDetectorOnAction', function(
+Cypress.Commands.add('mockStopDetectorOnAction', function (
   fixtureFileName: string,
   detectorId: string,
   funcMockedOn: VoidFunction
@@ -135,7 +157,7 @@ Cypress.Commands.add('mockStopDetectorOnAction', function(
   cy.wait('@stopDetector');
 });
 
-Cypress.Commands.add('mockDeleteDetectorOnAction', function(
+Cypress.Commands.add('mockDeleteDetectorOnAction', function (
   fixtureFileName: string,
   detectorId: string,
   funcMockedOn: VoidFunction

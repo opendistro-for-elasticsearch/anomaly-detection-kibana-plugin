@@ -67,6 +67,11 @@ Example output: `./build/opendistro-anomaly-detection-kibana-1.9.0.0.zip`
 
   Start Kibana, wait for it to be available on `localhost:5601`, and runs end-to-end tests.
 
+- `yarn cy:run`
+
+  Runs end-to-end tests on a currently running Kibana server. Defaults to run the tests on `localhost:5601`, although you can change this to run on any
+  Kibana server with the command `yarn cy:run --config baseUrl=<your-custom-URL>`
+
 ## Contributing to Open Distro for Elasticsearch Anomaly detection Kibana
 
 We welcome you to get involved in development, documentation, testing the anomaly detection plugin. See our [CONTRIBUTING.md](./CONTRIBUTING.md) and join in.

@@ -7,7 +7,10 @@
   "screenshotsFolder": ".cypress/screenshots",
   "supportFile": ".cypress/support/index.js",
   "videosFolder": ".cypress/videos",
-  "requestTimeout": 60000,
-  "responseTimeout": 60000,
-  "defaultCommandTimeout": 60000
+  "requestTimeout": 90000,
+  "responseTimeout": 90000,
+  "defaultCommandTimeout": 90000,
+  "env": {
+    "SECURITY_ENABLED": false
+  }
 }

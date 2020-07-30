@@ -89,9 +89,7 @@ context('Detector list', () => {
     cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
       cy.visit(buildAdAppUrl(DETECTORS));
     });
-    cy.get('.euiCheckbox__input')
-      .last()
-      .click({ force: true });
+    cy.get('.euiCheckbox__input').last().click({ force: true });
     cy.get('[data-test-subj=listActionsButton]').click({ force: true });
     cy.get('[data-test-subj=startDetectors]').click({ force: true });
     cy.contains('The following detectors will begin initializing.');
@@ -110,9 +108,7 @@ context('Detector list', () => {
     cy.mockGetDetectorOnAction('single_running_detector_response.json', () => {
       cy.visit(buildAdAppUrl(DETECTORS));
     });
-    cy.get('.euiCheckbox__input')
-      .last()
-      .click({ force: true });
+    cy.get('.euiCheckbox__input').last().click({ force: true });
     cy.get('[data-test-subj=listActionsButton]').click({ force: true });
     cy.get('[data-test-subj=stopDetectors]').click({ force: true });
     cy.contains('The following detectors will be stopped.');
@@ -131,9 +127,7 @@ context('Detector list', () => {
     cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
       cy.visit(buildAdAppUrl(DETECTORS));
     });
-    cy.get('.euiCheckbox__input')
-      .last()
-      .click({ force: true });
+    cy.get('.euiCheckbox__input').last().click({ force: true });
     cy.get('[data-test-subj=listActionsButton]').click({ force: true });
     cy.get('[data-test-subj=deleteDetectors]').click({ force: true });
     cy.contains(
@@ -183,9 +177,7 @@ context('Detector list', () => {
     cy.get('[data-test-subj=comboBoxToggleListButton]')
       .first()
       .click({ force: true });
-    cy.get('.euiFilterSelectItem')
-      .first()
-      .click({ force: true });
+    cy.get('.euiFilterSelectItem').first().click({ force: true });
     cy.get('.euiPageSideBar').click({ force: true });
 
     cy.contains('stopped-detector'); // because stopped is the first item in the detector state dropdown
