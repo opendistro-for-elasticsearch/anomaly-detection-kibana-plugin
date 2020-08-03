@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { EuiCallOut, EuiButton, EuiLink, EuiIcon } from '@elastic/eui';
+import { EuiCallOut, EuiLink } from '@elastic/eui';
 import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
 
 interface SampleDataCalloutProps {
@@ -37,28 +37,11 @@ export const SampleDataCallout = (props: SampleDataCalloutProps) => {
           documentation
         </EuiLink>{' '}
         or load some{' '}
-        <EuiLink
-          href={`${PLUGIN_NAME}#${APP_PATH.SAMPLE_DATA}`}
-          target="_blank"
-        >
+        <EuiLink href={`${PLUGIN_NAME}#${APP_PATH.SAMPLE_DETECTORS}`}>
           sample data
         </EuiLink>{' '}
         to get started.
       </p>
-      {/* <EuiButton
-        data-test-subj="calloutLoadSampleDataButton"
-        color="primary"
-        href={`${PLUGIN_NAME}#${APP_PATH.SAMPLE_DATA}`}
-      >
-        Load sample data
-      </EuiButton>
-      <EuiButton
-        style={{ marginLeft: '16px' }}
-        color="primary"
-        onClick={props.onHide}
-      >
-        Ignore
-      </EuiButton> */}
     </EuiCallOut>
   );
 };

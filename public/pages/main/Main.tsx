@@ -32,13 +32,13 @@ enum Navigation {
   AnomalyDetection = 'Anomaly detection',
   Dashboard = 'Dashboard',
   Detectors = 'Detectors',
-  SampleData = 'Sample Data',
+  SampleDetectors = 'Sample detectors',
 }
 
 enum Pathname {
   Dashboard = '/dashboard',
   Detectors = '/detectors',
-  SampleData = '/sample-data',
+  SampleDetectors = '/sample-detectors',
 }
 
 interface MainProps extends RouteComponentProps {}
@@ -66,10 +66,10 @@ export function Main(props: MainProps) {
           isSelected: props.location.pathname === Pathname.Detectors,
         },
         {
-          name: Navigation.SampleData,
+          name: Navigation.SampleDetectors,
           id: 3,
-          href: `#${Pathname.SampleData}`,
-          isSelected: props.location.pathname === Pathname.SampleData,
+          href: `#${Pathname.SampleDetectors}`,
+          isSelected: props.location.pathname === Pathname.SampleDetectors,
         },
       ],
     },
@@ -95,7 +95,7 @@ export function Main(props: MainProps) {
           />
           <Route
             exact
-            path={APP_PATH.SAMPLE_DATA}
+            path={APP_PATH.SAMPLE_DETECTORS}
             render={() => <SampleData />}
           />
           <Route

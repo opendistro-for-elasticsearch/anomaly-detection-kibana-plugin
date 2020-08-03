@@ -1,0 +1,379 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SampleDataBox /> spec Data is loaded renders component 1`] = `
+<div
+  style="height: auto;"
+>
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--hasBetaBadge"
+    style="padding: 20px;"
+  >
+    <span
+      class="euiPanel__betaBadgeWrapper"
+    >
+      <span
+        class="euiBetaBadge euiPanel__betaBadge"
+        title="INSTALLED"
+      >
+        INSTALLED
+      </span>
+    </span>
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              style="display: flex;"
+            >
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--medium euiIcon-isLoading"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
+              <div
+                class="euiSpacer euiSpacer--m"
+              />
+              <h2>
+                  
+              </h2>
+              <h2
+                class="euiTitle euiTitle--small"
+                style="margin-top: -3px;"
+              >
+                Sample title
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 10px 0px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <p
+            style="line-height: 1.4;"
+          >
+            Sample description
+          </p>
+        </div>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="padding-top: 8px; padding-right: 8px;"
+        >
+          <div
+            class="euiFlexItem"
+            style="padding-left: 12px; padding-top: 12px;"
+          >
+            <a
+              class="euiLink euiLink--primary"
+              href="opendistro-anomaly-detection-kibana#/detectors/sample-detector-id"
+              rel="noreferrer"
+            >
+              View detector
+            </a>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <button
+              class="euiButton euiButton--primary"
+              data-test-subj="loadDataButton"
+              disabled=""
+              type="button"
+            >
+              <span
+                class="euiButton__content"
+              >
+                <span
+                  class="euiButton__text"
+                >
+                  Detector created
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SampleDataBox /> spec Data is loading renders component 1`] = `
+<div
+  style="height: auto;"
+>
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding: 20px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              style="display: flex;"
+            >
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--medium euiIcon-isLoading"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
+              <div
+                class="euiSpacer euiSpacer--m"
+              />
+              <h2>
+                  
+              </h2>
+              <h2
+                class="euiTitle euiTitle--small"
+                style="margin-top: -3px;"
+              >
+                Sample title
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 10px 0px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <p
+            style="line-height: 1.4;"
+          >
+            Sample description
+          </p>
+        </div>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="padding-top: 8px; padding-right: 8px;"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <button
+              class="euiButton euiButton--primary"
+              data-test-subj="loadDataButton"
+              disabled=""
+              type="button"
+            >
+              <span
+                class="euiButton__content"
+              >
+                <span
+                  class="euiLoadingSpinner euiLoadingSpinner--medium euiButton__spinner"
+                />
+                <span
+                  class="euiButton__text"
+                >
+                  Create detector
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SampleDataBox /> spec Data not loaded renders component 1`] = `
+<div
+  style="height: auto;"
+>
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding: 20px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              style="display: flex;"
+            >
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--medium euiIcon-isLoading"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
+              <div
+                class="euiSpacer euiSpacer--m"
+              />
+              <h2>
+                  
+              </h2>
+              <h2
+                class="euiTitle euiTitle--small"
+                style="margin-top: -3px;"
+              >
+                Sample title
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 10px 0px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <p
+            style="line-height: 1.4;"
+          >
+            Sample description
+          </p>
+        </div>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="padding-top: 8px; padding-right: 8px;"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <button
+              class="euiButton euiButton--primary"
+              data-test-subj="loadDataButton"
+              type="button"
+            >
+              <span
+                class="euiButton__content"
+              >
+                <span
+                  class="euiButton__text"
+                >
+                  Create detector
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

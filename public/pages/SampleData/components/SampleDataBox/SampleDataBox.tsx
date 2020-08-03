@@ -40,22 +40,27 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
     <div style={{ height: 'auto' }}>
       <ContentPanel
         title={
-          <EuiFlexGroup direction="column" gutterSize="xs">
-            <EuiFlexItem>
-              <EuiTitle size="s">
-                <h2>{props.title}</h2>
-              </EuiTitle>
-            </EuiFlexItem>
-            <EuiFlexItem>{props.icon}</EuiFlexItem>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignContent: 'flexStart',
+            }}
+          >
+            {props.icon}
             <EuiSpacer size="m" />
-          </EuiFlexGroup>
+            <h2>&nbsp;&nbsp;</h2>
+            <EuiTitle size="s">
+              <h2 style={{ marginTop: '-3px' }}>{props.title}</h2>
+            </EuiTitle>
+          </div>
         }
         titleSize="s"
         badgeLabel={props.isDataLoaded ? 'INSTALLED' : undefined}
       >
         <EuiFlexGroup direction="column" gutterSize="l">
           <EuiFlexItem>
-            <p>{props.description}</p>
+            <p style={{ lineHeight: 1.4 }}>{props.description}</p>
           </EuiFlexItem>
           <EuiFlexGroup
             justifyContent="flexEnd"

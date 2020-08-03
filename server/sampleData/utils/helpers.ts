@@ -111,10 +111,6 @@ export const loadSampleData = (
       docs.forEach((doc: string) => {
         bulkBody.push(getDocDetails(docIdCount));
         bulkBody.push(updateTimestamp(doc, offset));
-        // bulkBody.push(
-        //   `{ "update" : {"_id" : "5", "_index" : "sample-http-responses"} }`
-        // );
-        // bulkBody.push(`{ "doc" : {"timestamp" : "9999"} }`);
         docIdCount++;
       });
       return bulkBody;

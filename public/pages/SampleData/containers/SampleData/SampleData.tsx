@@ -14,7 +14,6 @@
  */
 
 import {
-  EuiIcon,
   EuiSpacer,
   EuiPageHeader,
   EuiTitle,
@@ -51,10 +50,6 @@ import {
 } from '../../utils/helpers';
 import { SampleDataBox } from '../../components/SampleDataBox/SampleDataBox';
 
-const delayInMillis = 1000;
-const addDelay = (millis: number) =>
-  new Promise((res) => setTimeout(res, millis));
-
 export const SampleData = () => {
   const dispatch = useDispatch();
   const visibleIndices = useSelector(
@@ -84,7 +79,7 @@ export const SampleData = () => {
   useEffect(() => {
     chrome.breadcrumbs.set([
       BREADCRUMBS.ANOMALY_DETECTOR,
-      BREADCRUMBS.SAMPLE_DATA,
+      BREADCRUMBS.SAMPLE_DETECTORS,
     ]);
   }, []);
 
@@ -116,7 +111,7 @@ export const SampleData = () => {
       await dispatch(createSampleData(sampleType)).catch((error: any) => {
         errorDuringAction = true;
         errorMessage = error;
-        console.error('Error creating all sample data: ', error);
+        console.error('Error creating sample detector: ', error);
       });
     }
 
@@ -145,7 +140,7 @@ export const SampleData = () => {
     getAllDetectors();
     setLoadingState(false);
     if (!errorDuringAction) {
-      toastNotifications.addSuccess('Successfully loaded sample data');
+      toastNotifications.addSuccess('Successfully loaded sample detector');
     } else {
       toastNotifications.addDanger(
         `Unable to load all sample data. ${errorMessage}`
@@ -157,7 +152,7 @@ export const SampleData = () => {
     <Fragment>
       <EuiPageHeader>
         <EuiTitle size="l">
-          <h1>Sample Data</h1>
+          <h1>Sample detectors</h1>
         </EuiTitle>
       </EuiPageHeader>
       <EuiText>
@@ -245,39 +240,3 @@ export const SampleData = () => {
     </Fragment>
   );
 };
-
-// // Remove sample index, stop and remove sample detector
-// const handleRemoveData = async (
-//   indexToRemove: string,
-//   detectorId: string
-// ) => {
-//   setIsRemovingData(true);
-//   let errorDuringAction = false;
-
-//   // perform all actions here
-//   await dispatch(deleteIndex(indexToRemove)).catch((error: any) => {
-//     errorDuringAction = true;
-//     console.error('Error deleting index: ', error);
-//   });
-
-//   await dispatch(stopDetector(detectorId))
-//     .catch((error: any) => {
-//       errorDuringAction = true;
-//       console.error('Error stopping detector: ', error);
-//     })
-//     .then(() => {
-//       dispatch(deleteDetector(detectorId)).catch((error: any) => {
-//         errorDuringAction = true;
-//         console.error('Error deleting detector: ', error);
-//       });
-//     });
-
-//   setIsRemovingData(false);
-//   if (!errorDuringAction) {
-//     setIsDataRemoved(true);
-//     getAllIndices();
-//     toastNotifications.addSuccess('Successfully removed sample data');
-//   } else {
-//     toastNotifications.addDanger('Unable to remove sample data');
-//   }
-// };
