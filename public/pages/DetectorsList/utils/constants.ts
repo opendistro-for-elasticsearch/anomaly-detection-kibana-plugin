@@ -18,3 +18,5 @@ export enum DETECTOR_ACTION {
   STOP,
   DELETE,
 }
+
+export const SINGLE_DETECTOR_ERROR_MSG = 'Not Found';
