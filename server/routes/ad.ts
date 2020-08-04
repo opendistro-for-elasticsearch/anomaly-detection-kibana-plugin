@@ -460,13 +460,17 @@ const getDetectors = async (
         );
         return detectorStateResp;
       } catch (err) {
-        console.log(
-          'Anomaly detector - Unable to retrieve detector state',
-          err
+        console.log('Error getting detector profile ', err);
+        return Promise.reject(
+          new Error('Error retrieving all detector states')
         );
       }
     });
-    const detectorStateResponses = await Promise.all(detectorStatePromises);
+    const detectorStateResponses = await Promise.all(
+      detectorStatePromises
+    ).catch((err) => {
+      throw err;
+    });
     const finalDetectorStates = getFinalDetectorStates(
       detectorStateResponses,
       finalDetectors
@@ -484,12 +488,15 @@ const getDetectors = async (
         });
         return detectorResp;
       } catch (err) {
-        console.log('Anomaly detector - Unable to get detector job', err);
+        console.log('Error getting detector ', err);
+        return Promise.reject(new Error('Error retrieving all detectors'));
       }
     });
     const detectorsWithJobResponses = await Promise.all(
       detectorsWithJobPromises
-    );
+    ).catch((err) => {
+      throw err;
+    });
     const finalDetectorsWithJob = getDetectorsWithJob(
       detectorsWithJobResponses
     );

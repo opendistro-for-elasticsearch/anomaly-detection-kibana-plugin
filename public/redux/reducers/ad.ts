@@ -192,9 +192,10 @@ const reducer = handleActions<Detectors>(
         ),
         totalDetectors: action.result.data.response.totalDetectors,
       }),
-      FAILURE: (state: Detectors): Detectors => ({
+      FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
+        errorMessage: action.error,
       }),
     },
     [UPDATE_DETECTOR]: {
@@ -214,9 +215,10 @@ const reducer = handleActions<Detectors>(
           },
         },
       }),
-      FAILURE: (state: Detectors): Detectors => ({
+      FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
+        errorMessage: action.error,
       }),
     },
 

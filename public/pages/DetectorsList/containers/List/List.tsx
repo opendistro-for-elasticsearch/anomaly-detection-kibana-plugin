@@ -75,7 +75,10 @@ import {
   getDetectorsToDisplay,
 } from '../../../utils/helpers';
 import { staticColumn } from '../../utils/tableUtils';
-import { DETECTOR_ACTION } from '../../utils/constants';
+import {
+  DETECTOR_ACTION,
+  SINGLE_DETECTOR_ERROR_MSG,
+} from '../../utils/constants';
 import { getTitleWithCount, Listener } from '../../../../utils/utils';
 import { ListActions } from '../../components/ListActions/ListActions';
 import { searchMonitors } from '../../../../redux/reducers/alerting';
@@ -117,6 +120,9 @@ export const DetectorList = (props: ListProps) => {
   const dispatch = useDispatch();
   const allDetectors = useSelector((state: AppState) => state.ad.detectorList);
   const allMonitors = useSelector((state: AppState) => state.alerting.monitors);
+  const errorGettingDetectors = useSelector(
+    (state: AppState) => state.ad.errorMessage
+  );
   const elasticsearchState = useSelector(
     (state: AppState) => state.elasticsearch
   );
@@ -170,6 +176,17 @@ export const DetectorList = (props: ListProps) => {
     };
     getInitialMonitors();
   }, []);
+
+  useEffect(() => {
+    if (
+      errorGettingDetectors &&
+      errorGettingDetectors !== SINGLE_DETECTOR_ERROR_MSG
+    ) {
+      console.error(errorGettingDetectors);
+      toastNotifications.addDanger('Unable to get all detectors');
+      setIsLoadingFinalDetectors(false);
+    }
+  }, [errorGettingDetectors]);
 
   // Updating displayed indices (initializing to first 20 for now)
   const visibleIndices = get(elasticsearchState, 'indices', []) as CatIndex[];
@@ -256,14 +273,7 @@ export const DetectorList = (props: ListProps) => {
   }, [confirmModalState.isRequestingToClose, isLoading]);
 
   const getUpdatedDetectors = async () => {
-    try {
-      dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
-    } catch (error) {
-      toastNotifications.addDanger(
-        `Error is found while getting detector list: ${error}`
-      );
-      setIsLoadingFinalDetectors(false);
-    }
+    dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
   };
 
   const handlePageChange = (pageNumber: number) => {
@@ -306,7 +316,7 @@ export const DetectorList = (props: ListProps) => {
       const sanitizedQuery = sanitizeSearchText(searchValue);
       setIndexQuery(sanitizedQuery);
       await dispatch(getPrioritizedIndices(sanitizedQuery));
-      setState(state => ({
+      setState((state) => ({
         ...state,
         page: 0,
       }));
@@ -321,8 +331,8 @@ export const DetectorList = (props: ListProps) => {
     states =
       options.length == 0
         ? ALL_DETECTOR_STATES
-        : options.map(option => option.label as DETECTOR_STATE);
-    setState(state => ({
+        : options.map((option) => option.label as DETECTOR_STATE);
+    setState((state) => ({
       ...state,
       page: 0,
       selectedDetectorStates: states,
@@ -335,7 +345,7 @@ export const DetectorList = (props: ListProps) => {
     indices =
       options.length == 0
         ? ALL_INDICES
-        : options.map(option => option.label).slice(0, MAX_SELECTED_INDICES);
+        : options.map((option) => option.label).slice(0, MAX_SELECTED_INDICES);
 
     setState({
       ...state,
@@ -345,7 +355,7 @@ export const DetectorList = (props: ListProps) => {
   };
 
   const handleResetFilter = () => {
-    setState(state => ({
+    setState((state) => ({
       ...state,
       queryParams: {
         ...state.queryParams,
@@ -443,7 +453,7 @@ export const DetectorList = (props: ListProps) => {
     const validIds = getDetectorsForAction(
       selectedDetectorsForAction,
       DETECTOR_ACTION.START
-    ).map(detector => detector.id);
+    ).map((detector) => detector.id);
     const promises = validIds.map(async (id: string) => {
       return dispatch(startDetector(id));
     });
@@ -453,7 +463,7 @@ export const DetectorList = (props: ListProps) => {
           'All selected detectors have been started successfully'
         );
       })
-      .catch(error => {
+      .catch((error) => {
         toastNotifications.addDanger(
           `Error starting all selected detectors: ${error}`
         );
@@ -468,7 +478,7 @@ export const DetectorList = (props: ListProps) => {
     const validIds = getDetectorsForAction(
       selectedDetectorsForAction,
       DETECTOR_ACTION.STOP
-    ).map(detector => detector.id);
+    ).map((detector) => detector.id);
     const promises = validIds.map(async (id: string) => {
       return dispatch(stopDetector(id));
     });
@@ -479,7 +489,7 @@ export const DetectorList = (props: ListProps) => {
         );
         if (listener) listener.onSuccess();
       })
-      .catch(error => {
+      .catch((error) => {
         toastNotifications.addDanger(
           `Error stopping all selected detectors: ${error}`
         );
@@ -498,7 +508,7 @@ export const DetectorList = (props: ListProps) => {
     const validIds = getDetectorsForAction(
       selectedDetectorsForAction,
       DETECTOR_ACTION.DELETE
-    ).map(detector => detector.id);
+    ).map((detector) => detector.id);
     const promises = validIds.map(async (id: string) => {
       return dispatch(deleteDetector(id));
     });
@@ -508,7 +518,7 @@ export const DetectorList = (props: ListProps) => {
           'All selected detectors have been deleted successfully'
         );
       })
-      .catch(error => {
+      .catch((error) => {
         toastNotifications.addDanger(
           `Error deleting all selected detectors: ${error}`
         );

@@ -32,6 +32,8 @@ import {
 } from '@elastic/eui';
 //@ts-ignore
 import chrome from 'ui/chrome';
+// @ts-ignore
+import { toastNotifications } from 'ui/notify';
 import { AnomalousDetectorsList } from '../Components/AnomalousDetectorsList';
 import {
   GET_ALL_DETECTORS_QUERY_PARAMS,
@@ -54,6 +56,8 @@ export function DashboardOverview() {
 
   const allDetectorList = adState.detectorList;
 
+  const errorGettingDetectors = adState.errorMessage;
+
   const [isLoadingDetectors, setIsLoadingDetectors] = useState(true);
 
   const [currentDetectors, setCurrentDetectors] = useState(
@@ -69,7 +73,7 @@ export function DashboardOverview() {
     [key: string]: DetectorListItem;
   }) => {
     const detectorNames = Object.values(detectorsIdMap).map(
-      detectorListItem => {
+      (detectorListItem) => {
         return detectorListItem.name;
       }
     );
@@ -85,7 +89,7 @@ export function DashboardOverview() {
   const handleDetectorsFilterChange = (
     options: EuiComboBoxOptionProps[]
   ): void => {
-    const selectedNames = options.map(option => option.label);
+    const selectedNames = options.map((option) => option.label);
 
     setSelectedDetectorsName(selectedNames);
     setAllDetectorsSelected(isEmpty(selectedNames));
@@ -103,7 +107,7 @@ export function DashboardOverview() {
     options: EuiComboBoxOptionProps[]
   ): void => {
     const selectedStates = options.map(
-      option => option.label as DETECTOR_STATE
+      (option) => option.label as DETECTOR_STATE
     );
     setSelectedDetectorStates(selectedStates);
     setAllDetectorStatesSelected(isEmpty(selectedStates));
@@ -122,7 +126,7 @@ export function DashboardOverview() {
   const handleIndicesFilterChange = (
     options: EuiComboBoxOptionProps[]
   ): void => {
-    const selectedIndices = options.map(option => option.label);
+    const selectedIndices = options.map((option) => option.label);
     setSelectedIndices(selectedIndices);
     setAllIndicesSelected(isEmpty(selectedIndices));
   };
@@ -138,13 +142,13 @@ export function DashboardOverview() {
     } else {
       detectorsToFilter = cloneDeep(
         Object.values(allDetectorList)
-      ).filter(detectorItem => selectedNameList.includes(detectorItem.name));
+      ).filter((detectorItem) => selectedNameList.includes(detectorItem.name));
     }
 
     let filteredDetectorItemsByNamesAndIndex = detectorsToFilter;
     if (!allIndicesSelected) {
       filteredDetectorItemsByNamesAndIndex = detectorsToFilter.filter(
-        detectorItem =>
+        (detectorItem) =>
           selectedIndexList.includes(detectorItem.indices.toString())
       );
     }
@@ -152,7 +156,7 @@ export function DashboardOverview() {
     let finalFilteredDetectors = filteredDetectorItemsByNamesAndIndex;
     if (!allDetectorStatesSelected) {
       finalFilteredDetectors = filteredDetectorItemsByNamesAndIndex.filter(
-        detectorItem => selectedStateList.includes(detectorItem.curState)
+        (detectorItem) => selectedStateList.includes(detectorItem.curState)
       );
     }
 
@@ -161,12 +165,7 @@ export function DashboardOverview() {
 
   const intializeDetectors = async () => {
     setIsLoadingDetectors(true);
-    try {
-      await dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
-    } catch (error) {
-      console.log('Error is found during getting detector list', error);
-    }
-    setIsLoadingDetectors(false);
+    dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
     dispatch(getIndices(''));
     dispatch(getAliases(''));
   };
@@ -174,6 +173,14 @@ export function DashboardOverview() {
   useEffect(() => {
     intializeDetectors();
   }, []);
+
+  useEffect(() => {
+    if (errorGettingDetectors) {
+      console.error(errorGettingDetectors);
+      toastNotifications.addDanger('Unable to get all detectors');
+      setIsLoadingDetectors(false);
+    }
+  }, [errorGettingDetectors]);
 
   useEffect(() => {
     chrome.breadcrumbs.set([
@@ -184,6 +191,7 @@ export function DashboardOverview() {
 
   useEffect(() => {
     setCurrentDetectors(Object.values(allDetectorList));
+    setIsLoadingDetectors(false);
   }, [allDetectorList]);
 
   useEffect(() => {
