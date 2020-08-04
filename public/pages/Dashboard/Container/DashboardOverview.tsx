@@ -176,6 +176,7 @@ export function DashboardOverview() {
 
   useEffect(() => {
     if (errorGettingDetectors) {
+      console.error(errorGettingDetectors);
       toastNotifications.addDanger('Unable to get all detectors');
       setIsLoadingDetectors(false);
     }

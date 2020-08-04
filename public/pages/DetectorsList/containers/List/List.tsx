@@ -75,7 +75,10 @@ import {
   getDetectorsToDisplay,
 } from '../../../utils/helpers';
 import { staticColumn } from '../../utils/tableUtils';
-import { DETECTOR_ACTION, singleDetectorErrorMsg } from '../../utils/constants';
+import {
+  DETECTOR_ACTION,
+  SINGLE_DETECTOR_ERROR_MSG,
+} from '../../utils/constants';
 import { getTitleWithCount, Listener } from '../../../../utils/utils';
 import { ListActions } from '../../components/ListActions/ListActions';
 import { searchMonitors } from '../../../../redux/reducers/alerting';
@@ -177,8 +180,9 @@ export const DetectorList = (props: ListProps) => {
   useEffect(() => {
     if (
       errorGettingDetectors &&
-      errorGettingDetectors !== singleDetectorErrorMsg
+      errorGettingDetectors !== SINGLE_DETECTOR_ERROR_MSG
     ) {
+      console.error(errorGettingDetectors);
       toastNotifications.addDanger('Unable to get all detectors');
       setIsLoadingFinalDetectors(false);
     }

@@ -460,6 +460,7 @@ const getDetectors = async (
         );
         return detectorStateResp;
       } catch (err) {
+        console.log('Error getting detector profile ', err);
         return Promise.reject(
           new Error('Error retrieving all detector states')
         );
@@ -487,6 +488,7 @@ const getDetectors = async (
         });
         return detectorResp;
       } catch (err) {
+        console.log('Error getting detector ', err);
         return Promise.reject(new Error('Error retrieving all detectors'));
       }
     });
