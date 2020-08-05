@@ -46,6 +46,7 @@ import {
   getFinalDetectorStates,
   getDetectorsWithJob,
   getDetectorInitProgress,
+  isIndexNotFoundError,
 } from './utils/adHelpers';
 import { set } from 'lodash';
 
@@ -302,10 +303,7 @@ const searchDetector = async (
       },
     };
   } catch (err) {
-    if (
-      err.statusCode === 404 &&
-      get<string>(err, 'body.error.type', '') === 'index_not_found_exception'
-    ) {
+    if (isIndexNotFoundError(err)) {
       return { ok: true, response: { totalDetectors: 0, detectors: [] } };
     }
     console.log('Anomaly detector - Unable to search detectors', err);
@@ -514,6 +512,9 @@ const getDetectors = async (
       },
     };
   } catch (err) {
+    if (isIndexNotFoundError(err)) {
+      return { ok: true, response: { totalDetectors: 0, detectorList: [] } };
+    }
     console.log('Anomaly detector - Unable to list detectors', err);
     return { ok: false, error: err.message };
   }
