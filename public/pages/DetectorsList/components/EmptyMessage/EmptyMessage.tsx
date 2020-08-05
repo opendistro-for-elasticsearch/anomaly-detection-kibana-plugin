@@ -13,7 +13,13 @@
  * permissions and limitations under the License.
  */
 
-import { EuiButton, EuiEmptyPrompt, EuiText } from '@elastic/eui';
+import {
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiButton,
+  EuiEmptyPrompt,
+  EuiText,
+} from '@elastic/eui';
 import React from 'react';
 import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
 
@@ -45,6 +51,7 @@ export const EmptyDetectorMessage = (props: EmptyDetectorProps) => (
           Reset filters
         </EuiButton>
       ) : (
+<<<<<<< HEAD
         <EuiButton
           fill
           href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
@@ -52,6 +59,27 @@ export const EmptyDetectorMessage = (props: EmptyDetectorProps) => (
         >
           Create detector
         </EuiButton>
+=======
+        <EuiFlexGroup direction="column" alignItems="center">
+          <EuiButton
+            style={{ width: '200px' }}
+            fill
+            href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
+            data-test-subj="createDetectorButton"
+          >
+            Create detector
+          </EuiButton>
+          <EuiFlexItem grow={false}>
+            <EuiButton
+              style={{ width: '200px' }}
+              href={`${PLUGIN_NAME}#${APP_PATH.SAMPLE_DETECTORS}`}
+              data-test-subj="sampleDetectorButton"
+            >
+              Try a sample detector
+            </EuiButton>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+>>>>>>> Add link to sample detectors on home pages
       )
     }
   />

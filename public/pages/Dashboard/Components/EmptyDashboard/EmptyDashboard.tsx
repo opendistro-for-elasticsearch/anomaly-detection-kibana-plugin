@@ -13,7 +13,14 @@
  * permissions and limitations under the License.
  */
 
-import { EuiButton, EuiEmptyPrompt, EuiLink, EuiIcon } from '@elastic/eui';
+import {
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiButton,
+  EuiEmptyPrompt,
+  EuiLink,
+  EuiIcon,
+} from '@elastic/eui';
 import React, { Component, Fragment } from 'react';
 import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
 
@@ -42,13 +49,25 @@ export class EmptyDashboard extends Component<{}, {}> {
           </Fragment>
         }
         actions={
-          <EuiButton
-            fill
-            href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-            data-test-subj="add_detector"
-          >
-            Create detector
-          </EuiButton>
+          <EuiFlexGroup direction="column" alignItems="center">
+            <EuiButton
+              style={{ width: '200px' }}
+              fill
+              href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
+              data-test-subj="createDetectorButton"
+            >
+              Create detector
+            </EuiButton>
+            <EuiFlexItem grow={false}>
+              <EuiButton
+                style={{ width: '200px' }}
+                href={`${PLUGIN_NAME}#${APP_PATH.SAMPLE_DETECTORS}`}
+                data-test-subj="sampleDetectorButton"
+              >
+                Try a sample detector
+              </EuiButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
         }
       />
     );
