@@ -44,8 +44,8 @@ import {
   sampleHostHealth,
 } from '../../utils/constants';
 import {
-  containsIndex,
-  containsDetector,
+  containsSampleIndex,
+  containsSampleDetector,
   getDetectorId,
 } from '../../utils/helpers';
 import { SampleDataBox } from '../../components/SampleDataBox/SampleDataBox';
@@ -68,11 +68,17 @@ export const SampleData = () => {
   >(false);
 
   const getAllDetectors = async () => {
-    try {
-      dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
-    } catch {
-      console.error('Error getting detector list');
-    }
+    await dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS)).catch(
+      (error: any) => {
+        console.error('Error getting all detectors: ', error);
+      }
+    );
+  };
+
+  const getAllIndices = async () => {
+    await dispatch(getIndices('')).catch((error: any) => {
+      console.error('Error getting all indices: ', error);
+    });
   };
 
   // Set breadcrumbs on page initialization
@@ -86,6 +92,7 @@ export const SampleData = () => {
   // Getting all initial detectors
   useEffect(() => {
     getAllDetectors();
+    getAllIndices();
   }, []);
 
   // Create and populate sample index, create and start sample detector
@@ -99,12 +106,14 @@ export const SampleData = () => {
     let errorDuringAction = false;
     let errorMessage = '';
 
-    // Create the index
-    await dispatch(createIndex(indexConfig)).catch((error: any) => {
-      errorDuringAction = true;
-      errorMessage = 'Error creating sample index.';
-      console.error('Error creating sample index: ', error);
-    });
+    // Create the index (if it doesn't exist yet)
+    if (!containsSampleIndex(visibleIndices, sampleType)) {
+      await dispatch(createIndex(indexConfig)).catch((error: any) => {
+        errorDuringAction = true;
+        errorMessage = 'Error creating sample index.';
+        console.error('Error creating sample index: ', error);
+      });
+    }
 
     // Get the sample data from the server and bulk insert
     if (!errorDuringAction) {
@@ -114,9 +123,6 @@ export const SampleData = () => {
         console.error('Error creating sample detector: ', error);
       });
     }
-
-    // Add small delay for index to be fully populated in ES. Can occasionally time out if not
-    //await addDelay(delayInMillis);
 
     // Create the detector
     if (!errorDuringAction) {
@@ -138,6 +144,7 @@ export const SampleData = () => {
     }
 
     getAllDetectors();
+    getAllIndices();
     setLoadingState(false);
     if (!errorDuringAction) {
       toastNotifications.addSuccess('Successfully loaded sample detector');
@@ -177,9 +184,9 @@ export const SampleData = () => {
               );
             }}
             isLoadingData={isLoadingHttpData}
-            isDataLoaded={containsDetector(
+            isDataLoaded={containsSampleDetector(
               allDetectors,
-              sampleHttpResponses.detectorName
+              SAMPLE_TYPE.HTTP_RESPONSES
             )}
             detectorId={getDetectorId(
               allDetectors,
@@ -201,9 +208,9 @@ export const SampleData = () => {
               );
             }}
             isLoadingData={isLoadingEcommerceData}
-            isDataLoaded={containsDetector(
+            isDataLoaded={containsSampleDetector(
               allDetectors,
-              sampleEcommerce.detectorName
+              SAMPLE_TYPE.ECOMMERCE
             )}
             detectorId={getDetectorId(
               allDetectors,
@@ -225,9 +232,9 @@ export const SampleData = () => {
               );
             }}
             isLoadingData={isLoadingHostHealthData}
-            isDataLoaded={containsDetector(
+            isDataLoaded={containsSampleDetector(
               allDetectors,
-              sampleHostHealth.detectorName
+              SAMPLE_TYPE.HOST_HEALTH
             )}
             detectorId={getDetectorId(
               allDetectors,

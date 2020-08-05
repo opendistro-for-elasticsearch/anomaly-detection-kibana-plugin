@@ -15,20 +15,59 @@
 
 import { CatIndex } from '../../../../server/models/types';
 import { DetectorListItem } from 'public/models/interfaces';
+import { SAMPLE_TYPE } from '../../../utils/constants';
+import {
+  sampleHttpResponses,
+  sampleEcommerce,
+  sampleHostHealth,
+} from '../utils/constants';
 
 export const containsDetectorsIndex = (indices: CatIndex[]) => {
   const detectorsIndexName = '.opendistro-anomaly-detectors';
   return indices.map((index) => index.index).includes(detectorsIndexName);
 };
 
-export const containsIndex = (indices: CatIndex[], indexName: string) => {
+export const containsSampleIndex = (
+  indices: CatIndex[],
+  sampleType: SAMPLE_TYPE
+) => {
+  let indexName = '';
+  switch (sampleType) {
+    case SAMPLE_TYPE.HTTP_RESPONSES: {
+      indexName = sampleHttpResponses.indexName;
+      break;
+    }
+    case SAMPLE_TYPE.ECOMMERCE: {
+      indexName = sampleEcommerce.indexName;
+      break;
+    }
+    case SAMPLE_TYPE.HOST_HEALTH: {
+      indexName = sampleHostHealth.indexName;
+      break;
+    }
+  }
   return indices.map((index) => index.index).includes(indexName);
 };
 
-export const containsDetector = (
+export const containsSampleDetector = (
   detectors: DetectorListItem[],
-  detectorName: string
+  sampleType: SAMPLE_TYPE
 ) => {
+  let detectorName = '';
+  switch (sampleType) {
+    case SAMPLE_TYPE.HTTP_RESPONSES: {
+      detectorName = sampleHttpResponses.detectorName;
+      break;
+    }
+    case SAMPLE_TYPE.ECOMMERCE: {
+      detectorName = sampleEcommerce.detectorName;
+      break;
+    }
+    case SAMPLE_TYPE.HOST_HEALTH: {
+      detectorName = sampleHostHealth.detectorName;
+      break;
+    }
+  }
   return detectors.map((detector) => detector.name).includes(detectorName);
 };
 
