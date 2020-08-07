@@ -49,15 +49,7 @@ export class EmptyDashboard extends Component<{}, {}> {
           </Fragment>
         }
         actions={
-          <EuiFlexGroup direction="column" alignItems="center">
-            <EuiButton
-              style={{ width: '200px' }}
-              fill
-              href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-              data-test-subj="createDetectorButton"
-            >
-              Create detector
-            </EuiButton>
+          <EuiFlexGroup direction="row" gutterSize="m" justifyContent="center">
             <EuiFlexItem grow={false}>
               <EuiButton
                 style={{ width: '200px' }}
@@ -65,6 +57,16 @@ export class EmptyDashboard extends Component<{}, {}> {
                 data-test-subj="sampleDetectorButton"
               >
                 Try a sample detector
+              </EuiButton>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButton
+                style={{ width: '200px' }}
+                fill
+                href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
+                data-test-subj="createDetectorButton"
+              >
+                Create detector
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>

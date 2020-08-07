@@ -53,20 +53,15 @@ describe('<SampleData /> spec', () => {
       httpClientMock.get = jest.fn().mockResolvedValue({
         data: { ok: true, response: { detectorList: [], totalDetectors: 0 } },
       });
-      const {
-        container,
-        getByText,
-        getAllByText,
-        queryByText,
-      } = renderWithRouter();
+      const { container, getByText, queryByText } = renderWithRouter();
       expect(container).toMatchSnapshot();
       getByText('Sample detectors');
       getByText('Monitor HTTP responses');
       getByText('Monitor eCommerce orders');
       getByText('Monitor health of a host');
-      expect(getAllByText('Create detector')).toHaveLength(3);
       expect(queryByText('INSTALLED')).toBeNull();
       expect(queryByText('Detector created')).toBeNull();
+      expect(queryByText('View detector and sample data')).toBeNull();
     });
   });
 
@@ -98,7 +93,7 @@ describe('<SampleData /> spec', () => {
       getByText('Monitor eCommerce orders');
       getByText('Monitor health of a host');
       expect(getAllByText('Detector created')).toHaveLength(1);
-      expect(getAllByText('Create detector')).toHaveLength(2);
+      expect(getAllByText('View detector and sample data')).toHaveLength(1);
       expect(getAllByText('INSTALLED')).toHaveLength(1);
     });
     test('renders component with non-sample detector', async () => {
@@ -119,19 +114,13 @@ describe('<SampleData /> spec', () => {
           },
         },
       });
-      const {
-        container,
-        getByText,
-        getAllByText,
-        queryByText,
-      } = renderWithRouter();
+      const { container, getByText, queryByText } = renderWithRouter();
       await wait();
       expect(container).toMatchSnapshot();
       getByText('Sample detectors');
       getByText('Monitor HTTP responses');
       getByText('Monitor eCommerce orders');
       getByText('Monitor health of a host');
-      expect(getAllByText('Create detector')).toHaveLength(3);
       expect(queryByText('INSTALLED')).toBeNull();
       expect(queryByText('Detector created')).toBeNull();
     });

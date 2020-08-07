@@ -50,14 +50,14 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                 documentation
               </a>
                
-              or load some
+              or create a
                
               <a
                 class="euiLink euiLink--primary"
                 href="opendistro-anomaly-detection-kibana#/sample-detectors"
                 rel="noreferrer"
               >
-                sample data
+                sample detector
               </a>
                
               to get started.

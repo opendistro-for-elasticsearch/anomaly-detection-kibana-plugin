@@ -51,24 +51,7 @@ export const EmptyDetectorMessage = (props: EmptyDetectorProps) => (
           Reset filters
         </EuiButton>
       ) : (
-<<<<<<< HEAD
-        <EuiButton
-          fill
-          href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-          data-test-subj="createDetectorButton"
-        >
-          Create detector
-        </EuiButton>
-=======
-        <EuiFlexGroup direction="column" alignItems="center">
-          <EuiButton
-            style={{ width: '200px' }}
-            fill
-            href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-            data-test-subj="createDetectorButton"
-          >
-            Create detector
-          </EuiButton>
+        <EuiFlexGroup direction="row" gutterSize="m" justifyContent="center">
           <EuiFlexItem grow={false}>
             <EuiButton
               style={{ width: '200px' }}
@@ -78,8 +61,17 @@ export const EmptyDetectorMessage = (props: EmptyDetectorProps) => (
               Try a sample detector
             </EuiButton>
           </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiButton
+              style={{ width: '200px' }}
+              fill
+              href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
+              data-test-subj="createDetectorButton"
+            >
+              Create detector
+            </EuiButton>
+          </EuiFlexItem>
         </EuiFlexGroup>
->>>>>>> Add link to sample detectors on home pages
       )
     }
   />

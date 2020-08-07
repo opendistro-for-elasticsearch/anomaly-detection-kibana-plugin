@@ -112,8 +112,8 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 </p>
               </div>
               <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding-top: 8px; padding-right: 8px;"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -121,6 +121,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                   <button
                     class="euiButton euiButton--primary"
                     data-test-subj="loadDataButton"
+                    style="width: 300px;"
                     type="button"
                   >
                     <span
@@ -129,9 +130,20 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                       <span
                         class="euiButton__text"
                       >
-                        Create detector
+                        Create HTTP response detector
                       </span>
                     </span>
+                  </button>
+                </div>
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <button
+                    class="euiLink euiLink-disabled"
+                    disabled=""
+                    type="button"
+                  >
+                     
                   </button>
                 </div>
               </div>
@@ -230,8 +242,8 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 </p>
               </div>
               <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding-top: 8px; padding-right: 8px;"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -239,6 +251,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                   <button
                     class="euiButton euiButton--primary"
                     data-test-subj="loadDataButton"
+                    style="width: 300px;"
                     type="button"
                   >
                     <span
@@ -247,9 +260,20 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                       <span
                         class="euiButton__text"
                       >
-                        Create detector
+                        Create eCommerce orders detector
                       </span>
                     </span>
+                  </button>
+                </div>
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <button
+                    class="euiLink euiLink-disabled"
+                    disabled=""
+                    type="button"
+                  >
+                     
                   </button>
                 </div>
               </div>
@@ -348,8 +372,8 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 </p>
               </div>
               <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding-top: 8px; padding-right: 8px;"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -357,6 +381,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                   <button
                     class="euiButton euiButton--primary"
                     data-test-subj="loadDataButton"
+                    style="width: 300px;"
                     type="button"
                   >
                     <span
@@ -365,9 +390,20 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                       <span
                         class="euiButton__text"
                       >
-                        Create detector
+                        Create health monitor detector
                       </span>
                     </span>
+                  </button>
+                </div>
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <button
+                    class="euiLink euiLink-disabled"
+                    disabled=""
+                    type="button"
+                  >
+                     
                   </button>
                 </div>
               </div>
@@ -499,8 +535,8 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 </p>
               </div>
               <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding-top: 8px; padding-right: 8px;"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -508,6 +544,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                   <button
                     class="euiButton euiButton--primary"
                     data-test-subj="loadDataButton"
+                    style="width: 300px;"
                     type="button"
                   >
                     <span
@@ -516,9 +553,20 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                       <span
                         class="euiButton__text"
                       >
-                        Create detector
+                        Create HTTP response detector
                       </span>
                     </span>
+                  </button>
+                </div>
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <button
+                    class="euiLink euiLink-disabled"
+                    disabled=""
+                    type="button"
+                  >
+                     
                   </button>
                 </div>
               </div>
@@ -621,8 +669,8 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 </p>
               </div>
               <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding-top: 8px; padding-right: 8px;"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -630,6 +678,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                   <button
                     class="euiButton euiButton--primary"
                     data-test-subj="loadDataButton"
+                    style="width: 300px;"
                     type="button"
                   >
                     <span
@@ -638,9 +687,20 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                       <span
                         class="euiButton__text"
                       >
-                        Create detector
+                        Create eCommerce orders detector
                       </span>
                     </span>
+                  </button>
+                </div>
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <button
+                    class="euiLink euiLink-disabled"
+                    disabled=""
+                    type="button"
+                  >
+                     
                   </button>
                 </div>
               </div>
@@ -743,8 +803,8 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 </p>
               </div>
               <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding-top: 8px; padding-right: 8px;"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -752,6 +812,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                   <button
                     class="euiButton euiButton--primary"
                     data-test-subj="loadDataButton"
+                    style="width: 300px;"
                     type="button"
                   >
                     <span
@@ -760,9 +821,20 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                       <span
                         class="euiButton__text"
                       >
-                        Create detector
+                        Create health monitor detector
                       </span>
                     </span>
+                  </button>
+                </div>
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <button
+                    class="euiLink euiLink-disabled"
+                    disabled=""
+                    type="button"
+                  >
+                     
                   </button>
                 </div>
               </div>
@@ -904,21 +976,9 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 </p>
               </div>
               <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding-top: 8px; padding-right: 8px;"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="margin-top: 6px; margin-bottom: 0px;"
               >
-                <div
-                  class="euiFlexItem"
-                  style="padding-left: 12px; padding-top: 12px;"
-                >
-                  <a
-                    class="euiLink euiLink--primary"
-                    href="opendistro-anomaly-detection-kibana#/detectors/sample-detector-id"
-                    rel="noreferrer"
-                  >
-                    View detector
-                  </a>
-                </div>
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
                 >
@@ -926,6 +986,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                     class="euiButton euiButton--primary"
                     data-test-subj="loadDataButton"
                     disabled=""
+                    style="width: 300px;"
                     type="button"
                   >
                     <span
@@ -938,6 +999,17 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                       </span>
                     </span>
                   </button>
+                </div>
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <a
+                    class="euiLink euiLink--primary"
+                    href="opendistro-anomaly-detection-kibana#/detectors/sample-detector-id"
+                    rel="noreferrer"
+                  >
+                    View detector and sample data
+                  </a>
                 </div>
               </div>
             </div>
@@ -1039,8 +1111,8 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 </p>
               </div>
               <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding-top: 8px; padding-right: 8px;"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -1048,6 +1120,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                   <button
                     class="euiButton euiButton--primary"
                     data-test-subj="loadDataButton"
+                    style="width: 300px;"
                     type="button"
                   >
                     <span
@@ -1056,9 +1129,20 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                       <span
                         class="euiButton__text"
                       >
-                        Create detector
+                        Create eCommerce orders detector
                       </span>
                     </span>
+                  </button>
+                </div>
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <button
+                    class="euiLink euiLink-disabled"
+                    disabled=""
+                    type="button"
+                  >
+                     
                   </button>
                 </div>
               </div>
@@ -1161,8 +1245,8 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 </p>
               </div>
               <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding-top: 8px; padding-right: 8px;"
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -1170,6 +1254,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                   <button
                     class="euiButton euiButton--primary"
                     data-test-subj="loadDataButton"
+                    style="width: 300px;"
                     type="button"
                   >
                     <span
@@ -1178,9 +1263,20 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                       <span
                         class="euiButton__text"
                       >
-                        Create detector
+                        Create health monitor detector
                       </span>
                     </span>
+                  </button>
+                </div>
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <button
+                    class="euiLink euiLink-disabled"
+                    disabled=""
+                    type="button"
+                  >
+                     
                   </button>
                 </div>
               </div>

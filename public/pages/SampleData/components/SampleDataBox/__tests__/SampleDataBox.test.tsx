@@ -22,6 +22,7 @@ const defaultProps = {
   title: 'Sample title',
   icon: <EuiIcon type="alert" />,
   description: 'Sample description',
+  buttonDescription: 'Sample button description',
   onLoadData: jest.fn(),
   isLoadingData: false,
   isDataLoaded: false,
@@ -37,7 +38,7 @@ describe('<SampleDataBox /> spec', () => {
       expect(container.firstChild).toMatchSnapshot();
       getByText('Sample title');
       getByText('Sample description');
-      getByText('Create detector');
+      getByText('Sample button description');
     });
   });
   describe('Data is loading', () => {
@@ -48,6 +49,7 @@ describe('<SampleDataBox /> spec', () => {
       expect(container.firstChild).toMatchSnapshot();
       getByText('Sample title');
       getByText('Sample description');
+      getByText('Creating detector');
     });
   });
   describe('Data is loaded', () => {

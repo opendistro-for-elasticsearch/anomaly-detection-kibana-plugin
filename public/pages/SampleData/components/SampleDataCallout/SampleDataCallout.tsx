@@ -36,9 +36,9 @@ export const SampleDataCallout = (props: SampleDataCalloutProps) => {
         >
           documentation
         </EuiLink>{' '}
-        or load some{' '}
+        or create a{' '}
         <EuiLink href={`${PLUGIN_NAME}#${APP_PATH.SAMPLE_DETECTORS}`}>
-          sample data
+          sample detector
         </EuiLink>{' '}
         to get started.
       </p>

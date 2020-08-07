@@ -56,25 +56,8 @@ exports[`<EmptyDetector /> spec Empty results renders component with empty messa
     class="euiSpacer euiSpacer--s"
   />
   <div
-    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+    class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--justifyContentCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
   >
-    <a
-      class="euiButton euiButton--primary euiButton--fill"
-      data-test-subj="createDetectorButton"
-      href="opendistro-anomaly-detection-kibana#/create-ad/"
-      rel="noreferrer"
-      style="width: 200px;"
-    >
-      <span
-        class="euiButton__content"
-      >
-        <span
-          class="euiButton__text"
-        >
-          Create detector
-        </span>
-      </span>
-    </a>
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
@@ -92,6 +75,27 @@ exports[`<EmptyDetector /> spec Empty results renders component with empty messa
             class="euiButton__text"
           >
             Try a sample detector
+          </span>
+        </span>
+      </a>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <a
+        class="euiButton euiButton--primary euiButton--fill"
+        data-test-subj="createDetectorButton"
+        href="opendistro-anomaly-detection-kibana#/create-ad/"
+        rel="noreferrer"
+        style="width: 200px;"
+      >
+        <span
+          class="euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Create detector
           </span>
         </span>
       </a>

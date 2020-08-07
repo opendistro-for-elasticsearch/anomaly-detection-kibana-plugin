@@ -29,6 +29,7 @@ interface SampleDataBoxProps {
   title: string;
   icon: any;
   description: string;
+  buttonDescription: string;
   onLoadData(): void;
   isLoadingData: boolean;
   isDataLoaded: boolean;
@@ -63,21 +64,16 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
             <p style={{ lineHeight: 1.4 }}>{props.description}</p>
           </EuiFlexItem>
           <EuiFlexGroup
-            justifyContent="flexEnd"
             style={{
-              paddingTop: '8px',
-              paddingRight: '8px',
+              marginTop: '6px',
+              marginBottom: '0px',
             }}
+            direction="column"
+            alignItems="center"
           >
-            {props.isDataLoaded ? (
-              <EuiFlexItem style={{ paddingLeft: '12px', paddingTop: '12px' }}>
-                <EuiLink href={`${PLUGIN_NAME}#/detectors/${props.detectorId}`}>
-                  View detector
-                </EuiLink>
-              </EuiFlexItem>
-            ) : null}
             <EuiFlexItem grow={false}>
               <EuiButton
+                style={{ width: '300px' }}
                 data-test-subj="loadDataButton"
                 disabled={props.isLoadingData || props.isDataLoaded}
                 isLoading={props.isLoadingData}
@@ -85,8 +81,21 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
                   props.onLoadData();
                 }}
               >
-                {props.isDataLoaded ? 'Detector created' : 'Create detector'}
+                {props.isLoadingData
+                  ? 'Creating detector'
+                  : props.isDataLoaded
+                  ? 'Detector created'
+                  : props.buttonDescription}
               </EuiButton>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              {props.isDataLoaded ? (
+                <EuiLink href={`${PLUGIN_NAME}#/detectors/${props.detectorId}`}>
+                  View detector and sample data
+                </EuiLink>
+              ) : (
+                <EuiLink disabled={true}>&nbsp;</EuiLink>
+              )}
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiFlexGroup>

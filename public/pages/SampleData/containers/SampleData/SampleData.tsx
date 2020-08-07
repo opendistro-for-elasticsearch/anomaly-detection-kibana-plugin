@@ -175,6 +175,7 @@ export const SampleData = () => {
             title="Monitor HTTP responses"
             icon={sampleHttpResponses.icon}
             description={sampleHttpResponses.description}
+            buttonDescription="Create HTTP response detector"
             onLoadData={() => {
               handleLoadData(
                 SAMPLE_TYPE.HTTP_RESPONSES,
@@ -199,6 +200,7 @@ export const SampleData = () => {
             title="Monitor eCommerce orders"
             icon={sampleEcommerce.icon}
             description={sampleEcommerce.description}
+            buttonDescription="Create eCommerce orders detector"
             onLoadData={() => {
               handleLoadData(
                 SAMPLE_TYPE.ECOMMERCE,
@@ -223,6 +225,7 @@ export const SampleData = () => {
             title="Monitor health of a host"
             icon={sampleHostHealth.icon}
             description={sampleHostHealth.description}
+            buttonDescription="Create health monitor detector"
             onLoadData={() => {
               handleLoadData(
                 SAMPLE_TYPE.HOST_HEALTH,
