@@ -18,9 +18,163 @@ import {
   convertDetectorKeysToCamelCase,
   convertDetectorKeysToSnakeCase,
   getResultAggregationQuery,
+  convertPreviewInputKeysToSnakeCase,
 } from '../adHelpers';
 
 describe('adHelpers', () => {
+  describe('convertPreviewInputKeysToSnakeCase', () => {
+    test('should not convert field name to snake_case', () => {
+      const snake = convertPreviewInputKeysToSnakeCase({
+        periodStart: 1596309273336,
+        periodEnd: 1596914073336,
+        detector: {
+          name: "test2",
+          description: "test",
+          timeField: "@timestamp",
+          indices: [
+            "metricbeat-7.8.1"
+          ],
+          detectionInterval: {
+            period: {
+              interval: 1,
+              unit: "Minutes"
+            }
+          },
+          windowDelay: {
+            period: {
+              interval: 1,
+              unit: "Minutes"
+            }
+          },
+          filterQuery: {
+            bool: {
+              filter: [
+                {
+                  term: {
+                    "host.name": {
+                      value: "myserver"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          featureAttributes: [
+            {
+              featureId: "9lAlx3MBdAn13oNrKKPk",
+              featureName: "F1",
+              featureEnabled: true,
+              importance: 1,
+              aggregationQuery: {
+                f_1: {
+                  avg: {
+                    field: "system.cpu.total.pct"
+                  }
+                }
+              }
+            }
+          ],
+          uiMetadata: {
+            features: {
+              F1: {
+                featureType: "simple_aggs",
+                aggregationBy: "avg",
+                aggregationOf: "system.cpu.total.pct"
+              }
+            },
+            filters: [
+              {
+                fieldInfo: [
+                  {
+                    label: "host.name",
+                    type: "keyword"
+                  }
+                ],
+                fieldValue: "myserver",
+                operator: "is"
+              }
+            ],
+            filterType: "simple_filter"
+          },
+        },
+      });
+      expect(snake).toEqual({
+        period_start: 1596309273336,
+        period_end: 1596914073336,
+        detector: {
+          name: "test2",
+          description: "test",
+          time_field: "@timestamp",
+          indices: [
+            "metricbeat-7.8.1"
+          ],
+          detection_interval: {
+            period: {
+              interval: 1,
+              unit: "Minutes"
+            }
+          },
+          window_delay: {
+            period: {
+              interval: 1,
+              unit: "Minutes"
+            }
+          },
+          filter_query: {
+            bool: {
+              filter: [
+                {
+                  term: {
+                    "host.name": {
+                      value: "myserver"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          feature_attributes: [
+            {
+              feature_id: "9lAlx3MBdAn13oNrKKPk",
+              feature_name: "F1",
+              feature_enabled: true,
+              importance: 1,
+              aggregation_query: {
+                f_1: {
+                  avg: {
+                    field: "system.cpu.total.pct"
+                  }
+                }
+              }
+            }
+          ],
+          ui_metadata: {
+            features: {
+              F1: {
+                featureType: "simple_aggs",
+                aggregationBy: "avg",
+                aggregationOf: "system.cpu.total.pct"
+              }
+            },
+            filters: [
+              {
+                fieldInfo: [
+                  {
+                    label: "host.name",
+                    type: "keyword"
+                  }
+                ],
+                fieldValue: "myserver",
+                operator: "is"
+              }
+            ],
+            filterType: "simple_filter"
+          },
+        }
+      });
+    });
+  });
+
   describe('convertDetectorKeysToSnakeCase', () => {
     test('should convert keys to snake_case', () => {
       const snake = convertDetectorKeysToSnakeCase({ helloWorld: 'value' });
@@ -73,6 +227,66 @@ describe('adHelpers', () => {
         filter_query: {
           query: {
             aggs: { sum_aggregation: { sum: { field: 'totalSales' } } },
+          },
+        },
+        ui_metadata: {},
+      });
+    });
+
+    test('should not replace dot in filterQuery and features aggregation query', () => {
+      const snake = convertDetectorKeysToSnakeCase({
+        helloWorld: 'value',
+        filterQuery: {
+          bool: {
+            filter: [
+              {
+                term: {
+                  'host.name': { value: 'myserver' },
+                },
+              },
+            ],
+          },
+        },
+        featureAttributes: [
+          {
+            featureId: 'WDO-lm0BL33kEAPF5moe',
+            featureName: 'Hello World',
+            featureEnabled: true,
+            aggregationQuery: {
+              hello_world: {
+                avg: {
+                  field: 'system.cpu.total.pct',
+                },
+              },
+            },
+          },
+        ],
+      });
+      expect(snake).toEqual({
+        hello_world: 'value',
+        feature_attributes: [
+          {
+            feature_id: 'WDO-lm0BL33kEAPF5moe',
+            feature_name: 'Hello World',
+            feature_enabled: true,
+            aggregation_query: {
+              hello_world: {
+                avg: {
+                  field: 'system.cpu.total.pct',
+                },
+              },
+            },
+          },
+        ],
+        filter_query: {
+          bool: {
+            filter: [
+              {
+                term: {
+                  'host.name': { value: 'myserver' },
+                },
+              },
+            ],
           },
         },
         ui_metadata: {},
