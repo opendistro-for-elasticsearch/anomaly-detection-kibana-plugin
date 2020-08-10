@@ -42,6 +42,7 @@ import {
   anomalyResultMapper,
   convertDetectorKeysToCamelCase,
   convertDetectorKeysToSnakeCase,
+  convertPreviewInputKeysToSnakeCase,
   getResultAggregationQuery,
   getFinalDetectorStates,
   getDetectorsWithJob,
@@ -98,7 +99,7 @@ const previewDetector = async (
   try {
     const { detectorId } = req.params;
     //@ts-ignore
-    const requestBody = JSON.stringify(mapKeysDeep(req.payload, toSnake));
+    const requestBody = JSON.stringify(convertPreviewInputKeysToSnakeCase(req.payload));
     const response = await callWithRequest(req, 'ad.previewDetector', {
       detectorId,
       body: requestBody,

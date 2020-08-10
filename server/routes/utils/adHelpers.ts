@@ -39,6 +39,18 @@ export const convertDetectorKeysToSnakeCase = (payload: any) => {
   };
 };
 
+export const convertPreviewInputKeysToSnakeCase = (payload: any) => {
+  return {
+    ...mapKeysDeep(
+      {
+        ...omit(payload, ['detector']), // Exclude the detector,
+      },
+      toSnake
+    ),
+    detector: convertDetectorKeysToSnakeCase(get(payload, 'detector', {})),
+  };
+};
+
 export const convertDetectorKeysToCamelCase = (response: object) => {
   return {
     ...mapKeysDeep(
