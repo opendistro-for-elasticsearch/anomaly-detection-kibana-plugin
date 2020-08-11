@@ -303,10 +303,10 @@ const searchDetector = async (
       },
     };
   } catch (err) {
+    console.log('Anomaly detector - Unable to search detectors', err);
     if (isIndexNotFoundError(err)) {
       return { ok: true, response: { totalDetectors: 0, detectors: [] } };
     }
-    console.log('Anomaly detector - Unable to search detectors', err);
     return { ok: false, error: err.message };
   }
 };
@@ -512,10 +512,10 @@ const getDetectors = async (
       },
     };
   } catch (err) {
+    console.log('Anomaly detector - Unable to search detectors', err);
     if (isIndexNotFoundError(err)) {
       return { ok: true, response: { totalDetectors: 0, detectorList: [] } };
     }
-    console.log('Anomaly detector - Unable to list detectors', err);
     return { ok: false, error: err.message };
   }
 };
