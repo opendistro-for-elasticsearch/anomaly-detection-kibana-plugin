@@ -97,7 +97,7 @@ export const SimpleFilter = (props: DataFilterProps) => {
 
         let options = indexFields[i]?.options;
         if (options) {
-          for (let j = 0; j < options?.length; j++) {
+          for (let j = 0; j < options.length; j++) {
             if (includes(options[j].label, searchValue)) {
               selectedOptions.push(options[j]);
             }
