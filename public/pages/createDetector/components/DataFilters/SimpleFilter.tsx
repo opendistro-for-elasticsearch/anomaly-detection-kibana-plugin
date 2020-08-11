@@ -34,8 +34,8 @@ import {
   FieldProps,
   FormikProps,
 } from 'formik';
-import { cloneDeep, get } from 'lodash';
-import React, { useEffect, Fragment } from 'react';
+import { cloneDeep, get, debounce, includes } from 'lodash';
+import React, { useEffect, Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { UIFilter } from '../../../../models/interfaces';
@@ -60,6 +60,16 @@ interface DataFilterProps {
 
 export const SimpleFilter = (props: DataFilterProps) => {
   const indexFields = getIndexFields(useSelector(getAllFields));
+  const [searchedIndexFields, setSearchedIndexFields] = useState<
+    ({
+      label: DATA_TYPES;
+      options: {
+        label: string;
+        type: DATA_TYPES;
+      }[];
+    } | null)[]
+  >();
+
   const darkMode = darkModeEnabled();
   const selectedIndices = get(props, 'formikProps.values.index[0].label', '');
   //Reset, if selectedIndices change filter could become invalid
@@ -76,6 +86,36 @@ export const SimpleFilter = (props: DataFilterProps) => {
   const lightModeStyles = {
     backgroundColor: '#F6F6F6',
   };
+
+  //If user search field name, filter filed names which include user's input word
+  //So user can only need to select from the filtered fileds.
+  const handleSearchFieldChange = debounce(async (searchValue: string) => {
+    let selectedFields: any = [];
+    if (searchValue) {
+      for (let i = 0; i < indexFields.length; i++) {
+        let selectedOptions: any = [];
+
+        let options = indexFields[i]?.options;
+        if (options) {
+          for (let j = 0; j < options.length; j++) {
+            if (includes(options[j].label, searchValue)) {
+              selectedOptions.push(options[j]);
+            }
+          }
+          if (selectedOptions.length > 0) {
+            selectedFields.push({
+              label: indexFields[i]?.label,
+              options: selectedOptions,
+            });
+          }
+        }
+      }
+      setSearchedIndexFields(selectedFields);
+    } else {
+      setSearchedIndexFields(undefined);
+    }
+  }, 300);
+
   return (
     <FieldArray name="filters" validateOnChange={true}>
       {({
@@ -152,7 +192,11 @@ export const SimpleFilter = (props: DataFilterProps) => {
                                     async
                                     isClearable
                                     //@ts-ignore
-                                    options={indexFields}
+                                    options={
+                                      searchedIndexFields
+                                        ? searchedIndexFields
+                                        : indexFields
+                                    }
                                     onCreateOption={(createdOption: string) => {
                                       const normalizedOptions = createdOption.trim();
                                       if (!normalizedOptions) return;
@@ -177,6 +221,7 @@ export const SimpleFilter = (props: DataFilterProps) => {
                                         options
                                       );
                                     }}
+                                    onSearchChange={handleSearchFieldChange}
                                     isInvalid={isInvalid(field.name, form)}
                                   />
                                 </EuiFormRow>
