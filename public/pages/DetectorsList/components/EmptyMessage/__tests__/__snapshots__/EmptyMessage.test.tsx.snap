@@ -28,7 +28,7 @@ exports[`<EmptyDetectorMessage /> spec Empty results renders component with empt
   />
   <a
     class="euiButton euiButton--primary euiButton--fill"
-    data-test-subj="add_detector"
+    data-test-subj="createDetectorButton"
     href="opendistro-anomaly-detection-kibana#/create-ad/"
     rel="noreferrer"
   >
@@ -73,7 +73,7 @@ exports[`<EmptyDetectorMessage /> spec Filters results message renders component
   />
   <button
     class="euiButton euiButton--primary euiButton--fill"
-    data-test-subj="reset_list_filters"
+    data-test-subj="resetListFilters"
     type="button"
   >
     <span

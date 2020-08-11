@@ -25,22 +25,39 @@ describe('<ListActions /> spec', () => {
     onStartDetectors: jest.fn(),
     onStopDetectors: jest.fn(),
     onDeleteDetectors: jest.fn(),
-    detectors: [],
     isActionsDisabled: true,
     isStartDisabled: false,
     isStopDisabled: false,
   };
   describe('List actions', () => {
     console.error = jest.fn();
-    test('renders component when disabled', () => {
-      const { container } = render(<ListActions {...defaultProps} />);
+    test('renders component when disabled', async () => {
+      const { container, getByTestId, queryByText } = render(
+        <ListActions {...defaultProps} />
+      );
       expect(container.firstChild).toMatchSnapshot();
+      expect(queryByText('Start')).toBeNull();
+      expect(queryByText('Stop')).toBeNull();
+      expect(queryByText('Delete')).toBeNull();
+      fireEvent.click(getByTestId('listActionsButton'));
+      await wait();
+      expect(queryByText('Start')).toBeNull();
+      expect(queryByText('Stop')).toBeNull();
+      expect(queryByText('Delete')).toBeNull();
     });
-    test('renders component when enabled', () => {
-      const { container } = render(
+    test('renders component when enabled', async () => {
+      const { container, getByTestId, queryByText } = render(
         <ListActions {...defaultProps} isActionsDisabled={false} />
       );
       expect(container.firstChild).toMatchSnapshot();
+      expect(queryByText('Start')).toBeNull();
+      expect(queryByText('Stop')).toBeNull();
+      expect(queryByText('Delete')).toBeNull();
+      fireEvent.click(getByTestId('listActionsButton'));
+      await wait();
+      expect(queryByText('Start')).not.toBeNull();
+      expect(queryByText('Stop')).not.toBeNull();
+      expect(queryByText('Delete')).not.toBeNull();
     });
     test('should call onStartDetectors when clicking on start action', async () => {
       const { getByTestId } = render(
