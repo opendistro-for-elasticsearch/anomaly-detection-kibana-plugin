@@ -238,3 +238,10 @@ export const getDetectorsWithJob = (
 
   return resultDetectorWithJobs;
 };
+
+export const isIndexNotFoundError = (err: any) => {
+  return (
+    err.statusCode === 404 &&
+    get<string>(err, 'body.error.type', '') === 'index_not_found_exception'
+  );
+};
