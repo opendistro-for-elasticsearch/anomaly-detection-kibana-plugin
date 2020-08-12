@@ -58,7 +58,7 @@ describe('<SampleData /> spec', () => {
       getByText('Sample detectors');
       getByText('Monitor HTTP responses');
       getByText('Monitor eCommerce orders');
-      getByText('Monitor health of a host');
+      getByText('Monitor host health');
       expect(queryByText('INSTALLED')).toBeNull();
       expect(queryByText('Detector created')).toBeNull();
       expect(queryByText('View detector and sample data')).toBeNull();
@@ -91,7 +91,7 @@ describe('<SampleData /> spec', () => {
       getByText('Sample detectors');
       getByText('Monitor HTTP responses');
       getByText('Monitor eCommerce orders');
-      getByText('Monitor health of a host');
+      getByText('Monitor host health');
       expect(getAllByText('Detector created')).toHaveLength(1);
       expect(getAllByText('View detector and sample data')).toHaveLength(1);
       expect(getAllByText('INSTALLED')).toHaveLength(1);
@@ -120,7 +120,7 @@ describe('<SampleData /> spec', () => {
       getByText('Sample detectors');
       getByText('Monitor HTTP responses');
       getByText('Monitor eCommerce orders');
-      getByText('Monitor health of a host');
+      getByText('Monitor host health');
       expect(queryByText('INSTALLED')).toBeNull();
       expect(queryByText('Detector created')).toBeNull();
     });

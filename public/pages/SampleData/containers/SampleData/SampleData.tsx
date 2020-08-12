@@ -164,7 +164,7 @@ export const SampleData = () => {
       </EuiPageHeader>
       <EuiText>
         Create a detector with streaming sample data to get a deeper
-        understanding of how anomaly detection works. These will create and
+        understanding of how anomaly detection works. You can create and
         initialize a detector with configured settings for your selected sample
         index.
       </EuiText>
@@ -222,7 +222,7 @@ export const SampleData = () => {
         </EuiFlexItem>
         <EuiFlexItem>
           <SampleDataBox
-            title="Monitor health of a host"
+            title="Monitor host health"
             icon={sampleHostHealth.icon}
             description={sampleHostHealth.description}
             buttonDescription="Create health monitor detector"

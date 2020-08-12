@@ -60,8 +60,16 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
         badgeLabel={props.isDataLoaded ? 'INSTALLED' : undefined}
       >
         <EuiFlexGroup direction="column" gutterSize="l">
-          <EuiFlexItem>
-            <p style={{ lineHeight: 1.4 }}>{props.description}</p>
+          <EuiFlexItem grow={false} style={{ height: '70px' }}>
+            <p
+              style={{
+                textAlign: 'justify',
+                lineHeight: 1.4,
+                maxHeight: 4.2,
+              }}
+            >
+              {props.description}
+            </p>
           </EuiFlexItem>
           <EuiFlexGroup
             style={{

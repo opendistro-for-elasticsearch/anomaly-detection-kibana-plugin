@@ -68,7 +68,7 @@ export const sampleHttpResponses = {
   indexName: httpResponsesIndexName,
   detectorName: httpResponsesDetectorName,
   description:
-    'Create a detector using an index containing HTTP response data and detect when there are high numbers of error response codes.',
+    'Detect high numbers of error response codes in an index containing HTTP response data.',
   icon: <EuiIcon type="visLine" size="l" />,
   fieldMappings: httpFieldMappings,
   indexConfig: {
@@ -156,7 +156,7 @@ export const sampleEcommerce = {
   indexName: ecommerceIndexName,
   detectorName: ecommerceDetectorName,
   description:
-    'Create a detector using an index containing online order data and detect when there are high numbers of failed transactions.',
+    'Detect any unual increase or decrease of orders in an index containing online order data.',
   icon: <EuiIcon type="package" size="l" />,
   fieldMappings: ecommerceFieldMappings,
   indexConfig: {
@@ -254,7 +254,7 @@ export const sampleHostHealth = {
   indexName: hostHealthIndexName,
   detectorName: hostHealthDetectorName,
   description:
-    'Create a detector using an index containing various health metrics of a host and detect increases in CPU and memory utilization.',
+    'Detect increases in CPU and memory utilization in an index containing various health metrics from a host.',
   icon: <EuiIcon type="visGauge" size="l" />,
   fieldMappings: hostHealthFieldMappings,
   indexConfig: {
