@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { render, wait } from '@testing-library/react';
+import { render, wait, getByTestId, getByRole } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import moment from 'moment';
 import React from 'react';
@@ -55,7 +55,7 @@ const renderWithRouter = (
   ),
 });
 
-describe('<ListFilters /> spec', () => {
+describe('<DetectorList /> spec', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -378,6 +378,256 @@ describe('<ListFilters /> spec', () => {
       getByText(randomDetectors[2].totalAnomalies.toString());
       getByText('10/19/2019 9:30 AM');
       getByText('10/19/2019 7:30 AM');
+    });
+    test('start action disabled if selected detector is running', async () => {
+      const randomDetectors = [
+        {
+          id: 1,
+          name: 'Test1',
+          indices: ['index_1'],
+          curState: DETECTOR_STATE.RUNNING,
+          totalAnomalies: 0,
+          lastActiveAnomaly: 0,
+          enabledTime: 0,
+        },
+      ];
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        data: {
+          ok: true,
+          response: {
+            detectorList: randomDetectors,
+            totalDetectors: randomDetectors.length,
+          },
+        },
+      });
+      const {
+        getByText,
+        getByTestId,
+        getAllByRole,
+        queryByText,
+      } = renderWithRouter();
+      await wait();
+      userEvent.click(getAllByRole('checkbox')[0]);
+      userEvent.click(getByTestId('listActionsButton'));
+      userEvent.click(getByText('Start'));
+      expect(
+        queryByText('Are you sure you want to start the selected detectors?')
+      ).toBeNull();
+    });
+    test('start action enabled if selected detector is not running', async () => {
+      const randomDetectors = [
+        {
+          id: 1,
+          name: 'Test1',
+          indices: ['index_1'],
+          curState: DETECTOR_STATE.DISABLED,
+          totalAnomalies: 0,
+          lastActiveAnomaly: 0,
+          enabledTime: 0,
+        },
+      ];
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        data: {
+          ok: true,
+          response: {
+            detectorList: randomDetectors,
+            totalDetectors: randomDetectors.length,
+          },
+        },
+      });
+      const { getByText, getByTestId, getAllByRole } = renderWithRouter();
+      await wait();
+      userEvent.click(getAllByRole('checkbox')[0]);
+      userEvent.click(getByTestId('listActionsButton'));
+      userEvent.click(getByText('Start'));
+      getByText('Are you sure you want to start the selected detectors?');
+      getByText('Start detectors');
+    });
+    test('stop action disabled if selected detector is stopped', async () => {
+      const randomDetectors = [
+        {
+          id: 1,
+          name: 'Test1',
+          indices: ['index_1'],
+          curState: DETECTOR_STATE.DISABLED,
+          totalAnomalies: 0,
+          lastActiveAnomaly: 0,
+          enabledTime: 0,
+        },
+      ];
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        data: {
+          ok: true,
+          response: {
+            detectorList: randomDetectors,
+            totalDetectors: randomDetectors.length,
+          },
+        },
+      });
+      const {
+        getByText,
+        getByTestId,
+        getAllByRole,
+        queryByText,
+      } = renderWithRouter();
+      await wait();
+      userEvent.click(getAllByRole('checkbox')[0]);
+      userEvent.click(getByTestId('listActionsButton'));
+      userEvent.click(getByText('Stop'));
+      expect(
+        queryByText('Are you sure you want to stop the selected detectors?')
+      ).toBeNull();
+    });
+    test('stop action enabled if selected detector is running', async () => {
+      const randomDetectors = [
+        {
+          id: 1,
+          name: 'Test1',
+          indices: ['index_1'],
+          curState: DETECTOR_STATE.RUNNING,
+          totalAnomalies: 0,
+          lastActiveAnomaly: 0,
+          enabledTime: 0,
+        },
+      ];
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        data: {
+          ok: true,
+          response: {
+            detectorList: randomDetectors,
+            totalDetectors: randomDetectors.length,
+          },
+        },
+      });
+      const { getByText, getByTestId, getAllByRole } = renderWithRouter();
+      await wait();
+      userEvent.click(getAllByRole('checkbox')[0]);
+      userEvent.click(getByTestId('listActionsButton'));
+      userEvent.click(getByText('Stop'));
+      getByText('Are you sure you want to stop the selected detectors?');
+      getByText('Stop detectors');
+    });
+    test('delete action always enabled', async () => {
+      const randomDetectors = [
+        {
+          id: 1,
+          name: 'Test1',
+          indices: ['index_1'],
+          curState: DETECTOR_STATE.DISABLED,
+          totalAnomalies: 0,
+          lastActiveAnomaly: 0,
+          enabledTime: 0,
+        },
+        {
+          id: 2,
+          name: 'Test2',
+          indices: ['index_2'],
+          curState: DETECTOR_STATE.INIT,
+          totalAnomalies: 0,
+          lastActiveAnomaly: 0,
+          enabledTime: 0,
+        },
+        {
+          id: 3,
+          name: 'Test3',
+          indices: ['index_3'],
+          curState: DETECTOR_STATE.RUNNING,
+          totalAnomalies: 0,
+          lastActiveAnomaly: 0,
+          enabledTime: 0,
+        },
+        {
+          id: 4,
+          name: 'Test4',
+          indices: ['index_4'],
+          curState: DETECTOR_STATE.FEATURE_REQUIRED,
+          totalAnomalies: 0,
+          lastActiveAnomaly: 0,
+          enabledTime: 0,
+        },
+        {
+          id: 5,
+          name: 'Test5',
+          indices: ['index_5'],
+          curState: DETECTOR_STATE.INIT_FAILURE,
+          totalAnomalies: 0,
+          lastActiveAnomaly: 0,
+          enabledTime: 0,
+        },
+        {
+          id: 6,
+          name: 'Test6',
+          indices: ['index_6'],
+          curState: DETECTOR_STATE.UNEXPECTED_FAILURE,
+          totalAnomalies: 0,
+          lastActiveAnomaly: 0,
+          enabledTime: 0,
+        },
+      ];
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        data: {
+          ok: true,
+          response: {
+            detectorList: randomDetectors,
+            totalDetectors: randomDetectors.length,
+          },
+        },
+      });
+      const { getByText, getByTestId, getAllByRole } = renderWithRouter();
+      await wait();
+      // Try to delete disabled detector
+      userEvent.click(getAllByRole('checkbox')[1]);
+      userEvent.click(getByTestId('listActionsButton'));
+      userEvent.click(getByText('Delete'));
+      getByText('Are you sure you want to delete the selected detectors?');
+      getByText('Delete detectors');
+      userEvent.click(getAllByRole('button')[0]);
+      userEvent.click(getAllByRole('checkbox')[1]);
+
+      // Try to delete initializing detector
+      userEvent.click(getAllByRole('checkbox')[2]);
+      userEvent.click(getByTestId('listActionsButton'));
+      userEvent.click(getByText('Delete'));
+      getByText('Are you sure you want to delete the selected detectors?');
+      getByText('Delete detectors');
+      userEvent.click(getAllByRole('button')[0]);
+      userEvent.click(getAllByRole('checkbox')[2]);
+
+      // Try to delete running detector
+      userEvent.click(getAllByRole('checkbox')[3]);
+      userEvent.click(getByTestId('listActionsButton'));
+      userEvent.click(getByText('Delete'));
+      getByText('Are you sure you want to delete the selected detectors?');
+      getByText('Delete detectors');
+      userEvent.click(getAllByRole('button')[0]);
+      userEvent.click(getAllByRole('checkbox')[3]);
+
+      // Try to delete feature required detector
+      userEvent.click(getAllByRole('checkbox')[4]);
+      userEvent.click(getByTestId('listActionsButton'));
+      userEvent.click(getByText('Delete'));
+      getByText('Are you sure you want to delete the selected detectors?');
+      getByText('Delete detectors');
+      userEvent.click(getAllByRole('button')[0]);
+      userEvent.click(getAllByRole('checkbox')[4]);
+
+      // Try to delete init failure detector
+      userEvent.click(getAllByRole('checkbox')[5]);
+      userEvent.click(getByTestId('listActionsButton'));
+      userEvent.click(getByText('Delete'));
+      getByText('Are you sure you want to delete the selected detectors?');
+      getByText('Delete detectors');
+      userEvent.click(getAllByRole('button')[0]);
+      userEvent.click(getAllByRole('checkbox')[5]);
+
+      // Try to delete unexpected failure detector
+      userEvent.click(getAllByRole('checkbox')[6]);
+      userEvent.click(getByTestId('listActionsButton'));
+      userEvent.click(getByText('Delete'));
+      getByText('Are you sure you want to delete the selected detectors?');
+      getByText('Delete detectors');
+      userEvent.click(getAllByRole('button')[0]);
+      userEvent.click(getAllByRole('checkbox')[6]);
     });
   });
 });

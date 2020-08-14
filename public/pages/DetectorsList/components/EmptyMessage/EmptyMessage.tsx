@@ -40,7 +40,7 @@ export const EmptyDetectorMessage = (props: EmptyDetectorProps) => (
         <EuiButton
           fill
           onClick={props.onResetFilters}
-          data-test-subj="reset_list_filters"
+          data-test-subj="resetListFilters"
         >
           Reset filters
         </EuiButton>
@@ -48,7 +48,7 @@ export const EmptyDetectorMessage = (props: EmptyDetectorProps) => (
         <EuiButton
           fill
           href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-          data-test-subj="add_detector"
+          data-test-subj="createDetectorButton"
         >
           Create detector
         </EuiButton>
