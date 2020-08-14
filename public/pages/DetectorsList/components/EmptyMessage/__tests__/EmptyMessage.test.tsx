@@ -20,23 +20,15 @@ import { EmptyDetectorMessage } from '../EmptyMessage';
 describe('<EmptyDetectorMessage /> spec', () => {
   describe('Empty results', () => {
     test('renders component with empty message', () => {
-      const { container } = render(
+      const { container, getByText } = render(
         <EmptyDetectorMessage
           isFilterApplied={false}
           onResetFilters={jest.fn()}
         />
       );
       expect(container.firstChild).toMatchSnapshot();
+      getByText('Create detector');
     });
-    // test.only('should navigate to create detector page', () => {
-    //   const { getByTestId, debug } = render(
-    //     <MemoryRouter initialEntries={['/']}>
-    //       <EmptyDetectorMessage isFilterApplied={false} onResetFilters={jest.fn()} />
-    //     </MemoryRouter>
-    //   );
-    //   fireEvent.click(getByTestId('add_detector'));
-    //   expect(location).toBe('/create-detector');
-    // });
   });
   describe('Filters results message', () => {
     test('renders component no result for filters message', () => {
@@ -48,17 +40,17 @@ describe('<EmptyDetectorMessage /> spec', () => {
       );
       expect(container.firstChild).toMatchSnapshot();
     });
-    test('resets filters when click on rest filters', () => {
-      const handleRestFilters = jest.fn();
+    test('resets filters when click on reset filters', () => {
+      const handleResetFilters = jest.fn();
       const { getByTestId } = render(
         <EmptyDetectorMessage
           isFilterApplied={true}
-          onResetFilters={handleRestFilters}
+          onResetFilters={handleResetFilters}
         />
       );
-      fireEvent.click(getByTestId('reset_list_filters'));
-      expect(handleRestFilters).toHaveBeenCalled();
-      expect(handleRestFilters).toHaveBeenCalledTimes(1);
+      fireEvent.click(getByTestId('resetListFilters'));
+      expect(handleResetFilters).toHaveBeenCalled();
+      expect(handleResetFilters).toHaveBeenCalledTimes(1);
     });
   });
 });

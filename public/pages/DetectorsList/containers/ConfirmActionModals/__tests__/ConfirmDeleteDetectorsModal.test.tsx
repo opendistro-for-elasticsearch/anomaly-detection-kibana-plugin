@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, wait, getByText } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ConfirmDeleteDetectorsModal } from '../ConfirmDeleteDetectorsModal';
 import { DetectorListItem, Monitor } from '../../../../../models/interfaces';
@@ -149,6 +149,32 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       fireEvent.click(getByTestId('cancelButton'));
       await wait();
       expect(defaultDeleteProps.onHide).toHaveBeenCalled();
+    });
+    test('should call onStopDetectors when deleting running detectors', async () => {
+      const { getByText, getByTestId, getByPlaceholderText } = render(
+        <ConfirmDeleteDetectorsModal
+          {...defaultDeleteProps}
+          detectors={
+            [
+              {
+                id: 'detector-id-0',
+                name: 'detector-0',
+                curState: DETECTOR_STATE.INIT,
+              },
+            ] as DetectorListItem[]
+          }
+        />
+      );
+      getByText('Yes');
+      // Try clicking before 'delete' has been typed
+      userEvent.click(getByTestId('confirmButton'));
+      await wait();
+      expect(defaultDeleteProps.onStopDetectors).not.toHaveBeenCalled();
+      userEvent.type(getByPlaceholderText('delete'), 'delete');
+      await wait();
+      userEvent.click(getByTestId('confirmButton'));
+      await wait();
+      expect(defaultDeleteProps.onStopDetectors).toHaveBeenCalled();
     });
   });
 });
