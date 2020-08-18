@@ -44,6 +44,8 @@ export const PLUGIN_NAME = 'opendistro-anomaly-detection-kibana';
 
 export const ALERTING_PLUGIN_NAME = 'opendistro-alerting';
 
+export const ANOMALY_DETECTORS_INDEX = '.opendistro-anomaly-detectors';
+
 export const ANOMALY_RESULT_INDEX = '.opendistro-anomaly-results';
 
 export const MAX_DETECTORS = 1000;

@@ -39,8 +39,8 @@ interface SAMPLE_DATA {
 /*
  *** SAMPLE HTTP RESPONSES CONSTANTS ***
  */
-const httpResponsesIndexName = 'sample-http-responses';
-const httpResponsesDetectorName = 'sample-http-responses-detector';
+const httpResponsesIndexName = 'opendistro-sample-http-responses';
+const httpResponsesDetectorName = 'opendistro-sample-http-responses-detector';
 const httpFieldMappings = {
   timestamp: {
     type: 'date',
@@ -133,8 +133,8 @@ export const sampleHttpResponses = {
 /*
  *** ECOMMERCE CONSTANTS ***
  */
-const ecommerceIndexName = 'sample-ecommerce';
-const ecommerceDetectorName = 'sample-ecommerce-detector';
+const ecommerceIndexName = 'opendistro-sample-ecommerce';
+const ecommerceDetectorName = 'opendistro-sample-ecommerce-detector';
 const ecommerceFieldMappings = {
   timestamp: {
     type: 'date',
@@ -237,8 +237,8 @@ export const sampleEcommerce = {
 /*
  *** HOST HEALTH CONSTANTS ***
  */
-const hostHealthIndexName = 'sample-host-health';
-const hostHealthDetectorName = 'sample-host-health-detector';
+const hostHealthIndexName = 'opendistro-sample-host-health';
+const hostHealthDetectorName = 'opendistro-sample-host-health-detector';
 const hostHealthFieldMappings = {
   timestamp: {
     type: 'date',

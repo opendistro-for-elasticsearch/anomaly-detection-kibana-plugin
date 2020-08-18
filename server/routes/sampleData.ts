@@ -48,7 +48,7 @@ const createSampleData = async (
           __dirname,
           '../sampleData/rawData/httpResponses.json.gz'
         );
-        indexName = 'sample-http-responses';
+        indexName = 'opendistro-sample-http-responses';
         break;
       }
       case SAMPLE_TYPE.ECOMMERCE: {
@@ -56,7 +56,7 @@ const createSampleData = async (
           __dirname,
           '../sampleData/rawData/ecommerce.json.gz'
         );
-        indexName = 'sample-ecommerce';
+        indexName = 'opendistro-sample-ecommerce';
         break;
       }
       case SAMPLE_TYPE.HOST_HEALTH: {
@@ -64,7 +64,7 @@ const createSampleData = async (
           __dirname,
           '../sampleData/rawData/hostHealth.json.gz'
         );
-        indexName = 'sample-host-health';
+        indexName = 'opendistro-sample-host-health';
         break;
       }
     }

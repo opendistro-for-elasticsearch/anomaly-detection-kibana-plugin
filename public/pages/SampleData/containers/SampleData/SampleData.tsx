@@ -28,7 +28,10 @@ import chrome from 'ui/chrome';
 //@ts-ignore
 import { toastNotifications } from 'ui/notify';
 import { BREADCRUMBS, SAMPLE_TYPE } from '../../../../utils/constants';
-import { GET_ALL_DETECTORS_QUERY_PARAMS } from '../../../utils/constants';
+import {
+  GET_SAMPLE_DETECTORS_QUERY_PARAMS,
+  GET_SAMPLE_INDICES_QUERY,
+} from '../../../utils/constants';
 import { AppState } from '../../../../redux/reducers';
 import { getDetectorList } from '../../../../redux/reducers/ad';
 import { createSampleData } from '../../../../redux/reducers/sampleData';
@@ -67,16 +70,16 @@ export const SampleData = () => {
     boolean
   >(false);
 
-  const getAllDetectors = async () => {
-    await dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS)).catch(
+  const getAllSampleDetectors = async () => {
+    await dispatch(getDetectorList(GET_SAMPLE_DETECTORS_QUERY_PARAMS)).catch(
       (error: any) => {
         console.error('Error getting all detectors: ', error);
       }
     );
   };
 
-  const getAllIndices = async () => {
-    await dispatch(getIndices('')).catch((error: any) => {
+  const getAllSampleIndices = async () => {
+    await dispatch(getIndices(GET_SAMPLE_INDICES_QUERY)).catch((error: any) => {
       console.error('Error getting all indices: ', error);
     });
   };
@@ -89,10 +92,10 @@ export const SampleData = () => {
     ]);
   }, []);
 
-  // Getting all initial detectors
+  // Getting all initial sample detectors & indices
   useEffect(() => {
-    getAllDetectors();
-    getAllIndices();
+    getAllSampleDetectors();
+    getAllSampleIndices();
   }, []);
 
   // Create and populate sample index, create and start sample detector
@@ -120,7 +123,7 @@ export const SampleData = () => {
       await dispatch(createSampleData(sampleType)).catch((error: any) => {
         errorDuringAction = true;
         errorMessage = error;
-        console.error('Error creating sample detector: ', error);
+        console.error('Error bulk inserting data: ', error);
       });
     }
 
@@ -143,8 +146,8 @@ export const SampleData = () => {
         });
     }
 
-    getAllDetectors();
-    getAllIndices();
+    getAllSampleDetectors();
+    getAllSampleIndices();
     setLoadingState(false);
     if (!errorDuringAction) {
       toastNotifications.addSuccess('Successfully loaded sample detector');

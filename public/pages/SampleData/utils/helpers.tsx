@@ -15,7 +15,7 @@
 
 import { CatIndex } from '../../../../server/models/types';
 import { DetectorListItem } from 'public/models/interfaces';
-import { SAMPLE_TYPE } from '../../../utils/constants';
+import { SAMPLE_TYPE, ANOMALY_DETECTORS_INDEX } from '../../../utils/constants';
 import {
   sampleHttpResponses,
   sampleEcommerce,
@@ -23,8 +23,7 @@ import {
 } from '../utils/constants';
 
 export const containsDetectorsIndex = (indices: CatIndex[]) => {
-  const detectorsIndexName = '.opendistro-anomaly-detectors';
-  return indices.map((index) => index.index).includes(detectorsIndexName);
+  return indices.map((index) => index.index).includes(ANOMALY_DETECTORS_INDEX);
 };
 
 export const containsSampleIndex = (
