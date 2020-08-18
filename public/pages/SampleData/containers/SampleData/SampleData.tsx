@@ -153,7 +153,7 @@ export const SampleData = () => {
       toastNotifications.addSuccess('Successfully loaded sample detector');
     } else {
       toastNotifications.addDanger(
-        `Unable to load all sample data. ${errorMessage}`
+        `Unable to load all sample data, please try again. ${errorMessage}`
       );
     }
   };
