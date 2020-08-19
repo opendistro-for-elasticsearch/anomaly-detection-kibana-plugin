@@ -42,6 +42,9 @@ dir
 ###############################################################
 
 # everyone needs es
+echo "moving zip file outside of current directory"
+pwd
+dir
 echo "downloading zip from S3"
 aws s3 cp s3://artifacts.opendistroforelasticsearch.amazon.com/downloads/odfe-windows/staging/odfe-window-zip/$S3_PACKAGE . --quiet; echo $?\
 echo "unzipping $S3_PACKAGE"
@@ -102,33 +105,26 @@ if ($SETUP_ACTION -eq "--kibana" -Or $SETUP_ACTION -eq "--kibana-nosec"){
   aws s3 cp --quiet s3://artifacts.opendistroforelasticsearch.amazon.com/downloads/odfe-windows/ode-windows-zip/$S3_KIBANA_PACKAGE . --quiet; echo $?\
   unzip -qq .\$S3_KIBANA_PACKAGE
   dir
-  cd opendistroforelasticsearch-kibana
-  .\bin\kibana-plugin.bat remove opendistro-anomaly-detection-kibana
-  cd ..
+  .\opendistroforelasticsearch-kibana\bin\kibana-plugin.bat remove opendistro-anomaly-detection-kibana
   $CURRENT_PATH = pwd
   echo $CURRENT_PATH.Path
   $AD_KIBANA_ARTIFACT_PATH = $CURRENT_PATH.Path + "\build\opendistro-anomaly-detection-kibana-" + $OD_VERSION + ".0.zip"
   echo $AD_KIBANA_ARTIFACT_PATH
   ls $AD_KIBANA_ARTIFACT_PATH
-  cd opendistroforelasticsearch-kibana
   $AD_KIBANA_ARTIFACT_PATH.Replace("\", "/")
 
   echo "modified uri"
   $VALID_AD_KIBANA_ARTIFACT_URI = $AD_KIBANA_ARTIFACT_PATH.Replace("\", "/")
   echo $VALID_AD_KIBANA_ARTIFACT_URI
-  .\bin\kibana-plugin.bat install file:///$VALID_AD_KIBANA_ARTIFACT_URI
+  .\opendistroforelasticsearch-kibana\bin\kibana-plugin.bat install file:///$VALID_AD_KIBANA_ARTIFACT_URI
 }
 
 if ($SETUP_ACTION -eq "--kibana"){
-  cd ..
-
   echo "running es"
   nohup .\$PACKAGE-$OD_VERSION\bin\elasticsearch.bat &
 
   echo "running kibana"
-  cd opendistroforelasticsearch-kibana
-  nohup .\bin\kibana.bat &
-  cd ..\..
+  nohup .\opendistroforelasticsearch-kibana\bin\kibana.bat &
 
   echo "Waiting for 160 seconds"
   ping -n 160 127.0.0.1 >.\out.txt
@@ -145,6 +141,7 @@ if ($SETUP_ACTION -eq "--kibana"){
 
 # kibana-nosec remove kibana-security
 if ($SETUP_ACTION -eq "--kibana-nosec"){
+  cd opendistroforelasticsearch-kibana
   echo "removing kibana security"
   .\bin\kibana-plugin.bat remove opendistro_security
   del .\config\kibana.yml
@@ -162,10 +159,10 @@ if ($SETUP_ACTION -eq "--kibana-nosec"){
 
   echo "Waiting for 160 seconds"
   ping -n 160 127.0.0.1 >.\out.txt
-  #curl -XGET http://localhost:9200
+  curl -XGET http://localhost:9200
   #curl -XGET http://localhost:9200/_cluster/health?pretty
   #curl -v -XGET http://localhost:5601
-  #curl -v -XGET http://localhost:5601/api/status
+  curl -v -XGET http://localhost:5601/api/status
 
   echo "kibana-nosec start"
   exit 0
