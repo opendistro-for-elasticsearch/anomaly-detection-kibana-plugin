@@ -105,7 +105,7 @@ jobs:
           dir
           cd kibana/plugins/anomaly-detection-kibana-plugin
           npx cypress verify
-          yarn cy:run --config baseurl=http://localhost:5601
+          yarn cy:run --config baseurl=http://localhost:5601 --record --key ${{ secrets.CYPRESS_RECORD_KEY }}
   # test-without-security:
   #   name: Run e2e tests without security
   #   strategy:

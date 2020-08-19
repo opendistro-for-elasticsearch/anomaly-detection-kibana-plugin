@@ -12,5 +12,6 @@
   "defaultCommandTimeout": 90000,
   "env": {
     "SECURITY_ENABLED": false
-  }
+  },
+  "projectId": "1kg1iv"
 }
