@@ -108,7 +108,7 @@ if ($SETUP_ACTION -eq "--kibana" -Or $SETUP_ACTION -eq "--kibana-nosec"){
   .\opendistroforelasticsearch-kibana\bin\kibana-plugin.bat remove opendistro-anomaly-detection-kibana
   $CURRENT_PATH = pwd
   echo $CURRENT_PATH.Path
-  $AD_KIBANA_ARTIFACT_PATH = $CURRENT_PATH.Path + "\build\opendistro-anomaly-detection-kibana-" + $OD_VERSION + ".0.zip"
+  $AD_KIBANA_ARTIFACT_PATH = $CURRENT_PATH.Path + "\kibana\plugins\anomaly-detection-kibana-plugin\build\opendistro-anomaly-detection-kibana-" + $OD_VERSION + ".0.zip"
   echo $AD_KIBANA_ARTIFACT_PATH
   ls $AD_KIBANA_ARTIFACT_PATH
   $AD_KIBANA_ARTIFACT_PATH.Replace("\", "/")

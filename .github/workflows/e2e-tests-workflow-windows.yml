@@ -53,15 +53,15 @@ jobs:
         with:
           path: kibana/plugins/anomaly-detection-kibana-plugin
 
-      # - name: Bootstrap the plugin
-      #   run: |
-      #     cd kibana/plugins/anomaly-detection-kibana-plugin
-      #     yarn kbn bootstrap
+      - name: Bootstrap the plugin
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn kbn bootstrap
 
-      # - name: Build the artifact
-      #   run: |
-      #     cd kibana/plugins/anomaly-detection-kibana-plugin
-      #     yarn build
+      - name: Build the artifact
+        run: |
+          cd kibana/plugins/anomaly-detection-kibana-plugin
+          yarn build
 
       # - name: Create tagged images for ES and Kibana
       #   run: |
@@ -103,7 +103,7 @@ jobs:
         run: |
           .\kibana\plugins\anomaly-detection-kibana-plugin\.github\script\setup_runners_windows.ps1 --kibana-nosec
           dir
-          cd ./kibana/plugins/anomaly-detection-kibana-plugin
+          cd kibana/plugins/anomaly-detection-kibana-plugin
           npx cypress verify
           yarn cy:run --config baseurl=http://localhost:5601
   # test-without-security:
