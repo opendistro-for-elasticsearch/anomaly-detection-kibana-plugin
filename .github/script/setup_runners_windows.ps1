@@ -157,8 +157,8 @@ if ($SETUP_ACTION -eq "--kibana-nosec"){
   nohup .\bin\kibana.bat &
   cd ..
 
-  echo "Waiting for 160 seconds"
-  ping -n 160 127.0.0.1 >.\out.txt
+  echo "Waiting for 240 seconds"
+  ping -n 240 127.0.0.1 >.\out.txt
   curl -XGET http://localhost:9200
   #curl -XGET http://localhost:9200/_cluster/health?pretty
   #curl -v -XGET http://localhost:5601
