@@ -105,18 +105,16 @@ if ($SETUP_ACTION -eq "--kibana" -Or $SETUP_ACTION -eq "--kibana-nosec"){
   aws s3 cp --quiet s3://artifacts.opendistroforelasticsearch.amazon.com/downloads/odfe-windows/ode-windows-zip/$S3_KIBANA_PACKAGE . --quiet; echo $?\
   unzip -qq .\$S3_KIBANA_PACKAGE
   dir
-  .\opendistroforelasticsearch-kibana\bin\kibana-plugin.bat remove opendistro-anomaly-detection-kibana
-  $CURRENT_PATH = pwd
-  echo $CURRENT_PATH.Path
-  $AD_KIBANA_ARTIFACT_PATH = $CURRENT_PATH.Path + "\kibana\plugins\anomaly-detection-kibana-plugin\build\opendistro-anomaly-detection-kibana-" + $OD_VERSION + ".0.zip"
-  echo $AD_KIBANA_ARTIFACT_PATH
-  ls $AD_KIBANA_ARTIFACT_PATH
-  $AD_KIBANA_ARTIFACT_PATH.Replace("\", "/")
+#   .\opendistroforelasticsearch-kibana\bin\kibana-plugin.bat remove opendistro-anomaly-detection-kibana
+#   $CURRENT_PATH = pwd
+#   echo $CURRENT_PATH.Path
+#   $AD_KIBANA_ARTIFACT_PATH = $CURRENT_PATH.Path + "\kibana\plugins\anomaly-detection-kibana-plugin\build\opendistro-anomaly-detection-kibana-" + $OD_VERSION + ".0.zip"
+#   echo $AD_KIBANA_ARTIFACT_PATH
+#   ls $AD_KIBANA_ARTIFACT_PATH
+#   $AD_KIBANA_ARTIFACT_PATH.Replace("\", "/")
 
-  echo "modified uri"
-  $VALID_AD_KIBANA_ARTIFACT_URI = $AD_KIBANA_ARTIFACT_PATH.Replace("\", "/")
-  echo $VALID_AD_KIBANA_ARTIFACT_URI
-  .\opendistroforelasticsearch-kibana\bin\kibana-plugin.bat install file:///$VALID_AD_KIBANA_ARTIFACT_URI
+#   $VALID_AD_KIBANA_ARTIFACT_URI = $AD_KIBANA_ARTIFACT_PATH.Replace("\", "/")
+#   .\opendistroforelasticsearch-kibana\bin\kibana-plugin.bat install file:///$VALID_AD_KIBANA_ARTIFACT_URI
 }
 
 if ($SETUP_ACTION -eq "--kibana"){
