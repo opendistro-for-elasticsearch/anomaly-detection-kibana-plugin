@@ -94,11 +94,13 @@ export const loadSampleData = (
           body: bulkBody,
         });
         if (resp.errors) {
+          console.log('Error while bulk inserting. ', resp.errors);
           return Promise.reject(
             new Error('Error while bulk inserting. Please try again.')
           );
         }
       } catch (err) {
+        console.log('Error while bulk inserting. ', err);
         return Promise.reject(
           new Error('Error while bulk inserting. Please try again.')
         );

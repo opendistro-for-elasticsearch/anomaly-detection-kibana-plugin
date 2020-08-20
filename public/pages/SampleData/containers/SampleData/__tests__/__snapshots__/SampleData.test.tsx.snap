@@ -114,7 +114,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -138,15 +138,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 </div>
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
-                >
-                  <button
-                    class="euiLink euiLink-disabled"
-                    disabled=""
-                    type="button"
-                  >
-                     
-                  </button>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -245,7 +237,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -269,15 +261,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 </div>
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
-                >
-                  <button
-                    class="euiLink euiLink-disabled"
-                    disabled=""
-                    type="button"
-                  >
-                     
-                  </button>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -376,7 +360,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -400,15 +384,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 </div>
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
-                >
-                  <button
-                    class="euiLink euiLink-disabled"
-                    disabled=""
-                    type="button"
-                  >
-                     
-                  </button>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -540,7 +516,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -564,15 +540,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 </div>
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
-                >
-                  <button
-                    class="euiLink euiLink-disabled"
-                    disabled=""
-                    type="button"
-                  >
-                     
-                  </button>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -675,7 +643,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -699,15 +667,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 </div>
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
-                >
-                  <button
-                    class="euiLink euiLink-disabled"
-                    disabled=""
-                    type="button"
-                  >
-                     
-                  </button>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -810,7 +770,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -834,15 +794,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 </div>
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
-                >
-                  <button
-                    class="euiLink euiLink-disabled"
-                    disabled=""
-                    type="button"
-                  >
-                     
-                  </button>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -984,7 +936,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -1120,7 +1072,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -1144,15 +1096,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 </div>
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
-                >
-                  <button
-                    class="euiLink euiLink-disabled"
-                    disabled=""
-                    type="button"
-                  >
-                     
-                  </button>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -1255,7 +1199,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -1279,15 +1223,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 </div>
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
-                >
-                  <button
-                    class="euiLink euiLink-disabled"
-                    disabled=""
-                    type="button"
-                  >
-                     
-                  </button>
-                </div>
+                />
               </div>
             </div>
           </div>

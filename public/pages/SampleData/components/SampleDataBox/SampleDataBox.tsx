@@ -29,7 +29,7 @@ interface SampleDataBoxProps {
   title: string;
   icon: any;
   description: string;
-  buttonDescription: string;
+  loadDataButtonDescription: string;
   onLoadData(): void;
   isLoadingData: boolean;
   isDataLoaded: boolean;
@@ -73,6 +73,7 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
           </EuiFlexItem>
           <EuiFlexGroup
             style={{
+              height: '100px',
               marginTop: '6px',
               marginBottom: '0px',
             }}
@@ -93,7 +94,7 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
                   ? 'Creating detector'
                   : props.isDataLoaded
                   ? 'Detector created'
-                  : props.buttonDescription}
+                  : props.loadDataButtonDescription}
               </EuiButton>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
@@ -101,9 +102,7 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
                 <EuiLink href={`${PLUGIN_NAME}#/detectors/${props.detectorId}`}>
                   View detector and sample data
                 </EuiLink>
-              ) : (
-                <EuiLink disabled={true}>&nbsp;</EuiLink>
-              )}
+              ) : null}
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiFlexGroup>

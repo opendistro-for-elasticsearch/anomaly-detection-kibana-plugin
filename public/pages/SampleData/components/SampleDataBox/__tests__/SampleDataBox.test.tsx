@@ -22,7 +22,7 @@ const defaultProps = {
   title: 'Sample title',
   icon: <EuiIcon type="alert" />,
   description: 'Sample description',
-  buttonDescription: 'Sample button description',
+  loadDataButtonDescription: 'Sample button description',
   onLoadData: jest.fn(),
   isLoadingData: false,
   isDataLoaded: false,

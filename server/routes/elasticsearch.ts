@@ -162,13 +162,6 @@ const createIndex = async (
     });
     return { ok: true, response: { indices: response } };
   } catch (err) {
-    // In case no matching indices is found it throws an error.
-    if (
-      err.statusCode === 404 &&
-      get<string>(err, 'body.error.type', '') === 'index_not_found_exception'
-    ) {
-      return { ok: true, response: { indices: [] } };
-    }
     console.log('Anomaly detector - Unable to get indices', err);
     return { ok: false, error: err.message };
   }
@@ -200,8 +193,6 @@ const deleteIndex = async (
 ): Promise<ServerResponse<any>> => {
   //@ts-ignore
   const index = req.payload.index;
-  console.log('index to delete: ', index);
-
   try {
     const response: any = await callWithRequest(req, 'indices.delete', {
       index: index,
