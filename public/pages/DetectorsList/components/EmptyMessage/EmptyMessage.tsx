@@ -13,15 +13,9 @@
  * permissions and limitations under the License.
  */
 
-import {
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiButton,
-  EuiEmptyPrompt,
-  EuiText,
-} from '@elastic/eui';
+import { EuiButton, EuiEmptyPrompt, EuiText } from '@elastic/eui';
 import React from 'react';
-import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
+import { CreateDetectorButtons } from '../../../../components/CreateDetectorButtons/CreateDetectorButtons';
 
 const filterText =
   'There are no detectors matching your applied filters. Reset your filters to view all detectors.';
@@ -51,27 +45,7 @@ export const EmptyDetectorMessage = (props: EmptyDetectorProps) => (
           Reset filters
         </EuiButton>
       ) : (
-        <EuiFlexGroup direction="row" gutterSize="m" justifyContent="center">
-          <EuiFlexItem grow={false}>
-            <EuiButton
-              style={{ width: '200px' }}
-              href={`${PLUGIN_NAME}#${APP_PATH.SAMPLE_DETECTORS}`}
-              data-test-subj="sampleDetectorButton"
-            >
-              Try a sample detector
-            </EuiButton>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiButton
-              style={{ width: '200px' }}
-              fill
-              href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-              data-test-subj="createDetectorButton"
-            >
-              Create detector
-            </EuiButton>
-          </EuiFlexItem>
-        </EuiFlexGroup>
+        <CreateDetectorButtons />
       )
     }
   />

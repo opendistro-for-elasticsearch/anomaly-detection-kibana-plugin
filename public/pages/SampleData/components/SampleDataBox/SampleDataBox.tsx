@@ -50,10 +50,10 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
             }}
           >
             {props.icon}
-            <EuiSpacer size="m" />
-            <h2>&nbsp;&nbsp;</h2>
             <EuiTitle size="s">
-              <h2 style={{ marginTop: '-3px' }}>{props.title}</h2>
+              <h2 style={{ marginLeft: '12px', marginTop: '-3px' }}>
+                {props.title}
+              </h2>
             </EuiTitle>
           </div>
         }

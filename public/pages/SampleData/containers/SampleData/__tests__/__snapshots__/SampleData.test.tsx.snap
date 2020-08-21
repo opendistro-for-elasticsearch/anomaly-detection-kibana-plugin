@@ -113,8 +113,19 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 </p>
               </div>
               <div
+                class="euiFlexItem"
+                style="display: flex;"
+              >
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  More details
+                </button>
+              </div>
+              <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -236,8 +247,19 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 </p>
               </div>
               <div
+                class="euiFlexItem"
+                style="display: flex;"
+              >
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  More details
+                </button>
+              </div>
+              <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -359,8 +381,19 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 </p>
               </div>
               <div
+                class="euiFlexItem"
+                style="display: flex;"
+              >
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  More details
+                </button>
+              </div>
+              <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -515,8 +548,19 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 </p>
               </div>
               <div
+                class="euiFlexItem"
+                style="display: flex;"
+              >
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  More details
+                </button>
+              </div>
+              <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -642,8 +686,19 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 </p>
               </div>
               <div
+                class="euiFlexItem"
+                style="display: flex;"
+              >
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  More details
+                </button>
+              </div>
+              <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -769,8 +824,19 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 </p>
               </div>
               <div
+                class="euiFlexItem"
+                style="display: flex;"
+              >
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  More details
+                </button>
+              </div>
+              <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -935,8 +1001,19 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 </p>
               </div>
               <div
+                class="euiFlexItem"
+                style="display: flex;"
+              >
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  More details
+                </button>
+              </div>
+              <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -1071,8 +1148,19 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 </p>
               </div>
               <div
+                class="euiFlexItem"
+                style="display: flex;"
+              >
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  More details
+                </button>
+              </div>
+              <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -1198,8 +1286,19 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 </p>
               </div>
               <div
+                class="euiFlexItem"
+                style="display: flex;"
+              >
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  More details
+                </button>
+              </div>
+              <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+                style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
               >
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"

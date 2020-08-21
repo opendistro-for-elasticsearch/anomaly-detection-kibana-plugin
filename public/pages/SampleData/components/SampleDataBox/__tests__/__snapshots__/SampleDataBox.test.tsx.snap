@@ -99,8 +99,19 @@ exports[`<SampleDataBox /> spec Data is loaded renders component 1`] = `
           </p>
         </div>
         <div
+          class="euiFlexItem"
+          style="display: flex;"
+        >
+          <button
+            class="euiLink euiLink--primary"
+            type="button"
+          >
+            More details
+          </button>
+        </div>
+        <div
           class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-          style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+          style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
         >
           <div
             class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -230,8 +241,19 @@ exports[`<SampleDataBox /> spec Data is loading renders component 1`] = `
           </p>
         </div>
         <div
+          class="euiFlexItem"
+          style="display: flex;"
+        >
+          <button
+            class="euiLink euiLink--primary"
+            type="button"
+          >
+            More details
+          </button>
+        </div>
+        <div
           class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-          style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+          style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
         >
           <div
             class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -356,8 +378,19 @@ exports[`<SampleDataBox /> spec Data not loaded renders component 1`] = `
           </p>
         </div>
         <div
+          class="euiFlexItem"
+          style="display: flex;"
+        >
+          <button
+            class="euiLink euiLink--primary"
+            type="button"
+          >
+            More details
+          </button>
+        </div>
+        <div
           class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-          style="height: 100px; margin-top: 6px; margin-bottom: 0px;"
+          style="height: 100px; margin-top: 0px; margin-bottom: 0px;"
         >
           <div
             class="euiFlexItem euiFlexItem--flexGrowZero"
