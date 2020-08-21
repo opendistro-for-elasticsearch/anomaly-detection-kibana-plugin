@@ -40,9 +40,16 @@ export const APP_PATH = {
   EDIT_FEATURES: '/detectors/:detectorId/features/',
   DETECTOR_DETAIL: '/detectors/:detectorId/',
 };
+
+export const KIBANA_PATH = {
+  DISCOVER: '/discover',
+};
+
 export const PLUGIN_NAME = 'opendistro-anomaly-detection-kibana';
 
 export const ALERTING_PLUGIN_NAME = 'opendistro-alerting';
+
+export const KIBANA_NAME = 'kibana';
 
 export const ANOMALY_DETECTORS_INDEX = '.opendistro-anomaly-detectors';
 

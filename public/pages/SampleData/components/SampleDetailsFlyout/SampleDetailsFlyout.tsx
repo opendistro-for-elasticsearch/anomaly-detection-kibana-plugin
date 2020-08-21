@@ -30,14 +30,14 @@ import {
 } from '../../utils/helpers';
 import { SAMPLE_DATA } from '../../utils/constants';
 
-interface IndexDetailsFlyoutProps {
+interface SampleDetailsFlyoutProps {
   title: string;
   sampleData: SAMPLE_DATA;
   interval: number;
   onClose(): void;
 }
 
-export const IndexDetailsFlyout = (props: IndexDetailsFlyoutProps) => {
+export const SampleDetailsFlyout = (props: SampleDetailsFlyoutProps) => {
   const fieldValues = Object.keys(props.sampleData.fieldMappings);
   const fieldTypes = fieldValues.map((field) =>
     get(props.sampleData.fieldMappings, `${field}.type`)

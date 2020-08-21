@@ -52,7 +52,7 @@ import {
   getDetectorId,
 } from '../../utils/helpers';
 import { SampleDataBox } from '../../components/SampleDataBox/SampleDataBox';
-import { IndexDetailsFlyout } from '../../components/IndexDetailsFlyout/IndexDetailsFlyout';
+import { SampleDetailsFlyout } from '../../components/SampleDetailsFlyout/SampleDetailsFlyout';
 
 export const SampleData = () => {
   const dispatch = useDispatch();
@@ -278,24 +278,24 @@ export const SampleData = () => {
         <EuiSpacer size="m" />
       </EuiFlexGroup>
       {showHttpResponseDetailsFlyout ? (
-        <IndexDetailsFlyout
-          title="HTTP Responses"
+        <SampleDetailsFlyout
+          title="Monitor HTTP responses"
           sampleData={sampleHttpResponses}
           interval={1}
           onClose={() => setShowHttpResponseDetailsFlyout(false)}
         />
       ) : null}
       {showEcommerceDetailsFlyout ? (
-        <IndexDetailsFlyout
-          title="eCommerce"
+        <SampleDetailsFlyout
+          title="Monitor eCommerce orders"
           sampleData={sampleEcommerce}
           interval={1}
           onClose={() => setShowEcommerceDetailsFlyout(false)}
         />
       ) : null}
       {showHostHealthDetailsFlyout ? (
-        <IndexDetailsFlyout
-          title="Host Health"
+        <SampleDetailsFlyout
+          title="Monitor host health"
           sampleData={sampleHostHealth}
           interval={1}
           onClose={() => setShowHostHealthDetailsFlyout(false)}

@@ -16,7 +16,7 @@
 import React from 'react';
 import { EuiDataGrid } from '@elastic/eui';
 import { CatIndex } from '../../../../server/models/types';
-import { DetectorListItem } from 'public/models/interfaces';
+import { Detector, DetectorListItem } from '../../../models/interfaces';
 import { SAMPLE_TYPE, ANOMALY_DETECTORS_INDEX } from '../../../utils/constants';
 import {
   sampleHttpResponses,
@@ -70,6 +70,31 @@ export const containsSampleDetector = (
     }
   }
   return detectors.map((detector) => detector.name).includes(detectorName);
+};
+
+export const detectorIsSample = (detector: Detector) => {
+  return (
+    detector.name === sampleHttpResponses.detectorName ||
+    detector.name === sampleEcommerce.detectorName ||
+    detector.name === sampleHostHealth.detectorName
+  );
+};
+
+export const getAssociatedIndex = (detector: Detector) => {
+  if (detector.name === sampleHttpResponses.detectorName) {
+    return sampleHttpResponses.indexName;
+  }
+  if (detector.name === sampleEcommerce.detectorName) {
+    return sampleEcommerce.indexName;
+  }
+  if (detector.name === sampleHostHealth.detectorName) {
+    return sampleHostHealth.indexName;
+  }
+  console.error(
+    'Error getting associated sample index for detector ',
+    detector.name
+  );
+  return '';
 };
 
 export const getDetectorId = (
