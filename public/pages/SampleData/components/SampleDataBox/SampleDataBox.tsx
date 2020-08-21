@@ -30,6 +30,7 @@ interface SampleDataBoxProps {
   icon: any;
   description: string;
   loadDataButtonDescription: string;
+  onOpenFlyout(): void;
   onLoadData(): void;
   isLoadingData: boolean;
   isDataLoaded: boolean;
@@ -71,10 +72,13 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
               {props.description}
             </p>
           </EuiFlexItem>
+          <EuiFlexItem style={{ display: 'flex', alignItems: 'center' }}>
+            <EuiLink onClick={props.onOpenFlyout}>More details</EuiLink>
+          </EuiFlexItem>
           <EuiFlexGroup
             style={{
               height: '100px',
-              marginTop: '6px',
+              marginTop: '0px',
               marginBottom: '0px',
             }}
             direction="column"

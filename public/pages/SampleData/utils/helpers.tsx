@@ -13,6 +13,8 @@
  * permissions and limitations under the License.
  */
 
+import React from 'react';
+import { EuiDataGrid } from '@elastic/eui';
 import { CatIndex } from '../../../../server/models/types';
 import { DetectorListItem } from 'public/models/interfaces';
 import { SAMPLE_TYPE, ANOMALY_DETECTORS_INDEX } from '../../../utils/constants';
@@ -83,4 +85,124 @@ export const getDetectorId = (
     return false;
   });
   return detectorId;
+};
+
+const getFieldsAndTypesData = (fields: string[], types: string[]) => {
+  let data = [];
+  for (let i = 0; i < fields.length; i++) {
+    const field = fields[i];
+    const type = types[i];
+    data.push({
+      Field: field,
+      Type: type,
+    });
+  }
+  return data;
+};
+
+const getFeaturesAndAggsAndFieldsData = (
+  features: string[],
+  aggs: string[],
+  fields: string[]
+) => {
+  let data = [];
+  for (let i = 0; i < features.length; i++) {
+    const feature = features[i];
+    const agg = aggs[i];
+    const field = fields[i];
+    data.push({
+      Feature: feature,
+      Aggregation: agg,
+      'Index field': field,
+    });
+  }
+  return data;
+};
+
+export const getFieldsAndTypesGrid = (fields: string[], types: string[]) => {
+  const gridData = getFieldsAndTypesData(fields, types);
+  return (
+    <EuiDataGrid
+      aria-label="Index fields and types"
+      columns={[
+        {
+          id: 'Field',
+          isResizable: false,
+          isExpandable: false,
+          isSortable: false,
+        },
+        {
+          id: 'Type',
+          isResizable: false,
+          isExpandable: false,
+          isSortable: false,
+        },
+      ]}
+      columnVisibility={{
+        visibleColumns: ['Field', 'Type'],
+        setVisibleColumns: () => {},
+      }}
+      rowCount={gridData.length}
+      renderCellValue={({ rowIndex, columnId }) =>
+        //@ts-ignore
+        gridData[rowIndex][columnId]
+      }
+      gridStyle={{
+        border: 'horizontal',
+        header: 'shade',
+        rowHover: 'highlight',
+        stripes: true,
+      }}
+      toolbarVisibility={false}
+    />
+  );
+};
+
+export const getFeaturesAndAggsAndFieldsGrid = (
+  features: string[],
+  aggs: string[],
+  fields: string[]
+) => {
+  const gridData = getFeaturesAndAggsAndFieldsData(features, aggs, fields);
+  return (
+    <EuiDataGrid
+      aria-label="Feature details"
+      columns={[
+        {
+          id: 'Feature',
+          isResizable: false,
+          isExpandable: false,
+          isSortable: false,
+        },
+        {
+          id: 'Aggregation',
+          isResizable: false,
+          isExpandable: false,
+          isSortable: false,
+        },
+        {
+          id: 'Index field',
+          isResizable: false,
+          isExpandable: false,
+          isSortable: false,
+        },
+      ]}
+      columnVisibility={{
+        visibleColumns: ['Feature', 'Aggregation', 'Index field'],
+        setVisibleColumns: () => {},
+      }}
+      rowCount={gridData.length}
+      renderCellValue={({ rowIndex, columnId }) =>
+        //@ts-ignore
+        gridData[rowIndex][columnId]
+      }
+      gridStyle={{
+        border: 'horizontal',
+        header: 'shade',
+        rowHover: 'highlight',
+        stripes: true,
+      }}
+      toolbarVisibility={false}
+    />
+  );
 };

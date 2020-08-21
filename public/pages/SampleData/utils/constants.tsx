@@ -26,7 +26,7 @@ export const indexSettings = {
   },
 };
 
-interface SAMPLE_DATA {
+export interface SAMPLE_DATA {
   indexName: string;
   detectorName: string;
   description: string;

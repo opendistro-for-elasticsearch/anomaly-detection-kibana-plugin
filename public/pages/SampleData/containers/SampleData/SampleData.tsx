@@ -52,6 +52,7 @@ import {
   getDetectorId,
 } from '../../utils/helpers';
 import { SampleDataBox } from '../../components/SampleDataBox/SampleDataBox';
+import { IndexDetailsFlyout } from '../../components/IndexDetailsFlyout/IndexDetailsFlyout';
 
 export const SampleData = () => {
   const dispatch = useDispatch();
@@ -69,6 +70,17 @@ export const SampleData = () => {
   const [isLoadingHostHealthData, setIsLoadingHostHealthData] = useState<
     boolean
   >(false);
+  const [
+    showHttpResponseDetailsFlyout,
+    setShowHttpResponseDetailsFlyout,
+  ] = useState<boolean>(false);
+  const [showEcommerceDetailsFlyout, setShowEcommerceDetailsFlyout] = useState<
+    boolean
+  >(false);
+  const [
+    showHostHealthDetailsFlyout,
+    setShowHostHealthDetailsFlyout,
+  ] = useState<boolean>(false);
 
   const getAllSampleDetectors = async () => {
     await dispatch(getDetectorList(GET_SAMPLE_DETECTORS_QUERY_PARAMS)).catch(
@@ -179,6 +191,11 @@ export const SampleData = () => {
             icon={sampleHttpResponses.icon}
             description={sampleHttpResponses.description}
             loadDataButtonDescription="Create HTTP response detector"
+            onOpenFlyout={() => {
+              setShowHttpResponseDetailsFlyout(true);
+              setShowEcommerceDetailsFlyout(false);
+              setShowHostHealthDetailsFlyout(false);
+            }}
             onLoadData={() => {
               handleLoadData(
                 SAMPLE_TYPE.HTTP_RESPONSES,
@@ -204,6 +221,11 @@ export const SampleData = () => {
             icon={sampleEcommerce.icon}
             description={sampleEcommerce.description}
             loadDataButtonDescription="Create eCommerce orders detector"
+            onOpenFlyout={() => {
+              setShowHttpResponseDetailsFlyout(false);
+              setShowEcommerceDetailsFlyout(true);
+              setShowHostHealthDetailsFlyout(false);
+            }}
             onLoadData={() => {
               handleLoadData(
                 SAMPLE_TYPE.ECOMMERCE,
@@ -229,6 +251,11 @@ export const SampleData = () => {
             icon={sampleHostHealth.icon}
             description={sampleHostHealth.description}
             loadDataButtonDescription="Create health monitor detector"
+            onOpenFlyout={() => {
+              setShowHttpResponseDetailsFlyout(false);
+              setShowEcommerceDetailsFlyout(false);
+              setShowHostHealthDetailsFlyout(true);
+            }}
             onLoadData={() => {
               handleLoadData(
                 SAMPLE_TYPE.HOST_HEALTH,
@@ -250,6 +277,30 @@ export const SampleData = () => {
         </EuiFlexItem>
         <EuiSpacer size="m" />
       </EuiFlexGroup>
+      {showHttpResponseDetailsFlyout ? (
+        <IndexDetailsFlyout
+          title="HTTP Responses"
+          sampleData={sampleHttpResponses}
+          interval={1}
+          onClose={() => setShowHttpResponseDetailsFlyout(false)}
+        />
+      ) : null}
+      {showEcommerceDetailsFlyout ? (
+        <IndexDetailsFlyout
+          title="eCommerce"
+          sampleData={sampleEcommerce}
+          interval={1}
+          onClose={() => setShowEcommerceDetailsFlyout(false)}
+        />
+      ) : null}
+      {showHostHealthDetailsFlyout ? (
+        <IndexDetailsFlyout
+          title="Host Health"
+          sampleData={sampleHostHealth}
+          interval={1}
+          onClose={() => setShowHostHealthDetailsFlyout(false)}
+        />
+      ) : null}
     </Fragment>
   );
 };
