@@ -25,6 +25,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiText,
+  EuiLoadingSpinner,
 } from '@elastic/eui';
 import { get } from 'lodash';
 import React, { useEffect, Fragment, useState } from 'react';
@@ -121,6 +122,15 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   const [featureNamesAtHighSev, setFeatureNamesAtHighSev] = useState(
     [] as string[]
   );
+
+  // If the detector is returning undefined estimated minutes left, then it
+  // is still performing the cold start.
+  const isPerformingColdStart =
+    detector &&
+    detector.curState === DETECTOR_STATE.INIT &&
+    detector.initProgress &&
+    detector.initProgress.estimatedMinutesLeft === undefined;
+
   const isDetectorRunning =
     detector && detector.curState === DETECTOR_STATE.RUNNING;
 
@@ -243,6 +253,9 @@ export function AnomalyResults(props: AnomalyResultsProps) {
         ''
       );
     }
+    if (isPerformingColdStart) {
+      return `Attempting to initialize the detector with historical data. This will take approximately ${detector.detectionInterval.period.interval} total minutes.`;
+    }
     if (isInitializingNormally) {
       return 'The detector is being initialized based on the latest configuration changes.';
     }
@@ -303,7 +316,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
           ''
         )}
       </p>
-    ) : isInitializingNormally ? (
+    ) : isPerformingColdStart ? null : isInitializingNormally ? (
       <p>
         {getInitProgressMessage()}After the initialization is complete, you will
         see the anomaly results based on your latest configuration changes.
@@ -346,7 +359,12 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       style={{ marginBottom: '20px' }}
                     >
                       {getCalloutContent()}
-                      {isDetectorInitializing && detector.initProgress ? (
+                      {isPerformingColdStart ? (
+                        <div>
+                          <EuiLoadingSpinner size="l" />
+                          <EuiSpacer size="s" />
+                        </div>
+                      ) : isDetectorInitializing && detector.initProgress ? (
                         <div>
                           <EuiFlexGroup alignItems="center">
                             <EuiFlexItem
