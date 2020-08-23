@@ -29,6 +29,7 @@ import {
   getFeaturesAndAggsAndFieldsGrid,
 } from '../../utils/helpers';
 import { SAMPLE_DATA } from '../../utils/constants';
+import { EuiHorizontalRule } from '@elastic/eui';
 
 interface SampleDetailsFlyoutProps {
   title: string;
@@ -100,7 +101,7 @@ export const SampleDetailsFlyout = (props: SampleDetailsFlyoutProps) => {
             featureFields
           )}
         </EuiAccordion>
-        <EuiSpacer size="m" />
+        <EuiHorizontalRule margin="m" />
         <EuiAccordion
           id="indexDetailsAccordion"
           buttonContent={

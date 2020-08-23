@@ -36,7 +36,7 @@ export const SampleIndexDetailsCallout = (
           href={`${KIBANA_NAME}#${KIBANA_PATH.DISCOVER}`}
           target="_blank"
         >
-          Kibana discover app
+          Kibana Discover app
         </EuiLink>
         {''} to view the raw data for sample index '{props.indexName}'.
       </p>

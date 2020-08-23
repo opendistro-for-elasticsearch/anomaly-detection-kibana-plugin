@@ -38,11 +38,17 @@ export const loadSampleData = (
     let offset = 0;
     const startTime = moment(new Date().getTime()).subtract({ days: 7 });
 
-    const readStream = fs.createReadStream(filePath);
+    // Create the read stream for the file. Set a smaller buffer size here to prevent it from
+    // getting too large, to prevent inserting too many docs at once into the index.
+    const readStream = fs.createReadStream(filePath, {
+      highWaterMark: 1024 * 4,
+    });
     const lineStream = readline.createInterface({
       input: readStream.pipe(createUnzip()),
     });
 
+    // This is only ran when the end of lineStream closes normally. It is used to
+    // bulk insert the final batch of lines that are < BULK_INSERT_SIZE
     const onClose = async () => {
       if (docs.length > 0) {
         try {
@@ -70,6 +76,10 @@ export const loadSampleData = (
       count++;
       docs.push(doc);
 
+      // If not currently paused: pause the stream to prevent concurrent bulk inserts
+      // on the cluster which could cause performance issues.
+      // Also, empty the current docs[] before performing the bulk insert to prevent
+      // buffered docs from being dropped.
       if (docs.length >= BULK_INSERT_SIZE && !isPaused) {
         lineStream.pause();
 
