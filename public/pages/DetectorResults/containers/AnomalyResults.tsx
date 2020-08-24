@@ -254,7 +254,27 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       );
     }
     if (isPerformingColdStart) {
-      return `Attempting to initialize the detector with historical data. This will take approximately ${detector.detectionInterval.period.interval} total minutes.`;
+      return (
+        <div>
+          <EuiFlexGroup direction="row" gutterSize="s">
+            <EuiLoadingSpinner
+              size="l"
+              style={{
+                marginLeft: '4px',
+                marginRight: '8px',
+                marginBottom: '8px',
+              }}
+            />
+            <EuiText>
+              <p>
+                Attempting to initialize the detector with historical data. This
+                will take approximately{' '}
+                {detector.detectionInterval.period.interval} total minutes.
+              </p>
+            </EuiText>
+          </EuiFlexGroup>
+        </div>
+      );
     }
     if (isInitializingNormally) {
       return 'The detector is being initialized based on the latest configuration changes.';
@@ -355,16 +375,18 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     <EuiCallOut
                       title={getCalloutTitle()}
                       color={getCalloutColor()}
-                      iconType={isInitializingNormally ? 'iInCircle' : 'alert'}
+                      iconType={
+                        isPerformingColdStart
+                          ? ''
+                          : isInitializingNormally
+                          ? 'iInCircle'
+                          : 'alert'
+                      }
                       style={{ marginBottom: '20px' }}
                     >
                       {getCalloutContent()}
-                      {isPerformingColdStart ? (
-                        <div>
-                          <EuiLoadingSpinner size="l" />
-                          <EuiSpacer size="s" />
-                        </div>
-                      ) : isDetectorInitializing && detector.initProgress ? (
+                      {isPerformingColdStart ? null : isDetectorInitializing &&
+                        detector.initProgress ? (
                         <div>
                           <EuiFlexGroup alignItems="center">
                             <EuiFlexItem
