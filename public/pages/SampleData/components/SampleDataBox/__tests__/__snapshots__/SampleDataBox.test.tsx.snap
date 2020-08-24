@@ -44,15 +44,9 @@ exports[`<SampleDataBox /> spec Data is loaded renders component 1`] = `
                 width="16"
                 xmlns="http://www.w3.org/2000/svg"
               />
-              <div
-                class="euiSpacer euiSpacer--m"
-              />
-              <h2>
-                  
-              </h2>
               <h2
                 class="euiTitle euiTitle--small"
-                style="margin-top: -3px;"
+                style="margin-left: 12px; margin-top: -3px;"
               >
                 Sample title
               </h2>
@@ -186,15 +180,9 @@ exports[`<SampleDataBox /> spec Data is loading renders component 1`] = `
                 width="16"
                 xmlns="http://www.w3.org/2000/svg"
               />
-              <div
-                class="euiSpacer euiSpacer--m"
-              />
-              <h2>
-                  
-              </h2>
               <h2
                 class="euiTitle euiTitle--small"
-                style="margin-top: -3px;"
+                style="margin-left: 12px; margin-top: -3px;"
               >
                 Sample title
               </h2>
@@ -323,15 +311,9 @@ exports[`<SampleDataBox /> spec Data not loaded renders component 1`] = `
                 width="16"
                 xmlns="http://www.w3.org/2000/svg"
               />
-              <div
-                class="euiSpacer euiSpacer--m"
-              />
-              <h2>
-                  
-              </h2>
               <h2
                 class="euiTitle euiTitle--small"
-                style="margin-top: -3px;"
+                style="margin-left: 12px; margin-top: -3px;"
               >
                 Sample title
               </h2>

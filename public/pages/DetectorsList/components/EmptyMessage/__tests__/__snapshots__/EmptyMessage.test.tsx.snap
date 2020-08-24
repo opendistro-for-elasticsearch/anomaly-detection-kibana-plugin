@@ -26,20 +26,8 @@ exports[`<EmptyDetectorMessage /> spec Empty results renders component with empt
   <div
     class="euiSpacer euiSpacer--s"
   />
-<<<<<<< HEAD
-  <a
-    class="euiButton euiButton--primary euiButton--fill"
-    data-test-subj="createDetectorButton"
-    href="opendistro-anomaly-detection-kibana#/create-ad/"
-    rel="noreferrer"
-=======
   <div
-<<<<<<< HEAD
-    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
->>>>>>> Add link to sample detectors on home pages
-=======
     class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--justifyContentCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
->>>>>>> Reformat to match signoff changes
   >
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"
