@@ -64,6 +64,13 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                     >
                       Monitor HTTP responses
                     </h2>
+                    <button
+                      class="euiLink euiLink--primary"
+                      style="margin-left: 12px;"
+                      type="button"
+                    >
+                      Info
+                    </button>
                   </div>
                 </div>
               </div>
@@ -105,17 +112,6 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 >
                   Detect high numbers of error response codes in an index containing HTTP response data.
                 </p>
-              </div>
-              <div
-                class="euiFlexItem"
-                style="display: flex;"
-              >
-                <button
-                  class="euiLink euiLink--primary"
-                  type="button"
-                >
-                  More details
-                </button>
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
@@ -192,6 +188,13 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                     >
                       Monitor eCommerce orders
                     </h2>
+                    <button
+                      class="euiLink euiLink--primary"
+                      style="margin-left: 12px;"
+                      type="button"
+                    >
+                      Info
+                    </button>
                   </div>
                 </div>
               </div>
@@ -233,17 +236,6 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 >
                   Detect any unual increase or decrease of orders in an index containing online order data.
                 </p>
-              </div>
-              <div
-                class="euiFlexItem"
-                style="display: flex;"
-              >
-                <button
-                  class="euiLink euiLink--primary"
-                  type="button"
-                >
-                  More details
-                </button>
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
@@ -320,6 +312,13 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                     >
                       Monitor host health
                     </h2>
+                    <button
+                      class="euiLink euiLink--primary"
+                      style="margin-left: 12px;"
+                      type="button"
+                    >
+                      Info
+                    </button>
                   </div>
                 </div>
               </div>
@@ -361,17 +360,6 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 >
                   Detect increases in CPU and memory utilization in an index containing various health metrics from a host.
                 </p>
-              </div>
-              <div
-                class="euiFlexItem"
-                style="display: flex;"
-              >
-                <button
-                  class="euiLink euiLink--primary"
-                  type="button"
-                >
-                  More details
-                </button>
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
@@ -481,6 +469,13 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                     >
                       Monitor HTTP responses
                     </h2>
+                    <button
+                      class="euiLink euiLink--primary"
+                      style="margin-left: 12px;"
+                      type="button"
+                    >
+                      Info
+                    </button>
                   </div>
                 </div>
               </div>
@@ -522,17 +517,6 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 >
                   Detect high numbers of error response codes in an index containing HTTP response data.
                 </p>
-              </div>
-              <div
-                class="euiFlexItem"
-                style="display: flex;"
-              >
-                <button
-                  class="euiLink euiLink--primary"
-                  type="button"
-                >
-                  More details
-                </button>
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
@@ -613,6 +597,13 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                     >
                       Monitor eCommerce orders
                     </h2>
+                    <button
+                      class="euiLink euiLink--primary"
+                      style="margin-left: 12px;"
+                      type="button"
+                    >
+                      Info
+                    </button>
                   </div>
                 </div>
               </div>
@@ -654,17 +645,6 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 >
                   Detect any unual increase or decrease of orders in an index containing online order data.
                 </p>
-              </div>
-              <div
-                class="euiFlexItem"
-                style="display: flex;"
-              >
-                <button
-                  class="euiLink euiLink--primary"
-                  type="button"
-                >
-                  More details
-                </button>
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
@@ -745,6 +725,13 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                     >
                       Monitor host health
                     </h2>
+                    <button
+                      class="euiLink euiLink--primary"
+                      style="margin-left: 12px;"
+                      type="button"
+                    >
+                      Info
+                    </button>
                   </div>
                 </div>
               </div>
@@ -786,17 +773,6 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 >
                   Detect increases in CPU and memory utilization in an index containing various health metrics from a host.
                 </p>
-              </div>
-              <div
-                class="euiFlexItem"
-                style="display: flex;"
-              >
-                <button
-                  class="euiLink euiLink--primary"
-                  type="button"
-                >
-                  More details
-                </button>
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
@@ -916,6 +892,13 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                     >
                       Monitor HTTP responses
                     </h2>
+                    <button
+                      class="euiLink euiLink--primary"
+                      style="margin-left: 12px;"
+                      type="button"
+                    >
+                      Info
+                    </button>
                   </div>
                 </div>
               </div>
@@ -957,17 +940,6 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 >
                   Detect high numbers of error response codes in an index containing HTTP response data.
                 </p>
-              </div>
-              <div
-                class="euiFlexItem"
-                style="display: flex;"
-              >
-                <button
-                  class="euiLink euiLink--primary"
-                  type="button"
-                >
-                  More details
-                </button>
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
@@ -1057,6 +1029,13 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                     >
                       Monitor eCommerce orders
                     </h2>
+                    <button
+                      class="euiLink euiLink--primary"
+                      style="margin-left: 12px;"
+                      type="button"
+                    >
+                      Info
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1098,17 +1077,6 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 >
                   Detect any unual increase or decrease of orders in an index containing online order data.
                 </p>
-              </div>
-              <div
-                class="euiFlexItem"
-                style="display: flex;"
-              >
-                <button
-                  class="euiLink euiLink--primary"
-                  type="button"
-                >
-                  More details
-                </button>
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
@@ -1189,6 +1157,13 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                     >
                       Monitor host health
                     </h2>
+                    <button
+                      class="euiLink euiLink--primary"
+                      style="margin-left: 12px;"
+                      type="button"
+                    >
+                      Info
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1230,17 +1205,6 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 >
                   Detect increases in CPU and memory utilization in an index containing various health metrics from a host.
                 </p>
-              </div>
-              <div
-                class="euiFlexItem"
-                style="display: flex;"
-              >
-                <button
-                  class="euiLink euiLink--primary"
-                  type="button"
-                >
-                  More details
-                </button>
               </div>
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"

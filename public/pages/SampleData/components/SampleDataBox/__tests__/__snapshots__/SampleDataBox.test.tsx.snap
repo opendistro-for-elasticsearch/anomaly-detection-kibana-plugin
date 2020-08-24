@@ -50,6 +50,13 @@ exports[`<SampleDataBox /> spec Data is loaded renders component 1`] = `
               >
                 Sample title
               </h2>
+              <button
+                class="euiLink euiLink--primary"
+                style="margin-left: 12px;"
+                type="button"
+              >
+                Info
+              </button>
             </div>
           </div>
         </div>
@@ -91,17 +98,6 @@ exports[`<SampleDataBox /> spec Data is loaded renders component 1`] = `
           >
             Sample description
           </p>
-        </div>
-        <div
-          class="euiFlexItem"
-          style="display: flex;"
-        >
-          <button
-            class="euiLink euiLink--primary"
-            type="button"
-          >
-            More details
-          </button>
         </div>
         <div
           class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
@@ -186,6 +182,13 @@ exports[`<SampleDataBox /> spec Data is loading renders component 1`] = `
               >
                 Sample title
               </h2>
+              <button
+                class="euiLink euiLink--primary"
+                style="margin-left: 12px;"
+                type="button"
+              >
+                Info
+              </button>
             </div>
           </div>
         </div>
@@ -227,17 +230,6 @@ exports[`<SampleDataBox /> spec Data is loading renders component 1`] = `
           >
             Sample description
           </p>
-        </div>
-        <div
-          class="euiFlexItem"
-          style="display: flex;"
-        >
-          <button
-            class="euiLink euiLink--primary"
-            type="button"
-          >
-            More details
-          </button>
         </div>
         <div
           class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
@@ -317,6 +309,13 @@ exports[`<SampleDataBox /> spec Data not loaded renders component 1`] = `
               >
                 Sample title
               </h2>
+              <button
+                class="euiLink euiLink--primary"
+                style="margin-left: 12px;"
+                type="button"
+              >
+                Info
+              </button>
             </div>
           </div>
         </div>
@@ -358,17 +357,6 @@ exports[`<SampleDataBox /> spec Data not loaded renders component 1`] = `
           >
             Sample description
           </p>
-        </div>
-        <div
-          class="euiFlexItem"
-          style="display: flex;"
-        >
-          <button
-            class="euiLink euiLink--primary"
-            type="button"
-          >
-            More details
-          </button>
         </div>
         <div
           class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"

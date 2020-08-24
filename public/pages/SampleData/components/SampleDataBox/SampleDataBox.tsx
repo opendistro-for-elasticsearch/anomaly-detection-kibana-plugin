@@ -55,6 +55,12 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
                 {props.title}
               </h2>
             </EuiTitle>
+            <EuiLink
+              style={{ marginLeft: '12px' }}
+              onClick={props.onOpenFlyout}
+            >
+              Info
+            </EuiLink>
           </div>
         }
         titleSize="s"
@@ -71,9 +77,6 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
             >
               {props.description}
             </p>
-          </EuiFlexItem>
-          <EuiFlexItem style={{ display: 'flex', alignItems: 'center' }}>
-            <EuiLink onClick={props.onOpenFlyout}>More details</EuiLink>
           </EuiFlexItem>
           <EuiFlexGroup
             style={{
