@@ -63,7 +63,6 @@ export function getTypeFromMappings(
         resolvePath(path, field)
       );
     });
-    return currentDataTypes;
   }
 
   return currentDataTypes;
