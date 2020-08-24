@@ -54,6 +54,17 @@ export function getTypeFromMappings(
   } else {
     currentDataTypes[type] = [path];
   }
+
+  if (mappings.fields) {
+    Object.entries(mappings.fields).forEach(([field, value]) => {
+      currentDataTypes = getTypeFromMappings(
+        value as Mappings,
+        currentDataTypes,
+        resolvePath(path, field)
+      );
+    });
+  }
+
   return currentDataTypes;
 }
 
