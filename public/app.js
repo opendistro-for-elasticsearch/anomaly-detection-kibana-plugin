@@ -21,8 +21,6 @@ import { Main } from './pages/main';
 import { HashRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import 'ui/autoload/styles';
-
 import configureStore from './redux/configureStore';
 import { darkModeEnabled } from './utils/kibanaUtils';
 

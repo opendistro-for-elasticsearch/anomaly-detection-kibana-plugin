@@ -47,7 +47,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
       <div
         class="euiFormRow"
         hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
-        id="random_id-row"
+        id="random_html_id-row"
         title="Name"
       >
         <div
@@ -56,7 +56,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
           <label
             aria-invalid="false"
             class="euiFormLabel euiFormRow__label"
-            for="random_id"
+            for="random_html_id"
           >
             <div
               style="line-height: 8px;"
@@ -84,7 +84,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
             >
               <input
                 class="euiFieldText"
-                id="random_id"
+                id="random_html_id"
                 name="detectorName"
                 placeholder="Enter detector name"
                 type="text"
@@ -97,7 +97,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
       <div
         class="euiFormRow"
         hint="Describe the purpose of the detector."
-        id="random_id-row"
+        id="random_html_id-row"
       >
         <div
           class="euiFormRow__labelWrapper"
@@ -105,7 +105,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
           <label
             aria-invalid="false"
             class="euiFormLabel euiFormRow__label"
-            for="random_id"
+            for="random_html_id"
           >
             <div
               style="line-height: 8px;"
@@ -132,7 +132,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
         >
           <textarea
             class="euiTextArea euiTextArea--resizeVertical"
-            id="random_id"
+            id="random_html_id"
             name="detectorDescription"
             placeholder="Describe the detector"
             rows="3"

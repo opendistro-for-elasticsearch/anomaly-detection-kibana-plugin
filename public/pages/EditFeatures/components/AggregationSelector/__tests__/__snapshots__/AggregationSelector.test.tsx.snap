@@ -4,7 +4,7 @@ exports[`<AggregationSelector /> spec Empty results renders component with aggre
 <div>
   <div
     class="euiFormRow"
-    id="random_id-row"
+    id="random_html_id-row"
   >
     <div
       class="euiFormRow__labelWrapper"
@@ -12,7 +12,7 @@ exports[`<AggregationSelector /> spec Empty results renders component with aggre
       <label
         aria-invalid="false"
         class="euiFormLabel euiFormRow__label"
-        for="random_id"
+        for="random_html_id"
       >
         Aggregation method
       </label>
@@ -27,10 +27,10 @@ exports[`<AggregationSelector /> spec Empty results renders component with aggre
           class="euiFormControlLayout__childrenWrapper"
         >
           <select
-            aria-describedby="random_id-help"
+            aria-describedby="random_html_id-help"
             class="euiSelect"
             data-test-subj="aggregationType"
-            id="random_id"
+            id="random_html_id"
             name="featureList.undefined.aggregationBy"
           >
             <option
@@ -81,7 +81,7 @@ exports[`<AggregationSelector /> spec Empty results renders component with aggre
       </div>
       <div
         class="euiFormHelpText euiFormRow__text"
-        id="random_id-help"
+        id="random_html_id-help"
       >
         The aggregation method determines what constitutes an anomaly. For example, if you choose min(), the detector focuses on finding anomalies based on the minimum values of your feature.
       </div>
@@ -89,7 +89,7 @@ exports[`<AggregationSelector /> spec Empty results renders component with aggre
   </div>
   <div
     class="euiFormRow"
-    id="random_id-row"
+    id="random_html_id-row"
   >
     <div
       class="euiFormRow__labelWrapper"
@@ -97,7 +97,7 @@ exports[`<AggregationSelector /> spec Empty results renders component with aggre
       <label
         aria-invalid="false"
         class="euiFormLabel euiFormRow__label"
-        for="random_id"
+        for="random_html_id"
       >
         Field
       </label>
@@ -135,7 +135,7 @@ exports[`<AggregationSelector /> spec Empty results renders component with aggre
                 <input
                   aria-controls=""
                   data-test-subj="comboBoxSearchInput"
-                  id="random_id"
+                  id="random_html_id"
                   role="textbox"
                   style="box-sizing: content-box; width: 2px;"
                   value=""

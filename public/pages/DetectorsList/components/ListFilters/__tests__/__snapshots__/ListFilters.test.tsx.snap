@@ -180,6 +180,7 @@ exports[`<ListFilters /> spec Empty results renders component with empty message
   </div>
   <div
     class="euiFlexItem euiFlexItem--flexGrowZero"
+    style="justify-content: center;"
   >
     <div
       class="euiPagination"
