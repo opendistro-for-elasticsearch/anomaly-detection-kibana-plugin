@@ -67,6 +67,13 @@ export const DETECTOR_INIT_FAILURES = Object.freeze({
     cause: 'the detector is not defined',
     actionItem: 'Define your detector and try again.',
   },
+  INVALID_FEATURE_QUERY: {
+    // TODO: https://github.com/opendistro-for-elasticsearch/anomaly-detection/issues/218
+    //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/master/src/main/java/com/amazon/opendistroforelasticsearch/ad/constant/CommonErrorMessages.java#L28
+    keyword: 'Invalid search query',
+    cause: 'there exists invalid custom feature aggregation query',
+    actionItem: 'Revise your custom feature aggregation query and try again.',
+  },
   UNKNOWN_EXCEPTION: {
     //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/development/src/main/java/com/amazon/opendistroforelasticsearch/ad/transport/AnomalyResultTransportAction.java#L438
     keyword: 'We might have bugs',
