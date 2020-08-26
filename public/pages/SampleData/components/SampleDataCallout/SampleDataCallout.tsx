@@ -17,11 +17,7 @@ import React from 'react';
 import { EuiCallOut, EuiLink } from '@elastic/eui';
 import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
 
-interface SampleDataCalloutProps {
-  onHide(): void;
-}
-
-export const SampleDataCallout = (props: SampleDataCalloutProps) => {
+export const SampleDataCallout = () => {
   return (
     <EuiCallOut
       title="Looking to get more familiar with anomaly detection?"

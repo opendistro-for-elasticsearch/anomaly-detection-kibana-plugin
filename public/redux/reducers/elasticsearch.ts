@@ -187,7 +187,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          indices: state.indices.concat(action.result.data.response.indices),
+          indices: action.result.data.response.indices,
         };
       },
       FAILURE: (
@@ -232,8 +232,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          //TODO: update indices to be the same as before, but without cur index
-          //indices: state.indices.concat(action.result.data.response.indices),
+          indices: action.result.data.response.indices,
         };
       },
       FAILURE: (

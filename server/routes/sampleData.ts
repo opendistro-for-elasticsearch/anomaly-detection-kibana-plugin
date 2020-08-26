@@ -37,8 +37,6 @@ const createSampleData = async (
   //@ts-ignore
   const type = req.payload.type as SAMPLE_TYPE;
   try {
-    console.log('Sample type: ', type);
-
     let filePath = '';
     let indexName = '';
 

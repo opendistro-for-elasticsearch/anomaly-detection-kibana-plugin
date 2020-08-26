@@ -18,16 +18,10 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { SampleDataCallout } from '../SampleDataCallout';
 
-const defaultProps = {
-  onHide: jest.fn(),
-};
-
 describe('<SampleDataCallout /> spec', () => {
   describe('Data not loaded', () => {
     test('renders component', () => {
-      const { container, getByText } = render(
-        <SampleDataCallout {...defaultProps} />
-      );
+      const { container, getByText } = render(<SampleDataCallout />);
       expect(container.firstChild).toMatchSnapshot();
       getByText('Looking to get more familiar with anomaly detection?');
     });

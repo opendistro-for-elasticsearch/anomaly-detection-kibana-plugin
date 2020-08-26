@@ -27,6 +27,7 @@ import {
   ServerResponse,
 } from '../models/types';
 import { Router } from '../router';
+import { isIndexNotFoundError } from './utils/adHelpers';
 
 export default function (apiRouter: Router) {
   apiRouter.get('/_indices', getIndices);
@@ -194,16 +195,28 @@ const deleteIndex = async (
   //@ts-ignore
   const index = req.payload.index;
   try {
-    const response: any = await callWithRequest(req, 'indices.delete', {
+    await callWithRequest(req, 'indices.delete', {
       index: index,
     });
-    //@ts-ignore
-    return { ok: true, response: { response } };
   } catch (err) {
     console.log(
       'Anomaly detector - Unable to perform delete index action',
       err
     );
+    // Ignore the error if it's an index_not_found_exception
+    if (!isIndexNotFoundError(err)) {
+      return { ok: false, error: err.message };
+    }
+  }
+  try {
+    const response: CatIndex[] = await callWithRequest(req, 'cat.indices', {
+      index,
+      format: 'json',
+      h: 'health,index',
+    });
+    return { ok: true, response: { indices: response } };
+  } catch (err) {
+    console.log('Anomaly detector - Unable to get indices', err);
     return { ok: false, error: err.message };
   }
 };

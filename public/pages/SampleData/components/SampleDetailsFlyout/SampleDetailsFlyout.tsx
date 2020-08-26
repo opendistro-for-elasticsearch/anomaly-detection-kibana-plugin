@@ -90,7 +90,7 @@ export const SampleDetailsFlyout = (props: SampleDetailsFlyoutProps) => {
             <i>{props.sampleData.detectorName}</i>
             <br></br>
             <b>Detection interval: </b>
-            every {detectorInterval} minutes
+            Every {detectorInterval} minutes
             <br></br>
             <b>Feature details: </b>
           </EuiText>
@@ -116,7 +116,7 @@ export const SampleDetailsFlyout = (props: SampleDetailsFlyoutProps) => {
             <b>Name: </b>
             <i>{props.sampleData.indexName}</i>
             <br></br>
-            <b>Log frequency: </b>every {props.interval} minute(s)
+            <b>Log frequency: </b>Every {props.interval} minute(s)
             <br></br>
             <b>Log duration: </b>3 weeks
             <br></br>
