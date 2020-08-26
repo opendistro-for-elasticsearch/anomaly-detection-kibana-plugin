@@ -25,6 +25,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiText,
+  EuiLoadingSpinner,
 } from '@elastic/eui';
 import { get } from 'lodash';
 import React, { useEffect, Fragment, useState } from 'react';
@@ -121,6 +122,15 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   const [featureNamesAtHighSev, setFeatureNamesAtHighSev] = useState(
     [] as string[]
   );
+
+  // If the detector is returning undefined estimated minutes left, then it
+  // is still performing the cold start.
+  const isPerformingColdStart =
+    detector &&
+    detector.curState === DETECTOR_STATE.INIT &&
+    detector.initProgress &&
+    detector.initProgress.estimatedMinutesLeft === undefined;
+
   const isDetectorRunning =
     detector && detector.curState === DETECTOR_STATE.RUNNING;
 
@@ -243,6 +253,29 @@ export function AnomalyResults(props: AnomalyResultsProps) {
         ''
       );
     }
+    if (isPerformingColdStart) {
+      return (
+        <div>
+          <EuiFlexGroup direction="row" gutterSize="s">
+            <EuiLoadingSpinner
+              size="l"
+              style={{
+                marginLeft: '4px',
+                marginRight: '8px',
+                marginBottom: '8px',
+              }}
+            />
+            <EuiText>
+              <p>
+                Attempting to initialize the detector with historical data. This
+                will take approximately{' '}
+                {detector.detectionInterval.period.interval} minutes.
+              </p>
+            </EuiText>
+          </EuiFlexGroup>
+        </div>
+      );
+    }
     if (isInitializingNormally) {
       return 'The detector is being initialized based on the latest configuration changes.';
     }
@@ -303,7 +336,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
           ''
         )}
       </p>
-    ) : isInitializingNormally ? (
+    ) : isPerformingColdStart ? null : isInitializingNormally ? (
       <p>
         {getInitProgressMessage()}After the initialization is complete, you will
         see the anomaly results based on your latest configuration changes.
@@ -342,11 +375,18 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     <EuiCallOut
                       title={getCalloutTitle()}
                       color={getCalloutColor()}
-                      iconType={isInitializingNormally ? 'iInCircle' : 'alert'}
+                      iconType={
+                        isPerformingColdStart
+                          ? ''
+                          : isInitializingNormally
+                          ? 'iInCircle'
+                          : 'alert'
+                      }
                       style={{ marginBottom: '20px' }}
                     >
                       {getCalloutContent()}
-                      {isDetectorInitializing && detector.initProgress ? (
+                      {isPerformingColdStart ? null : isDetectorInitializing &&
+                        detector.initProgress ? (
                         <div>
                           <EuiFlexGroup alignItems="center">
                             <EuiFlexItem

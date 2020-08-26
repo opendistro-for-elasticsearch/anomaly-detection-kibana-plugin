@@ -290,7 +290,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                   ) : detector.enabled &&
                     detector.curState === DETECTOR_STATE.INIT ? (
                     <EuiHealth color={DETECTOR_STATE_COLOR.INIT}>
-                      {detector.initProgress
+                      {detector.initProgress?.estimatedMinutesLeft
                         ? //@ts-ignore
                           `Initializing (${detector.initProgress.percentageStr} complete)`
                         : 'Initializing'}
