@@ -20,7 +20,6 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiTitle,
-  EuiSpacer,
   EuiLink,
 } from '@elastic/eui';
 import { PLUGIN_NAME } from '../../../../utils/constants';
@@ -70,7 +69,7 @@ export const SampleDataBox = (props: SampleDataBoxProps) => {
           <EuiFlexItem grow={false} style={{ height: '70px' }}>
             <p
               style={{
-                textAlign: 'justify',
+                textAlign: 'left',
                 lineHeight: 1.4,
                 maxHeight: 4.2,
               }}

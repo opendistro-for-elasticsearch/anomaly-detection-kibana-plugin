@@ -108,7 +108,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 style="height: 70px;"
               >
                 <p
-                  style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+                  style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
                   Detect high numbers of error response codes in an index containing HTTP response data.
                 </p>
@@ -232,7 +232,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 style="height: 70px;"
               >
                 <p
-                  style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+                  style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
                   Detect any unual increase or decrease of orders in an index containing online order data.
                 </p>
@@ -356,7 +356,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 style="height: 70px;"
               >
                 <p
-                  style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+                  style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
                   Detect increases in CPU and memory utilization in an index containing various health metrics from a host.
                 </p>
@@ -513,7 +513,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 style="height: 70px;"
               >
                 <p
-                  style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+                  style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
                   Detect high numbers of error response codes in an index containing HTTP response data.
                 </p>
@@ -641,7 +641,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 style="height: 70px;"
               >
                 <p
-                  style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+                  style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
                   Detect any unual increase or decrease of orders in an index containing online order data.
                 </p>
@@ -769,7 +769,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 style="height: 70px;"
               >
                 <p
-                  style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+                  style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
                   Detect increases in CPU and memory utilization in an index containing various health metrics from a host.
                 </p>
@@ -936,7 +936,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 style="height: 70px;"
               >
                 <p
-                  style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+                  style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
                   Detect high numbers of error response codes in an index containing HTTP response data.
                 </p>
@@ -1073,7 +1073,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 style="height: 70px;"
               >
                 <p
-                  style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+                  style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
                   Detect any unual increase or decrease of orders in an index containing online order data.
                 </p>
@@ -1201,7 +1201,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 style="height: 70px;"
               >
                 <p
-                  style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+                  style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
                   Detect increases in CPU and memory utilization in an index containing various health metrics from a host.
                 </p>

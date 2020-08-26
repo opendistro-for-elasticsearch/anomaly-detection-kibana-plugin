@@ -27,7 +27,7 @@ export class EmptyDashboard extends Component<{}, {}> {
             <p>Create detector first to detect anomalies in your data.</p>
             <p>
               Dashboard will generate insights on the anomalies across all of
-              your detectors
+              your detectors.
             </p>
             <p>
               Read about{' '}

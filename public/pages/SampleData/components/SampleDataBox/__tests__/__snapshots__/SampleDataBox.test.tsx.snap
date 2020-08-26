@@ -94,7 +94,7 @@ exports[`<SampleDataBox /> spec Data is loaded renders component 1`] = `
           style="height: 70px;"
         >
           <p
-            style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+            style="text-align: left; line-height: 1.4; max-height: 4.2px;"
           >
             Sample description
           </p>
@@ -226,7 +226,7 @@ exports[`<SampleDataBox /> spec Data is loading renders component 1`] = `
           style="height: 70px;"
         >
           <p
-            style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+            style="text-align: left; line-height: 1.4; max-height: 4.2px;"
           >
             Sample description
           </p>
@@ -353,7 +353,7 @@ exports[`<SampleDataBox /> spec Data not loaded renders component 1`] = `
           style="height: 70px;"
         >
           <p
-            style="text-align: justify; line-height: 1.4; max-height: 4.2px;"
+            style="text-align: left; line-height: 1.4; max-height: 4.2px;"
           >
             Sample description
           </p>

@@ -122,6 +122,7 @@ export const SampleDetailsFlyout = (props: SampleDetailsFlyoutProps) => {
             <br></br>
             <b>Field details: </b>
           </EuiText>
+          <EuiSpacer size="s" />
           {getFieldsAndTypesGrid(fieldValues, fieldTypes)}
         </EuiAccordion>
       </EuiFlyoutBody>
