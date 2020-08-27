@@ -82,3 +82,14 @@
   line-height: 24px;
   text-align: center;
 }
+
+.header-single-value-euiBasicTable {
+    .euiTableHeaderCell, .euiTableRowCell {
+      border: 0;
+      .euiTableCellContent {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+    }
+
+}

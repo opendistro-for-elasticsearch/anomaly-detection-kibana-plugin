@@ -25,7 +25,6 @@ import {
   render,
   fireEvent,
   wait,
-  waitForElement,
 } from '@testing-library/react';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
@@ -41,7 +40,6 @@ import {
 } from '../../../../models/interfaces';
 import {
   getRandomDetector,
-  getRandomFeature,
 } from '../../../../redux/reducers/__tests__/utils';
 import configureStore from '../../../../redux/configureStore';
 import { httpClientMock } from '../../../../../test/mocks';
@@ -161,14 +159,15 @@ describe('<DetectorConfig /> spec', () => {
       ...getRandomDetector(true),
       uiMetadata: {} as UiMetaData,
       featureAttributes: [],
+      shingleSize: 8,
     };
-    const { getByText } = renderWithRouter(randomDetector);
+    const { getByText, queryByText } = renderWithRouter(randomDetector);
     await wait(() => {
-      getByText('Features are required to run a detector');
-      getByText(
-        'Specify index fields that you want to find anomalies for by defining features. Once you define the features, you can preview your anomalies from a sample feature output.'
+      getByText('Model parameters are required to run a detector');
+      queryByText(
+        'Set the index fields'
       );
-      getByText('Features');
+      getByText('Model configuration');
       getByText(randomDetector.name);
       getByText(randomDetector.indices[0]);
       getByText(toString(randomDetector.detectionInterval));
@@ -178,8 +177,8 @@ describe('<DetectorConfig /> spec', () => {
       getByText(randomDetector.description);
       // filter should be -
       getByText('-');
-      getByText(
-        'Specify index fields that you want to find anomalies for by defining features. A detector can discover anomalies for up to 5 features. Once you define the features, you can preview your anomalies from a sample feature output.'
+      queryByText(
+        'Set the index fields'
       );
     });
   });

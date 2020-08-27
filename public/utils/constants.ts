@@ -28,7 +28,7 @@ export const BREADCRUMBS = Object.freeze({
   CREATE_DETECTOR: { text: 'Create detector' },
   EDIT_DETECTOR: { text: 'Edit detector' },
   DASHBOARD: { text: 'Dashboard', href: '#/' },
-  EDIT_FEATURES: { text: 'Edit features' },
+  EDIT_MODEL_CONFIGURATION: { text: 'Edit model configuration' },
 });
 
 export const APP_PATH = {

@@ -68,7 +68,7 @@ export const DetectorControls = (props: DetectorControls) => {
               data-test-subj="editFeature"
               onClick={props.onEditFeatures}
             >
-              Edit features
+              Edit model configuration
             </EuiContextMenuItem>
 
             <EuiContextMenuItem
