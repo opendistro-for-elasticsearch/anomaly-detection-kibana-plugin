@@ -86,7 +86,7 @@ describe('<ConfirmStopDetectorsModal /> spec', () => {
       await wait();
       expect(defaultStopProps.onStopDetectors).toHaveBeenCalled();
     });
-    test('should call onHide() when closing', async () => {
+    test.skip('should call onHide() when closing', async () => {
       const { getByTestId } = render(
         <ConfirmStopDetectorsModal {...defaultStopProps} />
       );

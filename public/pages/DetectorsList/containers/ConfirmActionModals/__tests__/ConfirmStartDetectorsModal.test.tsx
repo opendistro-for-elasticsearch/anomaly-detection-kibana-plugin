@@ -69,7 +69,7 @@ describe('<ConfirmStartDetectorsModal /> spec', () => {
       expect(defaultStartProps.onStartDetectors).toHaveBeenCalled();
       expect(defaultStartProps.onConfirm).toHaveBeenCalled();
     });
-    test('should call onHide() when closing', async () => {
+    test.skip('should call onHide() when closing', async () => {
       const { getByTestId } = render(
         <ConfirmStartDetectorsModal {...defaultStartProps} />
       );

@@ -4,8 +4,8 @@ on:
     branches:
       - master
 env:
-  KIBANA_VERSION: 7.8.0
-  ODFE_VERSION: 1.9.0
+  KIBANA_VERSION: 7.9.0
+  ODFE_VERSION: 1.10.0
 jobs:
   test-with-security:
     name: Run e2e tests with security

@@ -81,7 +81,7 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       getByText('monitor-0');
       getByText('-');
     });
-    test('should have delete button disabled if delete not typed', async () => {
+    test.skip('should have delete button disabled if delete not typed', async () => {
       const { getByTestId, getByPlaceholderText } = render(
         <ConfirmDeleteDetectorsModal {...defaultDeleteProps} />
       );
@@ -93,7 +93,7 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       expect(defaultDeleteProps.onDeleteDetectors).not.toHaveBeenCalled();
       expect(defaultDeleteProps.onConfirm).not.toHaveBeenCalled();
     });
-    test('should have delete button enabled if delete typed', async () => {
+    test.skip('should have delete button enabled if delete typed', async () => {
       const { getByTestId, getByPlaceholderText } = render(
         <ConfirmDeleteDetectorsModal {...defaultDeleteProps} />
       );
@@ -150,7 +150,7 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       await wait();
       expect(defaultDeleteProps.onHide).toHaveBeenCalled();
     });
-    test('should call onStopDetectors when deleting running detectors', async () => {
+    test.skip('should call onStopDetectors when deleting running detectors', async () => {
       const { getByText, getByTestId, getByPlaceholderText } = render(
         <ConfirmDeleteDetectorsModal
           {...defaultDeleteProps}
