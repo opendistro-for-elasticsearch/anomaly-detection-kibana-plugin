@@ -1,4 +1,4 @@
-## Version 1.10.0 Release Notes
+## Version 1.10.0.0 Release Notes
 
 Compatible with Kibana 7.9.0
 ### Enhancements
