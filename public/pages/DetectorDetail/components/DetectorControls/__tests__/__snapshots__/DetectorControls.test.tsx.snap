@@ -105,14 +105,19 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
+                class="euiIcon euiIcon--medium euiButton__icon"
                 focusable="false"
                 height="16"
                 role="img"
                 viewBox="0 0 16 16"
                 width="16"
                 xmlns="http://www.w3.org/2000/svg"
-              />
+              >
+                <path
+                  d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                  fill-rule="non-zero"
+                />
+              </svg>
               <span
                 class="euiButton__text"
               >
@@ -137,14 +142,18 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
         >
           <svg
             aria-hidden="true"
-            class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
+            class="euiIcon euiIcon--medium euiButton__icon"
             focusable="false"
             height="16"
             role="img"
             viewBox="0 0 16 16"
             width="16"
             xmlns="http://www.w3.org/2000/svg"
-          />
+          >
+            <path
+              d="M4.608 3.063C4.345 2.895 4 3.089 4 3.418v9.167c0 .329.345.523.608.356l7.2-4.584a.426.426 0 000-.711l-7.2-4.583zm.538-.844l7.2 4.583a1.426 1.426 0 010 2.399l-7.2 4.583C4.21 14.38 3 13.696 3 12.585V3.418C3 2.307 4.21 1.624 5.146 2.22z"
+            />
+          </svg>
           <span
             class="euiButton__text"
           >
@@ -183,14 +192,19 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
+                class="euiIcon euiIcon--medium euiButton__icon"
                 focusable="false"
                 height="16"
                 role="img"
                 viewBox="0 0 16 16"
                 width="16"
                 xmlns="http://www.w3.org/2000/svg"
-              />
+              >
+                <path
+                  d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                  fill-rule="non-zero"
+                />
+              </svg>
               <span
                 class="euiButton__text"
               >
@@ -262,14 +276,19 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
+                class="euiIcon euiIcon--medium euiButton__icon"
                 focusable="false"
                 height="16"
                 role="img"
                 viewBox="0 0 16 16"
                 width="16"
                 xmlns="http://www.w3.org/2000/svg"
-              />
+              >
+                <path
+                  d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                  fill-rule="non-zero"
+                />
+              </svg>
               <span
                 class="euiButton__text"
               >
@@ -294,14 +313,19 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
         >
           <svg
             aria-hidden="true"
-            class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
+            class="euiIcon euiIcon--medium euiButton__icon"
             focusable="false"
             height="16"
             role="img"
             viewBox="0 0 16 16"
             width="16"
             xmlns="http://www.w3.org/2000/svg"
-          />
+          >
+            <path
+              d="M4 2h8a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zm0 1a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V4a1 1 0 00-1-1H4z"
+              fill-rule="evenodd"
+            />
+          </svg>
           <span
             class="euiButton__text"
           >

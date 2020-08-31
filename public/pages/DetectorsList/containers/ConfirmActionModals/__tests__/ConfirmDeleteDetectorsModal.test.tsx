@@ -59,9 +59,6 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       );
       getByText('Are you sure you want to delete the selected detectors?');
       getByText('Delete detectors');
-      getByText('detector-0');
-      getByText('detector-1');
-      expect(getAllByText('-')).toHaveLength(2);
     });
     test('renders modal with detectors and 1 monitor', async () => {
       console.error = jest.fn();
@@ -76,12 +73,8 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
         'The monitors associated with these detectors will not receive any anomaly results.'
       );
       getByText('Delete detectors');
-      getByText('detector-0');
-      getByText('detector-1');
-      getByText('monitor-0');
-      getByText('-');
     });
-    test.skip('should have delete button disabled if delete not typed', async () => {
+    test('should have delete button disabled if delete not typed', async () => {
       const { getByTestId, getByPlaceholderText } = render(
         <ConfirmDeleteDetectorsModal {...defaultDeleteProps} />
       );
@@ -93,7 +86,7 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       expect(defaultDeleteProps.onDeleteDetectors).not.toHaveBeenCalled();
       expect(defaultDeleteProps.onConfirm).not.toHaveBeenCalled();
     });
-    test.skip('should have delete button enabled if delete typed', async () => {
+    test('should have delete button enabled if delete typed', async () => {
       const { getByTestId, getByPlaceholderText } = render(
         <ConfirmDeleteDetectorsModal {...defaultDeleteProps} />
       );
@@ -103,17 +96,16 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       await wait();
       expect(defaultDeleteProps.onConfirm).toHaveBeenCalled();
     });
-    test('should not show callout and set running to no if no detectors are running', async () => {
-      const { queryByText, getAllByText } = render(
+    test('should not show callout if no detectors are running', async () => {
+      const { queryByText } = render(
         <ConfirmDeleteDetectorsModal {...defaultDeleteProps} />
       );
       expect(
         queryByText('Some of the selected detectors are currently running.')
       ).toBeNull();
-      expect(getAllByText('No')).toHaveLength(2);
     });
-    test('should show callout and set running to yes if detectors are running', async () => {
-      const { queryByText, getAllByText } = render(
+    test('should show callout if detectors are running', async () => {
+      const { queryByText } = render(
         <ConfirmDeleteDetectorsModal
           {...defaultDeleteProps}
           detectors={
@@ -139,8 +131,6 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       expect(
         queryByText('Some of the selected detectors are currently running.')
       ).not.toBeNull();
-      expect(getAllByText('No')).toHaveLength(1);
-      expect(getAllByText('Yes')).toHaveLength(2);
     });
     test('should call onHide() when closing', async () => {
       const { getByTestId } = render(
@@ -150,8 +140,8 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
       await wait();
       expect(defaultDeleteProps.onHide).toHaveBeenCalled();
     });
-    test.skip('should call onStopDetectors when deleting running detectors', async () => {
-      const { getByText, getByTestId, getByPlaceholderText } = render(
+    test('should call onStopDetectors when deleting running detectors', async () => {
+      const { getByTestId, getByPlaceholderText } = render(
         <ConfirmDeleteDetectorsModal
           {...defaultDeleteProps}
           detectors={
@@ -165,7 +155,6 @@ describe('<ConfirmDeleteDetectorsModal /> spec', () => {
           }
         />
       );
-      getByText('Yes');
       // Try clicking before 'delete' has been typed
       userEvent.click(getByTestId('confirmButton'));
       await wait();
