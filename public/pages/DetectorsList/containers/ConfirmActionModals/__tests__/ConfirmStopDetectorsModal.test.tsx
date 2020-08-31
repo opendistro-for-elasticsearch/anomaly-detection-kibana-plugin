@@ -56,9 +56,6 @@ describe('<ConfirmStopDetectorsModal /> spec', () => {
       );
       getByText('Are you sure you want to stop the selected detectors?');
       getByText('Stop detectors');
-      getByText('detector-0');
-      getByText('detector-1');
-      expect(getAllByText('-')).toHaveLength(2);
     });
     test('renders modal with detectors and 1 monitor', async () => {
       console.error = jest.fn();
@@ -73,10 +70,6 @@ describe('<ConfirmStopDetectorsModal /> spec', () => {
         'The monitors associated with these detectors will not receive any anomaly results.'
       );
       getByText('Stop detectors');
-      getByText('detector-0');
-      getByText('detector-1');
-      getByText('monitor-0');
-      getByText('-');
     });
     test('should call onStopDetectors() when confirming', async () => {
       const { getByTestId } = render(
@@ -86,7 +79,7 @@ describe('<ConfirmStopDetectorsModal /> spec', () => {
       await wait();
       expect(defaultStopProps.onStopDetectors).toHaveBeenCalled();
     });
-    test.skip('should call onHide() when closing', async () => {
+    test('should call onHide() when closing', async () => {
       const { getByTestId } = render(
         <ConfirmStopDetectorsModal {...defaultStopProps} />
       );

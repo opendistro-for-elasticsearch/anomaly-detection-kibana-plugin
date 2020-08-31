@@ -57,8 +57,6 @@ describe('<ConfirmStartDetectorsModal /> spec', () => {
       );
       getByText('Are you sure you want to start the selected detectors?');
       getByText('Start detectors');
-      getByText('detector-0');
-      getByText('detector-1');
     });
     test('should call onStartDetectors() and onConfirm() when confirming', async () => {
       const { getByTestId } = render(
@@ -69,7 +67,7 @@ describe('<ConfirmStartDetectorsModal /> spec', () => {
       expect(defaultStartProps.onStartDetectors).toHaveBeenCalled();
       expect(defaultStartProps.onConfirm).toHaveBeenCalled();
     });
-    test.skip('should call onHide() when closing', async () => {
+    test('should call onHide() when closing', async () => {
       const { getByTestId } = render(
         <ConfirmStartDetectorsModal {...defaultStartProps} />
       );

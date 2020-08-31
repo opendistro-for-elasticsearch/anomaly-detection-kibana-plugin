@@ -41,14 +41,18 @@ exports[`<AlertsStat /> spec Alert Stat renders component with monitor and loadi
         View monitor 
         <svg
           aria-hidden="true"
-          class="euiIcon euiIcon--medium euiIcon-isLoading"
+          class="euiIcon euiIcon--medium"
           focusable="false"
           height="16"
           role="img"
           viewBox="0 0 16 16"
           width="16"
           xmlns="http://www.w3.org/2000/svg"
-        />
+        >
+          <path
+            d="M13 8.5a.5.5 0 111 0V12a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2h3.5a.5.5 0 010 1H4a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8.5zm-5.12.339a.5.5 0 11-.706-.707L13.305 2H10.5a.5.5 0 110-1H14a1 1 0 011 1v3.5a.5.5 0 11-1 0V2.72L7.88 8.838z"
+          />
+        </svg>
       </a>
     </div>
   </div>
@@ -218,14 +222,19 @@ exports[`<AnomalyStatWithTooltip /> spec Anomaly Stat with tooltip renders compo
         >
           <svg
             aria-hidden="true"
-            class="euiIcon euiIcon--medium euiIcon-isLoading"
+            class="euiIcon euiIcon--medium"
             focusable="false"
             height="16"
             role="img"
             viewBox="0 0 16 16"
             width="16"
             xmlns="http://www.w3.org/2000/svg"
-          />
+          >
+            <path
+              d="M7.5 11.508L7.468 8H6.25V7h2.401l.03 3.508H9.8v1H7.5zm-.25-6.202a.83.83 0 01.207-.577c.137-.153.334-.229.59-.229.256 0 .454.076.594.23.14.152.209.345.209.576 0 .228-.07.417-.21.568-.14.15-.337.226-.593.226-.256 0-.453-.075-.59-.226a.81.81 0 01-.207-.568zM8 13A5 5 0 108 3a5 5 0 000 10zm0 1A6 6 0 118 2a6 6 0 010 12z"
+              fill-rule="evenodd"
+            />
+          </svg>
         </span>
       </p>
     </div>
