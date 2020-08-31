@@ -183,19 +183,27 @@ export const sampleEcommerce = {
         },
       },
       {
-        feature_name: 'sum_total_revenue',
+        feature_name: 'avg_total_revenue',
         feature_enabled: true,
         importance: 2,
         aggregationQuery: {
-          sum_total_revenue: { sum: { field: 'total_revenue_usd' } },
+          avg_total_revenue: { avg: { field: 'total_revenue_usd' } },
         },
       },
       {
-        feature_name: 'avg_total_revenue',
+        feature_name: 'max_total_revenue',
         feature_enabled: true,
         importance: 3,
         aggregationQuery: {
-          avg_total_revenue: { avg: { field: 'total_revenue_usd' } },
+          max_total_revenue: { max: { field: 'total_revenue_usd' } },
+        },
+      },
+      {
+        feature_name: 'min_total_revenue',
+        feature_enabled: true,
+        importance: 4,
+        aggregationQuery: {
+          min_total_revenue: { min: { field: 'total_revenue_usd' } },
         },
       },
     ],
@@ -206,14 +214,19 @@ export const sampleEcommerce = {
           aggregationBy: 'sum',
           aggregationOf: 'items_purchased_failure',
         },
-        sum_total_revenue: {
-          featureType: 'simple_aggs',
-          aggregationBy: 'sum',
-          aggregationOf: 'total_revenue_usd',
-        },
         avg_total_revenue: {
           featureType: 'simple_aggs',
           aggregationBy: 'avg',
+          aggregationOf: 'total_revenue_usd',
+        },
+        max_total_revenue: {
+          featureType: 'simple_aggs',
+          aggregationBy: 'max',
+          aggregationOf: 'total_revenue_usd',
+        },
+        min_total_revenue: {
+          featureType: 'simple_aggs',
+          aggregationBy: 'min',
           aggregationOf: 'total_revenue_usd',
         },
       },
