@@ -63,6 +63,11 @@ import {
   FEATURE_DATA_CHECK_WINDOW_OFFSET,
 } from '../../utils/anomalyResultUtils';
 import { getDetectorResults } from '../../../redux/reducers/anomalyResults';
+import {
+  detectorIsSample,
+  getAssociatedIndex,
+} from '../../SampleData/utils/helpers';
+import { SampleIndexDetailsCallout } from '../../SampleData/components/SampleIndexDetailsCallout/SampleIndexDetailsCallout';
 
 interface AnomalyResultsProps extends RouteComponentProps {
   detectorId: string;
@@ -112,12 +117,25 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     }
   }, [detector]);
 
+  useEffect(() => {
+    if (detector && detectorIsSample(detector)) {
+      setIsSampleDetector(true);
+      setSampleIndexName(getAssociatedIndex(detector));
+    } else {
+      setIsSampleDetector(false);
+    }
+  }, [detector]);
+
   const monitors = useSelector((state: AppState) => state.alerting.monitors);
   const monitor = get(monitors, `${detectorId}.0`);
 
   const [featureMissingSeverity, setFeatureMissingSeverity] = useState<
     MISSING_FEATURE_DATA_SEVERITY
   >();
+
+  const [isSampleDetector, setIsSampleDetector] = useState<boolean>(false);
+
+  const [sampleIndexName, setSampleIndexName] = useState<string>('');
 
   const [featureNamesAtHighSev, setFeatureNamesAtHighSev] = useState(
     [] as string[]
@@ -367,6 +385,15 @@ export function AnomalyResults(props: AnomalyResultsProps) {
               isDetectorInitializing ||
               isDetectorFailed ? (
                 <Fragment>
+                  {isSampleDetector ? (
+                    <Fragment>
+                      {' '}
+                      <SampleIndexDetailsCallout
+                        indexName={sampleIndexName}
+                      />{' '}
+                      <EuiSpacer size="l" />{' '}
+                    </Fragment>
+                  ) : null}
                   {isDetectorUpdated ||
                   isDetectorMissingData ||
                   isInitializingNormally ||

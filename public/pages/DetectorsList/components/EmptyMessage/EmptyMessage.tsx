@@ -15,7 +15,7 @@
 
 import { EuiButton, EuiEmptyPrompt, EuiText } from '@elastic/eui';
 import React from 'react';
-import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
+import { CreateDetectorButtons } from '../../../../components/CreateDetectorButtons/CreateDetectorButtons';
 
 const filterText =
   'There are no detectors matching your applied filters. Reset your filters to view all detectors.';
@@ -45,13 +45,7 @@ export const EmptyDetectorMessage = (props: EmptyDetectorProps) => (
           Reset filters
         </EuiButton>
       ) : (
-        <EuiButton
-          fill
-          href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-          data-test-subj="createDetectorButton"
-        >
-          Create detector
-        </EuiButton>
+        <CreateDetectorButtons />
       )
     }
   />

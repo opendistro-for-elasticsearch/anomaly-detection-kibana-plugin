@@ -27,12 +27,16 @@ import {
   ServerResponse,
 } from '../models/types';
 import { Router } from '../router';
+import { isIndexNotFoundError } from './utils/adHelpers';
 
-export default function(apiRouter: Router) {
+export default function (apiRouter: Router) {
   apiRouter.get('/_indices', getIndices);
   apiRouter.get('/_aliases', getAliases);
   apiRouter.get('/_mappings', getMapping);
   apiRouter.post('/_search', executeSearch);
+  apiRouter.put('/create_index', createIndex);
+  apiRouter.post('/bulk', bulk);
+  apiRouter.post('/delete_index', deleteIndex);
 }
 
 type SearchParams = {
@@ -129,6 +133,90 @@ const getAliases = async (
     return { ok: true, response: { aliases: response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to get aliases', err);
+    return { ok: false, error: err.message };
+  }
+};
+
+const createIndex = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<any>> => {
+  //@ts-ignore
+  const index = req.payload.indexConfig.index;
+  //@ts-ignore
+  const body = req.payload.indexConfig.body;
+  try {
+    await callWithRequest(req, 'indices.create', {
+      index: index,
+      body: body,
+    });
+  } catch (err) {
+    console.log('Anomaly detector - Unable to create index', err);
+    return { ok: false, error: err.message };
+  }
+  try {
+    const response: CatIndex[] = await callWithRequest(req, 'cat.indices', {
+      index,
+      format: 'json',
+      h: 'health,index',
+    });
+    return { ok: true, response: { indices: response } };
+  } catch (err) {
+    console.log('Anomaly detector - Unable to get indices', err);
+    return { ok: false, error: err.message };
+  }
+};
+
+const bulk = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<GetAliasesResponse>> => {
+  //@ts-ignore
+  const body = req.payload.body;
+  try {
+    const response: any = await callWithRequest(req, 'bulk', {
+      body: body,
+    });
+    //@ts-ignore
+    return { ok: true, response: { response } };
+  } catch (err) {
+    console.log('Anomaly detector - Unable to perform bulk action', err);
+    return { ok: false, error: err.message };
+  }
+};
+
+const deleteIndex = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<any>> => {
+  //@ts-ignore
+  const index = req.payload.index;
+  try {
+    await callWithRequest(req, 'indices.delete', {
+      index: index,
+    });
+  } catch (err) {
+    console.log(
+      'Anomaly detector - Unable to perform delete index action',
+      err
+    );
+    // Ignore the error if it's an index_not_found_exception
+    if (!isIndexNotFoundError(err)) {
+      return { ok: false, error: err.message };
+    }
+  }
+  try {
+    const response: CatIndex[] = await callWithRequest(req, 'cat.indices', {
+      index,
+      format: 'json',
+      h: 'health,index',
+    });
+    return { ok: true, response: { indices: response } };
+  } catch (err) {
+    console.log('Anomaly detector - Unable to get indices', err);
     return { ok: false, error: err.message };
   }
 };

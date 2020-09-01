@@ -31,6 +31,7 @@ type ContentPanelProps = {
   title: string | React.ReactNode | React.ReactNode[];
   titleSize?: EuiTitleSize;
   subTitle?: React.ReactNode | React.ReactNode[];
+  badgeLabel?: string;
   bodyStyles?: React.CSSProperties;
   panelStyles?: React.CSSProperties;
   horizontalRuleClassName?: string;
@@ -45,6 +46,7 @@ const ContentPanel = (props: ContentPanelProps) => (
   <EuiPanel
     style={{ padding: '20px', ...props.panelStyles }}
     className={props.contentPanelClassName}
+    betaBadgeLabel={props.badgeLabel}
   >
     <EuiFlexGroup
       style={{ padding: '0px', ...props.titleContainerStyles }}

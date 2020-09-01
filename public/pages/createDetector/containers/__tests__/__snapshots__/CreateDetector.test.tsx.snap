@@ -8,6 +8,72 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
     class="euiPageBody"
   >
     <div
+      class="euiFlexGroup euiFlexGroup--directionColumn euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiCallOut euiCallOut--primary"
+        >
+          <div
+            class="euiCallOutHeader"
+          >
+            <svg
+              aria-hidden="true"
+              class="euiIcon euiIcon--medium euiIcon-isLoading euiCallOutHeader__icon"
+              focusable="false"
+              height="16"
+              role="img"
+              viewBox="0 0 16 16"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            />
+            <span
+              class="euiCallOutHeader__title"
+            >
+              Looking to get more familiar with anomaly detection?
+            </span>
+          </div>
+          <div
+            class="euiText euiText--small"
+          >
+            <p>
+              Read the
+               
+              <a
+                class="euiLink euiLink--primary"
+                href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                documentation
+              </a>
+               
+              or create a
+               
+              <a
+                class="euiLink euiLink--primary"
+                href="opendistro-anomaly-detection-kibana#/sample-detectors"
+                rel="noreferrer"
+              >
+                sample detector
+              </a>
+               
+              to get started.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiSpacer euiSpacer--m"
+        />
+      </div>
+    </div>
+    <div
       class="euiPageHeader euiPageHeader--responsive"
     >
       <div
