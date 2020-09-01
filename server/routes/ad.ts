@@ -100,7 +100,9 @@ const previewDetector = async (
   try {
     const { detectorId } = req.params;
     //@ts-ignore
-    const requestBody = JSON.stringify(convertPreviewInputKeysToSnakeCase(req.payload));
+    const requestBody = JSON.stringify(
+      convertPreviewInputKeysToSnakeCase(req.payload)
+    );
     const response = await callWithRequest(req, 'ad.previewDetector', {
       detectorId,
       body: requestBody,
@@ -333,7 +335,7 @@ const getDetectors = async (
         query_string: {
           fields: ['name', 'description'],
           default_operator: 'AND',
-          query: `*${search.trim().split(' ').join('* *')}*`,
+          query: `*${search.trim().split('-').join('* *')}*`,
         },
       });
     }
