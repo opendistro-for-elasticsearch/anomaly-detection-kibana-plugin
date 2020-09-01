@@ -46,7 +46,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                   class="euiFlexItem"
                 >
                   <div
-                    style="display: flex;"
+                    style="display: flex; flex-direction: row; align-content: flexStart;"
                   >
                     <svg
                       aria-hidden="true"
@@ -170,7 +170,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                   class="euiFlexItem"
                 >
                   <div
-                    style="display: flex;"
+                    style="display: flex; flex-direction: row; align-content: flexStart;"
                   >
                     <svg
                       aria-hidden="true"
@@ -294,7 +294,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                   class="euiFlexItem"
                 >
                   <div
-                    style="display: flex;"
+                    style="display: flex; flex-direction: row; align-content: flexStart;"
                   >
                     <svg
                       aria-hidden="true"
@@ -447,11 +447,11 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                   class="euiFlexItem"
                 >
                   <div
-                    style="display: flex;"
+                    style="display: flex; flex-direction: row; align-content: flexStart;"
                   >
                     <svg
                       aria-hidden="true"
-                      class="euiIcon euiIcon--large euiIcon-isLoaded"
+                      class="euiIcon euiIcon--large"
                       focusable="false"
                       height="16"
                       role="img"
@@ -575,11 +575,11 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                   class="euiFlexItem"
                 >
                   <div
-                    style="display: flex;"
+                    style="display: flex; flex-direction: row; align-content: flexStart;"
                   >
                     <svg
                       aria-hidden="true"
-                      class="euiIcon euiIcon--large euiIcon-isLoaded"
+                      class="euiIcon euiIcon--large"
                       focusable="false"
                       height="16"
                       role="img"
@@ -703,11 +703,11 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                   class="euiFlexItem"
                 >
                   <div
-                    style="display: flex;"
+                    style="display: flex; flex-direction: row; align-content: flexStart;"
                   >
                     <svg
                       aria-hidden="true"
-                      class="euiIcon euiIcon--large euiIcon-isLoaded"
+                      class="euiIcon euiIcon--large"
                       focusable="false"
                       height="16"
                       role="img"
@@ -870,11 +870,11 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                   class="euiFlexItem"
                 >
                   <div
-                    style="display: flex;"
+                    style="display: flex; flex-direction: row; align-content: flexStart;"
                   >
                     <svg
                       aria-hidden="true"
-                      class="euiIcon euiIcon--large euiIcon-isLoaded"
+                      class="euiIcon euiIcon--large"
                       focusable="false"
                       height="16"
                       role="img"
@@ -1007,11 +1007,11 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                   class="euiFlexItem"
                 >
                   <div
-                    style="display: flex;"
+                    style="display: flex; flex-direction: row; align-content: flexStart;"
                   >
                     <svg
                       aria-hidden="true"
-                      class="euiIcon euiIcon--large euiIcon-isLoaded"
+                      class="euiIcon euiIcon--large"
                       focusable="false"
                       height="16"
                       role="img"
@@ -1135,11 +1135,11 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                   class="euiFlexItem"
                 >
                   <div
-                    style="display: flex;"
+                    style="display: flex; flex-direction: row; align-content: flexStart;"
                   >
                     <svg
                       aria-hidden="true"
-                      class="euiIcon euiIcon--large euiIcon-isLoaded"
+                      class="euiIcon euiIcon--large"
                       focusable="false"
                       height="16"
                       role="img"

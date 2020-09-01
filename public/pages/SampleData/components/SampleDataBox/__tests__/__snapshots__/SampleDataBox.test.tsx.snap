@@ -32,18 +32,23 @@ exports[`<SampleDataBox /> spec Data is loaded renders component 1`] = `
             class="euiFlexItem"
           >
             <div
-              style="display: flex;"
+              style="display: flex; flex-direction: row; align-content: flexStart;"
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiIcon-isLoading"
+                class="euiIcon euiIcon--medium"
                 focusable="false"
                 height="16"
                 role="img"
                 viewBox="0 0 16 16"
                 width="16"
                 xmlns="http://www.w3.org/2000/svg"
-              />
+              >
+                <path
+                  d="M7.59 10.059L7.35 5.18h1.3L8.4 10.06h-.81zm.394 1.901a.61.61 0 01-.448-.186.606.606 0 01-.186-.444c0-.174.062-.323.186-.446a.614.614 0 01.448-.184c.169 0 .315.06.44.182.124.122.186.27.186.448a.6.6 0 01-.189.446.607.607 0 01-.437.184zM2 14a1 1 0 01-.878-1.479l6-11a1 1 0 011.756 0l6 11A1 1 0 0114 14H2zm0-1h12L8 2 2 13z"
+                  fill-rule="evenodd"
+                />
+              </svg>
               <h2
                 class="euiTitle euiTitle--small"
                 style="margin-left: 12px; margin-top: -3px;"
@@ -164,18 +169,23 @@ exports[`<SampleDataBox /> spec Data is loading renders component 1`] = `
             class="euiFlexItem"
           >
             <div
-              style="display: flex;"
+              style="display: flex; flex-direction: row; align-content: flexStart;"
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiIcon-isLoading"
+                class="euiIcon euiIcon--medium"
                 focusable="false"
                 height="16"
                 role="img"
                 viewBox="0 0 16 16"
                 width="16"
                 xmlns="http://www.w3.org/2000/svg"
-              />
+              >
+                <path
+                  d="M7.59 10.059L7.35 5.18h1.3L8.4 10.06h-.81zm.394 1.901a.61.61 0 01-.448-.186.606.606 0 01-.186-.444c0-.174.062-.323.186-.446a.614.614 0 01.448-.184c.169 0 .315.06.44.182.124.122.186.27.186.448a.6.6 0 01-.189.446.607.607 0 01-.437.184zM2 14a1 1 0 01-.878-1.479l6-11a1 1 0 011.756 0l6 11A1 1 0 0114 14H2zm0-1h12L8 2 2 13z"
+                  fill-rule="evenodd"
+                />
+              </svg>
               <h2
                 class="euiTitle euiTitle--small"
                 style="margin-left: 12px; margin-top: -3px;"
@@ -291,7 +301,7 @@ exports[`<SampleDataBox /> spec Data not loaded renders component 1`] = `
             class="euiFlexItem"
           >
             <div
-              style="display: flex;"
+              style="display: flex; flex-direction: row; align-content: flexStart;"
             >
               <svg
                 aria-hidden="true"
