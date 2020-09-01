@@ -13,9 +13,9 @@
  * permissions and limitations under the License.
  */
 
-import { EuiButton, EuiEmptyPrompt, EuiLink, EuiIcon } from '@elastic/eui';
+import { EuiEmptyPrompt, EuiLink, EuiIcon } from '@elastic/eui';
 import React, { Component, Fragment } from 'react';
-import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
+import { CreateDetectorButtons } from '../../../../components/CreateDetectorButtons/CreateDetectorButtons';
 
 export class EmptyDashboard extends Component<{}, {}> {
   render() {
@@ -27,7 +27,7 @@ export class EmptyDashboard extends Component<{}, {}> {
             <p>Create detector first to detect anomalies in your data.</p>
             <p>
               Dashboard will generate insights on the anomalies across all of
-              your detectors
+              your detectors.
             </p>
             <p>
               Read about{' '}
@@ -41,15 +41,7 @@ export class EmptyDashboard extends Component<{}, {}> {
             </p>
           </Fragment>
         }
-        actions={
-          <EuiButton
-            fill
-            href={`${PLUGIN_NAME}#${APP_PATH.CREATE_DETECTOR}`}
-            data-test-subj="add_detector"
-          >
-            Create detector
-          </EuiButton>
-        }
+        actions={<CreateDetectorButtons />}
       />
     );
   }

@@ -24,6 +24,7 @@ export enum DATA_TYPES {
 export const BREADCRUMBS = Object.freeze({
   ANOMALY_DETECTOR: { text: 'Anomaly detection', href: '#/' },
   DETECTORS: { text: 'Detectors', href: '#/detectors' },
+  SAMPLE_DETECTORS: { text: 'Sample detectors', href: '#/sample-detectors' },
   CREATE_DETECTOR: { text: 'Create detector' },
   EDIT_DETECTOR: { text: 'Edit detector' },
   DASHBOARD: { text: 'Dashboard', href: '#/' },
@@ -33,14 +34,24 @@ export const BREADCRUMBS = Object.freeze({
 export const APP_PATH = {
   DASHBOARD: '/dashboard',
   LIST_DETECTORS: '/detectors',
+  SAMPLE_DETECTORS: '/sample-detectors',
   CREATE_DETECTOR: '/create-ad/',
   EDIT_DETECTOR: '/detectors/:detectorId/edit',
   EDIT_FEATURES: '/detectors/:detectorId/features/',
   DETECTOR_DETAIL: '/detectors/:detectorId/',
 };
+
+export const KIBANA_PATH = {
+  DISCOVER: '/discover',
+};
+
 export const PLUGIN_NAME = 'opendistro-anomaly-detection-kibana';
 
 export const ALERTING_PLUGIN_NAME = 'opendistro-alerting';
+
+export const KIBANA_NAME = 'kibana';
+
+export const ANOMALY_DETECTORS_INDEX = '.opendistro-anomaly-detectors';
 
 export const ANOMALY_RESULT_INDEX = '.opendistro-anomaly-results';
 
@@ -55,6 +66,12 @@ export enum DETECTOR_STATE {
   FEATURE_REQUIRED = 'Feature required',
   INIT_FAILURE = 'Initialization failure',
   UNEXPECTED_FAILURE = 'Unexpected failure',
+}
+
+export enum SAMPLE_TYPE {
+  HTTP_RESPONSES = 'http-responses',
+  HOST_HEALTH = 'host-health',
+  ECOMMERCE = 'ecommerce',
 }
 
 export const MAX_FEATURE_NUM = 5;
