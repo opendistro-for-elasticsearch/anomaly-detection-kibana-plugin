@@ -2,6 +2,9 @@
 
 Compatible with Kibana 7.9.0
 
+### Features
+- Add sample detectors and indices ([#272](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/272))
+
 ### Enhancements
 
 - Add missing feature alert if recent feature data is missing ([#248](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/248))
