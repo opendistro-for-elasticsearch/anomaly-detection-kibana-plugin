@@ -27,8 +27,8 @@ import {
 } from '@elastic/eui';
 import { Formik } from 'formik';
 import { get, isEmpty } from 'lodash';
-import React, { Fragment, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 //@ts-ignore
@@ -41,6 +41,8 @@ import {
   searchDetector,
   updateDetector,
 } from '../../../redux/reducers/ad';
+import { getIndices } from '../../../redux/reducers/elasticsearch';
+import { AppState } from '../../../redux/reducers';
 import { BREADCRUMBS, MAX_DETECTORS } from '../../../utils/constants';
 import { getErrorMessage, validateName } from '../../../utils/utils';
 import { DetectorInfo } from '../components/DetectorInfo';
@@ -52,6 +54,9 @@ import { formikToDetector } from './utils/formikToDetector';
 import { Detector } from '../../../models/interfaces';
 import { Settings } from '../components/Settings/Settings';
 import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
+import { CatIndex } from '../../../../server/models/types';
+import { SampleDataCallout } from '../../SampleData/components/SampleDataCallout/SampleDataCallout';
+import { containsDetectorsIndex } from '../../SampleData/utils/helpers';
 
 interface CreateRouterProps {
   detectorId?: string;
@@ -68,6 +73,25 @@ export function CreateDetector(props: CreateADProps) {
   //In case user is refreshing Edit detector page, we'll lose existing detector state
   //This will ensure to fetch the detector based on id from URL
   const { detector, hasError } = useFetchDetectorInfo(detectorId);
+  const [sampleCalloutVisible, setSampleCalloutVisible] = useState<boolean>(
+    false
+  );
+  const visibleIndices = useSelector(
+    (state: AppState) => state.elasticsearch.indices
+  ) as CatIndex[];
+
+  // Getting all initial indices
+  useEffect(() => {
+    const getInitialIndices = async () => {
+      await dispatch(getIndices(''));
+    };
+    getInitialIndices();
+  }, []);
+
+  // Check if the sample data callout should be visible based on detector index
+  useEffect(() => {
+    setSampleCalloutVisible(!containsDetectorsIndex(visibleIndices));
+  }, [visibleIndices]);
 
   //Set breadcrumbs based on Create / Update
   useEffect(() => {
@@ -196,9 +220,23 @@ export function CreateDetector(props: CreateADProps) {
     }
   };
 
+  const handleHideSampleCallout = () => {
+    setSampleCalloutVisible(false);
+  };
+
   return (
     <EuiPage>
       <EuiPageBody>
+        {sampleCalloutVisible ? (
+          <EuiFlexGroup direction="column" gutterSize="none">
+            <EuiFlexItem>
+              <SampleDataCallout onHide={handleHideSampleCallout} />
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <EuiSpacer size="m" />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        ) : null}
         <EuiPageHeader>
           <EuiPageHeaderSection>
             <EuiTitle size="l">
@@ -211,7 +249,7 @@ export function CreateDetector(props: CreateADProps) {
           initialValues={detectorToFormik(detector)}
           onSubmit={handleSubmit}
         >
-          {formikProps => (
+          {(formikProps) => (
             <Fragment>
               <DetectorInfo onValidateDetectorName={handleValidateName} />
               <EuiSpacer />
