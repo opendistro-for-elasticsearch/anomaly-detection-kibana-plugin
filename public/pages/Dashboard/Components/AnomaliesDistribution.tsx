@@ -28,9 +28,9 @@ import {
   //@ts-ignore
   EuiStat,
 } from '@elastic/eui';
-import { Chart, Partition, PartitionLayout } from '@elastic/charts/dist/index';
+import { Chart, Partition, PartitionLayout } from '@elastic/charts';
 import { useDispatch } from 'react-redux';
-import { Datum } from '@elastic/charts/dist/utils/commons';
+import { Datum } from '@elastic/charts';
 import React from 'react';
 import { TIME_RANGE_OPTIONS } from '../../Dashboard/utils/constants';
 import { get, isEmpty } from 'lodash';
@@ -86,7 +86,7 @@ export const AnomaliesDistributionChart = (
 
   const getFinalIndices = (detectorList: DetectorListItem[]) => {
     const indicesSet = new Set();
-    detectorList.forEach(detectorItem => {
+    detectorList.forEach((detectorItem) => {
       indicesSet.add(detectorItem.indices.toString());
     });
 
@@ -98,11 +98,11 @@ export const AnomaliesDistributionChart = (
     detectorList: DetectorListItem[]
   ): DetectorListItem[] => {
     const detectorSet = new Set<string>();
-    finalAnomalyResult.forEach(anomalyResult => {
+    finalAnomalyResult.forEach((anomalyResult) => {
       detectorSet.add(get(anomalyResult, AD_DOC_FIELDS.DETECTOR_ID, ''));
     });
 
-    const filteredDetectors = detectorList.filter(detector =>
+    const filteredDetectors = detectorList.filter((detector) =>
       detectorSet.has(detector.id)
     );
 
@@ -186,7 +186,7 @@ export const AnomaliesDistributionChart = (
                         textInvertible: true,
                       },
                       shape: {
-                        fillColor: d => {
+                        fillColor: (d) => {
                           return fillOutColors(
                             d,
                             (d.x0 + d.x1) / 2 / (2 * Math.PI),
@@ -204,7 +204,7 @@ export const AnomaliesDistributionChart = (
                         textInvertible: true,
                       },
                       shape: {
-                        fillColor: d => {
+                        fillColor: (d) => {
                           return fillOutColors(
                             d,
                             (d.x0 + d.x1) / 2 / (2 * Math.PI),
