@@ -88,10 +88,11 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       BREADCRUMBS.DETECTORS,
       { text: detector ? detector.name : '' },
     ]);
+    dispatch(getDetector(detectorId));
   }, []);
 
   const fetchDetector = async () => {
-    await dispatch(getDetector(detectorId));
+    dispatch(getDetector(detectorId));
   };
 
   useEffect(() => {
