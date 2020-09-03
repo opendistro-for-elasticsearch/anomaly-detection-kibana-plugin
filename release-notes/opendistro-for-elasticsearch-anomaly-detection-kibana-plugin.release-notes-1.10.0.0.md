@@ -21,6 +21,7 @@ Compatible with Kibana 7.9.0
 - fix wrong field name when preview ([#277](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/277))
 - parse types in fielddata ([#284](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/284))
 - Add intermediate callout message during cold start ([#283](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/283))
+- Fix initialization callouts to properly show when first loading anomaly results page ([#300](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/300))
 
 ### Infrastructure
 
