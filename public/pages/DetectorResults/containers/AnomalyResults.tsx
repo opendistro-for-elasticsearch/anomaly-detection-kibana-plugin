@@ -313,7 +313,10 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   };
 
   const getInitProgressMessage = () => {
-    return detector && isDetectorInitializing && detector.initProgress
+    return detector &&
+      isDetectorInitializing &&
+      detector.initProgress &&
+      detector.initProgress.estimatedMinutesLeft
       ? `The detector needs ${detector.initProgress.estimatedMinutesLeft} minutes for initializing. If your data stream is not continuous, it may take even longer. `
       : '';
   };
