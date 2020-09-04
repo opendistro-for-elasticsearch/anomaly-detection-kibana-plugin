@@ -57,7 +57,7 @@ import {
   getLatestAnomalyResultsForDetectorsByTimeRange,
   getLatestAnomalyResultsByTimeRange,
 } from '../utils/utils';
-import { MAX_ANOMALIES } from '../../../utils/constants';
+import { MAX_ANOMALIES, SPACE_STR } from '../../../utils/constants';
 
 export interface AnomaliesLiveChartProps {
   selectedDetectors: DetectorListItem[];
@@ -134,7 +134,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
 
     setLatestLiveAnomalousDetectorsCount(
       new Set(
-        latestLiveAnomalyResult.map(anomalyData =>
+        latestLiveAnomalyResult.map((anomalyData) =>
           get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
         )
       ).size
@@ -165,7 +165,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
     liveTimeRange.endDateTime.valueOf(),
   ]);
 
-  const visualizedAnomalies = liveAnomalyData.flatMap(anomalyResult =>
+  const visualizedAnomalies = liveAnomalyData.flatMap((anomalyResult) =>
     visualizeAnomalyResultForXYChart(anomalyResult)
   );
   const prepareVisualizedAnomalies = (
@@ -173,7 +173,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
   ): object[] => {
     // add data point placeholder at every minute,
     // to ensure chart evenly distrubted
-    const existingPlotTimes = liveVisualizedAnomalies.map(anomaly =>
+    const existingPlotTimes = liveVisualizedAnomalies.map((anomaly) =>
       getFloorPlotTime(get(anomaly, AD_DOC_FIELDS.PLOT_TIME, 0))
     );
     const result = [...liveVisualizedAnomalies];
@@ -187,12 +187,13 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
         continue;
       }
       result.push({
-        [AD_DOC_FIELDS.DETECTOR_NAME]: !isEmpty(liveAnomalyData) ? '' : null,
+        [AD_DOC_FIELDS.DETECTOR_NAME]: !isEmpty(liveAnomalyData)
+          ? ''
+          : SPACE_STR,
         [AD_DOC_FIELDS.PLOT_TIME]: currentTime,
         [AD_DOC_FIELDS.ANOMALY_GRADE]: null,
       });
     }
-
     return result;
   };
 
@@ -206,7 +207,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
 
   const fullScreenButton = () => (
     <EuiButton
-      onClick={() => setIsFullScreen(isFullScreen => !isFullScreen)}
+      onClick={() => setIsFullScreen((isFullScreen) => !isFullScreen)}
       iconType={isFullScreen ? 'exit' : 'fullScreen'}
       aria-label="View full screen"
     >
