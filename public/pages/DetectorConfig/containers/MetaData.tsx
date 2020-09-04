@@ -24,11 +24,8 @@ import {
   EuiButton,
   EuiFormRowProps,
 } from '@elastic/eui';
-import { PLUGIN_NAME } from '../../../utils/constants';
 import {
   Detector,
-  Schedule,
-  UiMetaData,
   FILTER_TYPES,
   UIFilter,
 } from '../../../models/interfaces';

@@ -20,7 +20,8 @@ import reducers, { AppState } from './reducers';
 
 function configureStore(httpClient: IHttpService) {
   const middleWares = [clientMiddleware<AppState>(httpClient)];
-  const store = compose(applyMiddleware(...middleWares))(createStore);
+  const composeWithReduxDevTools = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const store = composeWithReduxDevTools(applyMiddleware(...middleWares))(createStore);
   //@ts-ignore
   return store(reducers);
 }

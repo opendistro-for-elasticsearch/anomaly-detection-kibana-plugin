@@ -49,6 +49,7 @@ import { focusOnFirstWrongFeature } from '../utils/helpers';
 interface SampleAnomaliesProps {
   detector: Detector;
   featureList: FeaturesFormikValues[];
+  shingleSize: number;
   errors: any;
   setFieldTouched: any;
 }
@@ -137,6 +138,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
     try {
       const updatedDetector = prepareDetector(
         props.featureList,
+        props.shingleSize,
         newDetector,
         true
       );
