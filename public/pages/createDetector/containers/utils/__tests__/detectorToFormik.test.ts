@@ -14,6 +14,7 @@
  */
 
 import { INITIAL_VALUES } from '../constant';
+import { SHINGLE_SIZE } from '../../../../../utils/constants';
 import { getRandomDetector } from '../../../../../redux/reducers/__tests__/utils';
 import { detectorToFormik } from '../detectorToFormik';
 import { Detector, FILTER_TYPES } from '../../../../../models/interfaces';
@@ -34,6 +35,7 @@ describe('adToFormik', () => {
       filterType: FILTER_TYPES.SIMPLE,
       filterQuery: JSON.stringify(randomDetector.filterQuery || {}, null, 4),
       index: [{ label: randomDetector.indices[0] }], // Currently we support only one index
+      shingleSize: SHINGLE_SIZE,
       timeField: randomDetector.timeField,
       detectionInterval: randomDetector.detectionInterval.period.interval,
       windowDelay: randomDetector.windowDelay.period.interval,
@@ -51,6 +53,7 @@ describe('adToFormik', () => {
       filterType: FILTER_TYPES.CUSTOM,
       filterQuery: JSON.stringify(randomDetector.filterQuery || {}, null, 4),
       index: [{ label: randomDetector.indices[0] }], // Currently we support only one index
+      shingleSize: SHINGLE_SIZE,
       timeField: randomDetector.timeField,
       detectionInterval: randomDetector.detectionInterval.period.interval,
       windowDelay: randomDetector.windowDelay.period.interval,

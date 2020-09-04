@@ -103,6 +103,7 @@ export type Detector = {
   featureAttributes: FeatureAttributes[];
   windowDelay: { period: Schedule };
   detectionInterval: { period: Schedule };
+  shingleSize: number;
   uiMetadata: UiMetaData;
   lastUpdateTime: number;
   enabled?: boolean;

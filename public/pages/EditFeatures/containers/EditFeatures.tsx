@@ -29,9 +29,11 @@ import {
   EuiIcon,
   EuiCallOut,
   EuiSpacer,
+  EuiFieldNumber,
+  EuiFormRow,
 } from '@elastic/eui';
-import { FieldArray, FieldArrayRenderProps, Form, Formik } from 'formik';
-import { get, isEmpty, forOwn } from 'lodash';
+import { FieldArray, FieldArrayRenderProps, Form, Formik, Field, FieldProps } from 'formik';
+import { get, isEmpty } from 'lodash';
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
@@ -39,7 +41,7 @@ import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
 import { updateDetector, startDetector } from '../../../redux/reducers/ad';
-import { getErrorMessage } from '../../../utils/utils';
+import { getErrorMessage, validatePositiveInteger, isInvalid, getError } from '../../../utils/utils';
 import { prepareDetector } from './utils/formikToFeatures';
 import { useFetchDetectorInfo } from '../../createDetector/hooks/useFetchDetectorInfo';
 //@ts-ignore
@@ -49,6 +51,7 @@ import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
 import { FeatureAccordion } from '../components/FeatureAccordion/FeatureAccordion';
 import { SaveFeaturesConfirmModal } from '../components/ConfirmModal/SaveFeaturesConfirmModal';
 import { SAVE_FEATURE_OPTIONS } from '../utils/constants';
+import { SHINGLE_SIZE } from '../../../utils/constants';
 import {
   initialFeatureValue,
   generateInitialFeatures,
@@ -76,6 +79,7 @@ export function EditFeatures(props: EditFeaturesProps) {
   >(SAVE_FEATURE_OPTIONS.START_AD_JOB);
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [readyToStartAdJob, setReadyToStartAdJob] = useState<boolean>(true);
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState<boolean>(false);
 
   useEffect(() => {
     chrome.breadcrumbs.set([
@@ -85,7 +89,7 @@ export function EditFeatures(props: EditFeaturesProps) {
         text: detector && detector.name ? detector.name : '',
         href: `#/detectors/${detectorId}`,
       },
-      BREADCRUMBS.EDIT_FEATURES,
+      BREADCRUMBS.EDIT_MODEL_CONFIGURATION,
     ]);
   }, [detector]);
 
@@ -98,14 +102,13 @@ export function EditFeatures(props: EditFeaturesProps) {
   const featureDescription = (
     <EuiText className="content-panel-subTitle">
       Specify an index field that you want to find anomalies for by defining
-      features{' '}
+      features. You can add up to 5 features.{' '}
       <EuiLink
         href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
         target="_blank"
       >
         Learn more <EuiIcon size="s" type="popout" />
       </EuiLink>
-      . You can add up to 5 features.
     </EuiText>
   );
 
@@ -197,6 +200,7 @@ export function EditFeatures(props: EditFeaturesProps) {
     try {
       const requestBody = prepareDetector(
         get(values, 'featureList', []),
+        get(values, 'shingleSize', SHINGLE_SIZE),
         detector
       );
       await dispatch(updateDetector(detector.id, requestBody));
@@ -243,11 +247,72 @@ export function EditFeatures(props: EditFeaturesProps) {
     }
   };
 
+  const renderAdvancedSettingsToggle = () => (
+    <EuiText
+      className="content-panel-subTitle"
+      onClick={()=>{setShowAdvancedSettings(!showAdvancedSettings);}}
+    >
+      <EuiLink>
+        {showAdvancedSettings ? 'Hide' : 'Show'}
+      </EuiLink>
+    </EuiText>
+  );
+
+  const renderAdvancedSettings = () => (
+    <Field
+      name="shingleSize"
+      validate={validatePositiveInteger}
+    >
+      {({ field, form }: FieldProps) => (
+        <EuiFormRow
+          label="Window size"
+          helpText={
+            <EuiText className="content-panel-subTitle">
+              Set the number of intervals to consider in a detection
+              window. We recommend you choose this value based on your actual
+              data. If you expect missing values in your data or if you want
+              the anomalies based on the current interval, choose 1. If
+              your data is continuously ingested and you want the anomalies
+              based on multiple intervals, choose a larger window size.{' '}
+              <EuiLink
+                href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
+                target="_blank"
+              >
+                Learn more <EuiIcon size="s" type="popout" />
+              </EuiLink>
+            </EuiText>
+          }
+          isInvalid={isInvalid(field.name, form)}
+          error={getError(field.name, form)}
+        >
+          <EuiFlexGroup gutterSize="s" alignItems="center">
+            <EuiFlexItem grow={false}>
+              <EuiFieldNumber
+                id="shingleSize"
+                placeholder="Window size"
+                data-test-subj="shingleSize"
+                {...field}
+              />
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <EuiText>
+                <p className="minutes">intervals</p>
+              </EuiText>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </EuiFormRow>
+      )}
+    </Field>
+  );
+
   return (
     <Fragment>
       <Formik
         enableReinitialize
-        initialValues={{ featureList: generateInitialFeatures(detector) }}
+        initialValues={{
+          featureList: generateInitialFeatures(detector),
+          shingleSize: get(detector, 'shingleSize', SHINGLE_SIZE)
+        }}
         onSubmit={(values, actions) =>
           handleSubmit(values, actions.setSubmitting)
         }
@@ -269,12 +334,19 @@ export function EditFeatures(props: EditFeaturesProps) {
                   <EuiPageHeader>
                     <EuiPageHeaderSection>
                       <EuiTitle size="l">
-                        <h1>Edit features </h1>
+                        <h1>Model configuration </h1>
                       </EuiTitle>
                     </EuiPageHeaderSection>
                   </EuiPageHeader>
                   <ContentPanel title="Features" subTitle={featureDescription}>
                     {!isEmpty(detector) ? renderFeatures(handleChange) : null}
+                  </ContentPanel>
+                </EuiPageBody>
+              </EuiPage>
+              <EuiPage>
+                <EuiPageBody>
+                  <ContentPanel title="Advanced Settings" subTitle={renderAdvancedSettingsToggle()}>
+                    {!isEmpty(detector) && showAdvancedSettings ? renderAdvancedSettings() : null}
                   </ContentPanel>
                 </EuiPageBody>
               </EuiPage>
@@ -284,6 +356,7 @@ export function EditFeatures(props: EditFeaturesProps) {
               <SampleAnomalies
                 detector={detector}
                 featureList={values.featureList}
+                shingleSize={values.shingleSize}
                 errors={errors}
                 setFieldTouched={setFieldTouched}
               />

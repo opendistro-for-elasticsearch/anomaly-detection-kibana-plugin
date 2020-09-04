@@ -35,19 +35,21 @@ export interface FeaturesFormikValues {
 }
 
 export function prepareDetector(
-  values: FeaturesFormikValues[],
+  featureValues: FeaturesFormikValues[],
+  shingleSizeValue: number,
   ad: Detector,
   forPreview: boolean = false
 ): Detector {
   const detector = cloneDeep(ad);
-  const featureAttributes = formikToFeatures(values, forPreview);
+  const featureAttributes = formikToFeatures(featureValues, forPreview);
 
   return {
     ...detector,
     featureAttributes: [...featureAttributes],
+    shingleSize: shingleSizeValue,
     uiMetadata: {
       ...detector.uiMetadata,
-      features: { ...formikToUIMetadata(values) },
+      features: { ...formikToUIMetadata(featureValues) },
     },
   };
 }

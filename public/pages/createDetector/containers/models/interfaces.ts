@@ -25,4 +25,5 @@ export interface ADFormikValues {
   filterQuery: string;
   detectionInterval: number;
   windowDelay: number;
+  shingleSize: number;
 }
