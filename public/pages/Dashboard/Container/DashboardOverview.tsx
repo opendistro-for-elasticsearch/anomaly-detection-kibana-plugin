@@ -203,75 +203,77 @@ export function DashboardOverview() {
   }, [selectedDetectorsName, selectedIndices, selectedDetectorStates]);
 
   return (
-    <Fragment>
-      <DashboardHeader hasDetectors={adState.totalDetectors > 0} />
-      {isLoadingDetectors ? (
-        <div>
-          <EuiLoadingSpinner size="s" />
-          &nbsp;&nbsp;
-          <EuiLoadingSpinner size="m" />
-          &nbsp;&nbsp;
-          <EuiLoadingSpinner size="l" />
-          &nbsp;&nbsp;
-          <EuiLoadingSpinner size="xl" />
-        </div>
-      ) : adState.totalDetectors === 0 ? (
-        <EmptyDashboard />
-      ) : (
-        <Fragment>
-          <EuiFlexGroup justifyContent="flexStart" gutterSize="s">
-            <EuiFlexItem>
-              <EuiComboBox
-                id="detectorFilter"
-                data-test-subj="detectorFilter"
-                placeholder={ALL_DETECTORS_MESSAGE}
-                options={getDetectorOptions(allDetectorList)}
-                onChange={handleDetectorsFilterChange}
-                selectedOptions={selectedDetectorsName.map(buildItemOption)}
-                isClearable={true}
-                fullWidth
-              />
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <EuiComboBox
-                id="detectorStateFilter"
-                data-test-subj="detectorStateFilter"
-                placeholder={ALL_DETECTOR_STATES_MESSAGE}
-                options={getDetectorStateOptions()}
-                onChange={handleDetectorStateFilterChange}
-                selectedOptions={selectedDetectorStates.map(buildItemOption)}
-                isClearable={true}
-                fullWidth
-              />
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <EuiComboBox
-                id="indicesFilter"
-                data-test-subj="indicesFilter"
-                placeholder={ALL_INDICES_MESSAGE}
-                options={getVisibleOptions(visibleIndices, visibleAliases)}
-                onChange={handleIndicesFilterChange}
-                selectedOptions={selectedIndices.map(buildItemOption)}
-                isClearable={true}
-                fullWidth
-              />
-            </EuiFlexItem>
-          </EuiFlexGroup>
-          <EuiSpacer />
-          <AnomaliesLiveChart selectedDetectors={currentDetectors} />
-          <EuiSpacer />
-          <EuiFlexGroup justifyContent="spaceBetween">
-            <EuiFlexItem grow={6}>
-              <AnomaliesDistributionChart
-                selectedDetectors={currentDetectors}
-              />
-            </EuiFlexItem>
-            <EuiFlexItem grow={3}>
-              <AnomalousDetectorsList selectedDetectors={currentDetectors} />
-            </EuiFlexItem>
-          </EuiFlexGroup>
-        </Fragment>
-      )}
-    </Fragment>
+    <div style={{ height: '1200px' }}>
+      <Fragment>
+        <DashboardHeader hasDetectors={adState.totalDetectors > 0} />
+        {isLoadingDetectors ? (
+          <div>
+            <EuiLoadingSpinner size="s" />
+            &nbsp;&nbsp;
+            <EuiLoadingSpinner size="m" />
+            &nbsp;&nbsp;
+            <EuiLoadingSpinner size="l" />
+            &nbsp;&nbsp;
+            <EuiLoadingSpinner size="xl" />
+          </div>
+        ) : adState.totalDetectors === 0 ? (
+          <EmptyDashboard />
+        ) : (
+          <Fragment>
+            <EuiFlexGroup justifyContent="flexStart" gutterSize="s">
+              <EuiFlexItem>
+                <EuiComboBox
+                  id="detectorFilter"
+                  data-test-subj="detectorFilter"
+                  placeholder={ALL_DETECTORS_MESSAGE}
+                  options={getDetectorOptions(allDetectorList)}
+                  onChange={handleDetectorsFilterChange}
+                  selectedOptions={selectedDetectorsName.map(buildItemOption)}
+                  isClearable={true}
+                  fullWidth
+                />
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiComboBox
+                  id="detectorStateFilter"
+                  data-test-subj="detectorStateFilter"
+                  placeholder={ALL_DETECTOR_STATES_MESSAGE}
+                  options={getDetectorStateOptions()}
+                  onChange={handleDetectorStateFilterChange}
+                  selectedOptions={selectedDetectorStates.map(buildItemOption)}
+                  isClearable={true}
+                  fullWidth
+                />
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiComboBox
+                  id="indicesFilter"
+                  data-test-subj="indicesFilter"
+                  placeholder={ALL_INDICES_MESSAGE}
+                  options={getVisibleOptions(visibleIndices, visibleAliases)}
+                  onChange={handleIndicesFilterChange}
+                  selectedOptions={selectedIndices.map(buildItemOption)}
+                  isClearable={true}
+                  fullWidth
+                />
+              </EuiFlexItem>
+            </EuiFlexGroup>
+            <EuiSpacer />
+            <AnomaliesLiveChart selectedDetectors={currentDetectors} />
+            <EuiSpacer />
+            <EuiFlexGroup justifyContent="spaceBetween">
+              <EuiFlexItem grow={6}>
+                <AnomaliesDistributionChart
+                  selectedDetectors={currentDetectors}
+                />
+              </EuiFlexItem>
+              <EuiFlexItem grow={3}>
+                <AnomalousDetectorsList selectedDetectors={currentDetectors} />
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </Fragment>
+        )}
+      </Fragment>
+    </div>
   );
 }
