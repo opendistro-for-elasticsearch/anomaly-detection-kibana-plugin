@@ -93,3 +93,5 @@ export enum MISSING_FEATURE_DATA_SEVERITY {
   // needs user attention and action
   RED = '2',
 }
+
+export const SPACE_STR = ' ';
