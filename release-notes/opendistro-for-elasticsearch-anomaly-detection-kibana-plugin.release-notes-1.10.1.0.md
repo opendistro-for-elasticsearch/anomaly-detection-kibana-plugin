@@ -44,9 +44,9 @@ Compatible with Kibana 7.9.1
 * Add a few badges (#262)
 * Updating the release notes to have 4th digit (#291)
 * Update 1.10.0.0 release notes (#296)
+* Add release note for PR 301 (#302)
 
 ### Maintenance
 
 * Adding support for Kibana 7.9.0 (#286)
-* Add release note for PR 301 (#302)
 * Updating plugin to use Kibana 7.9.1 (#306)
