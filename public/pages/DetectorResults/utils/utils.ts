@@ -20,6 +20,7 @@ import {
 } from './constants';
 import { DETECTOR_STATE, SHINGLE_SIZE } from '../../../utils/constants';
 import moment, { Moment } from 'moment';
+import { get } from 'lodash';
 import { DETECTOR_INIT_FAILURES } from '../../../pages/DetectorDetail/utils/constants';
 
 export const IS_INIT_OVERTIME_FIELD = 'isInitOvertime';
@@ -50,7 +51,7 @@ const isDetectorInitOverTime = (currentTime: Moment, detector: Detector) => {
     //@ts-ignore
     currentTime
       .subtract(
-        SHINGLE_SIZE * detector.detectionInterval.period.interval,
+        get(detector, 'shingleSize', SHINGLE_SIZE) * detector.detectionInterval.period.interval,
         detector.detectionInterval.period.unit.toLowerCase()
       )
       //@ts-ignore

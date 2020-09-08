@@ -20,6 +20,7 @@ import {
   EuiIcon,
   EuiButton,
   EuiEmptyPrompt,
+  EuiSpacer,
 } from '@elastic/eui';
 import {
   Detector,
@@ -27,7 +28,7 @@ import {
   FeatureAttributes,
 } from '../../../models/interfaces';
 import { get, sortBy } from 'lodash';
-import { PLUGIN_NAME } from '../../../utils/constants';
+import { PLUGIN_NAME, SHINGLE_SIZE } from '../../../utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { CodeModal } from '../components/CodeModal/CodeModal';
 import { getTitleWithCount } from '../../../utils/utils';
@@ -93,6 +94,7 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
 
   public render() {
     const featureAttributes = get(this.props.detector, 'featureAttributes', []);
+    const shingleSize = get(this.props.detector, 'shingleSize', SHINGLE_SIZE);
 
     const sorting = {
       sort: {
@@ -170,7 +172,7 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
       },
       {
         field: 'state',
-        name: 'State',
+        name: 'Feature state',
       },
     ];
 
@@ -182,17 +184,21 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
 
     const featureNum = Object.keys(featureAttributes).length;
 
+    const setParamsText = `Set the index fields that you want to find anomalies for by defining
+                           the model features. You can also set other model parameters such as
+                           window size.`
+
+    const previewText = `After you set the model features and other optional parameters, you can
+                         preview your anomalies from a sample feature output.`
+
     return (
       <ContentPanel
-        title={getTitleWithCount('Features', featureNum)}
+        title="Model configuration"
         titleSize="s"
         subTitle={
           <EuiText className="anomaly-distribution-subtitle">
             <p>
-              Specify index fields that you want to find anomalies for by
-              defining features. A detector can discover anomalies for up to 5
-              features. Once you define the features, you can preview your
-              anomalies from a sample feature output.{' '}
+              {`${setParamsText} ${previewText} `}
               <EuiLink
                 href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
                 target="_blank"
@@ -211,14 +217,15 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
           <EuiEmptyPrompt
             title={
               <span className="emptyFeatureTitle">
-                Features are required to run a detector
+                Model parameters are required to run a detector
               </span>
             }
             body={
               <EuiText className="emptyFeatureBody">
-                Specify index fields that you want to find anomalies for by
-                defining features. Once you define the features, you can preview
-                your anomalies from a sample feature output.
+                {setParamsText}
+                <br/>
+                <br/>
+                {previewText}
               </EuiText>
             }
             actions={[
@@ -227,18 +234,37 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
                 href={`${PLUGIN_NAME}#/detectors/${this.props.detectorId}/features`}
                 fill
               >
-                Add feature
+                Configure model
               </EuiButton>,
             ]}
           />
         ) : (
-          <EuiBasicTable
-            items={sortedItems}
-            columns={columns}
-            cellProps={getCellProps}
-            sorting={sorting}
-            onChange={this.handleTableChange}
-          />
+          <div>
+            <ContentPanel
+              title={getTitleWithCount('Features', featureNum)}
+              titleSize="s"
+            >
+              <EuiBasicTable
+                items={sortedItems}
+                columns={columns}
+                cellProps={getCellProps}
+                sorting={sorting}
+                onChange={this.handleTableChange}
+              />
+            </ContentPanel>
+            <EuiSpacer size="m"/>
+            <ContentPanel
+              title="Additional settings"
+              titleSize="s"
+            >
+              <EuiBasicTable
+                className="header-single-value-euiBasicTable"
+                items={[{ windowSize: shingleSize }]}
+                columns={[{ field: 'windowSize', name: 'Window size'}]}
+                cellProps={getCellProps}
+              />
+            </ContentPanel>
+          </div>
         )}
       </ContentPanel>
     );
