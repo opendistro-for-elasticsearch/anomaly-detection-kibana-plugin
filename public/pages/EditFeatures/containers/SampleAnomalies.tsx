@@ -45,6 +45,9 @@ import { FeatureBreakDown } from '../../AnomalyCharts/containers/FeatureBreakDow
 import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
 import { generateAnomalyAnnotations } from '../../utils/anomalyResultUtils';
 import { focusOnFirstWrongFeature } from '../utils/helpers';
+import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
+import { AnomalyOccurrenceChart } from '../../AnomalyCharts/containers/AnomalyOccurrenceChart';
+import { INITIAL_ANOMALY_SUMMARY } from '../../AnomalyCharts/utils/constants';
 
 interface SampleAnomaliesProps {
   detector: Detector;
@@ -52,6 +55,7 @@ interface SampleAnomaliesProps {
   shingleSize: number;
   errors: any;
   setFieldTouched: any;
+  isHCDetector?: boolean;
 }
 
 export function SampleAnomalies(props: SampleAnomaliesProps) {
@@ -74,6 +78,8 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
     endDate: initialEndDate.valueOf(),
   });
 
+  const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
+
   useEffect(() => {
     if (!firstPreview) {
       getSampleAnomalies();
@@ -95,6 +101,10 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
       startDate: startDate,
       endDate: endDate,
     });
+  }, []);
+
+  const handleHeatmapCellSelected = useCallback((heatmapCell: HeatmapCell) => {
+    setSelectedHeatmapCell(heatmapCell);
   }, []);
 
   const anomaliesResult = useSelector(
@@ -213,6 +223,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
           ) : null}
           {!firstPreview ? (
             <Fragment>
+              {/* {!props.isHCDetector ? null : ( */}
               <AnomaliesChart
                 title="Sample anomaly history"
                 onDateRangeChange={handleDateRangeChange}
@@ -224,7 +235,11 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                 confidenceSeriesName="Sample confidence"
                 detectorId={props.detector.id}
                 detectorName={props.detector.name}
+                isHCDetector={props.isHCDetector}
+                onHeatmapCellSelected={handleHeatmapCellSelected}
+                selectedHeatmapCell={selectedHeatmapCell}
               />
+              {/* )} */}
               <EuiSpacer />
               {isLoading ? (
                 <EuiFlexGroup
@@ -236,17 +251,54 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                   </EuiFlexItem>
                 </EuiFlexGroup>
               ) : (
-                <FeatureBreakDown
-                  title="Sample feature breakdown"
-                  detector={newDetector}
-                  anomaliesResult={anomaliesResult}
-                  annotations={generateAnomalyAnnotations(
-                    get(anomaliesResult, 'anomalies', [])
-                  )}
-                  isLoading={isLoading}
-                  dateRange={zoomRange}
-                  featureDataSeriesName="Sample feature output"
-                />
+                [
+                  props.isHCDetector
+                    ? [
+                        <AnomalyOccurrenceChart
+                          title="Anomaly history"
+                          dateRange={dateRange}
+                          onDateRangeChange={handleDateRangeChange}
+                          onZoomRangeChange={handleZoomChange}
+                          anomalies={
+                            anomaliesResult ? anomaliesResult.anomalies : []
+                          }
+                          bucketizedAnomalies={false}
+                          anomalySummary={INITIAL_ANOMALY_SUMMARY}
+                          isLoading={isLoading}
+                          anomalyGradeSeriesName="Anomaly grade"
+                          confidenceSeriesName="Confidence"
+                          showAlerts={true}
+                          detectorId={props.detector.id}
+                          detectorName={props.detector.name}
+                          detector={props.detector}
+                          detectorInterval={get(
+                            props.detector,
+                            'detectionInterval.period.interval'
+                          )}
+                          unit={get(
+                            props.detector,
+                            'detectionInterval.period.unit'
+                          )}
+                          isHCDetector={props.isHCDetector}
+                          selectedHeatmapCell={selectedHeatmapCell}
+                        />,
+                        <EuiSpacer size="m" />,
+                      ]
+                    : null,
+                  <FeatureBreakDown
+                    title="Sample feature breakdown"
+                    detector={newDetector}
+                    anomaliesResult={anomaliesResult}
+                    annotations={generateAnomalyAnnotations(
+                      get(anomaliesResult, 'anomalies', [])
+                    )}
+                    isLoading={isLoading}
+                    dateRange={zoomRange}
+                    featureDataSeriesName="Sample feature output"
+                    isHCDetector={props.isHCDetector}
+                    selectedHeatmapCell={selectedHeatmapCell}
+                  />,
+                ]
               )}
             </Fragment>
           ) : null}

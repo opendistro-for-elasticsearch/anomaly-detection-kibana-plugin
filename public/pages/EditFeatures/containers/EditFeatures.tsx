@@ -32,7 +32,14 @@ import {
   EuiFieldNumber,
   EuiFormRow,
 } from '@elastic/eui';
-import { FieldArray, FieldArrayRenderProps, Form, Formik, Field, FieldProps } from 'formik';
+import {
+  FieldArray,
+  FieldArrayRenderProps,
+  Form,
+  Formik,
+  Field,
+  FieldProps,
+} from 'formik';
 import { get, isEmpty } from 'lodash';
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
@@ -41,7 +48,12 @@ import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
 import { updateDetector, startDetector } from '../../../redux/reducers/ad';
-import { getErrorMessage, validatePositiveInteger, isInvalid, getError } from '../../../utils/utils';
+import {
+  getErrorMessage,
+  validatePositiveInteger,
+  isInvalid,
+  getError,
+} from '../../../utils/utils';
 import { prepareDetector } from './utils/formikToFeatures';
 import { useFetchDetectorInfo } from '../../createDetector/hooks/useFetchDetectorInfo';
 //@ts-ignore
@@ -79,7 +91,9 @@ export function EditFeatures(props: EditFeaturesProps) {
   >(SAVE_FEATURE_OPTIONS.START_AD_JOB);
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [readyToStartAdJob, setReadyToStartAdJob] = useState<boolean>(true);
-  const [showAdvancedSettings, setShowAdvancedSettings] = useState<boolean>(false);
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState<boolean>(
+    false
+  );
 
   useEffect(() => {
     chrome.breadcrumbs.set([
@@ -250,30 +264,27 @@ export function EditFeatures(props: EditFeaturesProps) {
   const renderAdvancedSettingsToggle = () => (
     <EuiText
       className="content-panel-subTitle"
-      onClick={()=>{setShowAdvancedSettings(!showAdvancedSettings);}}
+      onClick={() => {
+        setShowAdvancedSettings(!showAdvancedSettings);
+      }}
     >
-      <EuiLink>
-        {showAdvancedSettings ? 'Hide' : 'Show'}
-      </EuiLink>
+      <EuiLink>{showAdvancedSettings ? 'Hide' : 'Show'}</EuiLink>
     </EuiText>
   );
 
   const renderAdvancedSettings = () => (
-    <Field
-      name="shingleSize"
-      validate={validatePositiveInteger}
-    >
+    <Field name="shingleSize" validate={validatePositiveInteger}>
       {({ field, form }: FieldProps) => (
         <EuiFormRow
           label="Window size"
           helpText={
             <EuiText className="content-panel-subTitle">
-              Set the number of intervals to consider in a detection
-              window. We recommend you choose this value based on your actual
-              data. If you expect missing values in your data or if you want
-              the anomalies based on the current interval, choose 1. If
-              your data is continuously ingested and you want the anomalies
-              based on multiple intervals, choose a larger window size.{' '}
+              Set the number of intervals to consider in a detection window. We
+              recommend you choose this value based on your actual data. If you
+              expect missing values in your data or if you want the anomalies
+              based on the current interval, choose 1. If your data is
+              continuously ingested and you want the anomalies based on multiple
+              intervals, choose a larger window size.{' '}
               <EuiLink
                 href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
                 target="_blank"
@@ -311,7 +322,7 @@ export function EditFeatures(props: EditFeaturesProps) {
         enableReinitialize
         initialValues={{
           featureList: generateInitialFeatures(detector),
-          shingleSize: get(detector, 'shingleSize', SHINGLE_SIZE)
+          shingleSize: get(detector, 'shingleSize', SHINGLE_SIZE),
         }}
         onSubmit={(values, actions) =>
           handleSubmit(values, actions.setSubmitting)
@@ -345,8 +356,13 @@ export function EditFeatures(props: EditFeaturesProps) {
               </EuiPage>
               <EuiPage>
                 <EuiPageBody>
-                  <ContentPanel title="Advanced Settings" subTitle={renderAdvancedSettingsToggle()}>
-                    {!isEmpty(detector) && showAdvancedSettings ? renderAdvancedSettings() : null}
+                  <ContentPanel
+                    title="Advanced Settings"
+                    subTitle={renderAdvancedSettingsToggle()}
+                  >
+                    {!isEmpty(detector) && showAdvancedSettings
+                      ? renderAdvancedSettings()
+                      : null}
                   </ContentPanel>
                 </EuiPageBody>
               </EuiPage>
@@ -359,6 +375,7 @@ export function EditFeatures(props: EditFeaturesProps) {
                 shingleSize={values.shingleSize}
                 errors={errors}
                 setFieldTouched={setFieldTouched}
+                isHCDetector={true}
               />
             ) : null}
 

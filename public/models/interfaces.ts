@@ -112,6 +112,7 @@ export type Detector = {
   curState: DETECTOR_STATE;
   stateError: string;
   initProgress?: InitProgress;
+  categoryField?: string[];
 };
 
 export type DetectorListItem = {
@@ -134,6 +135,8 @@ export type AnomalyData = {
   endTime: number;
   startTime: number;
   plotTime?: number;
+  categoryField?: string;
+  categoryValue?: string;
 };
 
 export type FeatureAggregationData = {

@@ -25,14 +25,16 @@ import React, { useEffect, useState } from 'react';
 import chrome from 'ui/chrome';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
-import { staticColumn } from '../utils/tableUtils';
+import { categoryValueColumn, staticColumn } from '../utils/tableUtils';
 import { ListControls } from '../components/ListControls/ListControls';
 import { DetectorResultsQueryParams } from 'server/models/types';
 import { AnomalyData } from '../../../models/interfaces';
 import { getTitleWithCount } from '../../../utils/utils';
+import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 
 interface AnomalyResultsTableProps {
   anomalies: AnomalyData[];
+  isHCDetector?: boolean;
 }
 
 interface ListState {
@@ -53,7 +55,7 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
   });
   const [targetAnomalies, setTargetAnomalies] = useState<AnomalyData[]>([]);
   const totalAnomalies = props.anomalies
-    ? props.anomalies.filter(anomaly => anomaly.anomalyGrade > 0)
+    ? props.anomalies.filter((anomaly) => anomaly.anomalyGrade > 0)
     : [];
 
   const sortFiledCompare = (field: string, sortDirection: SORT_DIRECTION) => {
@@ -68,7 +70,7 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
 
   useEffect(() => {
     const anomalies = props.anomalies
-      ? props.anomalies.filter(anomaly => anomaly.anomalyGrade > 0)
+      ? props.anomalies.filter((anomaly) => anomaly.anomalyGrade > 0)
       : [];
 
     anomalies.sort(
@@ -134,7 +136,15 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
 
       <EuiBasicTable
         items={targetAnomalies}
-        columns={staticColumn}
+        columns={
+          props.isHCDetector
+            ? [
+                ...staticColumn.slice(0, 2),
+                categoryValueColumn,
+                ...staticColumn.slice(2),
+              ]
+            : staticColumn
+        }
         onChange={handleTableChange}
         sorting={sorting}
         pagination={pagination}

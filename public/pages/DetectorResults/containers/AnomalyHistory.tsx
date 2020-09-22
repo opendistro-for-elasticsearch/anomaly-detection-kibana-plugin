@@ -14,12 +14,15 @@
  */
 
 import React, { useState, useEffect, useCallback, Fragment } from 'react';
+
+import { isEmpty, get } from 'lodash';
 import {
   EuiFlexItem,
   EuiFlexGroup,
   EuiTabs,
   EuiTab,
   EuiLoadingSpinner,
+  EuiSpacer,
 } from '@elastic/eui';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
@@ -40,8 +43,8 @@ import {
   parsePureAnomalies,
   buildParamsForGetAnomalyResultsWithDateRange,
   FEATURE_DATA_CHECK_WINDOW_OFFSET,
+  filterWithHeatmapCell,
 } from '../../utils/anomalyResultUtils';
-import { get } from 'lodash';
 import { AnomalyResultsTable } from './AnomalyResultsTable';
 import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
 import { FeatureBreakDown } from '../../AnomalyCharts/containers/FeatureBreakDown';
@@ -52,6 +55,8 @@ import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
 import { INITIAL_ANOMALY_SUMMARY } from '../../AnomalyCharts/utils/constants';
 import { MAX_ANOMALIES } from '../../../utils/constants';
 import { getDetectorResults } from '../../../redux/reducers/anomalyResults';
+import { AnomalyOccurrenceChart } from '../../AnomalyCharts/containers/AnomalyOccurrenceChart';
+import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 
 interface AnomalyHistoryProps {
   detector: Detector;
@@ -75,7 +80,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     endDate: initialEndDate.valueOf(),
   });
   const [selectedTabId, setSelectedTabId] = useState<string>(
-    ANOMALY_HISTORY_TABS.FEATURE_BREAKDOWN
+    ANOMALY_HISTORY_TABS.ANOMALY_OCCURRENCE
   );
 
   const [isLoadingAnomalyResults, setIsLoadingAnomalyResults] = useState<
@@ -88,6 +93,14 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   const [bucketizedAnomalySummary, setBucketizedAnomalySummary] = useState<
     AnomalySummary
   >(INITIAL_ANOMALY_SUMMARY);
+
+  const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
+
+  // const isHCDetector = !isEmpty(
+  //   get(props.detector, 'categoryField', ['nont-empty'])
+  // );
+  const isHCDetector = true;
+  console.log('isHCDetector', isHCDetector);
 
   useEffect(() => {
     // We load at most 10k AD result data points for one call. If user choose
@@ -212,6 +225,12 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     });
   }, []);
 
+  const handleHeatmapCellSelected = useCallback((heatmapCell: HeatmapCell) => {
+    setSelectedHeatmapCell(heatmapCell);
+  }, []);
+
+  console.log('selectedHeatmapCell in anomaly history', selectedHeatmapCell);
+
   const annotations = anomalyResults
     ? get(anomalyResults, 'anomalies', [])
         //@ts-ignore
@@ -231,13 +250,13 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
 
   const tabs = [
     {
-      id: ANOMALY_HISTORY_TABS.FEATURE_BREAKDOWN,
-      name: 'Feature breakdown',
+      id: ANOMALY_HISTORY_TABS.ANOMALY_OCCURRENCE,
+      name: 'Anomaly occurrence',
       disabled: false,
     },
     {
-      id: ANOMALY_HISTORY_TABS.ANOMALY_OCCURRENCE,
-      name: 'Anomaly occurrence',
+      id: ANOMALY_HISTORY_TABS.FEATURE_BREAKDOWN,
+      name: 'Feature breakdown',
       disabled: false,
     },
   ];
@@ -282,6 +301,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         )}
         unit={get(props.detector, 'detectionInterval.period.unit')}
         monitor={props.monitor}
+        isHCDetector={isHCDetector}
+        onHeatmapCellSelected={handleHeatmapCellSelected}
+        selectedHeatmapCell={selectedHeatmapCell}
       >
         <EuiTabs>{renderTabs()}</EuiTabs>
 
@@ -296,7 +318,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
           </EuiFlexGroup>
         ) : (
           <div style={{ padding: '20px', backgroundColor: '#F7F7F7' }}>
-            {selectedTabId === 'featureBreakdown' ? (
+            {selectedTabId === ANOMALY_HISTORY_TABS.FEATURE_BREAKDOWN ? (
               <FeatureBreakDown
                 detector={props.detector}
                 // @ts-ignore
@@ -306,23 +328,75 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                 isLoading={isLoading}
                 dateRange={zoomRange}
                 featureDataSeriesName="Feature output"
-                showFeatureMissingDataPointAnnotation={props.detector.enabled}
+                showFeatureMissingDataPointAnnotation={
+                  props.detector.enabled &&
+                  // only disable showing when isHCDetector but heatmap cell not selected
+                  // !(isHCDetector && !selectedHeatmapCell)
+                  !isHCDetector
+                }
                 isFeatureDataMissing={props.isFeatureDataMissing}
+                isHCDetector={isHCDetector}
+                selectedHeatmapCell={selectedHeatmapCell}
               />
             ) : (
-              <AnomalyResultsTable
-                anomalies={
-                  bucketizedAnomalyResults === undefined
-                    ? anomalyResults
-                      ? filterWithDateRange(
-                          anomalyResults.anomalies,
-                          zoomRange,
-                          'plotTime'
-                        )
-                      : []
-                    : pureAnomalies
-                }
-              />
+              [
+                isHCDetector
+                  ? [
+                      <AnomalyOccurrenceChart
+                        title={
+                          selectedHeatmapCell
+                            ? selectedHeatmapCell.categoryValue
+                            : '-'
+                        }
+                        dateRange={dateRange}
+                        onDateRangeChange={handleDateRangeChange}
+                        onZoomRangeChange={handleZoomChange}
+                        anomalies={
+                          anomalyResults ? anomalyResults.anomalies : []
+                        }
+                        bucketizedAnomalies={
+                          bucketizedAnomalyResults !== undefined
+                        }
+                        anomalySummary={bucketizedAnomalySummary}
+                        isLoading={isLoading || isLoadingAnomalyResults}
+                        anomalyGradeSeriesName="Anomaly grade"
+                        confidenceSeriesName="Confidence"
+                        showAlerts={true}
+                        detectorId={props.detector.id}
+                        detectorName={props.detector.name}
+                        detector={props.detector}
+                        detectorInterval={get(
+                          props.detector,
+                          'detectionInterval.period.interval'
+                        )}
+                        unit={get(
+                          props.detector,
+                          'detectionInterval.period.unit'
+                        )}
+                        monitor={props.monitor}
+                        isHCDetector={isHCDetector}
+                        selectedHeatmapCell={selectedHeatmapCell}
+                      />,
+                      <EuiSpacer size="m" />,
+                    ]
+                  : null,
+                <AnomalyResultsTable
+                  anomalies={filterWithHeatmapCell(
+                    bucketizedAnomalyResults === undefined
+                      ? anomalyResults
+                        ? filterWithDateRange(
+                            anomalyResults.anomalies,
+                            zoomRange,
+                            'plotTime'
+                          )
+                        : []
+                      : pureAnomalies,
+                    selectedHeatmapCell,
+                    true
+                  )}
+                  isHCDetector={isHCDetector}
+                />,
+              ]
             )}
           </div>
         )}

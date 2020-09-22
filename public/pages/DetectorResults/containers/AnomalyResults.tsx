@@ -27,7 +27,7 @@ import {
   EuiText,
   EuiLoadingSpinner,
 } from '@elastic/eui';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React, { useEffect, Fragment, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
@@ -266,7 +266,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       return get(
         getFeatureDataMissingMessageAndActionItem(
           featureMissingSeverity,
-          featureNamesAtHighSev
+          featureNamesAtHighSev,
+          !isEmpty(detector.categoryField)
         ),
         'message',
         ''
@@ -354,7 +355,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
         {get(
           getFeatureDataMissingMessageAndActionItem(
             featureMissingSeverity,
-            featureNamesAtHighSev
+            featureNamesAtHighSev,
+            !isEmpty(detector.categoryField)
           ),
           'actionItem',
           ''

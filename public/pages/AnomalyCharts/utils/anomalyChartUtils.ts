@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { get } from 'lodash';
+import { cloneDeep, get, isEmpty } from 'lodash';
 import {
   DateRange,
   Detector,
@@ -23,6 +23,9 @@ import {
 import { dateFormatter, minuteDateFormatter } from '../../utils/helpers';
 import { RectAnnotationDatum } from '@elastic/charts';
 import { DEFAULT_ANOMALY_SUMMARY } from './constants';
+import { PlotData } from 'plotly.js';
+import moment, { Moment } from 'moment';
+import { calculateTimeWindowsWithMaxDataPoints } from '../../utils/anomalyResultUtils';
 
 export const getAlertsQuery = (monitorId: string, startTime: number) => {
   return {
@@ -108,22 +111,24 @@ export const getAnomalySummary = (totalAnomalies: any[]): AnomalySummary => {
   if (totalAnomalies == undefined || totalAnomalies.length === 0) {
     return DEFAULT_ANOMALY_SUMMARY;
   }
-  const anomalies = totalAnomalies.filter(anomaly => anomaly.anomalyGrade > 0);
+  const anomalies = totalAnomalies.filter(
+    (anomaly) => anomaly.anomalyGrade > 0
+  );
   const maxConfidence = Math.max(
-    ...anomalies.map(anomaly => anomaly.confidence),
+    ...anomalies.map((anomaly) => anomaly.confidence),
     0.0
   );
   const minConfidence = Math.min(
-    ...anomalies.map(anomaly => anomaly.confidence),
+    ...anomalies.map((anomaly) => anomaly.confidence),
     1.0
   );
 
   const maxAnomalyGrade = Math.max(
-    ...anomalies.map(anomaly => anomaly.anomalyGrade),
+    ...anomalies.map((anomaly) => anomaly.anomalyGrade),
     0.0
   );
   const minAnomalyGrade = Math.min(
-    ...anomalies.map(anomaly => anomaly.anomalyGrade),
+    ...anomalies.map((anomaly) => anomaly.anomalyGrade),
     1.0
   );
 
@@ -173,4 +178,241 @@ export const disabledHistoryAnnotations = (
       details: details,
     },
   ];
+};
+
+export const ANOMALY_HEATMAP_COLORSCALE = [
+  [0, '#F2F2F2'],
+  [0.2, '#F2F2F2'],
+  [0.2, '#F7E0B8'],
+  [0.4, '#F7E0B8'],
+  [0.4, '#F2C596'],
+  [0.6, '#F2C596'],
+  [0.6, '#ECA976'],
+  [0.8, '#ECA976'],
+  [0.8, '#E78D5B'],
+  [1, '#E8664C'],
+];
+
+const getColorForValue = (value: number) => {
+  if (
+    value >=
+    ANOMALY_HEATMAP_COLORSCALE[ANOMALY_HEATMAP_COLORSCALE.length - 1][0]
+  ) {
+    return ANOMALY_HEATMAP_COLORSCALE[ANOMALY_HEATMAP_COLORSCALE.length - 1][1];
+  }
+
+  if (value <= ANOMALY_HEATMAP_COLORSCALE[0][0]) {
+    return ANOMALY_HEATMAP_COLORSCALE[0][1];
+  }
+
+  for (let i = 0; i < ANOMALY_HEATMAP_COLORSCALE.length - 1; i++) {
+    if (
+      value >= ANOMALY_HEATMAP_COLORSCALE[i][0] &&
+      value < ANOMALY_HEATMAP_COLORSCALE[i + 1][0]
+    ) {
+      return ANOMALY_HEATMAP_COLORSCALE[i + 1][1];
+    }
+  }
+};
+
+const NUM_CELLS = 20;
+
+interface AggregatedAnomalyResult {
+  maxAnomalyGrade: number | null;
+  numAnomalyGrade: number | null;
+  dateRange: DateRange;
+}
+
+export const HEATMAP_X_AXIS_DATE_FORMAT = 'MM-DD HH:mm YYYY';
+
+export const getAnomaliesHeatmapData = (
+  anomalies: any[],
+  dateRange: DateRange
+): PlotData[] => {
+  console.log('anomalies', anomalies);
+
+  const timeWindows = calculateTimeWindowsWithMaxDataPoints(
+    NUM_CELLS,
+    dateRange
+  );
+
+  const aggregatedResultsInWindows = [] as AggregatedAnomalyResult[];
+  timeWindows.forEach((timeWindow) => {
+    const anomaliesInWindow = anomalies.filter(
+      (anomaly) =>
+        get(anomaly, 'plotTime', 0) <= timeWindow.endDate &&
+        get(anomaly, 'plotTime', 0) >= timeWindow.startDate
+    );
+    // .filter((anomaly) => get(anomaly, 'anomalyGrade', 0) > 0);
+    const anomalyGrades = anomaliesInWindow.map((anomaly) =>
+      get(anomaly, 'anomalyGrade', 0)
+    );
+    if (!isEmpty(anomalyGrades)) {
+      aggregatedResultsInWindows.push({
+        maxAnomalyGrade: Math.max(...anomalyGrades),
+        numAnomalyGrade: anomalyGrades.filter(
+          (anomalyGrade) => anomalyGrade > 0
+        ).length,
+        dateRange: timeWindow,
+      });
+    } else {
+      aggregatedResultsInWindows.push({
+        maxAnomalyGrade: 0,
+        numAnomalyGrade: 0,
+        dateRange: timeWindow,
+      });
+    }
+  });
+
+  const plotTimes = aggregatedResultsInWindows.map((aggregatedResults) =>
+    get(aggregatedResults, 'dateRange.endDate', 0)
+  );
+  const maxAnomalyGrades = aggregatedResultsInWindows.map((aggregatedResults) =>
+    get(aggregatedResults, 'maxAnomalyGrade', 0)
+  );
+
+  const numAnomalyGrades = aggregatedResultsInWindows.map((aggregatedResults) =>
+    get(aggregatedResults, 'numAnomalyGrade', 0)
+  );
+  // console.log('plotTimes', plotTimes);
+  // console.log('aggregatedResultsInWindows', aggregatedResultsInWindows);
+  // console.log('maxAnomalyGrades', maxAnomalyGrades);
+  // console.log('anomalyGrades', anomalyGrades);
+  const entities = ['value1', 'value2', 'value3', 'value4', 'value5'];
+  const z = [];
+  for (let i = 0; i < entities.length; i++) {
+    const row = [];
+    for (let j = 0; j < plotTimes.length; j++) {
+      row.push(maxAnomalyGrades[j]);
+    }
+    z.push(row);
+  }
+  const texts = [];
+  for (let i = 0; i < entities.length; i++) {
+    const row = [];
+    for (let j = 0; j < plotTimes.length; j++) {
+      row.push(`${numAnomalyGrades[j]}`);
+    }
+    texts.push(row);
+  }
+  // console.log('z data', z);
+  // const z_focused = [];
+  // for (let i = 0; i < entities.length; i++) {
+  //   const row = [];
+  //   for (let j = 0; j < plotTimes.length; j++) {
+  //     if (i == 0 && j == 0) {
+  //       row.push(z[i][j]);
+  //     } else {
+  //       row.push(null);
+  //     }
+  //   }
+  //   z_focused.push(row);
+  // }
+  // console.log('z_focused data', z_focused);
+  // const xs = ['x1', 'x2', 'x3', 'x4', 'x5', 'x6'];
+  // const zs = [];
+  // for (let i = 0; i < entities.length; i++) {
+  //   const row = [];
+  //   for (let j = 0; j < xs.length; j++) {
+  //     row.push(Math.random());
+  //   }
+  //   zs.push(row);
+  // }
+  const plotData = [
+    {
+      x: plotTimes.map((timestamp) =>
+        moment(timestamp).format(HEATMAP_X_AXIS_DATE_FORMAT)
+      ),
+      y: entities,
+      z: z,
+      colorscale: ANOMALY_HEATMAP_COLORSCALE,
+      //@ts-ignore
+      zmin: 0,
+      zmax: 1,
+      type: 'heatmap',
+      showscale: false,
+      xgap: 2,
+      ygap: 2,
+      opacity: 1,
+      text: texts,
+      // text: [
+      //   plotDateRanges.map((result) => {
+      //     moment(get(result, 'startDate')).format(HEATMAP_X_AXIS_DATE_FORMAT) +
+      //       '-' +
+      //       moment(get(result, 'endDate')).format(HEATMAP_X_AXIS_DATE_FORMAT);
+      //   }),
+      //   plotDateRanges.map((result) => {
+      //     moment(get(result, 'startDate')).format(HEATMAP_X_AXIS_DATE_FORMAT) +
+      //       '-' +
+      //       moment(get(result, 'endDate')).format(HEATMAP_X_AXIS_DATE_FORMAT);
+      //   }),
+      //   plotDateRanges.map((result) => {
+      //     moment(get(result, 'startDate')).format(HEATMAP_X_AXIS_DATE_FORMAT) +
+      //       '-' +
+      //       moment(get(result, 'endDate')).format(HEATMAP_X_AXIS_DATE_FORMAT);
+      //   }),
+      //   plotDateRanges.map((result) => {
+      //     moment(get(result, 'startDate')).format(HEATMAP_X_AXIS_DATE_FORMAT) +
+      //       '-' +
+      //       moment(get(result, 'endDate')).format(HEATMAP_X_AXIS_DATE_FORMAT);
+      //   }),
+      //   plotDateRanges.map((result) => {
+      //     moment(get(result, 'startDate')).format(HEATMAP_X_AXIS_DATE_FORMAT) +
+      //       '-' +
+      //       moment(get(result, 'endDate')).format(HEATMAP_X_AXIS_DATE_FORMAT);
+      //   }),
+      // ],
+      // hoverinfo: 'x+y+z',
+      hovertemplate:
+        '<b>Time</b>: %{x}<br>' +
+        '<b>max</b>: %{z}<br>' +
+        '<b>count</b>: %{text}' +
+        '<extra></extra>',
+    },
+  ] as PlotData[];
+  return plotData;
+};
+
+export const updateHeatmapPlotData = (heatmapData: PlotData, update: any) => {
+  return {
+    ...cloneDeep(heatmapData),
+    ...update,
+  } as PlotData;
+};
+
+export const getSelectedHeatmapCellPlotData = (
+  heatmapData: PlotData,
+  selectedX: number,
+  selectedY: number
+) => {
+  const originalZ = cloneDeep(heatmapData.z);
+  const selectedZData = [];
+  //@ts-ignore
+  const selectedValue = originalZ[selectedY][selectedX];
+  for (let i = 0; i < originalZ.length; i++) {
+    const row = [];
+    //@ts-ignore
+    for (let j = 0; j < originalZ[0].length; j++) {
+      if (i === selectedY && j === selectedX) {
+        row.push(selectedValue);
+      } else {
+        row.push(null);
+      }
+    }
+    selectedZData.push(row);
+  }
+  const colorForCell = getColorForValue(selectedValue);
+  return [
+    {
+      ...cloneDeep(heatmapData),
+      z: selectedZData,
+      colorscale: [
+        [0, colorForCell],
+        [1, colorForCell],
+      ],
+      opacity: 1,
+      // hoverinfo: 'skip',
+      hovertemplate: '<extra></extra>',
+    },
+  ] as PlotData[];
 };

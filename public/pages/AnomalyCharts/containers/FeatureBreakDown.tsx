@@ -33,6 +33,8 @@ import {
 import { NoFeaturePrompt } from '../components/FeatureChart/NoFeaturePrompt';
 import { focusOnFeatureAccordion } from '../../EditFeatures/utils/helpers';
 import moment from 'moment';
+import { HeatmapCell } from './AnomalyHeatmapChart';
+import { filterWithHeatmapCell } from '../../utils/anomalyResultUtils';
 
 interface FeatureBreakDownProps {
   title?: string;
@@ -45,9 +47,54 @@ interface FeatureBreakDownProps {
   showFeatureMissingDataPointAnnotation?: boolean;
   rawAnomalyResults?: Anomalies;
   isFeatureDataMissing?: boolean;
+  isHCDetector?: boolean;
+  selectedHeatmapCell?: HeatmapCell;
 }
 
 export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
+  const getFeatureDataForChart = (
+    anomaliesResult: Anomalies,
+    featureId: string
+  ) => {
+    const originalFeatureData = get(
+      anomaliesResult,
+      `featureData.${featureId}`,
+      []
+    );
+    if (props.isHCDetector) {
+      if (props.selectedHeatmapCell) {
+        return filterWithHeatmapCell(
+          originalFeatureData,
+          props.selectedHeatmapCell
+        );
+      } else {
+        return [];
+      }
+    } else {
+      return originalFeatureData;
+    }
+  };
+  const getAnnotationData = () => {
+    if (props.isHCDetector) {
+      if (props.selectedHeatmapCell) {
+        return filterWithHeatmapCell(
+          props.annotations,
+          props.selectedHeatmapCell,
+          'coordinates.x0'
+        );
+      } else {
+        return [];
+      }
+    } else {
+      return props.annotations;
+    }
+  };
+  const getDateRange = () => {
+    if (props.isHCDetector && props.selectedHeatmapCell) {
+      return props.selectedHeatmapCell.dateRange;
+    }
+    return props.dateRange;
+  };
   return (
     <React.Fragment>
       {props.title ? (
@@ -77,19 +124,18 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
           <React.Fragment key={`${feature.featureName}-${feature.featureId}`}>
             <FeatureChart
               feature={feature}
-              featureData={get(
-                props,
-                `anomaliesResult.featureData.${feature.featureId}`,
-                []
+              featureData={
+                //@ts-ignore
+                getFeatureDataForChart(props.anomaliesResult, feature.featureId)
+              }
+              rawFeatureData={getFeatureDataForChart(
+                //@ts-ignore
+                props.rawAnomalyResults,
+                feature.featureId
               )}
-              rawFeatureData={get(
-                props,
-                `rawAnomalyResults.featureData.${feature.featureId}`,
-                []
-              )}
-              annotations={props.annotations}
+              annotations={getAnnotationData()}
               isLoading={props.isLoading}
-              dateRange={props.dateRange}
+              dateRange={getDateRange()}
               featureType={
                 get(
                   props,
@@ -128,6 +174,11 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
                 props.showFeatureMissingDataPointAnnotation
               }
               detectorEnabledTime={props.detector.enabledTime}
+              titlePrefix={
+                props.selectedHeatmapCell
+                  ? props.selectedHeatmapCell.categoryValue
+                  : undefined
+              }
             />
             <EuiSpacer size="m" />
           </React.Fragment>
