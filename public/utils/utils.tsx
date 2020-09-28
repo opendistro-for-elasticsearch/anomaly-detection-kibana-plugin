@@ -36,6 +36,12 @@ export const validateName = (featureName: string): string | undefined => {
   }
 };
 
+export const validateCategoryField = (val: any): string | undefined => {
+  return !val || val.length === 0
+    ? 'You must select a category field'
+    : undefined;
+};
+
 export const isInvalid = (name: string, form: any) =>
   !!get(form.touched, name, false) && !!get(form.errors, name, false);
 
@@ -89,8 +95,9 @@ export const getAlertingCreateMonitorLink = (
     const navLinks = get(npStart, 'core.chrome.navLinks', undefined);
     const url = `${navLinks.get(ALERTING_PLUGIN_NAME).url}`;
     const alertingRootUrl = getPluginRootPath(url, ALERTING_PLUGIN_NAME);
-    return `${alertingRootUrl}#/create-monitor?searchType=ad&adId=${detectorId}&name=${detectorName}&interval=${2 *
-      detectorInterval}&unit=${unit}`;
+    return `${alertingRootUrl}#/create-monitor?searchType=ad&adId=${detectorId}&name=${detectorName}&interval=${
+      2 * detectorInterval
+    }&unit=${unit}`;
   } catch (e) {
     console.error('unable to get the alerting URL', e);
     return '';
