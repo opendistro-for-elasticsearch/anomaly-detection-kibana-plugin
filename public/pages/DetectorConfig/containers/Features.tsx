@@ -32,6 +32,7 @@ import { PLUGIN_NAME, SHINGLE_SIZE } from '../../../utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { CodeModal } from '../components/CodeModal/CodeModal';
 import { getTitleWithCount } from '../../../utils/utils';
+import { AdditionalSettings } from '../components/AdditionalSettings/AdditionalSettings';
 
 interface FeaturesProps {
   detectorId: string;
@@ -186,10 +187,10 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
 
     const setParamsText = `Set the index fields that you want to find anomalies for by defining
                            the model features. You can also set other model parameters such as
-                           window size.`
+                           window size.`;
 
     const previewText = `After you set the model features and other optional parameters, you can
-                         preview your anomalies from a sample feature output.`
+                         preview your anomalies from a sample feature output.`;
 
     return (
       <ContentPanel
@@ -223,8 +224,8 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
             body={
               <EuiText className="emptyFeatureBody">
                 {setParamsText}
-                <br/>
-                <br/>
+                <br />
+                <br />
                 {previewText}
               </EuiText>
             }
@@ -252,18 +253,11 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
                 onChange={this.handleTableChange}
               />
             </ContentPanel>
-            <EuiSpacer size="m"/>
-            <ContentPanel
-              title="Additional settings"
-              titleSize="s"
-            >
-              <EuiBasicTable
-                className="header-single-value-euiBasicTable"
-                items={[{ windowSize: shingleSize }]}
-                columns={[{ field: 'windowSize', name: 'Window size'}]}
-                cellProps={getCellProps}
-              />
-            </ContentPanel>
+            <EuiSpacer size="m" />
+            <AdditionalSettings
+              shingleSize={shingleSize}
+              categoryField={get(this.props.detector, 'categoryField', [])}
+            />
           </div>
         )}
       </ContentPanel>

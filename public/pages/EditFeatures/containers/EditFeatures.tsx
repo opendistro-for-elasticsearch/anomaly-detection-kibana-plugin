@@ -42,12 +42,14 @@ import {
 } from 'formik';
 import { get, isEmpty } from 'lodash';
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
+import { AppState } from '../../../redux/reducers';
 import { updateDetector, startDetector } from '../../../redux/reducers/ad';
+import { getMappings } from '../../../redux/reducers/elasticsearch';
 import {
   getErrorMessage,
   validatePositiveInteger,
@@ -69,8 +71,11 @@ import {
   generateInitialFeatures,
   validateFeatures,
   focusOnFirstWrongFeature,
+  focusOnCategoryField,
+  getCategoryFields,
 } from '../utils/helpers';
 import { SampleAnomalies } from './SampleAnomalies';
+import { CategoryField } from '../components/CategoryField/CategoryField';
 
 interface FeaturesRouterProps {
   detectorId?: string;
@@ -83,6 +88,9 @@ export function EditFeatures(props: EditFeaturesProps) {
   useHideSideNavBar(true, false);
   const detectorId = get(props, 'match.params.detectorId', '');
   const { detector, hasError } = useFetchDetectorInfo(detectorId);
+  const indexDataTypes = useSelector(
+    (state: AppState) => state.elasticsearch.dataTypes
+  );
   const [showSaveConfirmation, setShowSaveConfirmation] = useState<boolean>(
     false
   );
@@ -94,6 +102,25 @@ export function EditFeatures(props: EditFeaturesProps) {
   const [showAdvancedSettings, setShowAdvancedSettings] = useState<boolean>(
     false
   );
+  const [isHCDetector, setIsHCDetector] = useState<boolean>(false);
+  const [selectedCategoryField, setCategoryField] = useState<string[]>(
+    [] as string[]
+  );
+
+  // When detector is loaded: get any category fields (if applicable) and
+  // get all index mappings based on detector's selected index
+  useEffect(() => {
+    if (
+      detector &&
+      (get(detector, 'categoryField', []).length > 0 ||
+        selectedCategoryField.length > 0)
+    ) {
+      setIsHCDetector(true);
+    }
+    if (detector?.indices) {
+      dispatch(getMappings(detector.indices[0]));
+    }
+  }, [detector, selectedCategoryField]);
 
   useEffect(() => {
     chrome.breadcrumbs.set([
@@ -215,6 +242,7 @@ export function EditFeatures(props: EditFeaturesProps) {
       const requestBody = prepareDetector(
         get(values, 'featureList', []),
         get(values, 'shingleSize', SHINGLE_SIZE),
+        get(values, 'categoryField', []),
         detector
       );
       await dispatch(updateDetector(detector.id, requestBody));
@@ -251,6 +279,15 @@ export function EditFeatures(props: EditFeaturesProps) {
       } else {
         setSaveFeatureOption(SAVE_FEATURE_OPTIONS.START_AD_JOB);
       }
+      if (errors.categoryField) {
+        focusOnCategoryField();
+        return;
+      }
+      // TODO: refactor advanced settings into separate component
+      // to allow for proper rendering to allow to focus on advanced settings component
+      if (errors.shingleSize) {
+        return;
+      }
       setReadyToStartAdJob(values.featureList.length > 0);
       if (values.featureList.length > 0) {
         setShowSaveConfirmation(true);
@@ -260,6 +297,10 @@ export function EditFeatures(props: EditFeaturesProps) {
       }
     }
   };
+
+  const handleCategoryFieldSelected = useCallback((categoryField: string[]) => {
+    setCategoryField(categoryField);
+  }, []);
 
   const renderAdvancedSettingsToggle = () => (
     <EuiText
@@ -323,6 +364,11 @@ export function EditFeatures(props: EditFeaturesProps) {
         initialValues={{
           featureList: generateInitialFeatures(detector),
           shingleSize: get(detector, 'shingleSize', SHINGLE_SIZE),
+          categoryField: [
+            get(detector, 'categoryField', [] as string[])
+              .concat(selectedCategoryField)
+              .pop(),
+          ],
         }}
         onSubmit={(values, actions) =>
           handleSubmit(values, actions.setSubmitting)
@@ -354,6 +400,11 @@ export function EditFeatures(props: EditFeaturesProps) {
                   </ContentPanel>
                 </EuiPageBody>
               </EuiPage>
+              <CategoryField
+                isHCDetector={isHCDetector}
+                categoryFieldOptions={getCategoryFields(indexDataTypes)}
+                onCategoryFieldSelected={handleCategoryFieldSelected}
+              />
               <EuiPage>
                 <EuiPageBody>
                   <ContentPanel
@@ -367,15 +418,19 @@ export function EditFeatures(props: EditFeaturesProps) {
                 </EuiPageBody>
               </EuiPage>
             </Form>
-
             {!isEmpty(detector) ? (
               <SampleAnomalies
                 detector={detector}
                 featureList={values.featureList}
                 shingleSize={values.shingleSize}
+                categoryFields={get(
+                  detector,
+                  'categoryField',
+                  [] as string[]
+                ).concat(selectedCategoryField)}
                 errors={errors}
                 setFieldTouched={setFieldTouched}
-                isHCDetector={true}
+                isHCDetector={isHCDetector}
               />
             ) : null}
 

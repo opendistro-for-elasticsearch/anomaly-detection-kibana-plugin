@@ -53,6 +53,7 @@ interface SampleAnomaliesProps {
   detector: Detector;
   featureList: FeaturesFormikValues[];
   shingleSize: number;
+  categoryFields: string[];
   errors: any;
   setFieldTouched: any;
   isHCDetector?: boolean;
@@ -80,6 +81,8 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
 
   const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
 
+  console.log('props.isHCDetector in SampleAnomalie', props.isHCDetector);
+  console.log('props.categoryFields in SampleAnomalie', props.categoryFields);
   useEffect(() => {
     if (!firstPreview) {
       getSampleAnomalies();
@@ -145,10 +148,13 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
   }
 
   const getSampleAnomalies = () => {
+    console.log();
     try {
       const updatedDetector = prepareDetector(
         props.featureList,
         props.shingleSize,
+        // always use last single field for now
+        [props.categoryFields[props.categoryFields.length - 1]],
         newDetector,
         true
       );
