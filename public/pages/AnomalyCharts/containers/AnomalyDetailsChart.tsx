@@ -222,7 +222,7 @@ export const AnomalyDetailsChart = React.memo(
               description={
                 props.showAlerts ? 'Anomaly grade' : 'Sample anomaly grade'
               }
-              tooltip="Indicates to what extent this data point is anomalous."
+              tooltip="Indicates to what extent this data point is anomalous. The scale ranges from 0 to 1."
             />
           </EuiFlexItem>
           <EuiFlexItem>

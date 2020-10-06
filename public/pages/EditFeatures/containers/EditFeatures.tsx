@@ -120,7 +120,16 @@ export function EditFeatures(props: EditFeaturesProps) {
     if (detector?.indices) {
       dispatch(getMappings(detector.indices[0]));
     }
-  }, [detector, selectedCategoryField]);
+  }, [detector]);
+
+  useEffect(() => {
+    if (detector) {
+      setIsHCDetector(!isEmpty(selectedCategoryField));
+    }
+    if (detector?.indices) {
+      dispatch(getMappings(detector.indices[0]));
+    }
+  }, [selectedCategoryField]);
 
   useEffect(() => {
     chrome.breadcrumbs.set([
@@ -299,6 +308,7 @@ export function EditFeatures(props: EditFeaturesProps) {
   };
 
   const handleCategoryFieldSelected = useCallback((categoryField: string[]) => {
+    console.log('before setting category field with', categoryField);
     setCategoryField(categoryField);
   }, []);
 
@@ -364,11 +374,7 @@ export function EditFeatures(props: EditFeaturesProps) {
         initialValues={{
           featureList: generateInitialFeatures(detector),
           shingleSize: get(detector, 'shingleSize', SHINGLE_SIZE),
-          categoryField: [
-            get(detector, 'categoryField', [] as string[])
-              .concat(selectedCategoryField)
-              .pop(),
-          ],
+          categoryField: get(detector, 'categoryField', [] as string[]),
         }}
         onSubmit={(values, actions) =>
           handleSubmit(values, actions.setSubmitting)

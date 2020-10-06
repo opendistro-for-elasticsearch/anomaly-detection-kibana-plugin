@@ -365,8 +365,8 @@ export const getAnomaliesHeatmapData = (
       // hoverinfo: 'x+y+z',
       hovertemplate:
         '<b>Time</b>: %{x}<br>' +
-        '<b>max</b>: %{z}<br>' +
-        '<b>count</b>: %{text}' +
+        '<b>Max anomaly grade</b>: %{z}<br>' +
+        '<b>Anomaly Occurrences</b>: %{text}' +
         '<extra></extra>',
     },
   ] as PlotData[];

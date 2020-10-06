@@ -111,6 +111,7 @@ export function CategoryField(props: CategoryFieldProps) {
                       // If the user is now disabling: set the field to null
                       if (enabled) {
                         form.setFieldValue('categoryField', []);
+                        props.onCategoryFieldSelected([]);
                       }
                       setEnabled(!enabled);
                     }}
@@ -138,6 +139,7 @@ export function CategoryField(props: CategoryFieldProps) {
                             props.onCategoryFieldSelected([selection]);
                           } else {
                             form.setFieldValue('categoryField', []);
+                            props.onCategoryFieldSelected([]);
                           }
                         }}
                         selectedOptions={

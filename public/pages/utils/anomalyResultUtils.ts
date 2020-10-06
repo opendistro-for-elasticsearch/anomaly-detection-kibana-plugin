@@ -843,17 +843,21 @@ export const getFeatureDataMissingMessageAndActionItem = (
   }
 };
 
-export const filterWithHeatmapCell = (
+export const filterWithHeatmapFilter = (
   anomalies: any[],
   heatmapCell: HeatmapCell | undefined,
   isResultTable?: boolean,
-  timeField?: string
+  timeField: string = 'plotTime',
+  viewEntities: string[] = ['value1', 'value2', 'value3', 'value4', 'value5']
 ) => {
   if (isResultTable) {
     if (!heatmapCell) {
       anomalies = anomalies.map((anomaly) => ({
         ...anomaly,
-        categoryValue: `value${Math.ceil(Math.random() * Math.floor(5))}`,
+        categoryValue:
+          viewEntities[
+            Math.floor(Math.random() * Math.floor(viewEntities.length))
+          ],
       }));
     } else {
       anomalies = anomalies.map((anomaly) => ({
@@ -865,10 +869,7 @@ export const filterWithHeatmapCell = (
   if (!heatmapCell) {
     return anomalies;
   }
-  if (timeField) {
-    return filterWithDateRange(anomalies, heatmapCell.dateRange, timeField);
-  }
-  return filterWithDateRange(anomalies, heatmapCell.dateRange, 'plotTime');
+  return filterWithDateRange(anomalies, heatmapCell.dateRange, timeField);
   // anomalies.filter(
   //   (anomaly) =>
   //     get(anomaly, 'plotTime', 0) <

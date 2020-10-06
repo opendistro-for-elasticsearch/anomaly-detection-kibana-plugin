@@ -55,7 +55,7 @@ import {
 import {
   prepareDataForChart,
   filterWithDateRange,
-  filterWithHeatmapCell,
+  filterWithHeatmapFilter,
 } from '../../utils/anomalyResultUtils';
 import { AlertsFlyout } from '../components/AlertsFlyout/AlertsFlyout';
 
@@ -112,6 +112,7 @@ interface AnomaliesChartProps {
   isHCDetector?: boolean;
   onHeatmapCellSelected?(heatmapCell: HeatmapCell): void;
   selectedHeatmapCell?: HeatmapCell;
+  onViewEntitiesSelected?(viewEntities: string[]): void;
 }
 
 export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
@@ -191,7 +192,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
 
   useEffect(() => {
     if (props.selectedHeatmapCell) {
-      const resultAnomalies = filterWithHeatmapCell(
+      const resultAnomalies = filterWithHeatmapFilter(
         props.anomalies,
         props.selectedHeatmapCell
       );
@@ -307,9 +308,11 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
         }
       >
         <EuiFlexGroup direction="column">
-          {props.isHCDetector && props.onHeatmapCellSelected ? (
+          {props.isHCDetector &&
+          props.onHeatmapCellSelected &&
+          props.onViewEntitiesSelected ? (
             <EuiFlexGroup style={{ padding: '20px' }}>
-              <EuiFlexItem>
+              <EuiFlexItem style={{ margin: '0px' }}>
                 <div
                   style={{
                     // height: '700px',
@@ -333,6 +336,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                       anomalies={props.anomalies}
                       isLoading={props.isLoading}
                       onHeatmapCellSelected={props.onHeatmapCellSelected}
+                      onViewEntitiesSelected={props.onViewEntitiesSelected}
                     />
                   )}
                 </div>

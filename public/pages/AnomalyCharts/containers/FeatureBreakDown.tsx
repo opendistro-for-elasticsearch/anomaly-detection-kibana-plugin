@@ -34,7 +34,7 @@ import { NoFeaturePrompt } from '../components/FeatureChart/NoFeaturePrompt';
 import { focusOnFeatureAccordion } from '../../EditFeatures/utils/helpers';
 import moment from 'moment';
 import { HeatmapCell } from './AnomalyHeatmapChart';
-import { filterWithHeatmapCell } from '../../utils/anomalyResultUtils';
+import { filterWithHeatmapFilter } from '../../utils/anomalyResultUtils';
 
 interface FeatureBreakDownProps {
   title?: string;
@@ -63,7 +63,7 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
     );
     if (props.isHCDetector) {
       if (props.selectedHeatmapCell) {
-        return filterWithHeatmapCell(
+        return filterWithHeatmapFilter(
           originalFeatureData,
           props.selectedHeatmapCell
         );
@@ -75,11 +75,13 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
     }
   };
   const getAnnotationData = () => {
+    console.log('props.annotations', props.annotations);
     if (props.isHCDetector) {
       if (props.selectedHeatmapCell) {
-        return filterWithHeatmapCell(
+        return filterWithHeatmapFilter(
           props.annotations,
           props.selectedHeatmapCell,
+          false,
           'coordinates.x0'
         );
       } else {

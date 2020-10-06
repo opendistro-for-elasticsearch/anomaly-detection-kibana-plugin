@@ -43,7 +43,7 @@ import {
   parsePureAnomalies,
   buildParamsForGetAnomalyResultsWithDateRange,
   FEATURE_DATA_CHECK_WINDOW_OFFSET,
-  filterWithHeatmapCell,
+  filterWithHeatmapFilter,
 } from '../../utils/anomalyResultUtils';
 import { AnomalyResultsTable } from './AnomalyResultsTable';
 import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
@@ -95,6 +95,13 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   >(INITIAL_ANOMALY_SUMMARY);
 
   const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
+  const [selectedViewEntities, setSelectedViewEntities] = useState<string[]>([
+    'value1',
+    'value2',
+    'value3',
+    'value4',
+    'value5',
+  ]);
 
   // const isHCDetector = !isEmpty(
   //   get(props.detector, 'categoryField', ['nont-empty'])
@@ -228,6 +235,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   const handleHeatmapCellSelected = useCallback((heatmapCell: HeatmapCell) => {
     setSelectedHeatmapCell(heatmapCell);
   }, []);
+  const handleViewEntitiesSelected = useCallback((viewEntities: string[]) => {
+    setSelectedViewEntities(viewEntities);
+  }, []);
 
   console.log('selectedHeatmapCell in anomaly history', selectedHeatmapCell);
 
@@ -304,6 +314,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         isHCDetector={isHCDetector}
         onHeatmapCellSelected={handleHeatmapCellSelected}
         selectedHeatmapCell={selectedHeatmapCell}
+        onViewEntitiesSelected={handleViewEntitiesSelected}
       >
         <EuiTabs>{renderTabs()}</EuiTabs>
 
@@ -381,7 +392,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                     ]
                   : null,
                 <AnomalyResultsTable
-                  anomalies={filterWithHeatmapCell(
+                  anomalies={filterWithHeatmapFilter(
                     bucketizedAnomalyResults === undefined
                       ? anomalyResults
                         ? filterWithDateRange(
@@ -392,7 +403,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                         : []
                       : pureAnomalies,
                     selectedHeatmapCell,
-                    true
+                    true,
+                    'plotTime',
+                    selectedViewEntities
                   )}
                   isHCDetector={isHCDetector}
                 />,

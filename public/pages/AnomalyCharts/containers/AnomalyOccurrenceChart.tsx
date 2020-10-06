@@ -25,7 +25,7 @@ import {
 } from '../../../models/interfaces';
 import { AnomalyDetailsChart } from './AnomalyDetailsChart';
 import { HeatmapCell } from './AnomalyHeatmapChart';
-import { filterWithHeatmapCell } from '../../utils/anomalyResultUtils';
+import { filterWithHeatmapFilter } from '../../utils/anomalyResultUtils';
 import { getAnomalySummary } from '../utils/anomalyChartUtils';
 
 interface AnomalyOccurrenceChartProps {
@@ -60,7 +60,7 @@ export const AnomalyOccurrenceChart = React.memo(
     const getAnomaliesForChart = () => {
       if (props.isHCDetector) {
         if (props.selectedHeatmapCell) {
-          return filterWithHeatmapCell(
+          return filterWithHeatmapFilter(
             props.anomalies,
             props.selectedHeatmapCell
           );
@@ -76,7 +76,7 @@ export const AnomalyOccurrenceChart = React.memo(
       if (props.isHCDetector) {
         if (props.selectedHeatmapCell) {
           return getAnomalySummary(
-            filterWithHeatmapCell(props.anomalies, props.selectedHeatmapCell)
+            filterWithHeatmapFilter(props.anomalies, props.selectedHeatmapCell)
           );
         } else {
           return [];

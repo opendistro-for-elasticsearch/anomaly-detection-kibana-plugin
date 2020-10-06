@@ -106,6 +106,7 @@ interface AnomalyHeatmapChartProps {
   isLoading: boolean;
   showAlerts?: boolean;
   onHeatmapCellSelected(cell: HeatmapCell | undefined): void;
+  onViewEntitiesSelected(viewEntities: string[] | undefined): void;
 }
 
 export interface HeatmapCell {
@@ -236,11 +237,17 @@ export const AnomalyHeatmapChart = React.memo(
       console.log('selectedCellIndices', selectedCellIndices);
       const selectedEntity = get(event, 'points[0].y', '');
       if (!isEmpty(selectedCellIndices)) {
+        const anomalyCountStr = get(event, 'points[0].text', '');
+        // if (anomalyCountStr === '0') {
+        //   console.log('zero anomaly cell clicked, skipping');
+        //   return;
+        // }
         if (
-          heatmapData.length > 1 &&
-          //@ts-ignore
-          heatmapData[1].z[selectedCellIndices[0]][selectedCellIndices[1]] !=
-            null
+          anomalyCountStr === '0' ||
+          (heatmapData.length > 1 &&
+            //@ts-ignore
+            heatmapData[1].z[selectedCellIndices[0]][selectedCellIndices[1]] !=
+              null)
         ) {
           const update = {
             opacity: 1,
@@ -333,6 +340,23 @@ export const AnomalyHeatmapChart = React.memo(
     };
 
     const handleViewEntityOptionsChange = (selectedViewOptions: any[]) => {
+      props.onHeatmapCellSelected(undefined);
+      console.log('selectedViewOptions', selectedViewOptions);
+      if (isEmpty(selectedViewOptions)) {
+        console.log('Inside empty view option');
+        // when `clear` is hit for combo box
+        setCurrentViewOptions([COMBINED_OPTIONS.options[0]]);
+        setNumEntities(5);
+        setHeatmapData(getAnomaliesHeatmapData(anomalies, props.dateRange));
+        props.onViewEntitiesSelected([
+          'value1',
+          'value2',
+          'value3',
+          'value4',
+          'value5',
+        ]);
+        return;
+      }
       const nonCombinedOptions = [] as any[];
       for (let option of selectedViewOptions) {
         if (currentViewOptions.includes(option)) {
@@ -346,6 +370,13 @@ export const AnomalyHeatmapChart = React.memo(
           setCurrentViewOptions([option]);
           setNumEntities(5);
           setHeatmapData(getAnomaliesHeatmapData(anomalies, props.dateRange));
+          props.onViewEntitiesSelected([
+            'value1',
+            'value2',
+            'value3',
+            'value4',
+            'value5',
+          ]);
           return;
         } else {
           nonCombinedOptions.push(option);
@@ -358,8 +389,12 @@ export const AnomalyHeatmapChart = React.memo(
       updatedHeatmapData[0].y = nonCombinedOptions.map((option) =>
         get(option, 'label', '')
       );
+      updatedHeatmapData[0].opacity = 1;
       console.log('updatedHeatmapData', updatedHeatmapData);
-      setHeatmapData(updatedHeatmapData);
+      setHeatmapData([updatedHeatmapData[0]]);
+      props.onViewEntitiesSelected(
+        nonCombinedOptions.map((option) => get(option, 'label', ''))
+      );
     };
 
     // hack, to remove
@@ -392,7 +427,7 @@ export const AnomalyHeatmapChart = React.memo(
 
     return (
       <React.Fragment>
-        <EuiFlexGroup style={{ padding: '20px' }}>
+        <EuiFlexGroup style={{ padding: '0px' }}>
           <EuiFlexItem grow={false}>
             <EuiFlexGroup alignItems="center">
               <EuiText>
@@ -407,8 +442,9 @@ export const AnomalyHeatmapChart = React.memo(
                   <EuiText size="xs" style={{ margin: '0px' }}>
                     Anomaly grade{' '}
                     <EuiIconTip
-                      content="Indicates to what extent this data poin is anomalous. The scale ranges from 0 to 1."
+                      content="Indicates to what extent this data point is anomalous. The scale ranges from 0 to 1."
                       position="top"
+                      type="iInCircle"
                     />
                   </EuiText>
                 </EuiFlexItem>
@@ -426,14 +462,18 @@ export const AnomalyHeatmapChart = React.memo(
                 >
                   <EuiFlexGroup alignItems="center">
                     <EuiFlexItem grow={false} style={{ margin: '0px' }}>
-                      <EuiText size="xs">0.0(None)</EuiText>
+                      <EuiText size="xs">
+                        <strong>0.0</strong>(None)
+                      </EuiText>
                     </EuiFlexItem>
                     <EuiFlexItem
                       grow={false}
                       style={{ width: '40px' }}
                     ></EuiFlexItem>
                     <EuiFlexItem grow={false} style={{ margin: '0px' }}>
-                      <EuiText size="xs">(Critical)1.0</EuiText>
+                      <EuiText size="xs">
+                        (Critical)<strong>1.0</strong>
+                      </EuiText>
                     </EuiFlexItem>
                   </EuiFlexGroup>
                 </EuiFlexItem>
@@ -469,7 +509,7 @@ export const AnomalyHeatmapChart = React.memo(
             </EuiFlexGroup>
           </EuiFlexItem>
         </EuiFlexGroup>
-        <EuiFlexGroup style={{ padding: '20px', paddingTop: '0px' }}>
+        <EuiFlexGroup style={{ padding: '0px', paddingBottom: '0px' }}>
           <EuiFlexItem>
             <div
               style={{
@@ -502,16 +542,18 @@ export const AnomalyHeatmapChart = React.memo(
                   layout={{
                     // width: 1000,
                     // height: 300,
-                    height: CELL_HEIGHT * numEntities,
+                    height: numEntities === 1 ? 80 : CELL_HEIGHT * numEntities,
                     xaxis: {
                       showline: true,
                       nticks: 5,
                       showgrid: false,
                       ticklen: 11,
+                      fixedrange: true,
                     },
                     yaxis: {
                       showline: true,
                       showgrid: false,
+                      fixedrange: true,
                     },
                     margin: {
                       l: 80,
