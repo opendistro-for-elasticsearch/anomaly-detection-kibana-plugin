@@ -106,7 +106,7 @@ interface AnomalyHeatmapChartProps {
   isLoading: boolean;
   showAlerts?: boolean;
   onHeatmapCellSelected(cell: HeatmapCell | undefined): void;
-  onViewEntitiesSelected(viewEntities: string[] | undefined): void;
+  onViewEntitiesSelected?(viewEntities: string[]): void;
 }
 
 export interface HeatmapCell {
@@ -333,7 +333,7 @@ export const AnomalyHeatmapChart = React.memo(
       return (
         <EuiFlexItem grow={false} style={{ margin: '0px' }}>
           <span
-            style={{ backgroundColor: hexCode, width: '36px', height: '8px' }}
+            style={{ backgroundColor: hexCode, width: '35px', height: '8px' }}
           />
         </EuiFlexItem>
       );
@@ -348,13 +348,15 @@ export const AnomalyHeatmapChart = React.memo(
         setCurrentViewOptions([COMBINED_OPTIONS.options[0]]);
         setNumEntities(5);
         setHeatmapData(getAnomaliesHeatmapData(anomalies, props.dateRange));
-        props.onViewEntitiesSelected([
-          'value1',
-          'value2',
-          'value3',
-          'value4',
-          'value5',
-        ]);
+        if (props.onViewEntitiesSelected) {
+          props.onViewEntitiesSelected([
+            'value1',
+            'value2',
+            'value3',
+            'value4',
+            'value5',
+          ]);
+        }
         return;
       }
       const nonCombinedOptions = [] as any[];
@@ -370,13 +372,15 @@ export const AnomalyHeatmapChart = React.memo(
           setCurrentViewOptions([option]);
           setNumEntities(5);
           setHeatmapData(getAnomaliesHeatmapData(anomalies, props.dateRange));
-          props.onViewEntitiesSelected([
-            'value1',
-            'value2',
-            'value3',
-            'value4',
-            'value5',
-          ]);
+          if (props.onViewEntitiesSelected) {
+            props.onViewEntitiesSelected([
+              'value1',
+              'value2',
+              'value3',
+              'value4',
+              'value5',
+            ]);
+          }
           return;
         } else {
           nonCombinedOptions.push(option);
@@ -392,9 +396,11 @@ export const AnomalyHeatmapChart = React.memo(
       updatedHeatmapData[0].opacity = 1;
       console.log('updatedHeatmapData', updatedHeatmapData);
       setHeatmapData([updatedHeatmapData[0]]);
-      props.onViewEntitiesSelected(
-        nonCombinedOptions.map((option) => get(option, 'label', ''))
-      );
+      if (props.onViewEntitiesSelected) {
+        props.onViewEntitiesSelected(
+          nonCombinedOptions.map((option) => get(option, 'label', ''))
+        );
+      }
     };
 
     // hack, to remove
@@ -428,88 +434,108 @@ export const AnomalyHeatmapChart = React.memo(
     return (
       <React.Fragment>
         <EuiFlexGroup style={{ padding: '0px' }}>
-          <EuiFlexItem grow={false}>
-            <EuiFlexGroup alignItems="center">
-              <EuiText>
+          <EuiFlexItem grow={false} style={{ minWidth: '80px' }}>
+            <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+              <EuiText textAlign="right">
                 <h4>{props.title}</h4>
               </EuiText>
             </EuiFlexGroup>
           </EuiFlexItem>
-          <EuiFlexItem>
-            <EuiFlexGroup direction="column">
-              <EuiFlexItem>
-                <EuiFlexItem style={{ margin: '0px', height: '20px' }}>
-                  <EuiText size="xs" style={{ margin: '0px' }}>
-                    Anomaly grade{' '}
-                    <EuiIconTip
-                      content="Indicates to what extent this data point is anomalous. The scale ranges from 0 to 1."
-                      position="top"
-                      type="iInCircle"
-                    />
-                  </EuiText>
-                </EuiFlexItem>
-                <EuiFlexItem
-                  style={{ margin: '0px', height: '20px', paddingLeft: '12px' }}
-                >
-                  <EuiFlexGroup alignItems="center">
-                    {euiPaletteWarm(5).map((hexCode) => {
-                      return getColorPaletteFlexItem(hexCode);
-                    })}
-                  </EuiFlexGroup>
-                </EuiFlexItem>
-                <EuiFlexItem
-                  style={{ margin: '0px', height: '20px', paddingLeft: '12px' }}
-                >
-                  <EuiFlexGroup alignItems="center">
-                    <EuiFlexItem grow={false} style={{ margin: '0px' }}>
-                      <EuiText size="xs">
-                        <strong>0.0</strong>(None)
-                      </EuiText>
-                    </EuiFlexItem>
-                    <EuiFlexItem
-                      grow={false}
-                      style={{ width: '40px' }}
-                    ></EuiFlexItem>
-                    <EuiFlexItem grow={false} style={{ margin: '0px' }}>
-                      <EuiText size="xs">
-                        (Critical)<strong>1.0</strong>
-                      </EuiText>
-                    </EuiFlexItem>
-                  </EuiFlexGroup>
-                </EuiFlexItem>
-              </EuiFlexItem>
-            </EuiFlexGroup>
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <EuiFlexGroup gutterSize="s" alignItems="center">
-              <EuiFlexItem grow={false}>
+          <EuiFlexItem style={{ paddingLeft: '5px' }}>
+            <EuiFlexGroup
+              style={{ padding: '0px' }}
+              justifyContent="spaceBetween"
+            >
+              <EuiFlexItem grow={false} style={{ marginLeft: '0px' }}>
+                <EuiFlexGroup gutterSize="s" alignItems="center">
+                  {/* <EuiFlexItem grow={false}>
                 <EuiText style={{ width: '40px' }} textAlign="center">
                   <strong>View</strong>
                 </EuiText>
+              </EuiFlexItem> */}
+                  <EuiFlexItem style={{ minWidth: 300 }}>
+                    <EuiComboBox
+                      placeholder="Select options"
+                      options={getViewEntityOptions()}
+                      // selectedOptions={[getViewEntityOptions()[0].options[0]]}
+                      selectedOptions={currentViewOptions}
+                      onChange={(selectedOptions) =>
+                        handleViewEntityOptionsChange(selectedOptions)
+                      }
+                    />
+                  </EuiFlexItem>
+                  <EuiFlexItem>
+                    <EuiSuperSelect
+                      options={SORT_BY_FIELD_OPTIONS}
+                      valueOfSelected={sortByFeildValue}
+                      onChange={(value) => handleSortByFieldChange(value)}
+                      hasDividers
+                    />
+                  </EuiFlexItem>
+                </EuiFlexGroup>
               </EuiFlexItem>
-              <EuiFlexItem style={{ minWidth: 300 }}>
-                <EuiComboBox
-                  placeholder="Select options"
-                  options={getViewEntityOptions()}
-                  // selectedOptions={[getViewEntityOptions()[0].options[0]]}
-                  selectedOptions={currentViewOptions}
-                  onChange={(selectedOptions) =>
-                    handleViewEntityOptionsChange(selectedOptions)
-                  }
-                />
-              </EuiFlexItem>
-              <EuiFlexItem>
-                <EuiSuperSelect
-                  options={SORT_BY_FIELD_OPTIONS}
-                  valueOfSelected={sortByFeildValue}
-                  onChange={(value) => handleSortByFieldChange(value)}
-                  hasDividers
-                />
+              <EuiFlexItem grow={false}>
+                <EuiFlexGroup
+                  direction="column"
+                  style={{ paddingRight: '15px' }}
+                >
+                  <EuiFlexItem>
+                    <EuiFlexItem style={{ margin: '0px', height: '20px' }}>
+                      <EuiText size="xs" style={{ margin: '0px' }}>
+                        Anomaly grade{' '}
+                        <EuiIconTip
+                          content="Indicates to what extent this data point is anomalous. The scale ranges from 0 to 1."
+                          position="top"
+                          type="iInCircle"
+                        />
+                      </EuiText>
+                    </EuiFlexItem>
+                    <EuiFlexItem
+                      style={{
+                        margin: '0px',
+                        height: '20px',
+                        paddingLeft: '12px',
+                      }}
+                    >
+                      <EuiFlexGroup alignItems="center">
+                        {euiPaletteWarm(5).map((hexCode) => {
+                          return getColorPaletteFlexItem(hexCode);
+                        })}
+                      </EuiFlexGroup>
+                    </EuiFlexItem>
+                    <EuiFlexItem
+                      style={{
+                        margin: '0px',
+                        height: '20px',
+                        paddingLeft: '12px',
+                      }}
+                    >
+                      <EuiFlexGroup
+                        alignItems="center"
+                        justifyContent="spaceBetween"
+                      >
+                        <EuiFlexItem grow={false} style={{ margin: '0px' }}>
+                          <EuiText size="xs">
+                            <strong>0.0</strong> (None)
+                          </EuiText>
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={false} style={{ margin: '0px' }}>
+                          <EuiText size="xs">
+                            (Critical) <strong>1.0</strong>
+                          </EuiText>
+                        </EuiFlexItem>
+                      </EuiFlexGroup>
+                    </EuiFlexItem>
+                  </EuiFlexItem>
+                </EuiFlexGroup>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
         </EuiFlexGroup>
-        <EuiFlexGroup style={{ padding: '0px', paddingBottom: '0px' }}>
+        <EuiFlexGroup
+          style={{ padding: '0px', paddingBottom: '0px' }}
+          alignItems="flexEnd"
+        >
           <EuiFlexItem>
             <div
               style={{
@@ -530,19 +556,14 @@ export const AnomalyHeatmapChart = React.memo(
               ) : (
                 <Plot
                   data={heatmapData}
-                  style={
-                    {
-                      // position: 'relative',
-                      // display: 'inline-block',
-                      // width: '1000px',
-                      // height: '400px',
-                      // minWidth: '800px',
-                    }
-                  }
+                  style={{
+                    position: 'relative',
+                  }}
                   layout={{
                     // width: 1000,
                     // height: 300,
                     height: numEntities === 1 ? 80 : CELL_HEIGHT * numEntities,
+                    // width: 1000,
                     xaxis: {
                       showline: true,
                       nticks: 5,
@@ -556,11 +577,11 @@ export const AnomalyHeatmapChart = React.memo(
                       fixedrange: true,
                     },
                     margin: {
-                      l: 80,
+                      l: 100,
                       r: 0,
                       t: 0,
-                      b: 40,
-                      pad: 4,
+                      b: 50,
+                      pad: 2,
                     },
                   }}
                   config={{

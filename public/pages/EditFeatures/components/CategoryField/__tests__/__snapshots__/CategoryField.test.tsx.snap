@@ -49,7 +49,7 @@ exports[`<CategoryField /> spec renders the component when disabled 1`] = `
                   <div
                     class="euiText euiText--medium content-panel-subTitle"
                   >
-                    Categorize anomalies based on unique partitions. For example, for clickstream data, you can categorize anomalies into a given day, week, or month.
+                    Categorize anomalies based on unique partitions. For example, for clickstream data you can categorize anomalies into a given day, week, or month.
                      
                     <a
                       class="euiLink euiLink--primary"
@@ -174,7 +174,7 @@ exports[`<CategoryField /> spec renders the component when enabled 1`] = `
                   <div
                     class="euiText euiText--medium content-panel-subTitle"
                   >
-                    Categorize anomalies based on unique partitions. For example, for clickstream data, you can categorize anomalies into a given day, week, or month.
+                    Categorize anomalies based on unique partitions. For example, for clickstream data you can categorize anomalies into a given day, week, or month.
                      
                     <a
                       class="euiLink euiLink--primary"
@@ -392,7 +392,7 @@ exports[`<CategoryField /> spec shows callout when there are no available catego
                   <div
                     class="euiText euiText--medium content-panel-subTitle"
                   >
-                    Categorize anomalies based on unique partitions. For example, for clickstream data, you can categorize anomalies into a given day, week, or month.
+                    Categorize anomalies based on unique partitions. For example, for clickstream data you can categorize anomalies into a given day, week, or month.
                      
                     <a
                       class="euiLink euiLink--primary"

@@ -302,15 +302,13 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
           props.isHCDetector ? (
             <EuiText className="content-panel-subTitle">
               Choose a filled rectangle to see a more detailed view of that
-              anomaly
+              anomaly.
             </EuiText>
           ) : undefined
         }
       >
         <EuiFlexGroup direction="column">
-          {props.isHCDetector &&
-          props.onHeatmapCellSelected &&
-          props.onViewEntitiesSelected ? (
+          {props.isHCDetector && props.onHeatmapCellSelected ? (
             <EuiFlexGroup style={{ padding: '20px' }}>
               <EuiFlexItem style={{ margin: '0px' }}>
                 <div
@@ -332,7 +330,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                   ) : (
                     <AnomalyHeatmapChart
                       dateRange={props.dateRange}
-                      title="entity_field"
+                      title="full_name"
                       anomalies={props.anomalies}
                       isLoading={props.isLoading}
                       onHeatmapCellSelected={props.onHeatmapCellSelected}

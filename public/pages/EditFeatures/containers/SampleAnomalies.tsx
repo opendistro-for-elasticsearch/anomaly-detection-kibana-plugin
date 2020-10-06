@@ -81,8 +81,6 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
 
   const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
 
-  console.log('props.isHCDetector in SampleAnomalie', props.isHCDetector);
-  console.log('props.categoryFields in SampleAnomalie', props.categoryFields);
   useEffect(() => {
     if (!firstPreview) {
       getSampleAnomalies();
@@ -188,8 +186,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                     href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
                     target="_blank"
                   >
-                    Learn more
-                    <EuiIcon size="s" type="popout" />
+                    Learn more <EuiIcon size="s" type="popout" />
                   </EuiLink>
                 </EuiText>
               </EuiFlexItem>
@@ -261,7 +258,11 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                   props.isHCDetector
                     ? [
                         <AnomalyOccurrenceChart
-                          title="Anomaly history"
+                          title={
+                            selectedHeatmapCell
+                              ? selectedHeatmapCell.categoryValue
+                              : '-'
+                          }
                           dateRange={dateRange}
                           onDateRangeChange={handleDateRangeChange}
                           onZoomRangeChange={handleZoomChange}

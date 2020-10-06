@@ -402,6 +402,7 @@ export const getSelectedHeatmapCellPlotData = (
     selectedZData.push(row);
   }
   const colorForCell = getColorForValue(selectedValue);
+  //@ts-ignore
   return [
     {
       ...cloneDeep(heatmapData),
@@ -411,8 +412,8 @@ export const getSelectedHeatmapCellPlotData = (
         [1, colorForCell],
       ],
       opacity: 1,
-      // hoverinfo: 'skip',
-      hovertemplate: '<extra></extra>',
+      hoverinfo: 'skip',
+      hovertemplate: null,
     },
   ] as PlotData[];
 };

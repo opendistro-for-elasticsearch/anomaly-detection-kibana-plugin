@@ -84,7 +84,7 @@ export function CategoryField(props: CategoryFieldProps) {
           subTitle={
             <EuiText className="content-panel-subTitle">
               Categorize anomalies based on unique partitions. For example, for
-              clickstream data, you can categorize anomalies into a given day,
+              clickstream data you can categorize anomalies into a given day,
               week, or month.{' '}
               <EuiLink
                 href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"

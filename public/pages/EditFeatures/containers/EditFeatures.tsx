@@ -126,9 +126,6 @@ export function EditFeatures(props: EditFeaturesProps) {
     if (detector) {
       setIsHCDetector(!isEmpty(selectedCategoryField));
     }
-    if (detector?.indices) {
-      dispatch(getMappings(detector.indices[0]));
-    }
   }, [selectedCategoryField]);
 
   useEffect(() => {
