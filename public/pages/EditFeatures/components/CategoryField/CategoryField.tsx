@@ -25,9 +25,11 @@ import {
   EuiComboBox,
   EuiCheckbox,
   EuiTitle,
+  EuiCallOut,
+  EuiSpacer,
 } from '@elastic/eui';
 import { Field, FieldProps } from 'formik';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React, { useState, useEffect } from 'react';
 import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
 // @ts-ignore
@@ -48,6 +50,7 @@ interface CategoryFieldProps {
 
 export function CategoryField(props: CategoryFieldProps) {
   const [enabled, setEnabled] = useState<boolean>(props.isHCDetector);
+  const noCategoryFields = isEmpty(props.categoryFieldOptions);
   const convertedOptions = props.categoryFieldOptions.map((option: string) => {
     return {
       label: option,
@@ -92,6 +95,15 @@ export function CategoryField(props: CategoryFieldProps) {
             </EuiText>
           }
         >
+          {noCategoryFields ? (
+            <EuiCallOut
+              data-test-subj="noCategoryFieldsCallout"
+              title="There are no available category fields for the selected index"
+              color="warning"
+              iconType="alert"
+            ></EuiCallOut>
+          ) : null}
+          {noCategoryFields ? <EuiSpacer size="m" /> : null}
           <Field
             name="categoryField"
             validate={enabled ? requiredNonEmptyArray : null}
@@ -103,6 +115,7 @@ export function CategoryField(props: CategoryFieldProps) {
                     id={'categoryFieldCheckbox'}
                     label="Enable category field"
                     checked={enabled}
+                    disabled={noCategoryFields}
                     onChange={() => {
                       // If user is now enabling: set the field touched to perform validation
                       if (!enabled) {
@@ -117,7 +130,7 @@ export function CategoryField(props: CategoryFieldProps) {
                     }}
                   />
                 </EuiFlexItem>
-                {enabled ? (
+                {enabled && !noCategoryFields ? (
                   <EuiFlexItem>
                     <EuiFormRow
                       label="Field"
@@ -125,6 +138,7 @@ export function CategoryField(props: CategoryFieldProps) {
                       error={getError(field.name, form)}
                     >
                       <EuiComboBox
+                        data-test-subj="categoryFieldComboBox"
                         id="categoryField"
                         placeholder="Select your category field"
                         options={convertedOptions}
