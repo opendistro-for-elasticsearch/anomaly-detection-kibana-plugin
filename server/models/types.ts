@@ -66,6 +66,7 @@ export type Detector = {
   enabled: boolean;
   enabledTime?: number;
   disabledTime?: number;
+  categoryField?: string[];
 };
 
 export type Monitor = {
@@ -105,12 +106,18 @@ export type DetectorResultsQueryParams = {
   dateRangeFilter?: DateRangeFilter;
 };
 
+export type Entity = {
+  name: string;
+  value: string;
+};
+
 export type AnomalyResult = {
   startTime: number;
   endTime: number;
   plotTime: number;
   anomalyGrade: number;
   confidence: number;
+  entity?: Entity[];
 };
 
 export type FeatureResult = {
@@ -134,4 +141,4 @@ export type DateRangeFilter = {
   startTime?: number;
   endTime?: number;
   fieldName: string;
-}
+};

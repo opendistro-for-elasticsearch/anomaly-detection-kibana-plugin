@@ -13,98 +13,46 @@
  * permissions and limitations under the License.
  */
 
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { DurationInputArg2 } from 'moment';
+import React, { useState } from 'react';
+
 import moment from 'moment';
-import { PlotData, restyle, deleteTraces, addTraces } from 'plotly.js';
+import { PlotData } from 'plotly.js';
 import Plot from 'react-plotly.js';
 import { cloneDeep, get, isEmpty } from 'lodash';
-import dateMath from '@elastic/datemath';
 import {
   EuiFlexItem,
   EuiFlexGroup,
-  EuiIcon,
   EuiLoadingChart,
-  EuiStat,
-  EuiSuperDatePicker,
   EuiText,
-  EuiBadge,
   EuiComboBox,
   EuiSuperSelect,
   EuiIconTip,
+  EuiCallOut,
 } from '@elastic/eui';
-import {
-  Chart,
-  Axis,
-  LineSeries,
-  niceTimeFormatter,
-  Settings,
-  Position,
-  LineAnnotation,
-  AnnotationDomainTypes,
-  RectAnnotation,
-  ScaleType,
-  XYBrushArea,
-} from '@elastic/charts';
-import {
-  euiPaletteComplimentary,
-  euiPaletteForStatus,
-  euiPaletteForTemperature,
-  euiPaletteCool,
-  euiPaletteWarm,
-  euiPaletteNegative,
-  euiPalettePositive,
-  euiPaletteGray,
-} from '@elastic/eui/lib/services';
+import { euiPaletteWarm } from '@elastic/eui/lib/services';
 import { useDelayedLoader } from '../../../hooks/useDelayedLoader';
-import ContentPanel from '../../../components/ContentPanel/ContentPanel';
-import {
-  AnomalySummary,
-  Monitor,
-  Detector,
-  DateRange,
-  MonitorAlert,
-} from '../../../models/interfaces';
-import {
-  prepareDataForChart,
-  filterWithDateRange,
-} from '../../utils/anomalyResultUtils';
+import { Monitor, DateRange } from '../../../models/interfaces';
 import { AlertsFlyout } from '../components/AlertsFlyout/AlertsFlyout';
-
-import { AlertsButton } from '../components/AlertsButton/AlertsButton';
-import { darkModeEnabled } from '../../../utils/kibanaUtils';
 import {
-  AlertsStat,
-  AnomalyStatWithTooltip,
-} from '../components/AnomaliesStat/AnomalyStat';
-import {
-  INITIAL_ANOMALY_SUMMARY,
-  CHART_FIELDS,
-  DATE_PICKER_QUICK_OPTIONS,
-  ANOMALY_CHART_THEME,
-} from '../utils/constants';
-import {
-  convertAlerts,
-  generateAlertAnnotations,
-  getAnomalySummary,
-  disabledHistoryAnnotations,
-  getAlertsQuery,
   getAnomaliesHeatmapData,
   getSelectedHeatmapCellPlotData,
   updateHeatmapPlotData,
   HEATMAP_X_AXIS_DATE_FORMAT,
 } from '../utils/anomalyChartUtils';
-import { searchES } from '../../../redux/reducers/elasticsearch';
-import { AnomalyDetailsChart } from '../containers/AnomalyDetailsChart';
 
 interface AnomalyHeatmapChartProps {
   //   onZoomRangeChange(startDate: number, endDate: number): void;
   title: string;
+  detectorId: string;
+  detectorName: string;
   anomalies: any[];
   dateRange: DateRange;
   isLoading: boolean;
   showAlerts?: boolean;
+  totalAlerts?: number;
+  monitor?: Monitor;
+  detectorInterval?: number;
+  unit?: string;
   onHeatmapCellSelected(cell: HeatmapCell | undefined): void;
   onViewEntitiesSelected?(viewEntities: string[]): void;
 }
@@ -117,7 +65,7 @@ export interface HeatmapCell {
   xIndex: number;
   yIndex: number;
   categoryField: string;
-  categoryValue: string;
+  entityValue: string;
 }
 
 export const AnomalyHeatmapChart = React.memo(
@@ -215,6 +163,8 @@ export const AnomalyHeatmapChart = React.memo(
       getViewEntityOptions()[0].options[0],
     ]);
 
+    const [showAlertsFlyout, setShowAlertsFlyout] = useState<boolean>(false);
+
     const [numEntities, setNumEntities] = useState(5);
     // useEffect(() => {
     //   setViewEntityOptions([
@@ -302,7 +252,7 @@ export const AnomalyHeatmapChart = React.memo(
               startDate: selectedStartDate,
               endDate: selectedEndDate,
             },
-            categoryValue: selectedEntity,
+            entityValue: selectedEntity,
           } as HeatmapCell);
         }
       }
@@ -433,6 +383,15 @@ export const AnomalyHeatmapChart = React.memo(
 
     return (
       <React.Fragment>
+        <EuiFlexGroup style={{ padding: '5px' }}>
+          <EuiFlexItem>
+            <EuiCallOut
+              size="s"
+              title="Choose a filled rectangle to see a more detailed view of that anomaly."
+              iconType="help"
+            />
+          </EuiFlexItem>
+        </EuiFlexGroup>
         <EuiFlexGroup style={{ padding: '0px' }}>
           <EuiFlexItem grow={false} style={{ minWidth: '80px' }}>
             <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
@@ -448,23 +407,17 @@ export const AnomalyHeatmapChart = React.memo(
             >
               <EuiFlexItem grow={false} style={{ marginLeft: '0px' }}>
                 <EuiFlexGroup gutterSize="s" alignItems="center">
-                  {/* <EuiFlexItem grow={false}>
-                <EuiText style={{ width: '40px' }} textAlign="center">
-                  <strong>View</strong>
-                </EuiText>
-              </EuiFlexItem> */}
                   <EuiFlexItem style={{ minWidth: 300 }}>
                     <EuiComboBox
                       placeholder="Select options"
                       options={getViewEntityOptions()}
-                      // selectedOptions={[getViewEntityOptions()[0].options[0]]}
                       selectedOptions={currentViewOptions}
                       onChange={(selectedOptions) =>
                         handleViewEntityOptionsChange(selectedOptions)
                       }
                     />
                   </EuiFlexItem>
-                  <EuiFlexItem>
+                  <EuiFlexItem style={{ minWidth: 150 }}>
                     <EuiSuperSelect
                       options={SORT_BY_FIELD_OPTIONS}
                       valueOfSelected={sortByFeildValue}
@@ -475,58 +428,88 @@ export const AnomalyHeatmapChart = React.memo(
                 </EuiFlexGroup>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiFlexGroup
-                  direction="column"
-                  style={{ paddingRight: '15px' }}
-                >
+                <EuiFlexGroup alignItems="center">
                   <EuiFlexItem>
-                    <EuiFlexItem style={{ margin: '0px', height: '20px' }}>
-                      <EuiText size="xs" style={{ margin: '0px' }}>
-                        Anomaly grade{' '}
-                        <EuiIconTip
-                          content="Indicates to what extent this data point is anomalous. The scale ranges from 0 to 1."
-                          position="top"
-                          type="iInCircle"
-                        />
-                      </EuiText>
-                    </EuiFlexItem>
-                    <EuiFlexItem
-                      style={{
-                        margin: '0px',
-                        height: '20px',
-                        paddingLeft: '12px',
-                      }}
+                    <EuiFlexGroup
+                      direction="column"
+                      style={{ paddingRight: '15px' }}
                     >
-                      <EuiFlexGroup alignItems="center">
-                        {euiPaletteWarm(5).map((hexCode) => {
-                          return getColorPaletteFlexItem(hexCode);
-                        })}
-                      </EuiFlexGroup>
-                    </EuiFlexItem>
-                    <EuiFlexItem
-                      style={{
-                        margin: '0px',
-                        height: '20px',
-                        paddingLeft: '12px',
-                      }}
-                    >
-                      <EuiFlexGroup
-                        alignItems="center"
-                        justifyContent="spaceBetween"
-                      >
-                        <EuiFlexItem grow={false} style={{ margin: '0px' }}>
-                          <EuiText size="xs">
-                            <strong>0.0</strong> (None)
+                      <EuiFlexItem>
+                        <EuiFlexItem style={{ margin: '0px', height: '20px' }}>
+                          <EuiText size="xs" style={{ margin: '0px' }}>
+                            Anomaly grade{' '}
+                            <EuiIconTip
+                              content="Indicates to what extent this data point is anomalous. The scale ranges from 0 to 1."
+                              position="top"
+                              type="iInCircle"
+                            />
                           </EuiText>
                         </EuiFlexItem>
-                        <EuiFlexItem grow={false} style={{ margin: '0px' }}>
-                          <EuiText size="xs">
-                            (Critical) <strong>1.0</strong>
-                          </EuiText>
+                        <EuiFlexItem
+                          style={{
+                            margin: '0px',
+                            height: '20px',
+                            paddingLeft: '12px',
+                          }}
+                        >
+                          <EuiFlexGroup alignItems="center">
+                            {euiPaletteWarm(5).map((hexCode) => {
+                              return getColorPaletteFlexItem(hexCode);
+                            })}
+                          </EuiFlexGroup>
                         </EuiFlexItem>
-                      </EuiFlexGroup>
-                    </EuiFlexItem>
+                        <EuiFlexItem
+                          style={{
+                            margin: '0px',
+                            height: '20px',
+                            paddingLeft: '12px',
+                          }}
+                        >
+                          <EuiFlexGroup
+                            alignItems="center"
+                            justifyContent="spaceBetween"
+                          >
+                            <EuiFlexItem grow={false} style={{ margin: '0px' }}>
+                              <EuiText size="xs">
+                                <strong>0.0</strong> (None)
+                              </EuiText>
+                            </EuiFlexItem>
+                            <EuiFlexItem grow={false} style={{ margin: '0px' }}>
+                              <EuiText size="xs">
+                                (Critical) <strong>1.0</strong>
+                              </EuiText>
+                            </EuiFlexItem>
+                          </EuiFlexGroup>
+                        </EuiFlexItem>
+                      </EuiFlexItem>
+                    </EuiFlexGroup>
                   </EuiFlexItem>
+
+                  {props.showAlerts
+                    ? [
+                        // <EuiFlexItem
+                        //   grow={false}
+                        //   style={{ marginLeft: '0px', marginRight: '0px' }}
+                        // >
+                        //   <div
+                        //     style={{
+                        //       boxSizing: 'border-box',
+                        //       height: '60px',
+                        //       width: '1px',
+                        //       border: '1px solid #D3DAE6',
+                        //     }}
+                        //   ></div>
+                        // </EuiFlexItem>,
+                        // <EuiFlexItem style={{ paddingRight: '5px' }}>
+                        //   <AlertsStat
+                        //     monitor={props.monitor}
+                        //     showAlertsFlyout={() => setShowAlertsFlyout(true)}
+                        //     totalAlerts={props.totalAlerts}
+                        //     isLoading={props.isLoading}
+                        //   />
+                        // </EuiFlexItem>,
+                      ]
+                    : null}
                 </EuiFlexGroup>
               </EuiFlexItem>
             </EuiFlexGroup>
@@ -539,7 +522,6 @@ export const AnomalyHeatmapChart = React.memo(
           <EuiFlexItem>
             <div
               style={{
-                // height: '700px',
                 width: '100%',
                 opacity: showLoader ? 0.2 : 1,
               }}
@@ -560,10 +542,7 @@ export const AnomalyHeatmapChart = React.memo(
                     position: 'relative',
                   }}
                   layout={{
-                    // width: 1000,
-                    // height: 300,
                     height: numEntities === 1 ? 80 : CELL_HEIGHT * numEntities,
-                    // width: 1000,
                     xaxis: {
                       showline: true,
                       nticks: 5,
@@ -575,6 +554,9 @@ export const AnomalyHeatmapChart = React.memo(
                       showline: true,
                       showgrid: false,
                       fixedrange: true,
+                      // title: {
+                      //   text: props.title,
+                      // },
                     },
                     margin: {
                       l: 100,
@@ -603,6 +585,16 @@ export const AnomalyHeatmapChart = React.memo(
             </div>
           </EuiFlexItem>
         </EuiFlexGroup>
+        {showAlertsFlyout ? (
+          <AlertsFlyout
+            detectorId={props.detectorId}
+            detectorName={props.detectorName}
+            detectorInterval={get(props, 'detectorInterval', 1)}
+            unit={get(props, 'unit', 'Minutes')}
+            monitor={props.monitor}
+            onClose={() => setShowAlertsFlyout(false)}
+          />
+        ) : null}
       </React.Fragment>
     );
   }

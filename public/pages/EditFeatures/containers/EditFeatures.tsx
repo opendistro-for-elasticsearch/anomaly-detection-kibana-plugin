@@ -107,6 +107,7 @@ export function EditFeatures(props: EditFeaturesProps) {
     [] as string[]
   );
 
+  console.log('isHCDetector', isHCDetector);
   // When detector is loaded: get any category fields (if applicable) and
   // get all index mappings based on detector's selected index
   useEffect(() => {
@@ -197,7 +198,7 @@ export function EditFeatures(props: EditFeaturesProps) {
 
               <EuiFlexGroup
                 alignItems="center"
-                style={{ padding: '12px 24px' }}
+                style={{ padding: '16px 24px 0px' }}
               >
                 <EuiFlexItem grow={false}>
                   <EuiButton

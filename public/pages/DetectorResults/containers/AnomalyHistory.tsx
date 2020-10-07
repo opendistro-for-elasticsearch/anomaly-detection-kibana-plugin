@@ -103,11 +103,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     'value5',
   ]);
 
-  // const isHCDetector = !isEmpty(
-  //   get(props.detector, 'categoryField', ['nont-empty'])
-  // );
-  const isHCDetector = true;
-  console.log('isHCDetector', isHCDetector);
+  const isHCDetector = !isEmpty(get(props.detector, 'categoryField', []));
+
+  console.log('isHCDetector in AnomalyHistory', isHCDetector);
 
   useEffect(() => {
     // We load at most 10k AD result data points for one call. If user choose
@@ -356,7 +354,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                       <AnomalyOccurrenceChart
                         title={
                           selectedHeatmapCell
-                            ? selectedHeatmapCell.categoryValue
+                            ? selectedHeatmapCell.entityValue
                             : '-'
                         }
                         dateRange={dateRange}

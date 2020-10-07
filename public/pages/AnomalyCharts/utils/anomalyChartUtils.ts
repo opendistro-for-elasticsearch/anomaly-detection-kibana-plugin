@@ -13,12 +13,13 @@
  * permissions and limitations under the License.
  */
 
-import { cloneDeep, get, isEmpty } from 'lodash';
+import { cloneDeep, get, isEmpty, orderBy } from 'lodash';
 import {
   DateRange,
   Detector,
   MonitorAlert,
   AnomalySummary,
+  EntityData,
 } from '../../../models/interfaces';
 import { dateFormatter, minuteDateFormatter } from '../../utils/helpers';
 import { RectAnnotationDatum } from '@elastic/charts';
@@ -193,6 +194,11 @@ export const ANOMALY_HEATMAP_COLORSCALE = [
   [1, '#E8664C'],
 ];
 
+export enum AnomalyHeatmapSortType {
+  SEVERITY = 'by_severity',
+  OCCURRENCES = 'by_occurrences',
+}
+
 const getColorForValue = (value: number) => {
   if (
     value >=
@@ -218,113 +224,67 @@ const getColorForValue = (value: number) => {
 const NUM_CELLS = 20;
 
 interface AggregatedAnomalyResult {
-  maxAnomalyGrade: number | null;
-  numAnomalyGrade: number | null;
+  maxAnomalyGrade: number;
+  numAnomalyGrade: number;
   dateRange: DateRange;
+  entity: EntityData[];
 }
 
 export const HEATMAP_X_AXIS_DATE_FORMAT = 'MM-DD HH:mm YYYY';
 
 export const getAnomaliesHeatmapData = (
   anomalies: any[],
-  dateRange: DateRange
+  dateRange: DateRange,
+  displayTopNum?: number = 10
 ): PlotData[] => {
-  console.log('anomalies', anomalies);
+  const entityAnomaliesMap = getEntityAnomaliesMap(anomalies);
+
+  const entityValues = [] as string[];
+  const maxAnomalyGrades = [] as any[];
+  const numAnomalyGrades = [] as any[];
 
   const timeWindows = calculateTimeWindowsWithMaxDataPoints(
     NUM_CELLS,
     dateRange
   );
 
-  const aggregatedResultsInWindows = [] as AggregatedAnomalyResult[];
-  timeWindows.forEach((timeWindow) => {
-    const anomaliesInWindow = anomalies.filter(
-      (anomaly) =>
-        get(anomaly, 'plotTime', 0) <= timeWindow.endDate &&
-        get(anomaly, 'plotTime', 0) >= timeWindow.startDate
-    );
-    // .filter((anomaly) => get(anomaly, 'anomalyGrade', 0) > 0);
-    const anomalyGrades = anomaliesInWindow.map((anomaly) =>
-      get(anomaly, 'anomalyGrade', 0)
-    );
-    if (!isEmpty(anomalyGrades)) {
-      aggregatedResultsInWindows.push({
-        maxAnomalyGrade: Math.max(...anomalyGrades),
-        numAnomalyGrade: anomalyGrades.filter(
-          (anomalyGrade) => anomalyGrade > 0
-        ).length,
-        dateRange: timeWindow,
-      });
-    } else {
-      aggregatedResultsInWindows.push({
-        maxAnomalyGrade: 0,
-        numAnomalyGrade: 0,
-        dateRange: timeWindow,
-      });
-    }
+  entityAnomaliesMap.forEach((entityAnomalies, entity) => {
+    const maxAnomalyGradesForEntity = [] as number[];
+    const numAnomalyGradesForEntity = [] as number[];
+    entityValues.push(entity);
+    timeWindows.forEach((timeWindow) => {
+      const anomaliesInWindow = entityAnomalies.filter(
+        (anomaly) =>
+          get(anomaly, 'plotTime', 0) <= timeWindow.endDate &&
+          get(anomaly, 'plotTime', 0) >= timeWindow.startDate
+      );
+      const entityAnomalyGrades = anomaliesInWindow.map((anomaly) =>
+        get(anomaly, 'anomalyGrade', 0)
+      );
+      if (!isEmpty(entityAnomalyGrades)) {
+        maxAnomalyGradesForEntity.push(Math.max(...entityAnomalyGrades));
+        numAnomalyGradesForEntity.push(
+          entityAnomalyGrades.filter((anomalyGrade) => anomalyGrade > 0).length
+        );
+      } else {
+        maxAnomalyGradesForEntity.push(0);
+        numAnomalyGradesForEntity.push(0);
+      }
+    });
+
+    maxAnomalyGrades.push(maxAnomalyGradesForEntity);
+    numAnomalyGrades.push(numAnomalyGradesForEntity);
   });
 
-  const plotTimes = aggregatedResultsInWindows.map((aggregatedResults) =>
-    get(aggregatedResults, 'dateRange.endDate', 0)
-  );
-  const maxAnomalyGrades = aggregatedResultsInWindows.map((aggregatedResults) =>
-    get(aggregatedResults, 'maxAnomalyGrade', 0)
-  );
-
-  const numAnomalyGrades = aggregatedResultsInWindows.map((aggregatedResults) =>
-    get(aggregatedResults, 'numAnomalyGrade', 0)
-  );
-  // console.log('plotTimes', plotTimes);
-  // console.log('aggregatedResultsInWindows', aggregatedResultsInWindows);
-  // console.log('maxAnomalyGrades', maxAnomalyGrades);
-  // console.log('anomalyGrades', anomalyGrades);
-  const entities = ['value1', 'value2', 'value3', 'value4', 'value5'];
-  const z = [];
-  for (let i = 0; i < entities.length; i++) {
-    const row = [];
-    for (let j = 0; j < plotTimes.length; j++) {
-      row.push(maxAnomalyGrades[j]);
-    }
-    z.push(row);
-  }
-  const texts = [];
-  for (let i = 0; i < entities.length; i++) {
-    const row = [];
-    for (let j = 0; j < plotTimes.length; j++) {
-      row.push(`${numAnomalyGrades[j]}`);
-    }
-    texts.push(row);
-  }
-  // console.log('z data', z);
-  // const z_focused = [];
-  // for (let i = 0; i < entities.length; i++) {
-  //   const row = [];
-  //   for (let j = 0; j < plotTimes.length; j++) {
-  //     if (i == 0 && j == 0) {
-  //       row.push(z[i][j]);
-  //     } else {
-  //       row.push(null);
-  //     }
-  //   }
-  //   z_focused.push(row);
-  // }
-  // console.log('z_focused data', z_focused);
-  // const xs = ['x1', 'x2', 'x3', 'x4', 'x5', 'x6'];
-  // const zs = [];
-  // for (let i = 0; i < entities.length; i++) {
-  //   const row = [];
-  //   for (let j = 0; j < xs.length; j++) {
-  //     row.push(Math.random());
-  //   }
-  //   zs.push(row);
-  // }
-  const plotData = [
+  const plotTimes = timeWindows.map((timeWindow) => timeWindow.endDate);
+  const plotData =
+    //@ts-ignore
     {
       x: plotTimes.map((timestamp) =>
         moment(timestamp).format(HEATMAP_X_AXIS_DATE_FORMAT)
       ),
-      y: entities,
-      z: z,
+      y: entityValues,
+      z: maxAnomalyGrades,
       colorscale: ANOMALY_HEATMAP_COLORSCALE,
       //@ts-ignore
       zmin: 0,
@@ -334,43 +294,86 @@ export const getAnomaliesHeatmapData = (
       xgap: 2,
       ygap: 2,
       opacity: 1,
-      text: texts,
-      // text: [
-      //   plotDateRanges.map((result) => {
-      //     moment(get(result, 'startDate')).format(HEATMAP_X_AXIS_DATE_FORMAT) +
-      //       '-' +
-      //       moment(get(result, 'endDate')).format(HEATMAP_X_AXIS_DATE_FORMAT);
-      //   }),
-      //   plotDateRanges.map((result) => {
-      //     moment(get(result, 'startDate')).format(HEATMAP_X_AXIS_DATE_FORMAT) +
-      //       '-' +
-      //       moment(get(result, 'endDate')).format(HEATMAP_X_AXIS_DATE_FORMAT);
-      //   }),
-      //   plotDateRanges.map((result) => {
-      //     moment(get(result, 'startDate')).format(HEATMAP_X_AXIS_DATE_FORMAT) +
-      //       '-' +
-      //       moment(get(result, 'endDate')).format(HEATMAP_X_AXIS_DATE_FORMAT);
-      //   }),
-      //   plotDateRanges.map((result) => {
-      //     moment(get(result, 'startDate')).format(HEATMAP_X_AXIS_DATE_FORMAT) +
-      //       '-' +
-      //       moment(get(result, 'endDate')).format(HEATMAP_X_AXIS_DATE_FORMAT);
-      //   }),
-      //   plotDateRanges.map((result) => {
-      //     moment(get(result, 'startDate')).format(HEATMAP_X_AXIS_DATE_FORMAT) +
-      //       '-' +
-      //       moment(get(result, 'endDate')).format(HEATMAP_X_AXIS_DATE_FORMAT);
-      //   }),
-      // ],
-      // hoverinfo: 'x+y+z',
+      text: numAnomalyGrades,
       hovertemplate:
         '<b>Time</b>: %{x}<br>' +
         '<b>Max anomaly grade</b>: %{z}<br>' +
         '<b>Anomaly Occurrences</b>: %{text}' +
         '<extra></extra>',
-    },
-  ] as PlotData[];
-  return plotData;
+    } as PlotData;
+  const resultPlotData = sortHeatmapPlotData(
+    plotData,
+    AnomalyHeatmapSortType.SEVERITY,
+    displayTopNum
+  );
+  return [resultPlotData];
+};
+
+const getEntityAnomaliesMap = (anomalies: any[]): Map<string, any[]> => {
+  const entityAnomaliesMap = new Map<string, any[]>();
+  anomalies.forEach((anomaly) => {
+    const entity = get(anomaly, 'entity', [] as EntityData[]);
+    const entityValue = entity[0].value;
+    let singleEntityAnomalies = [];
+    if (entityAnomaliesMap.has(entityValue)) {
+      //@ts-ignore
+      singleEntityAnomalies = entityAnomaliesMap.get(entityValue);
+    }
+    singleEntityAnomalies.push(anomaly);
+    entityAnomaliesMap.set(entityValue, singleEntityAnomalies);
+  });
+  return entityAnomaliesMap;
+};
+
+export const sortHeatmapPlotData = (
+  heatmapData: PlotData,
+  sortType: AnomalyHeatmapSortType,
+  topNum: number
+) => {
+  const originalYs = cloneDeep(heatmapData.y);
+  const originalZs = cloneDeep(heatmapData.z);
+  const originalTexts = cloneDeep(heatmapData.text);
+  const originalValuesToSort =
+    sortType === AnomalyHeatmapSortType.SEVERITY
+      ? cloneDeep(originalZs)
+      : cloneDeep(originalTexts);
+  const funcToAggregate =
+    sortType === AnomalyHeatmapSortType.SEVERITY
+      ? (a: number, b: number) => {
+          return Math.max(a, b);
+        }
+      : (a: number, b: number) => {
+          return a + b;
+        };
+  const yIndicesToSort = [] as object[];
+  for (let i = 0; i < originalYs.length; i++) {
+    yIndicesToSort.push({
+      index: i,
+      //@ts-ignore
+      value: originalValuesToSort[i].reduce(funcToAggregate),
+    });
+  }
+  console.log('yIndicesToSort', yIndicesToSort);
+  const sortedYIndices = orderBy(yIndicesToSort, ['value'], 'desc').slice(
+    0,
+    topNum
+  );
+  console.log('sortedYIndices', sortedYIndices);
+  const resultYs = [] as any[];
+  const resultZs = [] as any[];
+  const resultTexts = [] as any[];
+  for (let i = sortedYIndices.length - 1; i >= 0; i--) {
+    const index = get(sortedYIndices[i], 'index', 0);
+    resultYs.push(originalYs[index]);
+    resultZs.push(originalZs[index]);
+    resultTexts.push(originalTexts[index]);
+  }
+  return {
+    ...cloneDeep(heatmapData),
+    y: resultYs,
+    z: resultZs,
+    text: resultTexts,
+  } as PlotData;
 };
 
 export const updateHeatmapPlotData = (heatmapData: PlotData, update: any) => {

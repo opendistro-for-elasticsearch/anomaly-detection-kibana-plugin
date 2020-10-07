@@ -122,7 +122,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
   );
   // const [showAlertsFlyout, setShowAlertsFlyout] = useState<boolean>(false);
   const [alertAnnotations, setAlertAnnotations] = useState<any[]>([]);
-  // const [isLoadingAlerts, setIsLoadingAlerts] = useState<boolean>(false);
+  const [isLoadingAlerts, setIsLoadingAlerts] = useState<boolean>(false);
   const [totalAlerts, setTotalAlerts] = useState<number | undefined>(undefined);
   const [alerts, setAlerts] = useState<MonitorAlert[]>([]);
   const [zoomRange, setZoomRange] = useState<DateRange>({
@@ -140,22 +140,26 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
     AnomalySummary
   >(INITIAL_ANOMALY_SUMMARY);
 
-  // useEffect(() => {
-  // const anomalies = prepareDataForChart(
-  //   props.anomalies,
-  //   zoomRange,
-  //   props.isHCDetector
-  // );
-  // setZoomedAnomalies(anomalies);
-  // setAnomalySummary(
-  //   !props.bucketizedAnomalies
-  //     ? getAnomalySummary(
-  //         filterWithDateRange(props.anomalies, zoomRange, 'plotTime')
-  //       )
-  //     : props.anomalySummary
-  // );
-  // setTotalAlerts(filterWithDateRange(alerts, zoomRange, 'startTime').length);
-  // }, [props.anomalies, zoomRange]);
+  useEffect(() => {
+    // const anomalies = prepareDataForChart(
+    //   props.anomalies,
+    //   zoomRange,
+    //   props.isHCDetector
+    // );
+    // setZoomedAnomalies(anomalies);
+    // setAnomalySummary(
+    //   !props.bucketizedAnomalies
+    //     ? getAnomalySummary(
+    //         filterWithDateRange(props.anomalies, zoomRange, 'plotTime')
+    //       )
+    //     : props.anomalySummary
+    // );
+    if (props.showAlerts) {
+      setTotalAlerts(
+        filterWithDateRange(alerts, zoomRange, 'startTime').length
+      );
+    }
+  }, [props.anomalies, zoomRange]);
 
   const handleZoomRangeChange = (start: number, end: number) => {
     setZoomRange({
@@ -165,30 +169,30 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
     props.onZoomRangeChange(start, end);
   };
 
-  // useEffect(() => {
-  //   async function getMonitorAlerts(monitorId: string, startDateTime: number) {
-  //     try {
-  //       setIsLoadingAlerts(true);
-  //       const result = await dispatch(
-  //         searchES(getAlertsQuery(monitorId, startDateTime))
-  //       );
-  //       setIsLoadingAlerts(false);
-  //       setTotalAlerts(
-  //         get(result, 'data.response.aggregations.total_alerts.value')
-  //       );
-  //       const monitorAlerts = convertAlerts(result);
-  //       setAlerts(monitorAlerts);
-  //       const annotations = generateAlertAnnotations(monitorAlerts);
-  //       setAlertAnnotations(annotations);
-  //     } catch (err) {
-  //       console.error(`Failed to get alerts for monitor ${monitorId}`, err);
-  //       setIsLoadingAlerts(false);
-  //     }
-  //   }
-  //   if (props.monitor && props.dateRange.startDate) {
-  //     getMonitorAlerts(props.monitor.id, props.dateRange.startDate);
-  //   }
-  // }, [props.monitor, props.dateRange.startDate]);
+  useEffect(() => {
+    async function getMonitorAlerts(monitorId: string, startDateTime: number) {
+      try {
+        setIsLoadingAlerts(true);
+        const result = await dispatch(
+          searchES(getAlertsQuery(monitorId, startDateTime))
+        );
+        setIsLoadingAlerts(false);
+        setTotalAlerts(
+          get(result, 'data.response.aggregations.total_alerts.value')
+        );
+        const monitorAlerts = convertAlerts(result);
+        setAlerts(monitorAlerts);
+        const annotations = generateAlertAnnotations(monitorAlerts);
+        setAlertAnnotations(annotations);
+      } catch (err) {
+        console.error(`Failed to get alerts for monitor ${monitorId}`, err);
+        setIsLoadingAlerts(false);
+      }
+    }
+    if (props.monitor && props.dateRange.startDate) {
+      getMonitorAlerts(props.monitor.id, props.dateRange.startDate);
+    }
+  }, [props.monitor, props.dateRange.startDate]);
 
   useEffect(() => {
     if (props.selectedHeatmapCell) {
@@ -282,11 +286,10 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
     return (
       <EuiFlexGroup>
         <EuiFlexItem style={{ marginRight: '8px' }}>{datePicker()}</EuiFlexItem>
-        {props.isHCDetector ? null : (
-          <EuiFlexItem style={{ marginLeft: '0px' }}>
-            {setUpAlertsButton()}
-          </EuiFlexItem>
-        )}
+
+        <EuiFlexItem style={{ marginLeft: '0px' }}>
+          {setUpAlertsButton()}
+        </EuiFlexItem>
       </EuiFlexGroup>
     );
   };
@@ -298,14 +301,14 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
         actions={
           props.showAlerts ? alertsActionsWithDatePicker() : datePicker()
         }
-        subTitle={
-          props.isHCDetector ? (
-            <EuiText className="content-panel-subTitle">
-              Choose a filled rectangle to see a more detailed view of that
-              anomaly.
-            </EuiText>
-          ) : undefined
-        }
+        // subTitle={
+        //   props.isHCDetector ? (
+        //     <EuiText className="content-panel-subTitle">
+        //       Choose a filled rectangle to see a more detailed view of that
+        //       anomaly.
+        //     </EuiText>
+        //   ) : undefined
+        // }
       >
         <EuiFlexGroup direction="column">
           {props.isHCDetector && props.onHeatmapCellSelected ? (
@@ -329,10 +332,17 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                     </EuiFlexGroup>
                   ) : (
                     <AnomalyHeatmapChart
+                      detectorId={props.detectorId}
+                      detectorName={props.detectorName}
                       dateRange={props.dateRange}
                       title="full_name"
                       anomalies={props.anomalies}
-                      isLoading={props.isLoading}
+                      isLoading={props.isLoading || isLoadingAlerts}
+                      showAlerts={props.showAlerts}
+                      totalAlerts={totalAlerts}
+                      monitor={props.monitor}
+                      detectorInterval={props.detectorInterval}
+                      unit={props.unit}
                       onHeatmapCellSelected={props.onHeatmapCellSelected}
                       onViewEntitiesSelected={props.onViewEntitiesSelected}
                     />
@@ -348,10 +358,10 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
               anomalies={props.anomalies}
               bucketizedAnomalies={props.bucketizedAnomalies}
               anomalySummary={props.anomalySummary}
-              isLoading={props.isLoading}
+              isLoading={props.isLoading || isLoadingAlerts}
               anomalyGradeSeriesName="Anomaly grade"
               confidenceSeriesName="Confidence"
-              showAlerts={true}
+              showAlerts={props.showAlerts}
               detectorId={props.detectorId}
               detectorName={props.detectorName}
               detector={props.detector}

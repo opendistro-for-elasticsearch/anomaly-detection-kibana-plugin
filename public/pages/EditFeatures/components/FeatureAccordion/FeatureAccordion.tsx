@@ -106,8 +106,12 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
       key={props.index}
       buttonContent={featureButtonContent(props.feature, props.index)}
       //@ts-ignore
-      buttonClassName="euiAccordionForm__button"
-      className="euiAccordionForm"
+      buttonClassName={
+        props.index === 0
+          ? 'euiAccordionForm__noTopPaddingButton'
+          : 'euiAccordionForm__button'
+      }
+      className="euiAccordion__noTopBorder"
       paddingSize="l"
       initialIsOpen={initialIsOpen}
       extraAction={deleteAction(props.onDelete)}
@@ -177,7 +181,7 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
                     ? FEATURE_TYPE.SIMPLE
                     : FEATURE_TYPE.CUSTOM
                 }
-                onChange={e => {
+                onChange={(e) => {
                   props.handleChange(e);
                   if (
                     e.currentTarget.value === FEATURE_TYPE.CUSTOM &&

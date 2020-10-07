@@ -433,6 +433,7 @@ export const parseBucketizedAnomalyResults = (result: any): Anomalies => {
           startTime: get(rawAnomaly, 'data_start_time'),
           endTime: get(rawAnomaly, 'data_end_time'),
           plotTime: get(rawAnomaly, 'data_end_time'),
+          entity: get(rawAnomaly, 'entity'),
         });
       }
       if (get(rawAnomaly, 'feature_data', []).length > 0) {
@@ -844,37 +845,22 @@ export const getFeatureDataMissingMessageAndActionItem = (
 };
 
 export const filterWithHeatmapFilter = (
-  anomalies: any[],
+  data: any[],
   heatmapCell: HeatmapCell | undefined,
-  isResultTable?: boolean,
-  timeField: string = 'plotTime',
-  viewEntities: string[] = ['value1', 'value2', 'value3', 'value4', 'value5']
+  isFilteringAnomaly: boolean = true,
+  timeField: string = 'plotTime'
 ) => {
-  if (isResultTable) {
-    if (!heatmapCell) {
-      anomalies = anomalies.map((anomaly) => ({
-        ...anomaly,
-        categoryValue:
-          viewEntities[
-            Math.floor(Math.random() * Math.floor(viewEntities.length))
-          ],
-      }));
-    } else {
-      anomalies = anomalies.map((anomaly) => ({
-        ...anomaly,
-        categoryValue: heatmapCell.categoryValue,
-      }));
-    }
-  }
   if (!heatmapCell) {
-    return anomalies;
+    return data;
   }
-  return filterWithDateRange(anomalies, heatmapCell.dateRange, timeField);
-  // anomalies.filter(
-  //   (anomaly) =>
-  //     get(anomaly, 'plotTime', 0) <
-  //       heatmapCell.dateRange.endDate &&
-  //     get(anomaly, 'plotTime', 0) >=
-  //       heatmapCell.dateRange.startDate
-  // );
+
+  if (isFilteringAnomaly) {
+    data = data
+      .filter((anomaly) => !isEmpty(get(anomaly, 'entity', [])))
+      .filter(
+        (anomaly) => get(anomaly, 'entity')[0].value === heatmapCell.entityValue
+      );
+    console.log('filtered anomalies', data);
+  }
+  return filterWithDateRange(data, heatmapCell.dateRange, timeField);
 };

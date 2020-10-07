@@ -251,7 +251,7 @@ export const AnomalyDetailsChart = React.memo(
               titleSize="s"
             />
           </EuiFlexItem>
-          {!props.isHCDetector && props.showAlerts ? (
+          {props.showAlerts ? (
             <EuiFlexItem>
               <AlertsStat
                 monitor={props.monitor}

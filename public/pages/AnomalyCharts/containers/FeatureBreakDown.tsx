@@ -65,7 +65,8 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
       if (props.selectedHeatmapCell) {
         return filterWithHeatmapFilter(
           originalFeatureData,
-          props.selectedHeatmapCell
+          props.selectedHeatmapCell,
+          false
         );
       } else {
         return [];
@@ -178,7 +179,7 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
               detectorEnabledTime={props.detector.enabledTime}
               titlePrefix={
                 props.selectedHeatmapCell
-                  ? props.selectedHeatmapCell.categoryValue
+                  ? props.selectedHeatmapCell.entityValue
                   : undefined
               }
             />

@@ -19,3 +19,11 @@
   -ms-flex-negative: 0;
   flex-shrink: 0;
 }
+
+.euiAccordion__noTopBorder {
+  border-bottom: 1px solid #d3dae6;
+}
+
+.euiAccordionForm__noTopPaddingButton {
+  padding: 0 16px 16px 0;
+}

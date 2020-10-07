@@ -25,7 +25,7 @@ import React, { useEffect, useState } from 'react';
 import chrome from 'ui/chrome';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
-import { categoryValueColumn, staticColumn } from '../utils/tableUtils';
+import { entityValueColumn, staticColumn } from '../utils/tableUtils';
 import { ListControls } from '../components/ListControls/ListControls';
 import { DetectorResultsQueryParams } from 'server/models/types';
 import { AnomalyData } from '../../../models/interfaces';
@@ -140,7 +140,7 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
           props.isHCDetector
             ? [
                 ...staticColumn.slice(0, 2),
-                categoryValueColumn,
+                entityValueColumn,
                 ...staticColumn.slice(2),
               ]
             : staticColumn

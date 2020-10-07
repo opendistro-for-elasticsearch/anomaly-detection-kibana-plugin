@@ -58,7 +58,7 @@ export function CategoryField(props: CategoryFieldProps) {
   });
 
   useEffect(() => {
-    setEnabled(props.isHCDetector);
+    setEnabled(props.isHCDetector || enabled);
   }, [props.isHCDetector]);
 
   return (
@@ -83,7 +83,7 @@ export function CategoryField(props: CategoryFieldProps) {
           }
           subTitle={
             <EuiText className="content-panel-subTitle">
-              Categorize anomalies based on unique partitions. For example, for
+              Categorize anomalies based on unique partitions. For example, with
               clickstream data you can categorize anomalies into a given day,
               week, or month.{' '}
               <EuiLink
@@ -106,7 +106,8 @@ export function CategoryField(props: CategoryFieldProps) {
           {noCategoryFields ? <EuiSpacer size="m" /> : null}
           <Field
             name="categoryField"
-            validate={enabled ? requiredNonEmptyArray : null}
+            // validate={enabled && true ? requiredNonEmptyArray : null}
+            validate={requiredNonEmptyArray}
           >
             {({ field, form }: FieldProps) => (
               <EuiFlexGroup direction="column">
@@ -119,7 +120,7 @@ export function CategoryField(props: CategoryFieldProps) {
                     onChange={() => {
                       // If user is now enabling: set the field touched to perform validation
                       if (!enabled) {
-                        form.setFieldTouched('categoryField', true);
+                        form.setFieldTouched('categoryField', false);
                       }
                       // If the user is now disabling: set the field to null
                       if (enabled) {
@@ -155,6 +156,7 @@ export function CategoryField(props: CategoryFieldProps) {
                           } else {
                             form.setFieldValue('categoryField', []);
                             props.onCategoryFieldSelected([]);
+                            setEnabled(true);
                           }
                         }}
                         selectedOptions={

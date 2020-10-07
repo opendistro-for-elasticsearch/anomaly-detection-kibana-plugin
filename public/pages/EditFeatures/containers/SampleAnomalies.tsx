@@ -112,6 +112,11 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
     (state: AppState) => state.anomalies.anomaliesResult
   );
 
+  console.log(
+    'anomaliesResult.anomalies in preview',
+    anomaliesResult.anomalies
+  );
+
   const getPreviewErrorMessage = (err: any, defaultMessage: string) => {
     if (typeof err === 'string') return err;
     if (err) {
@@ -226,7 +231,6 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
           ) : null}
           {!firstPreview ? (
             <Fragment>
-              {/* {!props.isHCDetector ? null : ( */}
               <AnomaliesChart
                 title="Sample anomaly history"
                 onDateRangeChange={handleDateRangeChange}
@@ -242,7 +246,6 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                 onHeatmapCellSelected={handleHeatmapCellSelected}
                 selectedHeatmapCell={selectedHeatmapCell}
               />
-              {/* )} */}
               <EuiSpacer />
               {isLoading ? (
                 <EuiFlexGroup
@@ -260,7 +263,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                         <AnomalyOccurrenceChart
                           title={
                             selectedHeatmapCell
-                              ? selectedHeatmapCell.categoryValue
+                              ? selectedHeatmapCell.entityValue
                               : '-'
                           }
                           dateRange={dateRange}
@@ -274,7 +277,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                           isLoading={isLoading}
                           anomalyGradeSeriesName="Anomaly grade"
                           confidenceSeriesName="Confidence"
-                          showAlerts={true}
+                          showAlerts={false}
                           detectorId={props.detector.id}
                           detectorName={props.detector.name}
                           detector={props.detector}

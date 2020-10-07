@@ -640,6 +640,9 @@ const getAnomalyResults = async (
                 Number.parseFloat(result._source.anomaly_grade)
               )
             : 0,
+        ...(result._source.entity != null
+          ? { entity: result._source.entity }
+          : {}),
       });
       result._source.feature_data.forEach((featureData: any) => {
         if (!featureResult[featureData.feature_id]) {
