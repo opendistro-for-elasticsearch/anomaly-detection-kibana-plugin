@@ -17,12 +17,7 @@ import React from 'react';
 import { EuiBadge } from '@elastic/eui';
 import { get } from 'lodash';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
-import {
-  AnomalySummary,
-  Monitor,
-  Detector,
-  DateRange,
-} from '../../../models/interfaces';
+import { Monitor, Detector, DateRange } from '../../../models/interfaces';
 import { AnomalyDetailsChart } from './AnomalyDetailsChart';
 import { HeatmapCell } from './AnomalyHeatmapChart';
 import { filterWithHeatmapFilter } from '../../utils/anomalyResultUtils';
@@ -39,7 +34,6 @@ interface AnomalyOccurrenceChartProps {
   anomalies: any[];
   bucketizedAnomalies: boolean;
   anomalySummary: any;
-  annotations?: any[];
   dateRange: DateRange;
   isLoading: boolean;
   showAlerts?: boolean;
@@ -72,7 +66,6 @@ export const AnomalyOccurrenceChart = React.memo(
       }
     };
     const getAnomalySummaryForChart = () => {
-      console.log('Inside getAnomalySummaryForChart');
       if (props.isHCDetector) {
         if (props.selectedHeatmapCell) {
           return getAnomalySummary(
@@ -87,7 +80,6 @@ export const AnomalyOccurrenceChart = React.memo(
     };
 
     const getDateRange = () => {
-      console.log('Inside getDateRange');
       if (props.isHCDetector && props.selectedHeatmapCell) {
         return props.selectedHeatmapCell.dateRange;
       }

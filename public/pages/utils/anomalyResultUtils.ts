@@ -253,6 +253,7 @@ export const generateAnomalyAnnotations = (anomalies: any[]): any[] => {
       } between ${moment(anomaly.startTime).format(
         'MM/DD/YY h:mm A'
       )} and ${moment(anomaly.endTime).format('MM/DD/YY h:mm A')}`,
+      entity: get(anomaly, 'entity', []),
     }));
 };
 
@@ -821,7 +822,7 @@ export const getFeatureDataMissingMessageAndActionItem = (
         actionItem:
           'Make sure your data is ingested correctly.' + hideFeatureMessage
             ? ''
-            : 'See the feature data shown below for more details.',
+            : ' See the feature data shown below for more details.',
       };
     case MISSING_FEATURE_DATA_SEVERITY.RED:
       return {
@@ -834,7 +835,7 @@ export const getFeatureDataMissingMessageAndActionItem = (
           `${DETECTOR_INIT_FAILURES.NO_TRAINING_DATA.actionItem}` +
           hideFeatureMessage
             ? ''
-            : 'See the feature data shown below for more details.',
+            : ' See the feature data shown below for more details.',
       };
     default:
       return {
@@ -847,20 +848,19 @@ export const getFeatureDataMissingMessageAndActionItem = (
 export const filterWithHeatmapFilter = (
   data: any[],
   heatmapCell: HeatmapCell | undefined,
-  isFilteringAnomaly: boolean = true,
+  isFilteringWithEntity: boolean = true,
   timeField: string = 'plotTime'
 ) => {
   if (!heatmapCell) {
     return data;
   }
 
-  if (isFilteringAnomaly) {
+  if (isFilteringWithEntity) {
     data = data
       .filter((anomaly) => !isEmpty(get(anomaly, 'entity', [])))
       .filter(
         (anomaly) => get(anomaly, 'entity')[0].value === heatmapCell.entityValue
       );
-    console.log('filtered anomalies', data);
   }
   return filterWithDateRange(data, heatmapCell.dateRange, timeField);
 };

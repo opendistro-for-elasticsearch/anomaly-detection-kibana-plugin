@@ -27,7 +27,7 @@ import {
   EuiIcon,
 } from '@elastic/eui';
 import moment from 'moment';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { previewDetector } from '../../../redux/reducers/anomalies';
@@ -56,7 +56,6 @@ interface SampleAnomaliesProps {
   categoryFields: string[];
   errors: any;
   setFieldTouched: any;
-  isHCDetector?: boolean;
 }
 
 export function SampleAnomalies(props: SampleAnomaliesProps) {
@@ -80,6 +79,10 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
   });
 
   const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
+
+  console.log('props.categoryFields in SampleAnomalies', props.categoryFields);
+  console.log('newDetector in SampleAnomalies', newDetector);
+  const isHCDetector = !isEmpty(get(newDetector, 'categoryField', []));
 
   useEffect(() => {
     if (!firstPreview) {
@@ -157,10 +160,11 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
         props.featureList,
         props.shingleSize,
         // always use last single field for now
-        [props.categoryFields[props.categoryFields.length - 1]],
+        isEmpty(props.categoryFields) ? undefined : props.categoryFields,
         newDetector,
         true
       );
+      console.log('updatedDetector in SampleAnomalies', updatedDetector);
       setPreviewDone(false);
       setZoomRange({ ...dateRange });
       setNewDetector(updatedDetector);
@@ -242,7 +246,8 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                 confidenceSeriesName="Sample confidence"
                 detectorId={props.detector.id}
                 detectorName={props.detector.name}
-                isHCDetector={props.isHCDetector}
+                isHCDetector={isHCDetector}
+                detectorCategoryField={newDetector.categoryField}
                 onHeatmapCellSelected={handleHeatmapCellSelected}
                 selectedHeatmapCell={selectedHeatmapCell}
               />
@@ -258,7 +263,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                 </EuiFlexGroup>
               ) : (
                 [
-                  props.isHCDetector
+                  isHCDetector
                     ? [
                         <AnomalyOccurrenceChart
                           title={
@@ -289,7 +294,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                             props.detector,
                             'detectionInterval.period.unit'
                           )}
-                          isHCDetector={props.isHCDetector}
+                          isHCDetector={isHCDetector}
                           selectedHeatmapCell={selectedHeatmapCell}
                         />,
                         <EuiSpacer size="m" />,
@@ -305,7 +310,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                     isLoading={isLoading}
                     dateRange={zoomRange}
                     featureDataSeriesName="Sample feature output"
-                    isHCDetector={props.isHCDetector}
+                    isHCDetector={isHCDetector}
                     selectedHeatmapCell={selectedHeatmapCell}
                   />,
                 ]

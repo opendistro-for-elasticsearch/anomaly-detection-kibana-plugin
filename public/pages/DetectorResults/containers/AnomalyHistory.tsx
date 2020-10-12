@@ -103,7 +103,8 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     'value5',
   ]);
 
-  const isHCDetector = !isEmpty(get(props.detector, 'categoryField', []));
+  const detectorCategoryField = get(props.detector, 'categoryField', []);
+  const isHCDetector = !isEmpty(detectorCategoryField);
 
   console.log('isHCDetector in AnomalyHistory', isHCDetector);
 
@@ -213,6 +214,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     ? bucketizedAnomalyResults
     : atomicAnomalyResults;
 
+  console.log('anomalyResults in history', anomalyResults);
   const handleDateRangeChange = useCallback(
     (startDate: number, endDate: number, dateRangeOption?: string) => {
       setDateRange({
@@ -239,6 +241,29 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
 
   console.log('selectedHeatmapCell in anomaly history', selectedHeatmapCell);
 
+  // const getAnnotations = () => {
+  //   let anomaliesData = get(anomalyResults, 'anomalies', []);
+  //   if (selectedHeatmapCell) {
+  //     anomaliesData = filterWithHeatmapFilter(
+  //       anomaliesData,
+  //       selectedHeatmapCell
+  //     );
+  //   }
+  //   return anomaliesData
+  //     .filter((anomaly: AnomalyData) => anomaly.anomalyGrade > 0)
+  //     .map((anomaly: AnomalyData) => ({
+  //       coordinates: {
+  //         x0: anomaly.startTime,
+  //         x1: anomaly.endTime,
+  //       },
+  //       details: `There is an anomaly with confidence ${
+  //         anomaly.confidence
+  //       } between ${minuteDateFormatter(
+  //         anomaly.startTime
+  //       )} and ${minuteDateFormatter(anomaly.endTime)}`,
+  //     }));
+  // };
+
   const annotations = anomalyResults
     ? get(anomalyResults, 'anomalies', [])
         //@ts-ignore
@@ -253,6 +278,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
           } between ${minuteDateFormatter(
             anomaly.startTime
           )} and ${minuteDateFormatter(anomaly.endTime)}`,
+          entity: get(anomaly, 'entity', []),
         }))
     : [];
 
@@ -310,6 +336,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         unit={get(props.detector, 'detectionInterval.period.unit')}
         monitor={props.monitor}
         isHCDetector={isHCDetector}
+        detectorCategoryField={detectorCategoryField}
         onHeatmapCellSelected={handleHeatmapCellSelected}
         selectedHeatmapCell={selectedHeatmapCell}
         onViewEntitiesSelected={handleViewEntitiesSelected}
@@ -402,8 +429,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                       : pureAnomalies,
                     selectedHeatmapCell,
                     true,
-                    'plotTime',
-                    selectedViewEntities
+                    'plotTime'
                   )}
                   isHCDetector={isHCDetector}
                 />,

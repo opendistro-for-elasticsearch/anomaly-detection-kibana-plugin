@@ -29,6 +29,7 @@ import {
   Anomalies,
   DateRange,
   FEATURE_TYPE,
+  EntityData,
 } from '../../../models/interfaces';
 import { NoFeaturePrompt } from '../components/FeatureChart/NoFeaturePrompt';
 import { focusOnFeatureAccordion } from '../../EditFeatures/utils/helpers';
@@ -63,11 +64,22 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
     );
     if (props.isHCDetector) {
       if (props.selectedHeatmapCell) {
-        return filterWithHeatmapFilter(
-          originalFeatureData,
-          props.selectedHeatmapCell,
-          false
-        );
+        const anomaliesFound = get(anomaliesResult, 'anomalies', []);
+        const filteredFeatureData = [];
+        for (let i = 0; i < anomaliesFound.length; i++) {
+          const currentAnomalyData = anomaliesResult.anomalies[i];
+          if (
+            get(currentAnomalyData, 'entity', [] as EntityData[])[0].value ===
+              props.selectedHeatmapCell.entityValue &&
+            get(currentAnomalyData, 'plotTime', 0) >=
+              props.selectedHeatmapCell.dateRange.startDate &&
+            get(currentAnomalyData, 'plotTime', 0) <=
+              props.selectedHeatmapCell.dateRange.endDate
+          ) {
+            filteredFeatureData.push(originalFeatureData[i]);
+          }
+        }
+        return filteredFeatureData;
       } else {
         return [];
       }
@@ -82,7 +94,7 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
         return filterWithHeatmapFilter(
           props.annotations,
           props.selectedHeatmapCell,
-          false,
+          true,
           'coordinates.x0'
         );
       } else {

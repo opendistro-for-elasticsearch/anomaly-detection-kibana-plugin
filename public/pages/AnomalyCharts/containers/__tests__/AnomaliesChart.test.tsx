@@ -46,7 +46,7 @@ const renderDataFilter = () => ({
           dataTypes: {
             keyword: ['cityName.keyword'],
             integer: ['age'],
-            text: ['cityName'], 
+            text: ['cityName'],
           },
         },
       })}
@@ -64,7 +64,6 @@ const renderDataFilter = () => ({
         confidenceSeriesName="confidence"
         detectorId="testDetectorId"
         detectorName="testDetectorName"
-        annotations={[]}
       />
     </Provider>
   ),

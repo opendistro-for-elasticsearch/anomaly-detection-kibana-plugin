@@ -102,12 +102,14 @@ export function EditFeatures(props: EditFeaturesProps) {
   const [showAdvancedSettings, setShowAdvancedSettings] = useState<boolean>(
     false
   );
-  const [isHCDetector, setIsHCDetector] = useState<boolean>(false);
+  const [isHCDetector, setIsHCDetector] = useState<boolean>(
+    get(detector, 'categoryField', []).length > 0
+  );
   const [selectedCategoryField, setCategoryField] = useState<string[]>(
     [] as string[]
   );
 
-  console.log('isHCDetector', isHCDetector);
+  console.log('detector in EditFeature', detector);
   // When detector is loaded: get any category fields (if applicable) and
   // get all index mappings based on detector's selected index
   useEffect(() => {
@@ -427,14 +429,9 @@ export function EditFeatures(props: EditFeaturesProps) {
                 detector={detector}
                 featureList={values.featureList}
                 shingleSize={values.shingleSize}
-                categoryFields={get(
-                  detector,
-                  'categoryField',
-                  [] as string[]
-                ).concat(selectedCategoryField)}
+                categoryFields={values.categoryField}
                 errors={errors}
                 setFieldTouched={setFieldTouched}
-                isHCDetector={isHCDetector}
               />
             ) : null}
 

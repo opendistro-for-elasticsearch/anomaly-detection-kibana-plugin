@@ -24,7 +24,7 @@ import {
 import { dateFormatter, minuteDateFormatter } from '../../utils/helpers';
 import { RectAnnotationDatum } from '@elastic/charts';
 import { DEFAULT_ANOMALY_SUMMARY } from './constants';
-import { PlotData } from 'plotly.js';
+import { Datum, PlotData } from 'plotly.js';
 import moment, { Moment } from 'moment';
 import { calculateTimeWindowsWithMaxDataPoints } from '../../utils/anomalyResultUtils';
 
@@ -223,21 +223,30 @@ const getColorForValue = (value: number) => {
 
 const NUM_CELLS = 20;
 
-interface AggregatedAnomalyResult {
-  maxAnomalyGrade: number;
-  numAnomalyGrade: number;
-  dateRange: DateRange;
-  entity: EntityData[];
-}
-
 export const HEATMAP_X_AXIS_DATE_FORMAT = 'MM-DD HH:mm YYYY';
+
+const buildBlankStringWithLength = (length: number) => {
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += ' ';
+  }
+  return result;
+};
 
 export const getAnomaliesHeatmapData = (
   anomalies: any[],
   dateRange: DateRange,
-  displayTopNum?: number = 10
+  sortType: AnomalyHeatmapSortType = AnomalyHeatmapSortType.SEVERITY,
+  displayTopNum: number = 10
 ): PlotData[] => {
   const entityAnomaliesMap = getEntityAnomaliesMap(anomalies);
+  if (isEmpty(entityAnomaliesMap)) {
+    // put placeholder data so that heatmap won't look empty
+    for (let i = 0; i < displayTopNum; i++) {
+      const blankStrValue = buildBlankStringWithLength(i);
+      entityAnomaliesMap.set(blankStrValue, []);
+    }
+  }
 
   const entityValues = [] as string[];
   const maxAnomalyGrades = [] as any[];
@@ -301,11 +310,9 @@ export const getAnomaliesHeatmapData = (
         '<b>Anomaly Occurrences</b>: %{text}' +
         '<extra></extra>',
     } as PlotData;
-  const resultPlotData = sortHeatmapPlotData(
-    plotData,
-    AnomalyHeatmapSortType.SEVERITY,
-    displayTopNum
-  );
+  console.log('plotData is ', plotData);
+  const resultPlotData = sortHeatmapPlotData(plotData, sortType, displayTopNum);
+  console.log('resultPlotData is ', resultPlotData);
   return [resultPlotData];
 };
 
@@ -313,6 +320,9 @@ const getEntityAnomaliesMap = (anomalies: any[]): Map<string, any[]> => {
   const entityAnomaliesMap = new Map<string, any[]>();
   anomalies.forEach((anomaly) => {
     const entity = get(anomaly, 'entity', [] as EntityData[]);
+    if (isEmpty(entity)) {
+      return;
+    }
     const entityValue = entity[0].value;
     let singleEntityAnomalies = [];
     if (entityAnomaliesMap.has(entityValue)) {
@@ -323,6 +333,40 @@ const getEntityAnomaliesMap = (anomalies: any[]): Map<string, any[]> => {
     entityAnomaliesMap.set(entityValue, singleEntityAnomalies);
   });
   return entityAnomaliesMap;
+};
+
+export const filterHeatmapPlotDataByY = (
+  heatmapData: PlotData,
+  selectedYs: Datum[],
+  sortType: AnomalyHeatmapSortType
+) => {
+  const originalYs = cloneDeep(heatmapData.y);
+  const originalZs = cloneDeep(heatmapData.z);
+  console.log('originalZs', originalZs);
+  const originalTexts = cloneDeep(heatmapData.text);
+  console.log('originalTexts', originalTexts);
+  const resultZs = [];
+  const resultTexts = [];
+  for (let i = 0; i < originalYs.length; i++) {
+    //@ts-ignore
+    if (selectedYs.includes(originalYs[i])) {
+      console.log(`Found ${originalYs[i]} at i ${i} in selectedYs`);
+      resultZs.push(originalZs[i]);
+      resultTexts.push(originalTexts[i]);
+    }
+  }
+  const updateHeatmapPlotData = {
+    ...cloneDeep(heatmapData),
+    y: selectedYs,
+    z: resultZs,
+    text: resultTexts,
+  } as PlotData;
+  console.log('updateHeatmapPlotData', updateHeatmapPlotData);
+  return sortHeatmapPlotData(
+    updateHeatmapPlotData,
+    sortType,
+    selectedYs.length
+  );
 };
 
 export const sortHeatmapPlotData = (

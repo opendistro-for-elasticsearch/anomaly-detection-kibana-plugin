@@ -96,7 +96,6 @@ interface AnomaliesChartProps {
   anomalies: any[];
   bucketizedAnomalies: boolean;
   anomalySummary: any;
-  annotations?: any[];
   dateRange: DateRange;
   isLoading: boolean;
   showAlerts?: boolean;
@@ -110,26 +109,13 @@ interface AnomaliesChartProps {
   monitor?: Monitor;
   children: React.ReactNode | React.ReactNode[];
   isHCDetector?: boolean;
+  detectorCategoryField?: string[];
   onHeatmapCellSelected?(heatmapCell: HeatmapCell): void;
   selectedHeatmapCell?: HeatmapCell;
   onViewEntitiesSelected?(viewEntities: string[]): void;
 }
 
 export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
-  const dispatch = useDispatch();
-  const [anomalySummary, setAnomalySummary] = useState<AnomalySummary>(
-    INITIAL_ANOMALY_SUMMARY
-  );
-  // const [showAlertsFlyout, setShowAlertsFlyout] = useState<boolean>(false);
-  const [alertAnnotations, setAlertAnnotations] = useState<any[]>([]);
-  const [isLoadingAlerts, setIsLoadingAlerts] = useState<boolean>(false);
-  const [totalAlerts, setTotalAlerts] = useState<number | undefined>(undefined);
-  const [alerts, setAlerts] = useState<MonitorAlert[]>([]);
-  const [zoomRange, setZoomRange] = useState<DateRange>({
-    ...props.dateRange,
-  });
-  const [zoomedAnomalies, setZoomedAnomalies] = useState<any[]>([]);
-
   const [datePickerRange, setDatePickerRange] = useState({
     start: 'now-7d',
     end: 'now',
@@ -140,59 +126,9 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
     AnomalySummary
   >(INITIAL_ANOMALY_SUMMARY);
 
-  useEffect(() => {
-    // const anomalies = prepareDataForChart(
-    //   props.anomalies,
-    //   zoomRange,
-    //   props.isHCDetector
-    // );
-    // setZoomedAnomalies(anomalies);
-    // setAnomalySummary(
-    //   !props.bucketizedAnomalies
-    //     ? getAnomalySummary(
-    //         filterWithDateRange(props.anomalies, zoomRange, 'plotTime')
-    //       )
-    //     : props.anomalySummary
-    // );
-    if (props.showAlerts) {
-      setTotalAlerts(
-        filterWithDateRange(alerts, zoomRange, 'startTime').length
-      );
-    }
-  }, [props.anomalies, zoomRange]);
-
   const handleZoomRangeChange = (start: number, end: number) => {
-    setZoomRange({
-      startDate: start,
-      endDate: end,
-    });
     props.onZoomRangeChange(start, end);
   };
-
-  useEffect(() => {
-    async function getMonitorAlerts(monitorId: string, startDateTime: number) {
-      try {
-        setIsLoadingAlerts(true);
-        const result = await dispatch(
-          searchES(getAlertsQuery(monitorId, startDateTime))
-        );
-        setIsLoadingAlerts(false);
-        setTotalAlerts(
-          get(result, 'data.response.aggregations.total_alerts.value')
-        );
-        const monitorAlerts = convertAlerts(result);
-        setAlerts(monitorAlerts);
-        const annotations = generateAlertAnnotations(monitorAlerts);
-        setAlertAnnotations(annotations);
-      } catch (err) {
-        console.error(`Failed to get alerts for monitor ${monitorId}`, err);
-        setIsLoadingAlerts(false);
-      }
-    }
-    if (props.monitor && props.dateRange.startDate) {
-      getMonitorAlerts(props.monitor.id, props.dateRange.startDate);
-    }
-  }, [props.monitor, props.dateRange.startDate]);
 
   useEffect(() => {
     if (props.selectedHeatmapCell) {
@@ -206,14 +142,9 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
     }
   }, [props.selectedHeatmapCell]);
 
-  const anomalyChartTimeFormatter = niceTimeFormatter([
-    zoomRange.startDate,
-    zoomRange.endDate,
-  ]);
-
   const handleDateRangeChange = (startDate: number, endDate: number) => {
     props.onDateRangeChange(startDate, endDate);
-    handleZoomRangeChange(startDate, endDate);
+    props.onZoomRangeChange(startDate, endDate);
   };
 
   const showLoader = useDelayedLoader(props.isLoading);
@@ -239,7 +170,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
             startTime.valueOf() >= props.dateRange.startDate &&
             endTime.valueOf() <= props.dateRange.endDate
           ) {
-            handleZoomRangeChange(startTime.valueOf(), endTime.valueOf());
+            props.onZoomRangeChange(startTime.valueOf(), endTime.valueOf());
           } else {
             handleDateRangeChange(startTime.valueOf(), endTime.valueOf());
           }
@@ -301,22 +232,15 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
         actions={
           props.showAlerts ? alertsActionsWithDatePicker() : datePicker()
         }
-        // subTitle={
-        //   props.isHCDetector ? (
-        //     <EuiText className="content-panel-subTitle">
-        //       Choose a filled rectangle to see a more detailed view of that
-        //       anomaly.
-        //     </EuiText>
-        //   ) : undefined
-        // }
       >
         <EuiFlexGroup direction="column">
-          {props.isHCDetector && props.onHeatmapCellSelected ? (
+          {props.isHCDetector &&
+          props.onHeatmapCellSelected &&
+          props.detectorCategoryField ? (
             <EuiFlexGroup style={{ padding: '20px' }}>
               <EuiFlexItem style={{ margin: '0px' }}>
                 <div
                   style={{
-                    // height: '700px',
                     width: '100%',
                     opacity: showLoader ? 0.2 : 1,
                   }}
@@ -335,11 +259,11 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                       detectorId={props.detectorId}
                       detectorName={props.detectorName}
                       dateRange={props.dateRange}
-                      title="full_name"
+                      //@ts-ignore
+                      title={props.detectorCategoryField[0]}
                       anomalies={props.anomalies}
-                      isLoading={props.isLoading || isLoadingAlerts}
+                      isLoading={props.isLoading}
                       showAlerts={props.showAlerts}
-                      totalAlerts={totalAlerts}
                       monitor={props.monitor}
                       detectorInterval={props.detectorInterval}
                       unit={props.unit}
@@ -354,11 +278,11 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
             <AnomalyDetailsChart
               dateRange={props.dateRange}
               onDateRangeChange={handleDateRangeChange}
-              onZoomRangeChange={handleZoomRangeChange}
+              onZoomRangeChange={props.onZoomRangeChange}
               anomalies={props.anomalies}
               bucketizedAnomalies={props.bucketizedAnomalies}
               anomalySummary={props.anomalySummary}
-              isLoading={props.isLoading || isLoadingAlerts}
+              isLoading={props.isLoading}
               anomalyGradeSeriesName="Anomaly grade"
               confidenceSeriesName="Confidence"
               showAlerts={props.showAlerts}
@@ -375,192 +299,11 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
               onDatePickerRangeChange={handleDatePickerRangeChange}
             />
           )}
-
-          {/* <EuiFlexGroup style={{ padding: '20px' }}>
-            <EuiFlexItem>
-              <EuiStat
-                title={
-                  props.isLoading || isLoadingAlerts
-                    ? '-'
-                    : anomalySummary.anomalyOccurrence
-                }
-                description={
-                  props.showAlerts
-                    ? 'Anomaly occurrences'
-                    : 'Sample anomaly occurrences'
-                }
-                titleSize="s"
-              />
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <AnomalyStatWithTooltip
-                isLoading={props.isLoading || isLoadingAlerts}
-                minValue={anomalySummary.minAnomalyGrade}
-                maxValue={anomalySummary.maxAnomalyGrade}
-                description={
-                  props.showAlerts ? 'Anomaly grade' : 'Sample anomaly grade'
-                }
-                tooltip="Indicates to what extent this data point is anomalous."
-              />
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <AnomalyStatWithTooltip
-                isLoading={props.isLoading || isLoadingAlerts}
-                minValue={anomalySummary.minConfidence}
-                maxValue={anomalySummary.maxConfidence}
-                description={
-                  props.showAlerts ? 'Confidence' : 'Sample confidence'
-                }
-                tooltip="Indicates the level of confidence in the anomaly result."
-              />
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <EuiStat
-                title={
-                  props.isLoading || isLoadingAlerts
-                    ? ''
-                    : anomalySummary.lastAnomalyOccurrence
-                }
-                description={
-                  props.showAlerts
-                    ? 'Last anomaly occurrence'
-                    : 'Last sample anomaly occurrence'
-                }
-                titleSize="s"
-              />
-            </EuiFlexItem>
-            {props.showAlerts ? (
-              <EuiFlexItem>
-                <AlertsStat
-                  monitor={props.monitor}
-                  showAlertsFlyout={() => setShowAlertsFlyout(true)}
-                  totalAlerts={totalAlerts}
-                  isLoading={props.isLoading}
-                />
-              </EuiFlexItem>
-            ) : null}
-          </EuiFlexGroup>
-          <EuiFlexGroup direction="column">
-            <EuiFlexItem grow={false}>
-              <div
-                style={{
-                  height: '200px',
-                  width: '100%',
-                  opacity: showLoader ? 0.2 : 1,
-                }}
-              >
-                {props.isLoading || isLoadingAlerts ? (
-                  <EuiFlexGroup
-                    justifyContent="spaceAround"
-                    style={{ paddingTop: '150px' }}
-                  >
-                    <EuiFlexItem grow={false}>
-                      <EuiLoadingChart size="xl" mono />
-                    </EuiFlexItem>
-                  </EuiFlexGroup>
-                ) : (
-                  <Chart>
-                    <Settings
-                      showLegend
-                      showLegendExtra={false}
-                      //TODO: research more why only set this old property will work.
-                      showLegendDisplayValue={false}
-                      legendPosition={Position.Right}
-                      onBrushEnd={(brushArea: XYBrushArea) => {
-                        const start = get(
-                          brushArea,
-                          'x.0',
-                          datePickerRange.start
-                        );
-                        const end = get(
-                          brushArea,
-                          'x.1',
-                          datePickerRange.start
-                        );
-                        !props.bucketizedAnomalies
-                          ? handleZoomRangeChange(start, end)
-                          : handleDateRangeChange(start, end);
-                        setDatePickerRange({
-                          start: moment(start).format(),
-                          end: moment(end).format(),
-                        });
-                      }}
-                      theme={ANOMALY_CHART_THEME}
-                    />
-                    <RectAnnotation
-                      dataValues={disabledHistoryAnnotations(
-                        props.dateRange,
-                        props.detector
-                      )}
-                      id="anomalyAnnotations"
-                      style={{
-                        stroke: darkModeEnabled() ? 'red' : '#D5DBDB',
-                        strokeWidth: 1,
-                        opacity: 0.8,
-                        fill: darkModeEnabled() ? 'red' : '#D5DBDB',
-                      }}
-                    />
-                    {alertAnnotations ? (
-                      <LineAnnotation
-                        id="alertAnnotation"
-                        domainType={AnnotationDomainTypes.XDomain}
-                        dataValues={alertAnnotations}
-                        marker={<EuiIcon type="bell" />}
-                      />
-                    ) : null}
-                    <Axis
-                      id="bottom"
-                      position="bottom"
-                      tickFormat={anomalyChartTimeFormatter}
-                    />
-                    <Axis
-                      id="left"
-                      title={'Anomaly grade / confidence'}
-                      position="left"
-                      domain={{ min: 0, max: 1 }}
-                      showGridLines
-                    />
-                    <LineSeries
-                      id="confidence"
-                      name={props.confidenceSeriesName}
-                      xScaleType={ScaleType.Time}
-                      yScaleType={ScaleType.Linear}
-                      xAccessor={CHART_FIELDS.PLOT_TIME}
-                      yAccessors={[CHART_FIELDS.CONFIDENCE]}
-                      data={zoomedAnomalies}
-                    />
-                    <LineSeries
-                      id="anomalyGrade"
-                      name={props.anomalyGradeSeriesName}
-                      data={zoomedAnomalies}
-                      xScaleType={ScaleType.Time}
-                      yScaleType={ScaleType.Linear}
-                      xAccessor={CHART_FIELDS.PLOT_TIME}
-                      yAccessors={[CHART_FIELDS.ANOMALY_GRADE]}
-                    />
-                  </Chart>
-                )}
-              </div>
-            </EuiFlexItem>
-          </EuiFlexGroup> */}
         </EuiFlexGroup>
         <div style={{ paddingTop: '10px', margin: '0px -20px -30px -20px' }}>
           {props.children}
         </div>
       </ContentPanel>
-
-      {/* {showAlertsFlyout ? (
-        <AlertsFlyout
-          // @ts-ignore
-          detectorId={props.detectorId}
-          // @ts-ignore
-          detectorName={props.detectorName}
-          detectorInterval={get(props, 'detectorInterval', 1)}
-          unit={get(props, 'unit', 'Minutes')}
-          monitor={props.monitor}
-          onClose={() => setShowAlertsFlyout(false)}
-        />
-      ) : null} */}
     </React.Fragment>
   );
 });

@@ -90,7 +90,6 @@ interface AnomalyDetailsChartProps {
   anomalies: any[];
   bucketizedAnomalies: boolean;
   anomalySummary: any;
-  annotations?: any[];
   dateRange: DateRange;
   isLoading: boolean;
   showAlerts?: boolean;
@@ -179,7 +178,13 @@ export const AnomalyDetailsChart = React.memo(
           setIsLoadingAlerts(false);
         }
       }
-      if (props.monitor && props.dateRange.startDate) {
+      if (
+        props.monitor &&
+        props.dateRange.startDate &&
+        // only load alert stats for non HC detector
+        props.isHCDetector != undefined &&
+        !props.isHCDetector
+      ) {
         getMonitorAlerts(props.monitor.id, props.dateRange.startDate);
       }
     }, [props.monitor, props.dateRange.startDate]);

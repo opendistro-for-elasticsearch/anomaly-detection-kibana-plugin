@@ -37,7 +37,7 @@ export interface FeaturesFormikValues {
 export function prepareDetector(
   featureValues: FeaturesFormikValues[],
   shingleSizeValue: number,
-  categoryFields: string[],
+  categoryFields: string[] | undefined,
   ad: Detector,
   forPreview: boolean = false
 ): Detector {
