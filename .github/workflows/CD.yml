@@ -58,8 +58,15 @@ jobs:
           cd kibana/plugins/anomaly-detection-kibana-plugin
           yarn build
 
-      - name: Upload the artifact
+      - name: Upload to S3
         run: |
           cd kibana/plugins/anomaly-detection-kibana-plugin
-          artifact=`ls build/*.zip`
-          aws s3 cp $artifact s3://artifacts.opendistroforelasticsearch.amazon.com/downloads/kibana-plugins/opendistro-anomaly-detection/
+          zip=`ls build/*.zip`
+
+          # Inject the build number before the suffix
+          zip_outfile=`basename ${zip%.zip}-build-${GITHUB_RUN_NUMBER}.zip`
+
+          s3_prefix="s3://staging.artifacts.opendistroforelasticsearch.amazon.com/snapshot/kibana-plugins/anomaly-detection/"
+
+          echo "Copying ${zip} to ${s3_prefix}${zip_outfile}"
+          aws s3 cp --quiet $zip ${s3_prefix}${zip_outfile}
