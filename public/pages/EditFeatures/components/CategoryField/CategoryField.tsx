@@ -123,7 +123,7 @@ export function CategoryField(props: CategoryFieldProps) {
                       label="Field"
                       isInvalid={isInvalid(field.name, form)}
                       error={getError(field.name, form)}
-                      helpText={`The category field can only be applied to the "ip" and "keyword" elasticsearch data types.`}
+                      helpText={`You can only apply the category field to the 'ip' and 'keyword' Elasticsearch data types.`}
                     >
                       <EuiComboBox
                         data-test-subj="categoryFieldComboBox"

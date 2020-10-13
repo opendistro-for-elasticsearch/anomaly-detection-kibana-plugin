@@ -322,7 +322,7 @@ exports[`<CategoryField /> spec renders the component when enabled 1`] = `
                       class="euiFormHelpText euiFormRow__text"
                       id="random_html_id-help"
                     >
-                      The category field can only be applied to the "ip" and "keyword" elasticsearch data types.
+                      You can only apply the category field to the 'ip' and 'keyword' Elasticsearch data types.
                     </div>
                   </div>
                 </div>
