@@ -46,6 +46,7 @@ interface CategoryFieldProps {
   isHCDetector: boolean;
   categoryFieldOptions: string[];
   setIsHCDetector(isHCDetector: boolean): void;
+  isLoading: boolean;
 }
 
 export function CategoryField(props: CategoryFieldProps) {
@@ -84,7 +85,7 @@ export function CategoryField(props: CategoryFieldProps) {
             </EuiText>
           }
         >
-          {noCategoryFields ? (
+          {noCategoryFields && !props.isLoading ? (
             <EuiCallOut
               data-test-subj="noCategoryFieldsCallout"
               title="There are no available category fields for the selected index"

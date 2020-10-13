@@ -36,6 +36,7 @@ describe('<CategoryField /> spec', () => {
                 setIsHCDetector={(isHCDetector: boolean) => {
                   return;
                 }}
+                isLoading={false}
               />
             </Form>
           </Fragment>
@@ -64,6 +65,7 @@ describe('<CategoryField /> spec', () => {
                 setIsHCDetector={(isHCDetector: boolean) => {
                   return;
                 }}
+                isLoading={false}
               />
             </Form>
           </Fragment>
@@ -92,6 +94,7 @@ describe('<CategoryField /> spec', () => {
                 setIsHCDetector={(isHCDetector: boolean) => {
                   return;
                 }}
+                isLoading={false}
               />
             </Form>
           </Fragment>
@@ -101,6 +104,34 @@ describe('<CategoryField /> spec', () => {
     expect(container).toMatchSnapshot();
     expect(queryByTestId('noCategoryFieldsCallout')).not.toBeNull();
     expect(queryByTestId('categoryFieldComboBox')).toBeNull();
+    expect(queryByText('Enable category field')).not.toBeNull();
+  });
+  test('hides callout if component is loading', () => {
+    const { container, queryByText, queryByTestId } = render(
+      <Fragment>
+        <Formik
+          initialValues={{
+            categoryField: [],
+          }}
+          onSubmit={() => {}}
+        >
+          <Fragment>
+            <Form>
+              <CategoryField
+                isHCDetector={true}
+                categoryFieldOptions={[]}
+                setIsHCDetector={(isHCDetector: boolean) => {
+                  return;
+                }}
+                isLoading={true}
+              />
+            </Form>
+          </Fragment>
+        </Formik>
+      </Fragment>
+    );
+    expect(container).toMatchSnapshot();
+    expect(queryByTestId('noCategoryFieldsCallout')).toBeNull();
     expect(queryByText('Enable category field')).not.toBeNull();
   });
 });

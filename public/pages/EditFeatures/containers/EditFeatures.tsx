@@ -104,6 +104,9 @@ export function EditFeatures(props: EditFeaturesProps) {
     false
   );
   const [isHCDetector, setIsHCDetector] = useState<boolean>(false);
+  const isLoading =
+    useSelector((state: AppState) => state.elasticsearch.requesting) ||
+    firstLoad;
 
   // When detector is loaded: get any category fields (if applicable) and
   // get all index mappings based on detector's selected index
@@ -399,6 +402,7 @@ export function EditFeatures(props: EditFeaturesProps) {
                 isHCDetector={isHCDetector}
                 categoryFieldOptions={getCategoryFields(indexDataTypes)}
                 setIsHCDetector={setIsHCDetector}
+                isLoading={isLoading}
               />
               <EuiPage>
                 <EuiPageBody>
