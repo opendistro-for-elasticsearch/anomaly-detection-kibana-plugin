@@ -88,7 +88,6 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
     }
   };
   const getAnnotationData = () => {
-    console.log('props.annotations', props.annotations);
     if (props.isHCDetector) {
       if (props.selectedHeatmapCell) {
         return filterWithHeatmapFilter(

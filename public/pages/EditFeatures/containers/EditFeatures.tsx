@@ -102,34 +102,16 @@ export function EditFeatures(props: EditFeaturesProps) {
   const [showAdvancedSettings, setShowAdvancedSettings] = useState<boolean>(
     false
   );
-  const [isHCDetector, setIsHCDetector] = useState<boolean>(
-    get(detector, 'categoryField', []).length > 0
-  );
-  const [selectedCategoryField, setCategoryField] = useState<string[]>(
-    [] as string[]
-  );
 
-  console.log('detector in EditFeature', detector);
+  const isHCDetector = get(detector, 'categoryField', []).length > 0;
+
   // When detector is loaded: get any category fields (if applicable) and
   // get all index mappings based on detector's selected index
   useEffect(() => {
-    if (
-      detector &&
-      (get(detector, 'categoryField', []).length > 0 ||
-        selectedCategoryField.length > 0)
-    ) {
-      setIsHCDetector(true);
-    }
     if (detector?.indices) {
       dispatch(getMappings(detector.indices[0]));
     }
   }, [detector]);
-
-  useEffect(() => {
-    if (detector) {
-      setIsHCDetector(!isEmpty(selectedCategoryField));
-    }
-  }, [selectedCategoryField]);
 
   useEffect(() => {
     chrome.breadcrumbs.set([
@@ -275,6 +257,10 @@ export function EditFeatures(props: EditFeaturesProps) {
     setFieldTouched: any,
     setSubmitting: any
   ) => {
+    console.log('values in EditFeatures', values);
+    console.log('errors in EditFeatures', errors);
+    console.log('setFieldTouched in EditFeatures', setFieldTouched);
+    console.log('setSubmitting in EditFeatures', setSubmitting);
     if (detector.enabled) {
       toastNotifications.addDanger(
         "Can't edit feature as the detector is running"
@@ -306,11 +292,6 @@ export function EditFeatures(props: EditFeaturesProps) {
       }
     }
   };
-
-  const handleCategoryFieldSelected = useCallback((categoryField: string[]) => {
-    console.log('before setting category field with', categoryField);
-    setCategoryField(categoryField);
-  }, []);
 
   const renderAdvancedSettingsToggle = () => (
     <EuiText
@@ -409,7 +390,6 @@ export function EditFeatures(props: EditFeaturesProps) {
               <CategoryField
                 isHCDetector={isHCDetector}
                 categoryFieldOptions={getCategoryFields(indexDataTypes)}
-                onCategoryFieldSelected={handleCategoryFieldSelected}
               />
               <EuiPage>
                 <EuiPageBody>

@@ -18,7 +18,7 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { PlotData } from 'plotly.js';
 import Plot from 'react-plotly.js';
-import { cloneDeep, get, isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import {
   EuiFlexItem,
   EuiFlexGroup,
@@ -55,7 +55,6 @@ interface AnomalyHeatmapChartProps {
   detectorInterval?: number;
   unit?: string;
   onHeatmapCellSelected(cell: HeatmapCell | undefined): void;
-  onViewEntitiesSelected?(viewEntities: string[]): void;
 }
 
 export interface HeatmapCell {
@@ -89,15 +88,6 @@ export const AnomalyHeatmapChart = React.memo(
       ],
     };
 
-    const [anomalies, setAnomalies] = useState(props.anomalies);
-    const originalHeatmapData = getAnomaliesHeatmapData(
-      anomalies,
-      props.dateRange
-    );
-    const [heatmapData, setHeatmapData] = useState<PlotData[]>(
-      originalHeatmapData
-    );
-
     const getViewEntityOptions = () => {
       let individualEntities = [];
       if (originalHeatmapData && !isEmpty(originalHeatmapData)) {
@@ -125,6 +115,14 @@ export const AnomalyHeatmapChart = React.memo(
       ];
     };
 
+    const originalHeatmapData = getAnomaliesHeatmapData(
+      props.anomalies,
+      props.dateRange
+    );
+    const [heatmapData, setHeatmapData] = useState<PlotData[]>(
+      originalHeatmapData
+    );
+
     const [sortByFeildValue, setSortByFeildValue] = useState(
       SORT_BY_FIELD_OPTIONS[0].value
     );
@@ -137,18 +135,26 @@ export const AnomalyHeatmapChart = React.memo(
 
     const [numEntities, setNumEntities] = useState(10);
 
+    const hasAnomalyInHeatmap = (): boolean => {
+      for (let entityAnomaliesOccurence of heatmapData[0].text) {
+        //@ts-ignore
+        const sum = entityAnomaliesOccurence.reduce((a, b) => {
+          return a + b;
+        });
+        if (sum > 0) {
+          return true;
+        }
+      }
+      return false;
+    };
+
     const handleHeatmapClick = (event: Plotly.PlotMouseEvent) => {
-      console.log('click event', event);
       const selectedCellIndices = get(event, 'points[0].pointIndex', []);
-      console.log('selectedCellIndices', selectedCellIndices);
       const selectedEntity = get(event, 'points[0].y', '');
       if (!isEmpty(selectedCellIndices)) {
-        let anomalyCount = get(event, 'points[0].text', '');
-        if (typeof anomalyCount === 'number') {
-          anomalyCount = anomalyCount.toString();
-        }
+        let anomalyCount = get(event, 'points[0].text', 0);
         if (
-          anomalyCount === '0' ||
+          anomalyCount === 0 ||
           (heatmapData.length > 1 &&
             //@ts-ignore
             heatmapData[1].z[selectedCellIndices[0]][selectedCellIndices[1]] !=
@@ -236,26 +242,19 @@ export const AnomalyHeatmapChart = React.memo(
 
     const handleViewEntityOptionsChange = (selectedViewOptions: any[]) => {
       props.onHeatmapCellSelected(undefined);
-      console.log('selectedViewOptions', selectedViewOptions);
       if (isEmpty(selectedViewOptions)) {
-        console.log('Inside empty view option');
         // when `clear` is hit for combo box
         setCurrentViewOptions([COMBINED_OPTIONS.options[0]]);
         const displayTopEntityNum = get(COMBINED_OPTIONS.options[0], 'value');
         setNumEntities(displayTopEntityNum);
         setHeatmapData(
           getAnomaliesHeatmapData(
-            anomalies,
+            props.anomalies,
             props.dateRange,
             sortByFeildValue,
             displayTopEntityNum
           )
         );
-        if (props.onViewEntitiesSelected) {
-          props.onViewEntitiesSelected(
-            selectedViewOptions.map((option) => get(option, 'label'))
-          );
-        }
         return;
       }
       const nonCombinedOptions = [] as any[];
@@ -273,15 +272,12 @@ export const AnomalyHeatmapChart = React.memo(
           setNumEntities(displayTopEntityNum);
           setHeatmapData(
             getAnomaliesHeatmapData(
-              anomalies,
+              props.anomalies,
               props.dateRange,
               sortByFeildValue,
               displayTopEntityNum
             )
           );
-          if (props.onViewEntitiesSelected) {
-            props.onViewEntitiesSelected([get(option, 'label')]);
-          }
           return;
         } else {
           nonCombinedOptions.push(option);
@@ -290,24 +286,18 @@ export const AnomalyHeatmapChart = React.memo(
       setCurrentViewOptions(nonCombinedOptions);
 
       setNumEntities(nonCombinedOptions.length);
-      // let updatedHeatmapData = cloneDeep(heatmapData);
       const selectedYs = nonCombinedOptions.map((option) =>
         get(option, 'label', '')
       );
-      console.log('selectedYs in heatmap', selectedYs);
+
       let selectedHeatmapData = filterHeatmapPlotDataByY(
         originalHeatmapData[0],
         selectedYs,
         sortByFeildValue
       );
       selectedHeatmapData.opacity = 1;
-      console.log('selectedHeatmapData', selectedHeatmapData);
+
       setHeatmapData([selectedHeatmapData]);
-      if (props.onViewEntitiesSelected) {
-        props.onViewEntitiesSelected(
-          nonCombinedOptions.map((option) => get(option, 'label', ''))
-        );
-      }
     };
 
     const isCombinedViewEntityOption = (inputOption: any) => {
@@ -333,7 +323,11 @@ export const AnomalyHeatmapChart = React.memo(
           <EuiFlexItem>
             <EuiCallOut
               size="s"
-              title="Choose a filled rectangle to see a more detailed view of that anomaly."
+              title={
+                hasAnomalyInHeatmap()
+                  ? 'Choose a filled rectangle in the heat map for a more detailed view of anomalies within that anomaly.'
+                  : 'No anomalies found in the specified date range.'
+              }
               iconType="help"
             />
           </EuiFlexItem>
@@ -430,32 +424,6 @@ export const AnomalyHeatmapChart = React.memo(
                       </EuiFlexItem>
                     </EuiFlexGroup>
                   </EuiFlexItem>
-
-                  {props.showAlerts
-                    ? [
-                        // <EuiFlexItem
-                        //   grow={false}
-                        //   style={{ marginLeft: '0px', marginRight: '0px' }}
-                        // >
-                        //   <div
-                        //     style={{
-                        //       boxSizing: 'border-box',
-                        //       height: '60px',
-                        //       width: '1px',
-                        //       border: '1px solid #D3DAE6',
-                        //     }}
-                        //   ></div>
-                        // </EuiFlexItem>,
-                        // <EuiFlexItem style={{ paddingRight: '5px' }}>
-                        //   <AlertsStat
-                        //     monitor={props.monitor}
-                        //     showAlertsFlyout={() => setShowAlertsFlyout(true)}
-                        //     totalAlerts={props.totalAlerts}
-                        //     isLoading={props.isLoading}
-                        //   />
-                        // </EuiFlexItem>,
-                      ]
-                    : null}
                 </EuiFlexGroup>
               </EuiFlexItem>
             </EuiFlexGroup>
@@ -500,9 +468,6 @@ export const AnomalyHeatmapChart = React.memo(
                       showline: true,
                       showgrid: false,
                       fixedrange: true,
-                      // title: {
-                      //   text: props.title,
-                      // },
                     },
                     margin: {
                       l: 100,
@@ -518,13 +483,7 @@ export const AnomalyHeatmapChart = React.memo(
                     scrollZoom: false,
                     displaylogo: false,
                   }}
-                  onClick={(event: Plotly.PlotMouseEvent) => {
-                    // setSellectedCell({
-                    //   xIndex: 1,
-                    //   yIndex: 2,
-                    // } as HeatmapCell);
-                    handleHeatmapClick(event);
-                  }}
+                  onClick={handleHeatmapClick}
                   divId={HEATMAP_ID}
                 />
               )}

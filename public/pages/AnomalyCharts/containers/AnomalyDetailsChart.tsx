@@ -13,72 +13,61 @@
  * permissions and limitations under the License.
  */
 
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { DurationInputArg2 } from 'moment';
-import moment from 'moment';
-import { PlotData, restyle, deleteTraces, addTraces } from 'plotly.js';
-import Plot from 'react-plotly.js';
-import { get, isEmpty } from 'lodash';
-import dateMath from '@elastic/datemath';
 import {
-  EuiFlexItem,
+  AnnotationDomainTypes,
+  Axis,
+  Chart,
+  LineAnnotation,
+  LineSeries,
+  niceTimeFormatter,
+  Position,
+  RectAnnotation,
+  ScaleType,
+  Settings,
+  XYBrushArea,
+} from '@elastic/charts';
+import {
   EuiFlexGroup,
+  EuiFlexItem,
   EuiIcon,
   EuiLoadingChart,
   EuiStat,
-  EuiSuperDatePicker,
 } from '@elastic/eui';
-import {
-  Chart,
-  Axis,
-  LineSeries,
-  niceTimeFormatter,
-  Settings,
-  Position,
-  LineAnnotation,
-  AnnotationDomainTypes,
-  RectAnnotation,
-  ScaleType,
-  XYBrushArea,
-} from '@elastic/charts';
+import { get } from 'lodash';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useDelayedLoader } from '../../../hooks/useDelayedLoader';
-import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import {
   AnomalySummary,
-  Monitor,
-  Detector,
   DateRange,
+  Detector,
+  Monitor,
   MonitorAlert,
 } from '../../../models/interfaces';
+import { searchES } from '../../../redux/reducers/elasticsearch';
+import { darkModeEnabled } from '../../../utils/kibanaUtils';
 import {
-  prepareDataForChart,
   filterWithDateRange,
+  prepareDataForChart,
 } from '../../utils/anomalyResultUtils';
 import { AlertsFlyout } from '../components/AlertsFlyout/AlertsFlyout';
-
-import { AlertsButton } from '../components/AlertsButton/AlertsButton';
-import { darkModeEnabled } from '../../../utils/kibanaUtils';
 import {
   AlertsStat,
   AnomalyStatWithTooltip,
 } from '../components/AnomaliesStat/AnomalyStat';
 import {
-  INITIAL_ANOMALY_SUMMARY,
-  CHART_FIELDS,
-  DATE_PICKER_QUICK_OPTIONS,
-  ANOMALY_CHART_THEME,
-} from '../utils/constants';
-import {
   convertAlerts,
-  generateAlertAnnotations,
-  getAnomalySummary,
   disabledHistoryAnnotations,
+  generateAlertAnnotations,
   getAlertsQuery,
-  getAnomaliesHeatmapData,
-  getSelectedHeatmapCellPlotData,
+  getAnomalySummary,
 } from '../utils/anomalyChartUtils';
-import { searchES } from '../../../redux/reducers/elasticsearch';
+import {
+  ANOMALY_CHART_THEME,
+  CHART_FIELDS,
+  INITIAL_ANOMALY_SUMMARY,
+} from '../utils/constants';
 
 interface AnomalyDetailsChartProps {
   onDateRangeChange(

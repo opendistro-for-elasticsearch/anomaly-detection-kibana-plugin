@@ -103,7 +103,6 @@ const previewDetector = async (
     const requestBody = JSON.stringify(
       convertPreviewInputKeysToSnakeCase(req.payload)
     );
-    console.log('Preview request body', JSON.stringify(requestBody));
     const response = await callWithRequest(req, 'ad.previewDetector', {
       detectorId,
       body: requestBody,
@@ -209,7 +208,6 @@ const getDetector = async (
           }
         : {}),
     };
-    console.log('Anomaly detector - get detector resp', resp);
     return {
       ok: true,
       response: convertDetectorKeysToCamelCase(resp) as Detector,

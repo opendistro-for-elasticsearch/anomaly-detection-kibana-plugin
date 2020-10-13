@@ -40,9 +40,11 @@ import { darkModeEnabled } from '../../../../utils/kibanaUtils';
 import {
   prepareDataForChart,
   getFeatureMissingDataAnnotations,
+  filterWithDateRange,
 } from '../../../utils/anomalyResultUtils';
 import { CodeModal } from '../../../DetectorConfig/components/CodeModal/CodeModal';
 import { CHART_FIELDS, FEATURE_CHART_THEME } from '../../utils/constants';
+import { isEmpty } from 'lodash';
 
 interface FeatureChartProps {
   feature: FeatureAttributes;
@@ -138,6 +140,16 @@ export const FeatureChart = (props: FeatureChartProps) => {
     return undefined;
   };
 
+  const getFeatureAnnotations = () => {
+    if (isEmpty(props.annotations)) {
+      return [];
+    }
+    return filterWithDateRange(
+      props.annotations,
+      props.dateRange,
+      'coordinates.x0'
+    );
+  };
   return (
     <ContentPanel
       title={
@@ -174,7 +186,7 @@ export const FeatureChart = (props: FeatureChartProps) => {
           />
           {props.feature.featureEnabled ? (
             <RectAnnotation
-              dataValues={props.annotations || []}
+              dataValues={getFeatureAnnotations()}
               id="annotations"
               style={{
                 stroke: darkModeEnabled() ? 'red' : '#D5DBDB',

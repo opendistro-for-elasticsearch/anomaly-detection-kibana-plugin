@@ -13,77 +13,38 @@
  * permissions and limitations under the License.
  */
 
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { DurationInputArg2 } from 'moment';
-import moment from 'moment';
-import { PlotData, restyle, deleteTraces, addTraces } from 'plotly.js';
-import Plot from 'react-plotly.js';
-import { get, isEmpty } from 'lodash';
 import dateMath from '@elastic/datemath';
 import {
-  EuiFlexItem,
   EuiFlexGroup,
-  EuiIcon,
+  EuiFlexItem,
   EuiLoadingChart,
-  EuiStat,
+  EuiSpacer,
   EuiSuperDatePicker,
-  EuiText,
 } from '@elastic/eui';
-import {
-  Chart,
-  Axis,
-  LineSeries,
-  niceTimeFormatter,
-  Settings,
-  Position,
-  LineAnnotation,
-  AnnotationDomainTypes,
-  RectAnnotation,
-  ScaleType,
-  XYBrushArea,
-} from '@elastic/charts';
-import { useDelayedLoader } from '../../../hooks/useDelayedLoader';
+import { get } from 'lodash';
+import moment, { DurationInputArg2 } from 'moment';
+import React, { useState } from 'react';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
+import { useDelayedLoader } from '../../../hooks/useDelayedLoader';
 import {
-  AnomalySummary,
-  Monitor,
-  Detector,
+  Anomalies,
   DateRange,
-  MonitorAlert,
+  Detector,
+  Monitor,
 } from '../../../models/interfaces';
-import {
-  prepareDataForChart,
-  filterWithDateRange,
-  filterWithHeatmapFilter,
-} from '../../utils/anomalyResultUtils';
-import { AlertsFlyout } from '../components/AlertsFlyout/AlertsFlyout';
-
+import { generateAnomalyAnnotations } from '../../utils/anomalyResultUtils';
 import { AlertsButton } from '../components/AlertsButton/AlertsButton';
-import { darkModeEnabled } from '../../../utils/kibanaUtils';
-import {
-  AlertsStat,
-  AnomalyStatWithTooltip,
-} from '../components/AnomaliesStat/AnomalyStat';
-import {
-  INITIAL_ANOMALY_SUMMARY,
-  CHART_FIELDS,
-  DATE_PICKER_QUICK_OPTIONS,
-  ANOMALY_CHART_THEME,
-} from '../utils/constants';
-import {
-  convertAlerts,
-  generateAlertAnnotations,
-  getAnomalySummary,
-  disabledHistoryAnnotations,
-  getAlertsQuery,
-} from '../utils/anomalyChartUtils';
-import { searchES } from '../../../redux/reducers/elasticsearch';
 import { AnomalyDetailsChart } from '../containers/AnomalyDetailsChart';
 import {
   AnomalyHeatmapChart,
   HeatmapCell,
 } from '../containers/AnomalyHeatmapChart';
+import {
+  DATE_PICKER_QUICK_OPTIONS,
+  INITIAL_ANOMALY_SUMMARY,
+} from '../utils/constants';
+import { AnomalyOccurrenceChart } from './AnomalyOccurrenceChart';
+import { FeatureBreakDown } from './FeatureBreakDown';
 
 interface AnomaliesChartProps {
   onDateRangeChange(
@@ -93,7 +54,6 @@ interface AnomaliesChartProps {
   ): void;
   onZoomRangeChange(startDate: number, endDate: number): void;
   title: string;
-  anomalies: any[];
   bucketizedAnomalies: boolean;
   anomalySummary: any;
   dateRange: DateRange;
@@ -112,7 +72,9 @@ interface AnomaliesChartProps {
   detectorCategoryField?: string[];
   onHeatmapCellSelected?(heatmapCell: HeatmapCell): void;
   selectedHeatmapCell?: HeatmapCell;
-  onViewEntitiesSelected?(viewEntities: string[]): void;
+  newDetector?: Detector;
+  zoomRange?: DateRange;
+  anomaliesResult: Anomalies | undefined;
 }
 
 export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
@@ -121,26 +83,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
     end: 'now',
   });
 
-  const [selectedAnomalies, setSelectedAnomalies] = useState<any[]>([]);
-  const [selectedAnomalySummary, setSelectedAnomalySummary] = useState<
-    AnomalySummary
-  >(INITIAL_ANOMALY_SUMMARY);
-
-  const handleZoomRangeChange = (start: number, end: number) => {
-    props.onZoomRangeChange(start, end);
-  };
-
-  useEffect(() => {
-    if (props.selectedHeatmapCell) {
-      const resultAnomalies = filterWithHeatmapFilter(
-        props.anomalies,
-        props.selectedHeatmapCell
-      );
-      setSelectedAnomalies(resultAnomalies);
-      const resultAnomalySummary = getAnomalySummary(resultAnomalies);
-      setSelectedAnomalySummary(resultAnomalySummary);
-    }
-  }, [props.selectedHeatmapCell]);
+  const anomalies = get(props.anomaliesResult, 'anomalies', []);
 
   const handleDateRangeChange = (startDate: number, endDate: number) => {
     props.onDateRangeChange(startDate, endDate);
@@ -255,21 +198,74 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                       </EuiFlexItem>
                     </EuiFlexGroup>
                   ) : (
-                    <AnomalyHeatmapChart
-                      detectorId={props.detectorId}
-                      detectorName={props.detectorName}
-                      dateRange={props.dateRange}
-                      //@ts-ignore
-                      title={props.detectorCategoryField[0]}
-                      anomalies={props.anomalies}
-                      isLoading={props.isLoading}
-                      showAlerts={props.showAlerts}
-                      monitor={props.monitor}
-                      detectorInterval={props.detectorInterval}
-                      unit={props.unit}
-                      onHeatmapCellSelected={props.onHeatmapCellSelected}
-                      onViewEntitiesSelected={props.onViewEntitiesSelected}
-                    />
+                    [
+                      <AnomalyHeatmapChart
+                        detectorId={props.detectorId}
+                        detectorName={props.detectorName}
+                        dateRange={props.dateRange}
+                        //@ts-ignore
+                        title={props.detectorCategoryField[0]}
+                        anomalies={anomalies}
+                        isLoading={props.isLoading}
+                        showAlerts={props.showAlerts}
+                        monitor={props.monitor}
+                        detectorInterval={props.detectorInterval}
+                        unit={props.unit}
+                        onHeatmapCellSelected={props.onHeatmapCellSelected}
+                      />,
+                      props.showAlerts === undefined || !props.showAlerts
+                        ? [
+                            <EuiSpacer size="m" />,
+                            <AnomalyOccurrenceChart
+                              title={
+                                props.selectedHeatmapCell
+                                  ? props.selectedHeatmapCell.entityValue
+                                  : '-'
+                              }
+                              dateRange={props.dateRange}
+                              onDateRangeChange={props.onDateRangeChange}
+                              onZoomRangeChange={props.onZoomRangeChange}
+                              anomalies={anomalies}
+                              bucketizedAnomalies={false}
+                              anomalySummary={INITIAL_ANOMALY_SUMMARY}
+                              isLoading={props.isLoading}
+                              anomalyGradeSeriesName="Anomaly grade"
+                              confidenceSeriesName="Confidence"
+                              showAlerts={false}
+                              detectorId={props.detectorId}
+                              detectorName={props.detectorName}
+                              detector={props.detector}
+                              detectorInterval={get(
+                                props.detector,
+                                'detectionInterval.period.interval'
+                              )}
+                              unit={get(
+                                props.detector,
+                                'detectionInterval.period.unit'
+                              )}
+                              isHCDetector={props.isHCDetector}
+                              selectedHeatmapCell={props.selectedHeatmapCell}
+                            />,
+                            <EuiSpacer size="m" />,
+                            <FeatureBreakDown
+                              title="Sample feature breakdown"
+                              //@ts-ignore
+                              detector={props.newDetector}
+                              //@ts-ignore
+                              anomaliesResult={props.anomaliesResult}
+                              annotations={generateAnomalyAnnotations(
+                                get(props.anomaliesResult, 'anomalies', [])
+                              )}
+                              isLoading={props.isLoading}
+                              //@ts-ignore
+                              dateRange={props.zoomRange}
+                              featureDataSeriesName="Sample feature output"
+                              isHCDetector={props.isHCDetector}
+                              selectedHeatmapCell={props.selectedHeatmapCell}
+                            />,
+                          ]
+                        : null,
+                    ]
                   )}
                 </div>
               </EuiFlexItem>
@@ -279,7 +275,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
               dateRange={props.dateRange}
               onDateRangeChange={handleDateRangeChange}
               onZoomRangeChange={props.onZoomRangeChange}
-              anomalies={props.anomalies}
+              anomalies={anomalies}
               bucketizedAnomalies={props.bucketizedAnomalies}
               anomalySummary={props.anomalySummary}
               isLoading={props.isLoading}

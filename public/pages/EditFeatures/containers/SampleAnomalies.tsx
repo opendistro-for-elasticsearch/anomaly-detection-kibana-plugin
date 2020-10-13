@@ -14,40 +14,38 @@
  */
 
 import {
-  EuiPageBody,
-  EuiFlexItem,
-  EuiFlexGroup,
-  EuiText,
-  EuiLink,
-  EuiPage,
   EuiButton,
   EuiCallOut,
-  EuiSpacer,
-  EuiLoadingSpinner,
+  EuiFlexGroup,
+  EuiFlexItem,
   EuiIcon,
+  EuiLink,
+  EuiLoadingSpinner,
+  EuiPage,
+  EuiPageBody,
+  EuiSpacer,
+  EuiText,
 } from '@elastic/eui';
-import moment from 'moment';
 import { get, isEmpty } from 'lodash';
-import React, { Fragment, useState, useCallback, useEffect } from 'react';
+import moment from 'moment';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { previewDetector } from '../../../redux/reducers/anomalies';
-import { AppState } from '../../../redux/reducers';
-import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
-import { Detector, DateRange } from '../../../models/interfaces';
-import {
-  FeaturesFormikValues,
-  prepareDetector,
-} from './utils/formikToFeatures';
+import ContentPanel from '../../../components/ContentPanel/ContentPanel';
+import { DateRange, Detector } from '../../../models/interfaces';
+import { AppState } from '../../../redux/reducers';
+import { previewDetector } from '../../../redux/reducers/anomalies';
 import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
+import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 import { FeatureBreakDown } from '../../AnomalyCharts/containers/FeatureBreakDown';
 import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
 import { generateAnomalyAnnotations } from '../../utils/anomalyResultUtils';
 import { focusOnFirstWrongFeature } from '../utils/helpers';
-import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
-import { AnomalyOccurrenceChart } from '../../AnomalyCharts/containers/AnomalyOccurrenceChart';
-import { INITIAL_ANOMALY_SUMMARY } from '../../AnomalyCharts/utils/constants';
+import {
+  FeaturesFormikValues,
+  prepareDetector,
+} from './utils/formikToFeatures';
 
 interface SampleAnomaliesProps {
   detector: Detector;
@@ -80,8 +78,6 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
 
   const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
 
-  console.log('props.categoryFields in SampleAnomalies', props.categoryFields);
-  console.log('newDetector in SampleAnomalies', newDetector);
   const isHCDetector = !isEmpty(get(newDetector, 'categoryField', []));
 
   useEffect(() => {
@@ -113,11 +109,6 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
 
   const anomaliesResult = useSelector(
     (state: AppState) => state.anomalies.anomaliesResult
-  );
-
-  console.log(
-    'anomaliesResult.anomalies in preview',
-    anomaliesResult.anomalies
   );
 
   const getPreviewErrorMessage = (err: any, defaultMessage: string) => {
@@ -239,7 +230,6 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                 title="Sample anomaly history"
                 onDateRangeChange={handleDateRangeChange}
                 onZoomRangeChange={handleZoomChange}
-                anomalies={anomaliesResult.anomalies}
                 isLoading={isLoading}
                 dateRange={dateRange}
                 anomalyGradeSeriesName="Sample anomaly grade"
@@ -250,6 +240,10 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                 detectorCategoryField={newDetector.categoryField}
                 onHeatmapCellSelected={handleHeatmapCellSelected}
                 selectedHeatmapCell={selectedHeatmapCell}
+                newDetector={newDetector}
+                zoomRange={zoomRange}
+                anomaliesResult={anomaliesResult}
+                showAlerts={false}
               />
               <EuiSpacer />
               {isLoading ? (
@@ -261,59 +255,18 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                     <EuiLoadingSpinner size="xl" />
                   </EuiFlexItem>
                 </EuiFlexGroup>
-              ) : (
-                [
-                  isHCDetector
-                    ? [
-                        <AnomalyOccurrenceChart
-                          title={
-                            selectedHeatmapCell
-                              ? selectedHeatmapCell.entityValue
-                              : '-'
-                          }
-                          dateRange={dateRange}
-                          onDateRangeChange={handleDateRangeChange}
-                          onZoomRangeChange={handleZoomChange}
-                          anomalies={
-                            anomaliesResult ? anomaliesResult.anomalies : []
-                          }
-                          bucketizedAnomalies={false}
-                          anomalySummary={INITIAL_ANOMALY_SUMMARY}
-                          isLoading={isLoading}
-                          anomalyGradeSeriesName="Anomaly grade"
-                          confidenceSeriesName="Confidence"
-                          showAlerts={false}
-                          detectorId={props.detector.id}
-                          detectorName={props.detector.name}
-                          detector={props.detector}
-                          detectorInterval={get(
-                            props.detector,
-                            'detectionInterval.period.interval'
-                          )}
-                          unit={get(
-                            props.detector,
-                            'detectionInterval.period.unit'
-                          )}
-                          isHCDetector={isHCDetector}
-                          selectedHeatmapCell={selectedHeatmapCell}
-                        />,
-                        <EuiSpacer size="m" />,
-                      ]
-                    : null,
-                  <FeatureBreakDown
-                    title="Sample feature breakdown"
-                    detector={newDetector}
-                    anomaliesResult={anomaliesResult}
-                    annotations={generateAnomalyAnnotations(
-                      get(anomaliesResult, 'anomalies', [])
-                    )}
-                    isLoading={isLoading}
-                    dateRange={zoomRange}
-                    featureDataSeriesName="Sample feature output"
-                    isHCDetector={isHCDetector}
-                    selectedHeatmapCell={selectedHeatmapCell}
-                  />,
-                ]
+              ) : isHCDetector ? null : (
+                <FeatureBreakDown
+                  title="Sample feature breakdown"
+                  detector={newDetector}
+                  anomaliesResult={anomaliesResult}
+                  annotations={generateAnomalyAnnotations(
+                    get(anomaliesResult, 'anomalies', [])
+                  )}
+                  isLoading={isLoading}
+                  dateRange={zoomRange}
+                  featureDataSeriesName="Sample feature output"
+                />
               )}
             </Fragment>
           ) : null}

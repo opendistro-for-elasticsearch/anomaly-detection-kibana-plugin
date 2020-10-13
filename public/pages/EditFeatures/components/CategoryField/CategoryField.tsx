@@ -45,7 +45,6 @@ import chrome from 'ui/chrome';
 interface CategoryFieldProps {
   isHCDetector: boolean;
   categoryFieldOptions: string[];
-  onCategoryFieldSelected(categoryField: string[]): void;
 }
 
 export function CategoryField(props: CategoryFieldProps) {
@@ -68,7 +67,8 @@ export function CategoryField(props: CategoryFieldProps) {
           title={
             <EuiTitle size="s">
               <h2>
-                Category field{' '}
+                Category field
+                {/* {' '}
                 <span
                   style={{
                     fontFamily: 'Helvetica',
@@ -77,7 +77,7 @@ export function CategoryField(props: CategoryFieldProps) {
                   }}
                 >
                   - optional
-                </span>{' '}
+                </span>{' '} */}
               </h2>
             </EuiTitle>
           }
@@ -106,8 +106,7 @@ export function CategoryField(props: CategoryFieldProps) {
           {noCategoryFields ? <EuiSpacer size="m" /> : null}
           <Field
             name="categoryField"
-            // validate={enabled && true ? requiredNonEmptyArray : null}
-            validate={requiredNonEmptyArray}
+            validate={enabled ? requiredNonEmptyArray : null}
           >
             {({ field, form }: FieldProps) => (
               <EuiFlexGroup direction="column">
@@ -125,7 +124,6 @@ export function CategoryField(props: CategoryFieldProps) {
                       // If the user is now disabling: set the field to null
                       if (enabled) {
                         form.setFieldValue('categoryField', []);
-                        props.onCategoryFieldSelected([]);
                       }
                       setEnabled(!enabled);
                     }}
@@ -152,10 +150,8 @@ export function CategoryField(props: CategoryFieldProps) {
                           if (selection) {
                             form.setFieldValue('categoryField', [selection]);
                             console.log('selected field', selection);
-                            props.onCategoryFieldSelected([selection]);
                           } else {
                             form.setFieldValue('categoryField', []);
-                            props.onCategoryFieldSelected([]);
                             setEnabled(true);
                           }
                         }}

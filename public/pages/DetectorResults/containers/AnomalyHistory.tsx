@@ -95,18 +95,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   >(INITIAL_ANOMALY_SUMMARY);
 
   const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
-  const [selectedViewEntities, setSelectedViewEntities] = useState<string[]>([
-    'value1',
-    'value2',
-    'value3',
-    'value4',
-    'value5',
-  ]);
 
   const detectorCategoryField = get(props.detector, 'categoryField', []);
   const isHCDetector = !isEmpty(detectorCategoryField);
-
-  console.log('isHCDetector in AnomalyHistory', isHCDetector);
 
   useEffect(() => {
     // We load at most 10k AD result data points for one call. If user choose
@@ -214,7 +205,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     ? bucketizedAnomalyResults
     : atomicAnomalyResults;
 
-  console.log('anomalyResults in history', anomalyResults);
   const handleDateRangeChange = useCallback(
     (startDate: number, endDate: number, dateRangeOption?: string) => {
       setDateRange({
@@ -235,34 +225,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   const handleHeatmapCellSelected = useCallback((heatmapCell: HeatmapCell) => {
     setSelectedHeatmapCell(heatmapCell);
   }, []);
-  const handleViewEntitiesSelected = useCallback((viewEntities: string[]) => {
-    setSelectedViewEntities(viewEntities);
-  }, []);
-
-  console.log('selectedHeatmapCell in anomaly history', selectedHeatmapCell);
-
-  // const getAnnotations = () => {
-  //   let anomaliesData = get(anomalyResults, 'anomalies', []);
-  //   if (selectedHeatmapCell) {
-  //     anomaliesData = filterWithHeatmapFilter(
-  //       anomaliesData,
-  //       selectedHeatmapCell
-  //     );
-  //   }
-  //   return anomaliesData
-  //     .filter((anomaly: AnomalyData) => anomaly.anomalyGrade > 0)
-  //     .map((anomaly: AnomalyData) => ({
-  //       coordinates: {
-  //         x0: anomaly.startTime,
-  //         x1: anomaly.endTime,
-  //       },
-  //       details: `There is an anomaly with confidence ${
-  //         anomaly.confidence
-  //       } between ${minuteDateFormatter(
-  //         anomaly.startTime
-  //       )} and ${minuteDateFormatter(anomaly.endTime)}`,
-  //     }));
-  // };
 
   const annotations = anomalyResults
     ? get(anomalyResults, 'anomalies', [])
@@ -319,7 +281,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         dateRange={dateRange}
         onDateRangeChange={handleDateRangeChange}
         onZoomRangeChange={handleZoomChange}
-        anomalies={anomalyResults ? anomalyResults.anomalies : []}
         bucketizedAnomalies={bucketizedAnomalyResults !== undefined}
         anomalySummary={bucketizedAnomalySummary}
         isLoading={isLoading || isLoadingAnomalyResults}
@@ -339,7 +300,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         detectorCategoryField={detectorCategoryField}
         onHeatmapCellSelected={handleHeatmapCellSelected}
         selectedHeatmapCell={selectedHeatmapCell}
-        onViewEntitiesSelected={handleViewEntitiesSelected}
+        anomaliesResult={anomalyResults}
       >
         <EuiTabs>{renderTabs()}</EuiTabs>
 
@@ -366,8 +327,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                 featureDataSeriesName="Feature output"
                 showFeatureMissingDataPointAnnotation={
                   props.detector.enabled &&
-                  // only disable showing when isHCDetector but heatmap cell not selected
-                  // !(isHCDetector && !selectedHeatmapCell)
+                  // disable showing missing feature alert when it is HC Detector
                   !isHCDetector
                 }
                 isFeatureDataMissing={props.isFeatureDataMissing}
