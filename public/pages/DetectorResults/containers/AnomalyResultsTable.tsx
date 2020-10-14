@@ -25,7 +25,11 @@ import React, { useEffect, useState } from 'react';
 import chrome from 'ui/chrome';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
-import { entityValueColumn, staticColumn } from '../utils/tableUtils';
+import {
+  entityValueColumn,
+  ENTITY_VALUE_FIELD,
+  staticColumn,
+} from '../utils/tableUtils';
 import { ListControls } from '../components/ListControls/ListControls';
 import { DetectorResultsQueryParams } from 'server/models/types';
 import { AnomalyData } from '../../../models/interfaces';
@@ -53,7 +57,7 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
       sortField: 'startTime',
     },
   });
-  const [targetAnomalies, setTargetAnomalies] = useState<AnomalyData[]>([]);
+  const [targetAnomalies, setTargetAnomalies] = useState<any[]>([] as any[]);
   const totalAnomalies = props.anomalies
     ? props.anomalies.filter((anomaly) => anomaly.anomalyGrade > 0)
     : [];
@@ -68,6 +72,8 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
     };
   };
 
+  console.log('props.anomalies in result table', props.anomalies);
+
   useEffect(() => {
     const anomalies = props.anomalies
       ? props.anomalies.filter((anomaly) => anomaly.anomalyGrade > 0)
@@ -81,10 +87,17 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
     );
 
     setTargetAnomalies(
-      anomalies.slice(
-        state.page * state.queryParams.size,
-        (state.page + 1) * state.queryParams.size
-      )
+      anomalies
+        .slice(
+          state.page * state.queryParams.size,
+          (state.page + 1) * state.queryParams.size
+        )
+        .map((anomaly) => {
+          return {
+            ...anomaly,
+            [ENTITY_VALUE_FIELD]: get(anomaly, 'entity[0].value'),
+          };
+        })
     );
   }, [props.anomalies, state]);
 

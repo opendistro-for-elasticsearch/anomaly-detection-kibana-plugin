@@ -118,6 +118,7 @@ export type AnomalyResult = {
   anomalyGrade: number;
   confidence: number;
   entity?: Entity[];
+  features?: { [key: string]: FeatureResult };
 };
 
 export type FeatureResult = {

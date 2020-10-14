@@ -277,6 +277,7 @@ export const RETURNED_AD_RESULT_FIELDS = [
   'anomaly_grade',
   'confidence',
   'feature_data',
+  'entity',
 ];
 
 export const getAnomalySummaryQuery = (
@@ -419,7 +420,10 @@ export const parseBucketizedAnomalyResults = (result: any): Anomalies => {
   rawAnomalies.forEach((item) => {
     if (get(item, 'top_anomaly_hits.hits.hits', []).length > 0) {
       const rawAnomaly = get(item, 'top_anomaly_hits.hits.hits.0._source');
-      if (get(rawAnomaly, 'anomaly_grade') !== undefined) {
+      if (
+        get(rawAnomaly, 'anomaly_grade') !== undefined &&
+        get(rawAnomaly, 'feature_data', []).length > 0
+      ) {
         anomalies.push({
           anomalyGrade: toFixedNumberForAnomaly(
             get(rawAnomaly, 'anomaly_grade')
@@ -430,8 +434,6 @@ export const parseBucketizedAnomalyResults = (result: any): Anomalies => {
           plotTime: get(rawAnomaly, 'data_end_time'),
           entity: get(rawAnomaly, 'entity'),
         });
-      }
-      if (get(rawAnomaly, 'feature_data', []).length > 0) {
         get(rawAnomaly, 'feature_data', []).forEach((feature) => {
           if (!get(featureData, get(feature, 'feature_id'))) {
             featureData[get(feature, 'feature_id')] = [];
@@ -523,6 +525,7 @@ export const parsePureAnomalies = (
         startTime: get(rawAnomaly, 'data_start_time'),
         endTime: get(rawAnomaly, 'data_end_time'),
         plotTime: get(rawAnomaly, 'data_end_time'),
+        entity: get(rawAnomaly, 'entity'),
       });
     });
   }
@@ -849,6 +852,7 @@ export const filterWithHeatmapFilter = (
     return data;
   }
 
+  console.log('input data for filterWithHeatmapFilter', data);
   if (isFilteringWithEntity) {
     data = data
       .filter((anomaly) => !isEmpty(get(anomaly, 'entity', [])))

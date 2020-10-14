@@ -33,6 +33,7 @@ import {
   DateRange,
   AnomalySummary,
   Anomalies,
+  FeatureAggregationData,
 } from '../../../models/interfaces';
 import {
   filterWithDateRange,
@@ -115,6 +116,10 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
             )
           )
         );
+        console.log(
+          'anomalySummaryResult of AnomalyHistory',
+          anomalySummaryResult
+        );
         setPureAnomalies(parsePureAnomalies(anomalySummaryResult));
         setBucketizedAnomalySummary(parseAnomalySummary(anomalySummaryResult));
         const result = await dispatch(
@@ -127,6 +132,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
             )
           )
         );
+        console.log('raw bucketized result of AnomalyHistory', result);
         setBucketizedAnomalyResults(parseBucketizedAnomalyResults(result));
       } catch (err) {
         console.error(
@@ -135,9 +141,10 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         );
       } finally {
         setIsLoadingAnomalyResults(false);
-        fetchRawAnomalyResults(false);
       }
     }
+
+    fetchRawAnomalyResults(isHCDetector);
 
     if (
       dateRange.endDate - dateRange.startDate >
@@ -146,7 +153,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
       getBucketizedAnomalyResults();
     } else {
       setBucketizedAnomalyResults(undefined);
-      fetchRawAnomalyResults(true);
     }
   }, [dateRange]);
 
@@ -174,18 +180,16 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
       const detectorResultResponse = await dispatch(
         getDetectorResults(props.detector.id, params)
       );
-      const anomaliesData = get(detectorResultResponse, 'data.response', []);
-
+      const rawAnomaliesData = get(detectorResultResponse, 'data.response', []);
+      const rawAnomaliesResult = {
+        anomalies: get(rawAnomaliesData, 'results', []),
+        featureData: get(rawAnomaliesData, 'featureResults', []),
+      } as Anomalies;
       if (shouldSetAtomicAnomalyResults) {
-        setAtomicAnomalyResults({
-          anomalies: get(anomaliesData, 'results', []),
-          featureData: get(anomaliesData, 'featureResults', []),
-        });
+        setAtomicAnomalyResults(rawAnomaliesResult);
       }
-      setRawAnomalyResults({
-        anomalies: get(anomaliesData, 'results', []),
-        featureData: get(anomaliesData, 'featureResults', []),
-      });
+      setRawAnomalyResults(rawAnomaliesResult);
+      setHCDetectorAnomalyResults(getAnomalyResultForHC(rawAnomaliesResult));
     } catch (err) {
       console.error(
         `Failed to get atomic anomaly results for ${props.detector.id}`,
@@ -198,10 +202,53 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     }
   };
 
+  const getAnomalyResultForHC = (rawAnomalyResults: Anomalies) => {
+    const resultAnomaly = rawAnomalyResults.anomalies.filter(
+      (anomaly) => get(anomaly, 'anomalyGrade', 0) > 0
+    );
+    console.log('resultAnomaly from raw anomalies', resultAnomaly);
+    console.log('rawAnomalyResults as raw anomalies', rawAnomalyResults);
+    const anomaliesFeatureData = resultAnomaly.map(
+      (anomaly) => anomaly.features
+    );
+    console.log(
+      'anomaliesFeatureData from resultAnomaly',
+      anomaliesFeatureData
+    );
+    const resultAnomalyFeatureData: {
+      [key: string]: FeatureAggregationData[];
+    } = {};
+    anomaliesFeatureData.forEach((anomalyFeatureData) => {
+      if (anomalyFeatureData) {
+        for (const [featureId, featureAggData] of Object.entries(
+          anomalyFeatureData
+        )) {
+          if (!resultAnomalyFeatureData[featureId]) {
+            resultAnomalyFeatureData[featureId] = [];
+          }
+          resultAnomalyFeatureData[featureId].push(featureAggData);
+        }
+      }
+    });
+    console.log(
+      'resultAnomalyFeatureData from resultAnomaly',
+      resultAnomalyFeatureData
+    );
+    return {
+      anomalies: resultAnomaly,
+      featureData: resultAnomalyFeatureData,
+    } as Anomalies;
+  };
+
   const [atomicAnomalyResults, setAtomicAnomalyResults] = useState<Anomalies>();
   const [rawAnomalyResults, setRawAnomalyResults] = useState<Anomalies>();
+  const [hcDetectorAnomalyResults, setHCDetectorAnomalyResults] = useState<
+    Anomalies
+  >();
 
-  const anomalyResults = bucketizedAnomalyResults
+  const anomalyResults = hcDetectorAnomalyResults
+    ? hcDetectorAnomalyResults
+    : bucketizedAnomalyResults
     ? bucketizedAnomalyResults
     : atomicAnomalyResults;
 
@@ -274,6 +321,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     ));
   };
 
+  console.log('anomalyResults in History', anomalyResults);
+  console.log('bucketizedAnomalyResults in History', bucketizedAnomalyResults);
+  console.log('pureAnomalies in History', pureAnomalies);
   return (
     <Fragment>
       <AnomaliesChart

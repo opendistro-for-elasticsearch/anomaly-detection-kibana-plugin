@@ -204,6 +204,7 @@ export const getAnomaliesHeatmapData = (
   displayTopNum: number = 10
 ): PlotData[] => {
   const entityAnomaliesMap = getEntityAnomaliesMap(anomalies);
+  console.log('entityAnomaliesMap', entityAnomaliesMap);
   if (isEmpty(entityAnomaliesMap)) {
     // put placeholder data so that heatmap won't look empty
     for (let i = 0; i < displayTopNum; i++) {
@@ -274,9 +275,7 @@ export const getAnomaliesHeatmapData = (
         '<b>Anomaly Occurrences</b>: %{text}' +
         '<extra></extra>',
     } as PlotData;
-  console.log('plotData is ', plotData);
   const resultPlotData = sortHeatmapPlotData(plotData, sortType, displayTopNum);
-  console.log('resultPlotData is ', resultPlotData);
   return [resultPlotData];
 };
 
@@ -306,26 +305,24 @@ export const filterHeatmapPlotDataByY = (
 ) => {
   const originalYs = cloneDeep(heatmapData.y);
   const originalZs = cloneDeep(heatmapData.z);
-  console.log('originalZs', originalZs);
   const originalTexts = cloneDeep(heatmapData.text);
-  console.log('originalTexts', originalTexts);
+  const resultYs = [];
   const resultZs = [];
   const resultTexts = [];
   for (let i = 0; i < originalYs.length; i++) {
     //@ts-ignore
     if (selectedYs.includes(originalYs[i])) {
-      console.log(`Found ${originalYs[i]} at i ${i} in selectedYs`);
+      resultYs.push(originalYs[i]);
       resultZs.push(originalZs[i]);
       resultTexts.push(originalTexts[i]);
     }
   }
   const updateHeatmapPlotData = {
     ...cloneDeep(heatmapData),
-    y: selectedYs,
+    y: resultYs,
     z: resultZs,
     text: resultTexts,
   } as PlotData;
-  console.log('updateHeatmapPlotData', updateHeatmapPlotData);
   return sortHeatmapPlotData(
     updateHeatmapPlotData,
     sortType,
@@ -361,12 +358,10 @@ export const sortHeatmapPlotData = (
       value: originalValuesToSort[i].reduce(funcToAggregate),
     });
   }
-  console.log('yIndicesToSort', yIndicesToSort);
   const sortedYIndices = orderBy(yIndicesToSort, ['value'], 'desc').slice(
     0,
     topNum
   );
-  console.log('sortedYIndices', sortedYIndices);
   const resultYs = [] as any[];
   const resultZs = [] as any[];
   const resultTexts = [] as any[];

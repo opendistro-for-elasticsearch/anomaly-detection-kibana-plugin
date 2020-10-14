@@ -671,6 +671,7 @@ const getAnomalyResults = async (
         ...(result._source.entity != null
           ? { entity: result._source.entity }
           : {}),
+        features: getFeatureData(result),
       });
       result._source.feature_data.forEach((featureData: any) => {
         if (!featureResult[featureData.feature_id]) {
@@ -699,4 +700,20 @@ const getAnomalyResults = async (
     console.log('Anomaly detector - Unable to get results', err);
     return { ok: false, error: err.message };
   }
+};
+
+const getFeatureData = (rawResult: any) => {
+  const featureResult: { [key: string]: FeatureResult } = {};
+  rawResult._source.feature_data.forEach((featureData: any) => {
+    featureResult[featureData.feature_id] = {
+      startTime: rawResult._source.data_start_time,
+      endTime: rawResult._source.data_end_time,
+      plotTime: rawResult._source.data_end_time,
+      data:
+        featureData.data != null && featureData.data !== 'NaN'
+          ? toFixedNumberForAnomaly(Number.parseFloat(featureData.data))
+          : 0,
+    };
+  });
+  return featureResult;
 };

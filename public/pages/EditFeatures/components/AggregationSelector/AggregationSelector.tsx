@@ -25,8 +25,9 @@ import {
 import { Field, FieldProps } from 'formik';
 import { AGGREGATION_TYPES } from '../../utils/constants';
 import {
-  required,
+  requiredSelectField,
   requiredNonEmptyArray,
+  requiredNonEmptyFieldSelected,
   isInvalid,
   getError,
 } from '../../../../utils/utils';
@@ -42,7 +43,7 @@ export const AggregationSelector = (props: AggregationSelectorProps) => {
       <Field
         id={`featureList.${props.index}.aggregationBy`}
         name={`featureList.${props.index}.aggregationBy`}
-        validate={required}
+        validate={requiredSelectField}
       >
         {({ field, form }: FieldProps) => (
           <EuiFormRow
@@ -56,7 +57,7 @@ export const AggregationSelector = (props: AggregationSelectorProps) => {
               {...field}
               name={`featureList.${props.index}.aggregationBy`}
               options={AGGREGATION_TYPES}
-              onChange={e => {
+              onChange={(e) => {
                 const currentValue = field.value;
                 const aggregationOf = get(
                   form,
@@ -82,7 +83,7 @@ export const AggregationSelector = (props: AggregationSelectorProps) => {
       <Field
         id={`featureList.${props.index}.aggregationOf`}
         name={`featureList.${props.index}.aggregationOf`}
-        validate={requiredNonEmptyArray}
+        validate={requiredNonEmptyFieldSelected}
       >
         {({ field, form }: FieldProps) => (
           <EuiFormRow

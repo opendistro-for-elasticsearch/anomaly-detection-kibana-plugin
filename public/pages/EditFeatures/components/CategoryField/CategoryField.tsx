@@ -37,7 +37,7 @@ import { toastNotifications } from 'ui/notify';
 import {
   isInvalid,
   getError,
-  requiredNonEmptyArray,
+  validateCategoryField,
 } from '../../../../utils/utils';
 //@ts-ignore
 import chrome from 'ui/chrome';
@@ -66,19 +66,7 @@ export function CategoryField(props: CategoryFieldProps) {
         <ContentPanel
           title={
             <EuiTitle size="s">
-              <h2>
-                Category field
-                {/* {' '}
-                <span
-                  style={{
-                    fontFamily: 'Helvetica',
-                    fontStyle: 'italic',
-                    color: '#16191f',
-                  }}
-                >
-                  - optional
-                </span>{' '} */}
-              </h2>
+              <h2>Category field</h2>
             </EuiTitle>
           }
           subTitle={
@@ -106,7 +94,7 @@ export function CategoryField(props: CategoryFieldProps) {
           {noCategoryFields ? <EuiSpacer size="m" /> : null}
           <Field
             name="categoryField"
-            validate={enabled ? requiredNonEmptyArray : null}
+            validate={enabled ? validateCategoryField : null}
           >
             {({ field, form }: FieldProps) => (
               <EuiFlexGroup direction="column">
@@ -135,7 +123,9 @@ export function CategoryField(props: CategoryFieldProps) {
                       label="Field"
                       isInvalid={isInvalid(field.name, form)}
                       error={getError(field.name, form)}
-                      helpText={`The category field can only be applied to the "ip" and "keyword" elasticsearch data types.`}
+                      helpText={
+                        "You can only apply the category field to the 'ip' and 'keyword' Elasticsearch data types."
+                      }
                     >
                       <EuiComboBox
                         data-test-subj="categoryFieldComboBox"

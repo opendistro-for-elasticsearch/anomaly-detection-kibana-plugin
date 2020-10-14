@@ -199,6 +199,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     isDetectorMissingData != undefined &&
     !isDetectorMissingData;
 
+  const isHCDetector = !isEmpty(get(detector, 'categoryField', []));
+
   const checkLatestFeatureDataPoints = async () => {
     const featureDataPointsRange = {
       startDate: Math.max(
@@ -403,7 +405,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     </Fragment>
                   ) : null}
                   {isDetectorUpdated ||
-                  isDetectorMissingData ||
+                  // don't show miss feature callout for HC detector
+                  (isDetectorMissingData && !isHCDetector) ||
                   isInitializingNormally ||
                   isInitOvertime ||
                   isDetectorFailed ? (

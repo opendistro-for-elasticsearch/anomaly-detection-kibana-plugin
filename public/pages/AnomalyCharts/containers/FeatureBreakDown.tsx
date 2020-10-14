@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import {
   EuiFlexItem,
   EuiFlexGroup,
@@ -69,6 +69,7 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
         for (let i = 0; i < anomaliesFound.length; i++) {
           const currentAnomalyData = anomaliesResult.anomalies[i];
           if (
+            !isEmpty(get(currentAnomalyData, 'entity', [] as EntityData[])) &&
             get(currentAnomalyData, 'entity', [] as EntityData[])[0].value ===
               props.selectedHeatmapCell.entityValue &&
             get(currentAnomalyData, 'plotTime', 0) >=

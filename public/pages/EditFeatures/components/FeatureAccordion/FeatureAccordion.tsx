@@ -25,7 +25,7 @@ import {
   EuiFieldText,
   EuiCheckbox,
 } from '@elastic/eui';
-import { validateName } from '../../../../utils/utils';
+import { validateFeatureName } from '../../../../utils/utils';
 import { Field, FieldProps } from 'formik';
 import { required, isInvalid, getError } from '../../../../utils/utils';
 import { get } from 'lodash';
@@ -122,7 +122,7 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
       <Field
         id={`featureList.${props.index}.featureName`}
         name={`featureList.${props.index}.featureName`}
-        validate={validateName}
+        validate={validateFeatureName}
       >
         {({ field, form }: FieldProps) => (
           <EuiFormRow

@@ -66,7 +66,7 @@ export const AnomalyHeatmapChart = React.memo(
   (props: AnomalyHeatmapChartProps) => {
     const showLoader = useDelayedLoader(props.isLoading);
     const HEATMAP_ID = 'HEATMAP_DIV_ID';
-    const CELL_HEIGHT = 60;
+    const CELL_HEIGHT = 40;
 
     const SORT_BY_FIELD_OPTIONS = [
       {
@@ -97,7 +97,6 @@ export const AnomalyHeatmapChart = React.memo(
           (entityValue) => entityValue && entityValue.trim().length > 0
         );
       }
-      console.log('individualEntities found', individualEntities);
       const individualEntityOptions = [] as any[];
       //@ts-ignore
       individualEntities.forEach((entityValue) => {
@@ -105,7 +104,7 @@ export const AnomalyHeatmapChart = React.memo(
           label: entityValue,
         });
       });
-      console.log('individualEntityOptions found', individualEntityOptions);
+
       return [
         COMBINED_OPTIONS,
         {
@@ -133,7 +132,9 @@ export const AnomalyHeatmapChart = React.memo(
 
     const [showAlertsFlyout, setShowAlertsFlyout] = useState<boolean>(false);
 
-    const [numEntities, setNumEntities] = useState(10);
+    const [numEntities, setNumEntities] = useState(
+      originalHeatmapData[0].y.length
+    );
 
     const hasAnomalyInHeatmap = (): boolean => {
       for (let entityAnomaliesOccurence of heatmapData[0].text) {
@@ -246,15 +247,15 @@ export const AnomalyHeatmapChart = React.memo(
         // when `clear` is hit for combo box
         setCurrentViewOptions([COMBINED_OPTIONS.options[0]]);
         const displayTopEntityNum = get(COMBINED_OPTIONS.options[0], 'value');
-        setNumEntities(displayTopEntityNum);
-        setHeatmapData(
-          getAnomaliesHeatmapData(
-            props.anomalies,
-            props.dateRange,
-            sortByFeildValue,
-            displayTopEntityNum
-          )
+
+        const updateHeatmapPlotData = getAnomaliesHeatmapData(
+          props.anomalies,
+          props.dateRange,
+          sortByFeildValue,
+          displayTopEntityNum
         );
+        setHeatmapData(updateHeatmapPlotData);
+        setNumEntities(updateHeatmapPlotData[0].y.length);
         return;
       }
       const nonCombinedOptions = [] as any[];
@@ -269,15 +270,15 @@ export const AnomalyHeatmapChart = React.memo(
           // only allow 1 combined option
           setCurrentViewOptions([option]);
           const displayTopEntityNum = get(option, 'value');
-          setNumEntities(displayTopEntityNum);
-          setHeatmapData(
-            getAnomaliesHeatmapData(
-              props.anomalies,
-              props.dateRange,
-              sortByFeildValue,
-              displayTopEntityNum
-            )
+          const updateHeatmapPlotData = getAnomaliesHeatmapData(
+            props.anomalies,
+            props.dateRange,
+            sortByFeildValue,
+            displayTopEntityNum
           );
+
+          setHeatmapData(updateHeatmapPlotData);
+          setNumEntities(updateHeatmapPlotData[0].y.length);
           return;
         } else {
           nonCombinedOptions.push(option);
@@ -310,11 +311,12 @@ export const AnomalyHeatmapChart = React.memo(
     const handleSortByFieldChange = (value: any) => {
       setSortByFeildValue(value);
       const sortedHeatmapData = sortHeatmapPlotData(
-        heatmapData[0],
+        originalHeatmapData[0],
         value,
         heatmapData[0].y.length
       );
       setHeatmapData([sortedHeatmapData]);
+      props.onHeatmapCellSelected(undefined);
     };
 
     return (
@@ -325,10 +327,10 @@ export const AnomalyHeatmapChart = React.memo(
               size="s"
               title={
                 hasAnomalyInHeatmap()
-                  ? 'Choose a filled rectangle in the heat map for a more detailed view of anomalies within that anomaly.'
+                  ? 'Choose a filled rectangle in the heat map for a more detailed view of anomalies within that entity.'
                   : 'No anomalies found in the specified date range.'
               }
-              iconType="help"
+              iconType={hasAnomalyInHeatmap() ? 'help' : 'iInCircle'}
             />
           </EuiFlexItem>
         </EuiFlexGroup>
@@ -456,7 +458,7 @@ export const AnomalyHeatmapChart = React.memo(
                     position: 'relative',
                   }}
                   layout={{
-                    height: numEntities === 1 ? 80 : CELL_HEIGHT * numEntities,
+                    height: 50 + CELL_HEIGHT * numEntities,
                     xaxis: {
                       showline: true,
                       nticks: 5,

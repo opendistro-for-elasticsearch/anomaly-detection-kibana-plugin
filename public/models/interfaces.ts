@@ -141,6 +141,7 @@ export type AnomalyData = {
   startTime: number;
   plotTime?: number;
   entity?: EntityData[];
+  features?: { [key: string]: FeatureAggregationData };
 };
 
 export type FeatureAggregationData = {
