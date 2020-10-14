@@ -32,16 +32,31 @@ import {
   EuiFieldNumber,
   EuiFormRow,
 } from '@elastic/eui';
-import { FieldArray, FieldArrayRenderProps, Form, Formik, Field, FieldProps } from 'formik';
+import {
+  FieldArray,
+  FieldArrayRenderProps,
+  Form,
+  Formik,
+  Field,
+  FieldProps,
+} from 'formik';
 import { get, isEmpty } from 'lodash';
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 // @ts-ignore
 import { toastNotifications } from 'ui/notify';
+import { AppState } from '../../../redux/reducers';
 import { updateDetector, startDetector } from '../../../redux/reducers/ad';
-import { getErrorMessage, validatePositiveInteger, isInvalid, getError } from '../../../utils/utils';
+import { getMappings } from '../../../redux/reducers/elasticsearch';
+import {
+  getErrorMessage,
+  validatePositiveInteger,
+  isInvalid,
+  getError,
+  validateCategoryField,
+} from '../../../utils/utils';
 import { prepareDetector } from './utils/formikToFeatures';
 import { useFetchDetectorInfo } from '../../createDetector/hooks/useFetchDetectorInfo';
 //@ts-ignore
@@ -57,8 +72,11 @@ import {
   generateInitialFeatures,
   validateFeatures,
   focusOnFirstWrongFeature,
+  focusOnCategoryField,
+  getCategoryFields,
 } from '../utils/helpers';
 import { SampleAnomalies } from './SampleAnomalies';
+import { CategoryField } from '../components/CategoryField/CategoryField';
 
 interface FeaturesRouterProps {
   detectorId?: string;
@@ -71,6 +89,9 @@ export function EditFeatures(props: EditFeaturesProps) {
   useHideSideNavBar(true, false);
   const detectorId = get(props, 'match.params.detectorId', '');
   const { detector, hasError } = useFetchDetectorInfo(detectorId);
+  const indexDataTypes = useSelector(
+    (state: AppState) => state.elasticsearch.dataTypes
+  );
   const [showSaveConfirmation, setShowSaveConfirmation] = useState<boolean>(
     false
   );
@@ -79,7 +100,24 @@ export function EditFeatures(props: EditFeaturesProps) {
   >(SAVE_FEATURE_OPTIONS.START_AD_JOB);
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [readyToStartAdJob, setReadyToStartAdJob] = useState<boolean>(true);
-  const [showAdvancedSettings, setShowAdvancedSettings] = useState<boolean>(false);
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState<boolean>(
+    false
+  );
+  const [isHCDetector, setIsHCDetector] = useState<boolean>(false);
+  const isLoading =
+    useSelector((state: AppState) => state.elasticsearch.requesting) ||
+    firstLoad;
+
+  // When detector is loaded: get any category fields (if applicable) and
+  // get all index mappings based on detector's selected index
+  useEffect(() => {
+    if (detector && get(detector, 'categoryField', []).length > 0) {
+      setIsHCDetector(true);
+    }
+    if (detector?.indices) {
+      dispatch(getMappings(detector.indices[0]));
+    }
+  }, [detector]);
 
   useEffect(() => {
     chrome.breadcrumbs.set([
@@ -201,6 +239,7 @@ export function EditFeatures(props: EditFeaturesProps) {
       const requestBody = prepareDetector(
         get(values, 'featureList', []),
         get(values, 'shingleSize', SHINGLE_SIZE),
+        get(values, 'categoryField', []),
         detector
       );
       await dispatch(updateDetector(detector.id, requestBody));
@@ -231,11 +270,29 @@ export function EditFeatures(props: EditFeaturesProps) {
       return;
     }
 
+    if (
+      isHCDetector &&
+      validateCategoryField(values.categoryField) !== undefined
+    ) {
+      setFieldTouched('categoryField', true);
+      focusOnCategoryField();
+      return;
+    }
+
     if (!focusOnFirstWrongFeature(errors, setFieldTouched)) {
       if (values.featureList.length == 0) {
         setSaveFeatureOption(SAVE_FEATURE_OPTIONS.KEEP_AD_JOB_STOPPED);
       } else {
         setSaveFeatureOption(SAVE_FEATURE_OPTIONS.START_AD_JOB);
+      }
+      if (errors.categoryField) {
+        focusOnCategoryField();
+        return;
+      }
+      // TODO: refactor advanced settings into separate component
+      // to allow for proper rendering to allow to focus on advanced settings component
+      if (errors.shingleSize) {
+        return;
       }
       setReadyToStartAdJob(values.featureList.length > 0);
       if (values.featureList.length > 0) {
@@ -250,30 +307,27 @@ export function EditFeatures(props: EditFeaturesProps) {
   const renderAdvancedSettingsToggle = () => (
     <EuiText
       className="content-panel-subTitle"
-      onClick={()=>{setShowAdvancedSettings(!showAdvancedSettings);}}
+      onClick={() => {
+        setShowAdvancedSettings(!showAdvancedSettings);
+      }}
     >
-      <EuiLink>
-        {showAdvancedSettings ? 'Hide' : 'Show'}
-      </EuiLink>
+      <EuiLink>{showAdvancedSettings ? 'Hide' : 'Show'}</EuiLink>
     </EuiText>
   );
 
   const renderAdvancedSettings = () => (
-    <Field
-      name="shingleSize"
-      validate={validatePositiveInteger}
-    >
+    <Field name="shingleSize" validate={validatePositiveInteger}>
       {({ field, form }: FieldProps) => (
         <EuiFormRow
           label="Window size"
           helpText={
             <EuiText className="content-panel-subTitle">
-              Set the number of intervals to consider in a detection
-              window. We recommend you choose this value based on your actual
-              data. If you expect missing values in your data or if you want
-              the anomalies based on the current interval, choose 1. If
-              your data is continuously ingested and you want the anomalies
-              based on multiple intervals, choose a larger window size.{' '}
+              Set the number of intervals to consider in a detection window. We
+              recommend you choose this value based on your actual data. If you
+              expect missing values in your data or if you want the anomalies
+              based on the current interval, choose 1. If your data is
+              continuously ingested and you want the anomalies based on multiple
+              intervals, choose a larger window size.{' '}
               <EuiLink
                 href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
                 target="_blank"
@@ -311,7 +365,8 @@ export function EditFeatures(props: EditFeaturesProps) {
         enableReinitialize
         initialValues={{
           featureList: generateInitialFeatures(detector),
-          shingleSize: get(detector, 'shingleSize', SHINGLE_SIZE)
+          shingleSize: get(detector, 'shingleSize', SHINGLE_SIZE),
+          categoryField: get(detector, 'categoryField', []),
         }}
         onSubmit={(values, actions) =>
           handleSubmit(values, actions.setSubmitting)
@@ -343,15 +398,25 @@ export function EditFeatures(props: EditFeaturesProps) {
                   </ContentPanel>
                 </EuiPageBody>
               </EuiPage>
+              <CategoryField
+                isHCDetector={isHCDetector}
+                categoryFieldOptions={getCategoryFields(indexDataTypes)}
+                setIsHCDetector={setIsHCDetector}
+                isLoading={isLoading}
+              />
               <EuiPage>
                 <EuiPageBody>
-                  <ContentPanel title="Advanced Settings" subTitle={renderAdvancedSettingsToggle()}>
-                    {!isEmpty(detector) && showAdvancedSettings ? renderAdvancedSettings() : null}
+                  <ContentPanel
+                    title="Advanced Settings"
+                    subTitle={renderAdvancedSettingsToggle()}
+                  >
+                    {!isEmpty(detector) && showAdvancedSettings
+                      ? renderAdvancedSettings()
+                      : null}
                   </ContentPanel>
                 </EuiPageBody>
               </EuiPage>
             </Form>
-
             {!isEmpty(detector) ? (
               <SampleAnomalies
                 detector={detector}
