@@ -29,7 +29,6 @@ import {
   //@ts-ignore
   EuiStat,
 } from '@elastic/eui';
-import { searchES } from '../../../redux/reducers/elasticsearch';
 import { get, isEmpty } from 'lodash';
 import moment, { Moment } from 'moment';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
@@ -58,6 +57,7 @@ import {
   getLatestAnomalyResultsByTimeRange,
 } from '../utils/utils';
 import { MAX_ANOMALIES, SPACE_STR } from '../../../utils/constants';
+import { searchResults } from '../../../redux/reducers/anomalyResults';
 
 export interface AnomaliesLiveChartProps {
   selectedDetectors: DetectorListItem[];
@@ -101,7 +101,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
     let latestSingleLiveAnomalyResult = [] as any[];
     try {
       latestSingleLiveAnomalyResult = await getLatestAnomalyResultsByTimeRange(
-        searchES,
+        searchResults,
         '30m',
         dispatch,
         -1,
@@ -120,7 +120,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
 
     // get anomalies(anomaly_grade>0) in last 30mins
     const latestLiveAnomalyResult = await getLatestAnomalyResultsForDetectorsByTimeRange(
-      searchES,
+      searchResults,
       props.selectedDetectors,
       '30m',
       dispatch,

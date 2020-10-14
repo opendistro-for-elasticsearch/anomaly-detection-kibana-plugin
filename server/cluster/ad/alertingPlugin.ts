@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { API } from '../../utils/constants';
+import { API, MAX_ALERTS } from '../../utils/constants';
 
 export default function alertingPlugin(Client: any, config: any, components: any) {
   const ca = components.clientAction.factory;
@@ -29,4 +29,25 @@ export default function alertingPlugin(Client: any, config: any, components: any
     method: 'POST',
   });
   
+  alerting.searchAlerts = ca({
+    url: {
+      fmt: `${API.ALERTING_BASE}/alerts?size=${MAX_ALERTS}&monitorId=<%=monitorId%>&sortString=start_time&sortOrder=desc&searchString=start_time:[<%=startTime%>%20TO%20<%=endTime%>]`,
+      req: {
+        monitorId: {
+          type: 'string',
+          required: true,
+        },
+        startTime: {
+          type: 'number',
+          required: true,
+        },
+        endTime: {
+          type: 'number',
+          required: true,
+        },
+      },
+    },
+    method: 'GET',
+  });
+
 }

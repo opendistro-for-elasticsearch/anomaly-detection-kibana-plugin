@@ -45,7 +45,7 @@ import {
   Monitor,
   MonitorAlert,
 } from '../../../models/interfaces';
-import { searchES } from '../../../redux/reducers/elasticsearch';
+import { searchAlerts } from '../../../redux/reducers/alerting';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
 import {
   filterWithDateRange,
@@ -147,16 +147,17 @@ export const AnomalyDetailsChart = React.memo(
     useEffect(() => {
       async function getMonitorAlerts(
         monitorId: string,
-        startDateTime: number
+        startDateTime: number,
+        endDateTime: number
       ) {
         try {
           setIsLoadingAlerts(true);
           const result = await dispatch(
-            searchES(getAlertsQuery(monitorId, startDateTime))
+            searchAlerts(monitorId, startDateTime, endDateTime)
           );
           setIsLoadingAlerts(false);
           setTotalAlerts(
-            get(result, 'data.response.aggregations.total_alerts.value')
+            get(result, 'data.response.totalAlerts')
           );
           const monitorAlerts = convertAlerts(result);
           setAlerts(monitorAlerts);
@@ -174,7 +175,7 @@ export const AnomalyDetailsChart = React.memo(
         props.isHCDetector != undefined &&
         !props.isHCDetector
       ) {
-        getMonitorAlerts(props.monitor.id, props.dateRange.startDate);
+        getMonitorAlerts(props.monitor.id, props.dateRange.startDate, props.dateRange.endDate);
       }
     }, [props.monitor, props.dateRange.startDate]);
 

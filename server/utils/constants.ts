@@ -56,3 +56,5 @@ export enum AD_DOC_FIELDS {
 }
 
 export const MAX_MONITORS = 1000;
+
+export const MAX_ALERTS = 1000;

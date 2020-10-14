@@ -50,7 +50,7 @@ import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
 import { FeatureBreakDown } from '../../AnomalyCharts/containers/FeatureBreakDown';
 import { minuteDateFormatter } from '../../utils/helpers';
 import { ANOMALY_HISTORY_TABS } from '../utils/constants';
-import { searchES } from '../../../redux/reducers/elasticsearch';
+import { searchResults } from '../../../redux/reducers/anomalyResults';
 import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
 import { INITIAL_ANOMALY_SUMMARY } from '../../AnomalyCharts/utils/constants';
 import { MAX_ANOMALIES } from '../../../utils/constants';
@@ -107,7 +107,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
       try {
         setIsLoadingAnomalyResults(true);
         const anomalySummaryResult = await dispatch(
-          searchES(
+          searchResults(
             getAnomalySummaryQuery(
               dateRange.startDate,
               dateRange.endDate,
@@ -118,7 +118,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         setPureAnomalies(parsePureAnomalies(anomalySummaryResult));
         setBucketizedAnomalySummary(parseAnomalySummary(anomalySummaryResult));
         const result = await dispatch(
-          searchES(
+          searchResults(
             getBucketizedAnomalyResultsQuery(
               dateRange.startDate,
               dateRange.endDate,
