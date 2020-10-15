@@ -25,14 +25,20 @@ import React, { useEffect, useState } from 'react';
 import chrome from 'ui/chrome';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
-import { staticColumn } from '../utils/tableUtils';
+import {
+  entityValueColumn,
+  ENTITY_VALUE_FIELD,
+  staticColumn,
+} from '../utils/tableUtils';
 import { ListControls } from '../components/ListControls/ListControls';
 import { DetectorResultsQueryParams } from 'server/models/types';
 import { AnomalyData } from '../../../models/interfaces';
 import { getTitleWithCount } from '../../../utils/utils';
+import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 
 interface AnomalyResultsTableProps {
   anomalies: AnomalyData[];
+  isHCDetector?: boolean;
 }
 
 interface ListState {
@@ -51,9 +57,9 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
       sortField: 'startTime',
     },
   });
-  const [targetAnomalies, setTargetAnomalies] = useState<AnomalyData[]>([]);
+  const [targetAnomalies, setTargetAnomalies] = useState<any[]>([] as any[]);
   const totalAnomalies = props.anomalies
-    ? props.anomalies.filter(anomaly => anomaly.anomalyGrade > 0)
+    ? props.anomalies.filter((anomaly) => anomaly.anomalyGrade > 0)
     : [];
 
   const sortFiledCompare = (field: string, sortDirection: SORT_DIRECTION) => {
@@ -68,7 +74,14 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
 
   useEffect(() => {
     const anomalies = props.anomalies
-      ? props.anomalies.filter(anomaly => anomaly.anomalyGrade > 0)
+      ? props.anomalies
+          .filter((anomaly) => anomaly.anomalyGrade > 0)
+          .map((anomaly) => {
+            return {
+              ...anomaly,
+              [ENTITY_VALUE_FIELD]: get(anomaly, 'entity[0].value'),
+            };
+          })
       : [];
 
     anomalies.sort(
@@ -134,7 +147,15 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
 
       <EuiBasicTable
         items={targetAnomalies}
-        columns={staticColumn}
+        columns={
+          props.isHCDetector
+            ? [
+                ...staticColumn.slice(0, 2),
+                entityValueColumn,
+                ...staticColumn.slice(2),
+              ]
+            : staticColumn
+        }
         onChange={handleTableChange}
         sorting={sorting}
         pagination={pagination}

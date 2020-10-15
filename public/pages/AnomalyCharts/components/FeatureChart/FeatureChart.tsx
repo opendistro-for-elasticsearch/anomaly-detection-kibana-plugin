@@ -40,9 +40,11 @@ import { darkModeEnabled } from '../../../../utils/kibanaUtils';
 import {
   prepareDataForChart,
   getFeatureMissingDataAnnotations,
+  filterWithDateRange,
 } from '../../../utils/anomalyResultUtils';
 import { CodeModal } from '../../../DetectorConfig/components/CodeModal/CodeModal';
 import { CHART_FIELDS, FEATURE_CHART_THEME } from '../../utils/constants';
+import { isEmpty } from 'lodash';
 
 interface FeatureChartProps {
   feature: FeatureAttributes;
@@ -61,6 +63,7 @@ interface FeatureChartProps {
   showFeatureMissingDataPointAnnotation?: boolean;
   detectorEnabledTime?: number;
   rawFeatureData: FeatureAggregationData[];
+  titlePrefix?: string;
 }
 const getDisabledChartBackground = () =>
   darkModeEnabled() ? '#25262E' : '#F0F0F0';
@@ -137,12 +140,23 @@ export const FeatureChart = (props: FeatureChartProps) => {
     return undefined;
   };
 
+  const getFeatureAnnotations = () => {
+    if (isEmpty(props.annotations)) {
+      return [];
+    }
+    return filterWithDateRange(
+      props.annotations,
+      props.dateRange,
+      'coordinates.x0'
+    );
+  };
   return (
     <ContentPanel
       title={
-        props.feature.featureEnabled
+        (props.titlePrefix ? props.titlePrefix + ' - ' : '') +
+        (props.feature.featureEnabled
           ? props.feature.featureName
-          : `${props.feature.featureName} (disabled)`
+          : `${props.feature.featureName} (disabled)`)
       }
       bodyStyles={
         !props.feature.featureEnabled
@@ -172,7 +186,7 @@ export const FeatureChart = (props: FeatureChartProps) => {
           />
           {props.feature.featureEnabled ? (
             <RectAnnotation
-              dataValues={props.annotations || []}
+              dataValues={getFeatureAnnotations()}
               id="annotations"
               style={{
                 stroke: darkModeEnabled() ? 'red' : '#D5DBDB',

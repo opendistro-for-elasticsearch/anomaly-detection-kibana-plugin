@@ -28,5 +28,6 @@ export const AD_NODE_API = Object.freeze({
 });
 export const ALERTING_NODE_API = Object.freeze({
   _SEARCH: `${BASE_NODE_API_PATH}/monitors/_search`,
+  ALERTS: `${BASE_NODE_API_PATH}/monitors/alerts`,
   MONITORS: `${BASE_NODE_API_PATH}/monitors`,
 });

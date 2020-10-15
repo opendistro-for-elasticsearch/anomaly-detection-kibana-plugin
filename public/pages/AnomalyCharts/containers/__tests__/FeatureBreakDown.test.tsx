@@ -15,19 +15,18 @@
 
 import React from 'react';
 import { render } from '@testing-library/react';
-import moment from 'moment';
 import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
 import { FeatureBreakDown } from '../FeatureBreakDown';
 import { FeatureAggregationData } from 'public/models/interfaces';
 
 describe('<FeatureBreakDown /> spec', () => {
   const dateRange = {
-    startDate: moment(1587431440000),
-    endDate: moment(1587456780000),
+    startDate: 1587431440000,
+    endDate: 1587456780000,
   };
   const detector = getRandomDetector(false);
   let featureData: { [key: string]: FeatureAggregationData[] } = {};
-  detector.featureAttributes.forEach(feature => {
+  detector.featureAttributes.forEach((feature) => {
     if (feature.featureId) {
       featureData[feature.featureId] = [
         {

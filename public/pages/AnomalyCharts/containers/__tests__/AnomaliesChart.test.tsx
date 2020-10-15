@@ -35,6 +35,19 @@ const anomalies = [
     plotTime: initialStartTime.add(90, 'seconds').valueOf(),
   },
 ];
+const anomaliesResult = {
+  anomalies: anomalies,
+  featureData: {
+    testFeatureId: [
+      {
+        data: 10,
+        endTime: anomalies[0].endTime,
+        startTime: anomalies[0].startTime,
+        plotTime: anomalies[0].plotTime,
+      },
+    ],
+  },
+};
 
 const renderDataFilter = () => ({
   ...render(
@@ -46,7 +59,7 @@ const renderDataFilter = () => ({
           dataTypes: {
             keyword: ['cityName.keyword'],
             integer: ['age'],
-            text: ['cityName'], 
+            text: ['cityName'],
           },
         },
       })}
@@ -55,8 +68,7 @@ const renderDataFilter = () => ({
         onDateRangeChange={jest.fn()}
         onZoomRangeChange={jest.fn()}
         title="test"
-        anomalies={anomalies}
-        atomicAnomalies={true}
+        bucketizedAnomalies={true}
         anomalySummary={undefined}
         dateRange={dateRange}
         isLoading={false}
@@ -64,7 +76,7 @@ const renderDataFilter = () => ({
         confidenceSeriesName="confidence"
         detectorId="testDetectorId"
         detectorName="testDetectorName"
-        annotations={[]}
+        anomaliesResult={anomaliesResult}
       />
     </Provider>
   ),

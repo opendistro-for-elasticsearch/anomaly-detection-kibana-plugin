@@ -62,6 +62,7 @@ export default function (apiRouter: Router) {
   apiRouter.post('/detectors', putDetector);
   apiRouter.put('/detectors/{detectorId}', putDetector);
   apiRouter.post('/detectors/_search', searchDetector);
+  apiRouter.post('/detectors/results/_search', searchResults);
   apiRouter.get('/detectors/{detectorId}', getDetector);
   apiRouter.get('/detectors', getDetectors);
   apiRouter.post('/detectors/{detectorId}/preview', previewDetector);
@@ -307,6 +308,33 @@ const searchDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - Unable to search detectors', err);
+    if (isIndexNotFoundError(err)) {
+      return { ok: true, response: { totalDetectors: 0, detectors: [] } };
+    }
+    return { ok: false, error: err.message };
+  }
+};
+
+const searchResults = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<any>> => {
+  try {
+    //@ts-ignore
+    const requestBody = JSON.stringify(req.payload);
+    const response = await callWithRequest(
+      req,
+      'ad.searchResults',
+      { body: requestBody }
+    );
+   
+    return {
+      ok: true,
+      response,
+    };
+  } catch (err) {
+    console.log('Anomaly detector - Unable to search anomaly result', err);
     if (isIndexNotFoundError(err)) {
       return { ok: true, response: { totalDetectors: 0, detectors: [] } };
     }
@@ -640,6 +668,10 @@ const getAnomalyResults = async (
                 Number.parseFloat(result._source.anomaly_grade)
               )
             : 0,
+        ...(result._source.entity != null
+          ? { entity: result._source.entity }
+          : {}),
+        features: getFeatureData(result),
       });
       result._source.feature_data.forEach((featureData: any) => {
         if (!featureResult[featureData.feature_id]) {
@@ -668,4 +700,20 @@ const getAnomalyResults = async (
     console.log('Anomaly detector - Unable to get results', err);
     return { ok: false, error: err.message };
   }
+};
+
+const getFeatureData = (rawResult: any) => {
+  const featureResult: { [key: string]: FeatureResult } = {};
+  rawResult._source.feature_data.forEach((featureData: any) => {
+    featureResult[featureData.feature_id] = {
+      startTime: rawResult._source.data_start_time,
+      endTime: rawResult._source.data_end_time,
+      plotTime: rawResult._source.data_end_time,
+      data:
+        featureData.data != null && featureData.data !== 'NaN'
+          ? toFixedNumberForAnomaly(Number.parseFloat(featureData.data))
+          : 0,
+    };
+  });
+  return featureResult;
 };

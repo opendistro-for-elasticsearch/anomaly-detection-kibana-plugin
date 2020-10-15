@@ -27,7 +27,7 @@ import {
   EuiText,
   EuiLoadingSpinner,
 } from '@elastic/eui';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React, { useEffect, Fragment, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
@@ -199,6 +199,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     isDetectorMissingData != undefined &&
     !isDetectorMissingData;
 
+  const isHCDetector = !isEmpty(get(detector, 'categoryField', []));
+
   const checkLatestFeatureDataPoints = async () => {
     const featureDataPointsRange = {
       startDate: Math.max(
@@ -266,7 +268,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       return get(
         getFeatureDataMissingMessageAndActionItem(
           featureMissingSeverity,
-          featureNamesAtHighSev
+          featureNamesAtHighSev,
+          !isEmpty(detector.categoryField)
         ),
         'message',
         ''
@@ -354,7 +357,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
         {get(
           getFeatureDataMissingMessageAndActionItem(
             featureMissingSeverity,
-            featureNamesAtHighSev
+            featureNamesAtHighSev,
+            !isEmpty(detector.categoryField)
           ),
           'actionItem',
           ''
@@ -401,7 +405,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     </Fragment>
                   ) : null}
                   {isDetectorUpdated ||
-                  isDetectorMissingData ||
+                  // don't show miss feature callout for HC detector
+                  (isDetectorMissingData && !isHCDetector) ||
                   isInitializingNormally ||
                   isInitOvertime ||
                   isDetectorFailed ? (
