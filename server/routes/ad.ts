@@ -62,6 +62,7 @@ export default function (apiRouter: Router) {
   apiRouter.post('/detectors', putDetector);
   apiRouter.put('/detectors/{detectorId}', putDetector);
   apiRouter.post('/detectors/_search', searchDetector);
+  apiRouter.post('/detectors/results/_search', searchResults);
   apiRouter.get('/detectors/{detectorId}', getDetector);
   apiRouter.get('/detectors', getDetectors);
   apiRouter.post('/detectors/{detectorId}/preview', previewDetector);
@@ -307,6 +308,32 @@ const searchDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - Unable to search detectors', err);
+    if (isIndexNotFoundError(err)) {
+      return { ok: true, response: { totalDetectors: 0, detectors: [] } };
+    }
+    return { ok: false, error: err.message };
+  }
+};
+
+const searchResults = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<any>> => {
+  try {
+    //@ts-ignore
+    const requestBody = JSON.stringify(req.payload);
+    const response = await callWithRequest(
+      req,
+      'ad.searchResults',
+      { body: requestBody }
+    );
+    return {
+      ok: true,
+      response,
+    };
+  } catch (err) {
+    console.log('Anomaly detector - Unable to search anomaly result', err);
     if (isIndexNotFoundError(err)) {
       return { ok: true, response: { totalDetectors: 0, detectors: [] } };
     }

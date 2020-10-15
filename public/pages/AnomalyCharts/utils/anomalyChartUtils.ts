@@ -24,54 +24,18 @@ import { dateFormatter, minuteDateFormatter } from '../../utils/helpers';
 import { RectAnnotationDatum } from '@elastic/charts';
 import { DEFAULT_ANOMALY_SUMMARY } from './constants';
 
-export const getAlertsQuery = (monitorId: string, startTime: number) => {
-  return {
-    index: '.opendistro-alerting-alert*',
-    size: 1000,
-    rawQuery: {
-      aggregations: {
-        total_alerts: {
-          value_count: {
-            field: 'monitor_id',
-          },
-        },
-      },
-      query: {
-        bool: {
-          filter: [
-            {
-              term: {
-                monitor_id: monitorId,
-              },
-            },
-            {
-              range: {
-                start_time: {
-                  gte: startTime,
-                  format: 'epoch_millis',
-                },
-              },
-            },
-          ],
-        },
-      },
-      sort: [{ start_time: { order: 'desc' } }],
-    },
-  };
-};
-
 export const convertAlerts = (response: any): MonitorAlert[] => {
-  const hits = get(response, 'data.response.hits.hits', []);
-  return hits.map((alert: any) => {
+  const alerts = get(response, 'data.response.alerts', []);
+  return alerts.map((alert: any) => {
     return {
-      monitorName: get(alert, '_source.monitor_name'),
-      triggerName: get(alert, '_source.trigger_name'),
-      severity: get(alert, '_source.severity'),
-      state: get(alert, '_source.state'),
-      error: get(alert, '_source.error_message'),
-      startTime: get(alert, '_source.start_time'),
-      endTime: get(alert, '_source.end_time'),
-      acknowledgedTime: get(alert, '_source.acknowledged_time'),
+      monitorName: get(alert, 'monitor_name'),
+      triggerName: get(alert, 'trigger_name'),
+      severity: get(alert, 'severity'),
+      state: get(alert, 'state'),
+      error: get(alert, 'error_message'),
+      startTime: get(alert, 'start_time'),
+      endTime: get(alert, 'end_time'),
+      acknowledgedTime: get(alert, 'acknowledged_time'),
     };
   });
 };

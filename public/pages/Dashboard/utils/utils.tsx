@@ -392,9 +392,6 @@ export const buildGetAnomalyResultQueryByRange = (
   checkLastIndexOnly: boolean
 ) => {
   return {
-    index: checkLastIndexOnly
-      ? ANOMALY_RESULT_INDEX
-      : `${ANOMALY_RESULT_INDEX}*`,
     size: size,
     from: from,
     query: {
@@ -453,6 +450,7 @@ export const getLatestAnomalyResultsByTimeRange = async (
         )
       )
     );
+
     const searchAnomalyResponse = searchResponse.data.response;
 
     const numHits = get(searchAnomalyResponse, 'hits.total.value', 0);

@@ -21,10 +21,11 @@ import { CallClusterWithRequest } from 'src/legacy/core_plugins/elasticsearch';
 import { SearchResponse } from '../models/interfaces';
 import { Monitor, ServerResponse } from '../models/types';
 import { Router } from '../router';
-import { MAX_MONITORS } from '../utils/constants';
+import { MAX_MONITORS, MAX_ALERTS } from '../utils/constants';
 
 export default function(apiRouter: Router) {
   apiRouter.post('/monitors/_search', searchMonitors);
+  apiRouter.get('/monitors/alerts', searchAlerts);
 }
 
 const searchMonitors = async (
@@ -86,6 +87,34 @@ const searchMonitors = async (
     };
   } catch (err) {
     console.log('Unable to get monitor on top of detector', err);
+    return { ok: false, error: err.message };
+  }
+};
+
+const searchAlerts = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<any>> => {
+  try {
+    const { monitorId, startTime, endTime } = req.query as {
+      monitorId?: string;
+      startTime?: number;
+      endTime?: number;
+    };
+    const response = await callWithRequest(
+      req,
+      'alerting.searchAlerts',
+      {
+        monitorId: monitorId, startTime: startTime, endTime: endTime
+      }
+    );
+    return {
+      ok: true,
+      response,
+    };
+  } catch (err) {
+    console.log('Unable to search alerts', err);
     return { ok: false, error: err.message };
   }
 };
