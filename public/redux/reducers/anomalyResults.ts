@@ -23,6 +23,7 @@ import { AD_NODE_API } from '../../../utils/constants';
 import { AnomalyData } from '../../models/interfaces';
 
 const DETECTOR_RESULTS = 'ad/DETECTOR_RESULTS';
+const SEARCH_ANOMALY_RESULTS = 'ad/SEARCH_ANOMALY_RESULTS';
 
 export interface Anomalies {
   requesting: boolean;
@@ -60,6 +61,19 @@ const reducer = handleActions<Anomalies>(
         errorMessage: action.error.data.error,
       }),
     },
+
+    //TODO: add requesting and errorMessage
+    [SEARCH_ANOMALY_RESULTS]: {
+      REQUEST: (state: Anomalies): Anomalies => ({
+        ...state
+      }),
+      SUCCESS: (state: Anomalies, action: APIResponseAction): Anomalies => ({
+        ...state
+      }),
+      FAILURE: (state: Anomalies): Anomalies => ({
+        ...state
+      }),
+    },
   },
   initialDetectorsState
 );
@@ -74,5 +88,12 @@ export const getDetectorResults = (
       params: queryParams,
     }),
 });
+
+export const searchResults = (requestBody: any): APIAction => ({
+  type: SEARCH_ANOMALY_RESULTS,
+  request: (client: IHttpService) =>
+    client.post(`..${AD_NODE_API.DETECTOR}/results/_search`, requestBody),
+});
+
 
 export default reducer;

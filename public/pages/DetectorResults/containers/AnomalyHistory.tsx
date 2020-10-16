@@ -47,11 +47,11 @@ import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
 import { FeatureBreakDown } from '../../AnomalyCharts/containers/FeatureBreakDown';
 import { minuteDateFormatter } from '../../utils/helpers';
 import { ANOMALY_HISTORY_TABS } from '../utils/constants';
-import { searchES } from '../../../redux/reducers/elasticsearch';
 import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
 import { INITIAL_ANOMALY_SUMMARY } from '../../AnomalyCharts/utils/constants';
 import { MAX_ANOMALIES } from '../../../utils/constants';
 import { getDetectorResults } from '../../../redux/reducers/anomalyResults';
+import { searchResults } from '../../../redux/reducers/anomalyResults';
 
 interface AnomalyHistoryProps {
   detector: Detector;
@@ -97,26 +97,24 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
       try {
         setIsLoadingAnomalyResults(true);
         const anomalySummaryResult = await dispatch(
-          searchES(
-            getAnomalySummaryQuery(
+        searchResults(getAnomalySummaryQuery(
               dateRange.startDate,
               dateRange.endDate,
               props.detector.id
-            )
-          )
+            ))
         );
         setPureAnomalies(parsePureAnomalies(anomalySummaryResult));
         setBucketizedAnomalySummary(parseAnomalySummary(anomalySummaryResult));
+
         const result = await dispatch(
-          searchES(
-            getBucketizedAnomalyResultsQuery(
+          searchResults(getBucketizedAnomalyResultsQuery(
               dateRange.startDate,
               dateRange.endDate,
               1,
               props.detector.id
-            )
-          )
-        );
+            ))
+          );
+
         setBucketizedAnomalyResults(parseBucketizedAnomalyResults(result));
       } catch (err) {
         console.error(

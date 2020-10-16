@@ -275,9 +275,7 @@ export const getAnomalySummaryQuery = (
   detectorId: string
 ) => {
   return {
-    index: '.opendistro-anomaly-results*',
-    size: MAX_ANOMALIES,
-    rawQuery: {
+      size: MAX_ANOMALIES,
       query: {
         bool: {
           filter: [
@@ -339,8 +337,7 @@ export const getAnomalySummaryQuery = (
       _source: {
         includes: RETURNED_AD_RESULT_FIELDS,
       },
-    },
-  };
+    };
 };
 
 export const getBucketizedAnomalyResultsQuery = (
@@ -353,10 +350,8 @@ export const getBucketizedAnomalyResultsQuery = (
     (endTime - startTime) / (interval * MIN_IN_MILLI_SECS * MAX_DATA_POINTS)
   );
   return {
-    index: '.opendistro-anomaly-results*',
     size: 0,
-    rawQuery: {
-      query: {
+    query: {
         bool: {
           filter: [
             {
@@ -374,8 +369,8 @@ export const getBucketizedAnomalyResultsQuery = (
             },
           ],
         },
-      },
-      aggs: {
+    },
+    aggs: {
         bucketized_anomaly_grade: {
           date_histogram: {
             field: 'data_end_time',
@@ -399,8 +394,7 @@ export const getBucketizedAnomalyResultsQuery = (
             },
           },
         },
-      },
-    },
+    }
   };
 };
 

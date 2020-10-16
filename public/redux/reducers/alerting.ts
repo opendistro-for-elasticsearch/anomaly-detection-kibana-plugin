@@ -24,6 +24,7 @@ import { Monitor } from '../../../server/models/types';
 import { get } from 'lodash';
 
 const SEARCH_MONITORS = 'alerting/SEARCH_MONITORS';
+const SEARCH_ALERTS = 'alerting/SEARCH_ALERTS';
 
 export interface Monitors {
   requesting: boolean;
@@ -84,6 +85,19 @@ const reducer = handleActions<Monitors>(
         errorMessage: action.error,
       }),
     },
+
+    //TODO: add requesting and errorMessage
+    [SEARCH_ALERTS]: {
+      REQUEST: (state: Monitors): Monitors => ({
+        ...state
+      }),
+      SUCCESS: (state: Monitors, action: APIResponseAction): Monitors => ({
+        ...state
+      }),
+      FAILURE: (state: Monitors, action: APIResponseAction): Monitors => ({
+        ...state
+      }),
+    },
   },
   initialDetectorsState
 );
@@ -92,6 +106,18 @@ export const searchMonitors = (): APIAction => ({
   type: SEARCH_MONITORS,
   request: (client: IHttpService) =>
     client.post(`..${ALERTING_NODE_API._SEARCH}`, {}),
+});
+
+export const searchAlerts = (monitorId: string, startTime: number, endTime: number): APIAction => ({
+  type: SEARCH_ALERTS,
+  request: (client: IHttpService) =>
+  client.get(`..${ALERTING_NODE_API.ALERTS}`,{
+      params: {
+        monitorId: monitorId,
+        startTime: startTime,
+        endTime: endTime,
+      },
+    }),
 });
 
 export default reducer;

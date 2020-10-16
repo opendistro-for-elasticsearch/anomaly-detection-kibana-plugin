@@ -72,9 +72,8 @@ import {
   generateAlertAnnotations,
   getAnomalySummary,
   disabledHistoryAnnotations,
-  getAlertsQuery,
 } from '../utils/anomalyChartUtils';
-import { searchES } from '../../../redux/reducers/elasticsearch';
+import { searchAlerts } from '../../../redux/reducers/alerting';
 
 interface AnomaliesChartProps {
   onDateRangeChange(
@@ -143,16 +142,17 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
   };
 
   useEffect(() => {
-    async function getMonitorAlerts(monitorId: string, startDateTime: number) {
+    async function getMonitorAlerts(monitorId: string, startDateTime: number, endDateTime: number) {
       try {
         setIsLoadingAlerts(true);
+
         const result = await dispatch(
-          searchES(getAlertsQuery(monitorId, startDateTime))
+          searchAlerts(monitorId, startDateTime, endDateTime)
         );
+
         setIsLoadingAlerts(false);
-        setTotalAlerts(
-          get(result, 'data.response.aggregations.total_alerts.value')
-        );
+        setTotalAlerts(get(result, 'data.response.totalAlerts'))
+
         const monitorAlerts = convertAlerts(result);
         setAlerts(monitorAlerts);
         const annotations = generateAlertAnnotations(monitorAlerts);
@@ -163,7 +163,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
       }
     }
     if (props.monitor && props.dateRange.startDate) {
-      getMonitorAlerts(props.monitor.id, props.dateRange.startDate);
+      getMonitorAlerts(props.monitor.id, props.dateRange.startDate, props.dateRange.endDate);
     }
   }, [props.monitor, props.dateRange.startDate]);
 
