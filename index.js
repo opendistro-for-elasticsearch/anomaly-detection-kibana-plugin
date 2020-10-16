@@ -32,6 +32,7 @@ export default (kibana) => {
         icon:
           'plugins/opendistro-anomaly-detection-kibana/images/anomaly_detection_icon.svg',
         category: DEFAULT_APP_CATEGORIES.kibana,
+        order:8030,
       },
       styleSheetPaths: [
         resolve(__dirname, 'public/app.scss'),
