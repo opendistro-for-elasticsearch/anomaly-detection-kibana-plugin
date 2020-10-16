@@ -62,6 +62,7 @@ const reducer = handleActions<Anomalies>(
       }),
     },
 
+    //TODO: add requesting and errorMessage
     [SEARCH_ANOMALY_RESULTS]: {
       REQUEST: (state: Anomalies): Anomalies => ({
         ...state

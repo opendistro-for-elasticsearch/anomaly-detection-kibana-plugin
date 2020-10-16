@@ -86,6 +86,7 @@ const reducer = handleActions<Monitors>(
       }),
     },
 
+    //TODO: add requesting and errorMessage
     [SEARCH_ALERTS]: {
       REQUEST: (state: Monitors): Monitors => ({
         ...state
