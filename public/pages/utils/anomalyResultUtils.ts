@@ -13,33 +13,33 @@
  * permissions and limitations under the License.
  */
 
-import {
-  SORT_DIRECTION,
-  AD_DOC_FIELDS,
-  MIN_IN_MILLI_SECS,
-} from '../../../server/utils/constants';
-import { getDetectorResults } from '../../redux/reducers/anomalyResults';
-import { getDetectorLiveResults } from '../../redux/reducers/liveAnomalyResults';
+import { get, isEmpty, orderBy } from 'lodash';
 import moment from 'moment';
 import { Dispatch } from 'redux';
-import { get, orderBy, isEmpty } from 'lodash';
 import {
-  AnomalyData,
-  DateRange,
-  AnomalySummary,
-  FeatureAggregationData,
+  AD_DOC_FIELDS,
+  MIN_IN_MILLI_SECS,
+  SORT_DIRECTION,
+} from '../../../server/utils/constants';
+import { toFixedNumberForAnomaly } from '../../../server/utils/helpers';
+import {
   Anomalies,
+  AnomalyData,
+  AnomalySummary,
+  DateRange,
   Detector,
+  FeatureAggregationData,
   FeatureAttributes,
 } from '../../models/interfaces';
+import { getDetectorResults } from '../../redux/reducers/anomalyResults';
+import { getDetectorLiveResults } from '../../redux/reducers/liveAnomalyResults';
 import {
   MAX_ANOMALIES,
   MISSING_FEATURE_DATA_SEVERITY,
 } from '../../utils/constants';
-import { minuteDateFormatter, dateFormatter } from './helpers';
-import { toFixedNumberForAnomaly } from '../../../server/utils/helpers';
-import { getFloorPlotTime } from '../Dashboard/utils/utils';
+import { HeatmapCell } from '../AnomalyCharts/containers/AnomalyHeatmapChart';
 import { DETECTOR_INIT_FAILURES } from '../DetectorDetail/utils/constants';
+import { dateFormatter, minuteDateFormatter } from './helpers';
 
 export const getQueryParamsForLiveAnomalyResults = (
   detectionInterval: number,
@@ -111,7 +111,7 @@ const calculateStep = (total: number): number => {
   return Math.ceil(total / MAX_DATA_POINTS);
 };
 
-const calculateSampleWindowsWithMaxDataPoints = (
+export const calculateTimeWindowsWithMaxDataPoints = (
   maxDataPoints: number,
   dateRange: DateRange
 ): DateRange[] => {
@@ -202,17 +202,25 @@ export const prepareDataForLiveChart = (
   return anomalies;
 };
 
-export const prepareDataForChart = (data: any[], dateRange: DateRange) => {
+export const prepareDataForChart = (
+  data: any[],
+  dateRange: DateRange,
+  withoutPadding?: boolean
+) => {
   let anomalies = [];
   if (data && data.length > 0) {
     anomalies = data.filter(
-      anomaly =>
+      (anomaly) =>
         anomaly.plotTime >= dateRange.startDate &&
         anomaly.plotTime <= dateRange.endDate
     );
     if (anomalies.length > MAX_DATA_POINTS) {
       anomalies = sampleMaxAnomalyGrade(anomalies);
     }
+  }
+  if (withoutPadding) {
+    // just return result if padding/placeholder data is not needed
+    return anomalies;
   }
   anomalies.push({
     startTime: dateRange.startDate,
@@ -244,6 +252,7 @@ export const generateAnomalyAnnotations = (anomalies: any[]): any[] => {
       } between ${moment(anomaly.startTime).format(
         'MM/DD/YY h:mm A'
       )} and ${moment(anomaly.endTime).format('MM/DD/YY h:mm A')}`,
+      entity: get(anomaly, 'entity', []),
     }));
 };
 
@@ -253,7 +262,7 @@ export const filterWithDateRange = (
   timeField: string
 ) => {
   const anomalies = data
-    ? data.filter(item => {
+    ? data.filter((item) => {
         const time = get(item, `${timeField}`);
         return time && time >= dateRange.startDate && time <= dateRange.endDate;
       })
@@ -267,6 +276,7 @@ export const RETURNED_AD_RESULT_FIELDS = [
   'anomaly_grade',
   'confidence',
   'feature_data',
+  'entity',
 ];
 
 export const getAnomalySummaryQuery = (
@@ -275,69 +285,69 @@ export const getAnomalySummaryQuery = (
   detectorId: string
 ) => {
   return {
-      size: MAX_ANOMALIES,
-      query: {
-        bool: {
-          filter: [
-            {
-              range: {
-                data_end_time: {
-                  gte: startTime,
-                  lte: endTime,
-                },
+    size: MAX_ANOMALIES,
+    query: {
+      bool: {
+        filter: [
+          {
+            range: {
+              data_end_time: {
+                gte: startTime,
+                lte: endTime,
               },
             },
-            {
-              range: {
-                anomaly_grade: {
-                  gt: 0,
-                },
+          },
+          {
+            range: {
+              anomaly_grade: {
+                gt: 0,
               },
             },
-            {
-              term: {
-                detector_id: detectorId,
-              },
+          },
+          {
+            term: {
+              detector_id: detectorId,
             },
-          ],
+          },
+        ],
+      },
+    },
+    aggs: {
+      count_anomalies: {
+        value_count: {
+          field: 'anomaly_grade',
         },
       },
-      aggs: {
-        count_anomalies: {
-          value_count: {
-            field: 'anomaly_grade',
-          },
-        },
-        max_confidence: {
-          max: {
-            field: 'confidence',
-          },
-        },
-        min_confidence: {
-          min: {
-            field: 'confidence',
-          },
-        },
-        max_anomaly_grade: {
-          max: {
-            field: 'anomaly_grade',
-          },
-        },
-        min_anomaly_grade: {
-          min: {
-            field: 'anomaly_grade',
-          },
-        },
-        max_data_end_time: {
-          max: {
-            field: 'data_end_time',
-          },
+      max_confidence: {
+        max: {
+          field: 'confidence',
         },
       },
-      _source: {
-        includes: RETURNED_AD_RESULT_FIELDS,
+      min_confidence: {
+        min: {
+          field: 'confidence',
+        },
       },
-    };
+      max_anomaly_grade: {
+        max: {
+          field: 'anomaly_grade',
+        },
+      },
+      min_anomaly_grade: {
+        min: {
+          field: 'anomaly_grade',
+        },
+      },
+      max_data_end_time: {
+        max: {
+          field: 'data_end_time',
+        },
+      },
+    },
+    _source: {
+      includes: RETURNED_AD_RESULT_FIELDS,
+    },
+  };
 };
 
 export const getBucketizedAnomalyResultsQuery = (
@@ -352,49 +362,49 @@ export const getBucketizedAnomalyResultsQuery = (
   return {
     size: 0,
     query: {
-        bool: {
-          filter: [
-            {
-              range: {
-                data_end_time: {
-                  gte: startTime,
-                  lte: endTime,
-                },
+      bool: {
+        filter: [
+          {
+            range: {
+              data_end_time: {
+                gte: startTime,
+                lte: endTime,
               },
             },
-            {
-              term: {
-                detector_id: detectorId,
-              },
+          },
+          {
+            term: {
+              detector_id: detectorId,
             },
-          ],
-        },
+          },
+        ],
+      },
     },
     aggs: {
-        bucketized_anomaly_grade: {
-          date_histogram: {
-            field: 'data_end_time',
-            fixed_interval: `${fixedInterval}m`,
-          },
-          aggs: {
-            top_anomaly_hits: {
-              top_hits: {
-                sort: [
-                  {
-                    anomaly_grade: {
-                      order: 'desc',
-                    },
+      bucketized_anomaly_grade: {
+        date_histogram: {
+          field: 'data_end_time',
+          fixed_interval: `${fixedInterval}m`,
+        },
+        aggs: {
+          top_anomaly_hits: {
+            top_hits: {
+              sort: [
+                {
+                  anomaly_grade: {
+                    order: 'desc',
                   },
-                ],
-                _source: {
-                  includes: RETURNED_AD_RESULT_FIELDS,
                 },
-                size: 1,
+              ],
+              _source: {
+                includes: RETURNED_AD_RESULT_FIELDS,
               },
+              size: 1,
             },
           },
         },
-    }
+      },
+    },
   };
 };
 
@@ -406,10 +416,13 @@ export const parseBucketizedAnomalyResults = (result: any): Anomalies => {
   ) as any[];
   let anomalies = [] as AnomalyData[];
   let featureData = {} as { [key: string]: FeatureAggregationData[] };
-  rawAnomalies.forEach(item => {
+  rawAnomalies.forEach((item) => {
     if (get(item, 'top_anomaly_hits.hits.hits', []).length > 0) {
       const rawAnomaly = get(item, 'top_anomaly_hits.hits.hits.0._source');
-      if (get(rawAnomaly, 'anomaly_grade') !== undefined) {
+      if (
+        get(rawAnomaly, 'anomaly_grade') !== undefined &&
+        get(rawAnomaly, 'feature_data', []).length > 0
+      ) {
         anomalies.push({
           anomalyGrade: toFixedNumberForAnomaly(
             get(rawAnomaly, 'anomaly_grade')
@@ -418,10 +431,9 @@ export const parseBucketizedAnomalyResults = (result: any): Anomalies => {
           startTime: get(rawAnomaly, 'data_start_time'),
           endTime: get(rawAnomaly, 'data_end_time'),
           plotTime: get(rawAnomaly, 'data_end_time'),
+          entity: get(rawAnomaly, 'entity'),
         });
-      }
-      if (get(rawAnomaly, 'feature_data', []).length > 0) {
-        get(rawAnomaly, 'feature_data', []).forEach(feature => {
+        get(rawAnomaly, 'feature_data', []).forEach((feature) => {
           if (!get(featureData, get(feature, 'feature_id'))) {
             featureData[get(feature, 'feature_id')] = [];
           }
@@ -512,6 +524,7 @@ export const parsePureAnomalies = (
         startTime: get(rawAnomaly, 'data_start_time'),
         endTime: get(rawAnomaly, 'data_end_time'),
         plotTime: get(rawAnomaly, 'data_end_time'),
+        entity: get(rawAnomaly, 'entity'),
       });
     });
   }
@@ -540,8 +553,8 @@ export const getFeatureDataPoints = (
   const existingTimes = isEmpty(featureData)
     ? []
     : featureData
-        .map(feature => getRoundedTimeInMin(feature.startTime))
-        .filter(featureTime => featureTime != undefined);
+        .map((feature) => getRoundedTimeInMin(feature.startTime))
+        .filter((featureTime) => featureTime != undefined);
   for (
     let currentTime = getRoundedTimeInMin(dateRange.startDate);
     currentTime <
@@ -608,7 +621,7 @@ const sampleFeatureMissingDataPoints = (
   if (!dateRange) {
     return featureMissingDataPoints;
   }
-  const sampleTimeWindows = calculateSampleWindowsWithMaxDataPoints(
+  const sampleTimeWindows = calculateTimeWindowsWithMaxDataPoints(
     MAX_FEATURE_ANNOTATIONS,
     dateRange
   );
@@ -642,7 +655,7 @@ const getDataPointsInWindow = (
   timeWindow: DateRange
 ) => {
   return dataPoints.filter(
-    dataPoint =>
+    (dataPoint) =>
       get(dataPoint, 'plotTime', 0) >= timeWindow.startDate &&
       get(dataPoint, 'plotTime', 0) < timeWindow.endDate
   );
@@ -651,7 +664,7 @@ const getDataPointsInWindow = (
 const generateFeatureMissingAnnotations = (
   featureMissingDataPoints: FeatureDataPoint[]
 ) => {
-  return featureMissingDataPoints.map(feature => ({
+  return featureMissingDataPoints.map((feature) => ({
     dataValue: feature.plotTime,
     details: `There is feature data point missing between ${moment(
       feature.startTime
@@ -684,7 +697,7 @@ export const getFeatureMissingDataAnnotations = (
     featureData,
     interval,
     queryDateRange
-  ).filter(dataPoint => get(dataPoint, 'isMissing', false));
+  ).filter((dataPoint) => get(dataPoint, 'isMissing', false));
 
   const featureMissingAnnotations = finalizeFeatureMissingDataAnnotations(
     featureMissingDataPoints,
@@ -712,7 +725,7 @@ export const getFeatureDataPointsForDetector = (
     'featureAttributes',
     [] as FeatureAttributes[]
   );
-  allFeatures.forEach(feature => {
+  allFeatures.forEach((feature) => {
     //@ts-ignore
     const featureData = featuresData[feature.featureId];
     const featureDataPoints = getFeatureDataPoints(
@@ -763,7 +776,7 @@ export const getFeatureMissingSeverities = (featuresDataPoint: {
     const orderedFeatureDataPoints = orderBy(
       featureDataPoints,
       // sort by plot time in desc order
-      dataPoint => get(dataPoint, 'plotTime', 0),
+      (dataPoint) => get(dataPoint, 'plotTime', 0),
       SORT_DIRECTION.DESC
     );
     // feature has >= 3 data points
@@ -791,7 +804,8 @@ export const getFeatureMissingSeverities = (featuresDataPoint: {
 
 export const getFeatureDataMissingMessageAndActionItem = (
   featureMissingSev: MISSING_FEATURE_DATA_SEVERITY | undefined,
-  featuresWithMissingData: string[]
+  featuresWithMissingData: string[],
+  hideFeatureMessage: boolean
 ) => {
   switch (featureMissingSev) {
     case MISSING_FEATURE_DATA_SEVERITY.YELLOW:
@@ -802,7 +816,9 @@ export const getFeatureDataMissingMessageAndActionItem = (
           ', '
         )}. So, anomaly result is missing during this time.`,
         actionItem:
-          'Make sure your data is ingested correctly. See the feature data shown below for more details.',
+          'Make sure your data is ingested correctly.' + hideFeatureMessage
+            ? ''
+            : ' See the feature data shown below for more details.',
       };
     case MISSING_FEATURE_DATA_SEVERITY.RED:
       return {
@@ -811,7 +827,11 @@ export const getFeatureDataMissingMessageAndActionItem = (
         }: ${featuresWithMissingData.join(
           ', '
         )}. So, anomaly result is missing during this time.`,
-        actionItem: `${DETECTOR_INIT_FAILURES.NO_TRAINING_DATA.actionItem} See the feature data shown below for more details.`,
+        actionItem:
+          `${DETECTOR_INIT_FAILURES.NO_TRAINING_DATA.actionItem}` +
+          hideFeatureMessage
+            ? ''
+            : ' See the feature data shown below for more details.',
       };
     default:
       return {
@@ -819,4 +839,24 @@ export const getFeatureDataMissingMessageAndActionItem = (
         actionItem: '',
       };
   }
+};
+
+export const filterWithHeatmapFilter = (
+  data: any[],
+  heatmapCell: HeatmapCell | undefined,
+  isFilteringWithEntity: boolean = true,
+  timeField: string = 'plotTime'
+) => {
+  if (!heatmapCell) {
+    return data;
+  }
+
+  if (isFilteringWithEntity) {
+    data = data
+      .filter((anomaly) => !isEmpty(get(anomaly, 'entity', [])))
+      .filter(
+        (anomaly) => get(anomaly, 'entity')[0].value === heatmapCell.entityValue
+      );
+  }
+  return filterWithDateRange(data, heatmapCell.dateRange, timeField);
 };

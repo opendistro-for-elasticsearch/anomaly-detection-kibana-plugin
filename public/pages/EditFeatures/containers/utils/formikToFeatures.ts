@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { snakeCase, cloneDeep } from 'lodash';
+import { snakeCase, cloneDeep, isEmpty } from 'lodash';
 import {
   Detector,
   FeatureAttributes,
@@ -48,7 +48,7 @@ export function prepareDetector(
     ...detector,
     featureAttributes: [...featureAttributes],
     shingleSize: shingleSizeValue,
-    categoryField: categoryFields,
+    categoryField: isEmpty(categoryFields) ? undefined : categoryFields,
     uiMetadata: {
       ...detector.uiMetadata,
       features: { ...formikToUIMetadata(featureValues) },

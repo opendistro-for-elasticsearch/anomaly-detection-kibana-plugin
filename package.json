@@ -51,8 +51,10 @@
     "@types/node": "^12.6.8",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
+    "@types/react-plotly.js": "^2.2.4",
     "@types/react-redux": "^7.1.1",
     "@types/react-router-dom": "^4.3.4",
+    "@types/react-vis": "^1.11.3",
     "@types/redux-mock-store": "^1.0.1",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^24.8.0",
@@ -82,8 +84,11 @@
     "eslint-plugin-cypress": "^2.11.1",
     "formik": "^1.5.8",
     "lodash": "^4.17.19",
+    "plotly.js": "^1.55.2",
     "query-string": "^6.8.2",
+    "react-plotly.js": "^2.4.0",
     "react-redux": "^7.1.0",
+    "react-vis": "^1.11.7",
     "reselect": "^4.0.0"
   }
 }

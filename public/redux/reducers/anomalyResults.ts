@@ -65,13 +65,13 @@ const reducer = handleActions<Anomalies>(
     //TODO: add requesting and errorMessage
     [SEARCH_ANOMALY_RESULTS]: {
       REQUEST: (state: Anomalies): Anomalies => ({
-        ...state
+        ...state,
       }),
       SUCCESS: (state: Anomalies, action: APIResponseAction): Anomalies => ({
-        ...state
+        ...state,
       }),
       FAILURE: (state: Anomalies): Anomalies => ({
-        ...state
+        ...state,
       }),
     },
   },
@@ -94,6 +94,5 @@ export const searchResults = (requestBody: any): APIAction => ({
   request: (client: IHttpService) =>
     client.post(`..${AD_NODE_API.DETECTOR}/results/_search`, requestBody),
 });
-
 
 export default reducer;

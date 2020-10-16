@@ -259,6 +259,8 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     ></EuiCallOut>
   ) : null;
 
+  const isHCDetector = !isEmpty(get(detector, 'categoryField', []));
+
   return (
     <React.Fragment>
       {!isEmpty(detector) && !hasError ? (
@@ -290,7 +292,8 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                   ) : detector.enabled &&
                     detector.curState === DETECTOR_STATE.INIT ? (
                     <EuiHealth color={DETECTOR_STATE_COLOR.INIT}>
-                      {detector.initProgress?.estimatedMinutesLeft
+                      {detector.initProgress?.estimatedMinutesLeft &&
+                      !isHCDetector
                         ? //@ts-ignore
                           `Initializing (${detector.initProgress.percentageStr} complete)`
                         : 'Initializing'}
