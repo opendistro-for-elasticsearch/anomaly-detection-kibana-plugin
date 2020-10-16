@@ -326,7 +326,7 @@ describe('adHelpers', () => {
         enabled: false,
         disabledTime: undefined,
         enabledTime: undefined,
-        categoryField: [],
+        categoryField: undefined,
       });
     });
     test('should not convert keys to camelCase for filterQuery', () => {
@@ -378,7 +378,7 @@ describe('adHelpers', () => {
           },
         },
         uiMetadata: {},
-        categoryField: [],
+        categoryField: undefined,
       });
     });
 
@@ -404,7 +404,7 @@ describe('adHelpers', () => {
         enabled: false,
         disabledTime: undefined,
         enabledTime: undefined,
-        categoryField: [],
+        categoryField: undefined,
       });
     });
   });

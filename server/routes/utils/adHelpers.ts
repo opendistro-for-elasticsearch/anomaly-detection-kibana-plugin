@@ -74,7 +74,7 @@ export const convertDetectorKeysToCamelCase = (response: object) => {
     enabled: get(response, 'adJob.enabled', false),
     enabledTime: get(response, 'adJob.enabled_time'),
     disabledTime: get(response, 'adJob.disabled_time'),
-    categoryField: get(response, 'category_field', []),
+    categoryField: get(response, 'category_field'),
   };
 };
 

@@ -153,14 +153,16 @@ export const disabledHistoryAnnotations = (
 
 export const ANOMALY_HEATMAP_COLORSCALE = [
   [0, '#F2F2F2'],
-  [0.2, '#F2F2F2'],
+  [0.0000001, '#F2F2F2'],
+  [0.0000001, '#F7E0B8'],
   [0.2, '#F7E0B8'],
-  [0.4, '#F7E0B8'],
+  [0.2, '#F2C596'],
   [0.4, '#F2C596'],
-  [0.6, '#F2C596'],
+  [0.4, '#ECA976'],
   [0.6, '#ECA976'],
-  [0.8, '#ECA976'],
+  [0.6, '#E78D5B'],
   [0.8, '#E78D5B'],
+  [0.8, '#E8664C'],
   [1, '#E8664C'],
 ];
 
