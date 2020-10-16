@@ -19,6 +19,7 @@ import { AnomaliesChart } from '../AnomaliesChart';
 import moment from 'moment';
 import { initialState, mockedStore } from '../../../../redux/utils/testUtils';
 import { Provider } from 'react-redux';
+import { INITIAL_ANOMALY_SUMMARY } from '../../utils/constants';
 
 const initialStartTime = moment('2019-10-10T09:00:00');
 const initialEndTime = initialStartTime.clone().add(2, 'd');
@@ -69,7 +70,7 @@ const renderDataFilter = () => ({
         onZoomRangeChange={jest.fn()}
         title="test"
         bucketizedAnomalies={true}
-        anomalySummary={undefined}
+        anomalySummary={INITIAL_ANOMALY_SUMMARY}
         dateRange={dateRange}
         isLoading={false}
         anomalyGradeSeriesName="anomaly grade"

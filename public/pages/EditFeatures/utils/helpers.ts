@@ -112,7 +112,7 @@ export const validateFeatures = (values: any) => {
       hasError = true;
       // @ts-ignore
       return {
-        featureName: 'You must enter a feature name.',
+        featureName: 'You must enter a feature name',
       };
     }
   });

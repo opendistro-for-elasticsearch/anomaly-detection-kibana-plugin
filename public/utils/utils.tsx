@@ -41,7 +41,7 @@ export const validateName = (
   fieldName: string
 ): string | undefined => {
   if (isEmpty(name)) {
-    return `You must enter a ${fieldName} name.`;
+    return `You must enter a ${fieldName} name`;
   }
   if (name.length > MAX_FEATURE_NAME_SIZE) {
     return `Name is too big maximum limit is ${MAX_FEATURE_NAME_SIZE}`;
@@ -57,7 +57,7 @@ export const isInvalid = (name: string, form: any) =>
 export const getError = (name: string, form: any) => get(form.errors, name);
 
 export const requiredSelectField = (val: any): string | undefined => {
-  return required(val, 'You must select a field.');
+  return required(val, 'You must select a field');
 };
 
 export const required = (
@@ -67,7 +67,7 @@ export const required = (
   // if val is number, skip check as number value already exists
   const message = !isEmpty(customErrorMessage)
     ? customErrorMessage
-    : 'Required.';
+    : 'Required';
   return typeof val !== 'number' && !val ? message : undefined;
 };
 
@@ -77,16 +77,16 @@ export const requiredNonEmptyArray = (
 ): string | undefined => {
   const message = !isEmpty(customErrorMessage)
     ? customErrorMessage
-    : 'Required.';
+    : 'Required';
   return !val || val.length === 0 ? message : undefined;
 };
 
 export const requiredNonEmptyFieldSelected = (val: any): string | undefined => {
-  return requiredNonEmptyArray(val, 'You must select a field.');
+  return requiredNonEmptyArray(val, 'You must select a field');
 };
 
 export const validateCategoryField = (val: any): string | undefined => {
-  return requiredNonEmptyArray(val, 'You must select a category field.');
+  return requiredNonEmptyArray(val, 'You must select a category field');
 };
 
 export const validatePositiveInteger = (value: any) => {

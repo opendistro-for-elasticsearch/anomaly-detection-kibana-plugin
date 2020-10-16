@@ -57,3 +57,7 @@ jest.mock('ui/chrome', () => {
     },
   };
 });
+
+// for Plotly
+//@ts-ignore
+window.URL.createObjectURL = function () {};
