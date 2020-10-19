@@ -146,8 +146,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     fetchRawAnomalyResults(isHCDetector);
 
     if (
+      !isHCDetector &&
       dateRange.endDate - dateRange.startDate >
-      detectorInterval * MIN_IN_MILLI_SECS * MAX_ANOMALIES
+        detectorInterval * MIN_IN_MILLI_SECS * MAX_ANOMALIES
     ) {
       getBucketizedAnomalyResults();
     } else {

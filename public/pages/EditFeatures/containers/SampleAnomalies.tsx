@@ -235,8 +235,6 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                 onZoomRangeChange={handleZoomChange}
                 isLoading={isLoading}
                 dateRange={dateRange}
-                // detectorId={props.detector.id}
-                // detectorName={props.detector.name}
                 detector={props.detector}
                 isHCDetector={isHCDetector}
                 detectorCategoryField={newDetector.categoryField}
