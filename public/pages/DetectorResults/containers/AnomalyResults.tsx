@@ -409,7 +409,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                   // don't show miss feature callout for HC detector
                   (isDetectorMissingData && !isHCDetector) ||
                   isInitializingNormally ||
-                  isInitOvertime ||
+                  (isInitOvertime && !isHCDetector) ||
                   isDetectorFailed ? (
                     <EuiCallOut
                       title={getCalloutTitle()}
