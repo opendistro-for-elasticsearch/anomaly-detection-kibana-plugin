@@ -57,6 +57,7 @@ import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
 import { CatIndex } from '../../../../server/models/types';
 import { SampleDataCallout } from '../../SampleData/components/SampleDataCallout/SampleDataCallout';
 import { containsDetectorsIndex } from '../../SampleData/utils/helpers';
+import { clearModelConfiguration } from './utils/helpers';
 
 interface CreateRouterProps {
   detectorId?: string;
@@ -79,6 +80,7 @@ export function CreateDetector(props: CreateADProps) {
   const visibleIndices = useSelector(
     (state: AppState) => state.elasticsearch.indices
   ) as CatIndex[];
+  const [newIndexSelected, setNewIndexSelected] = useState<boolean>(false);
 
   // Getting all initial indices
   useEffect(() => {
@@ -122,9 +124,13 @@ export function CreateDetector(props: CreateADProps) {
 
   const handleUpdate = async (detectorToBeUpdated: Detector) => {
     try {
-      await dispatch(updateDetector(detectorId, detectorToBeUpdated));
+      // If a new index was selected: clear any existing features and category fields
+      const preparedDetector = newIndexSelected
+        ? clearModelConfiguration(detectorToBeUpdated)
+        : detectorToBeUpdated;
+      await dispatch(updateDetector(detectorId, preparedDetector));
       toastNotifications.addSuccess(
-        `Detector updated: ${detectorToBeUpdated.name}`
+        `Detector updated: ${preparedDetector.name}`
       );
       props.history.push(`/detectors/${detectorId}/configurations/`);
     } catch (err) {
@@ -253,7 +259,12 @@ export function CreateDetector(props: CreateADProps) {
             <Fragment>
               <DetectorInfo onValidateDetectorName={handleValidateName} />
               <EuiSpacer />
-              <DataSource formikProps={formikProps} />
+              <DataSource
+                formikProps={formikProps}
+                origIndex={props.isEdit ? get(detector, 'indices.0', '') : null}
+                setNewIndexSelected={setNewIndexSelected}
+                isEdit={props.isEdit}
+              />
               <EuiSpacer />
               <Settings />
               <EuiSpacer />
