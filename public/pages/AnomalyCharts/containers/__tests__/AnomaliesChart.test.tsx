@@ -20,6 +20,7 @@ import moment from 'moment';
 import { initialState, mockedStore } from '../../../../redux/utils/testUtils';
 import { Provider } from 'react-redux';
 import { INITIAL_ANOMALY_SUMMARY } from '../../utils/constants';
+import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
 
 const initialStartTime = moment('2019-10-10T09:00:00');
 const initialEndTime = initialStartTime.clone().add(2, 'd');
@@ -73,9 +74,8 @@ const renderDataFilter = () => ({
         anomalySummary={INITIAL_ANOMALY_SUMMARY}
         dateRange={dateRange}
         isLoading={false}
-        detectorId="testDetectorId"
-        detectorName="testDetectorName"
         anomaliesResult={anomaliesResult}
+        detector={getRandomDetector(true)}
       />
     </Provider>
   ),

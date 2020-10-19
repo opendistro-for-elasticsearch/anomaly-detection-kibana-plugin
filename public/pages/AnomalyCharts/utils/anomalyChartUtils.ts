@@ -213,7 +213,10 @@ export const getAnomaliesHeatmapData = (
   sortType: AnomalyHeatmapSortType = AnomalyHeatmapSortType.SEVERITY,
   displayTopNum: number
 ): PlotData[] => {
-  const entityAnomaliesMap = getEntityAnomaliesMap(anomalies);
+  const entityAnomalyResultMap = getEntityAnomaliesMap(anomalies);
+  const entityAnomaliesMap = filterEntityAnomalyResultMap(
+    entityAnomalyResultMap
+  );
   if (isEmpty(entityAnomaliesMap)) {
     // put placeholder data so that heatmap won't look empty
     for (let i = 0; i < displayTopNum; i++) {
@@ -236,24 +239,7 @@ export const getAnomaliesHeatmapData = (
   entityAnomaliesMap.forEach((entityAnomalies, entity) => {
     const maxAnomalyGradesForEntity = [] as number[];
     const numAnomalyGradesForEntity = [] as number[];
-    if (
-      (isEmpty(entityAnomalies) ||
-        isEmpty(
-          entityAnomalies.filter(
-            (anomaly) => get(anomaly, 'anomalyGrade', 0) > 0
-          )
-        )) &&
-      !isEmpty(entity.trim())
-    ) {
-      console.log(
-        `find entity ${entity} with empty anomalies`,
-        entityAnomalies
-      );
-      // skip non-blank entity with empty anomalies,
-      // keep blank entity as it is placeholder data
-      // for totally emtpy anomaly data state
-      return;
-    }
+
     entityValues.push(entity);
     timeWindows.forEach((timeWindow) => {
       const anomaliesInWindow = entityAnomalies.filter(
@@ -324,6 +310,23 @@ const getEntityAnomaliesMap = (anomalies: any[]): Map<string, any[]> => {
     }
     singleEntityAnomalies.push(anomaly);
     entityAnomaliesMap.set(entityValue, singleEntityAnomalies);
+  });
+  return entityAnomaliesMap;
+};
+
+const filterEntityAnomalyResultMap = (
+  entityAnomalyResultMap: Map<string, any[]>
+) => {
+  const entityAnomaliesMap = new Map<string, any[]>();
+  entityAnomalyResultMap.forEach((entityAnomalies, entity) => {
+    if (
+      !isEmpty(entityAnomalies) &&
+      !isEmpty(
+        entityAnomalies.filter((anomaly) => get(anomaly, 'anomalyGrade', 0) > 0)
+      )
+    ) {
+      entityAnomaliesMap.set(entity, entityAnomalies);
+    }
   });
   return entityAnomaliesMap;
 };

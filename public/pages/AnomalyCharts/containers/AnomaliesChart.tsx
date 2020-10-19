@@ -65,11 +65,7 @@ interface AnomaliesChartProps {
   dateRange: DateRange;
   isLoading: boolean;
   showAlerts?: boolean;
-  detectorId: string;
-  detectorName: string;
-  detector?: Detector;
-  detectorInterval?: number;
-  unit?: string;
+  detector: Detector;
   monitor?: Monitor;
   children: React.ReactNode | React.ReactNode[];
   isHCDetector?: boolean;
@@ -153,10 +149,14 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
   const setUpAlertsButton = () => (
     <AlertsButton
       monitor={props.monitor}
-      detectorId={props.detectorId}
-      detectorName={props.detectorName}
-      detectorInterval={get(props, 'detectorInterval', 1)}
-      unit={get(props, 'unit', 'Minutes')}
+      detectorId={get(props.detector, 'id', '')}
+      detectorName={get(props.detector, 'name', '')}
+      detectorInterval={get(
+        props.detector,
+        'detectionInterval.period.interval',
+        1
+      )}
+      unit={get(props.detector, 'detectionInterval.period.unit', 'Minutes')}
     />
   );
 
@@ -204,8 +204,8 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                   ) : (
                     [
                       <AnomalyHeatmapChart
-                        detectorId={props.detectorId}
-                        detectorName={props.detectorName}
+                        detectorId={get(props.detector, 'id', '')}
+                        detectorName={get(props.detector, 'name', '')}
                         dateRange={props.dateRange}
                         //@ts-ignore
                         title={props.detectorCategoryField[0]}
@@ -213,8 +213,14 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                         isLoading={props.isLoading}
                         showAlerts={props.showAlerts}
                         monitor={props.monitor}
-                        detectorInterval={props.detectorInterval}
-                        unit={props.unit}
+                        detectorInterval={get(
+                          props.detector,
+                          'detectionInterval.period.interval'
+                        )}
+                        unit={get(
+                          props.detector,
+                          'detectionInterval.period.unit'
+                        )}
                         onHeatmapCellSelected={props.onHeatmapCellSelected}
                       />,
                       props.showAlerts !== true
@@ -240,17 +246,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                                 props.showAlerts
                               )}
                               showAlerts={props.showAlerts}
-                              detectorId={props.detectorId}
-                              detectorName={props.detectorName}
                               detector={props.detector}
-                              detectorInterval={get(
-                                props.detector,
-                                'detectionInterval.period.interval'
-                              )}
-                              unit={get(
-                                props.detector,
-                                'detectionInterval.period.unit'
-                              )}
                               isHCDetector={props.isHCDetector}
                               selectedHeatmapCell={props.selectedHeatmapCell}
                             />,
@@ -294,14 +290,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
               anomalyGradeSeriesName={getAnomalyGradeWording(props.showAlerts)}
               confidenceSeriesName={getConfidenceWording(props.showAlerts)}
               showAlerts={props.showAlerts}
-              detectorId={props.detectorId}
-              detectorName={props.detectorName}
               detector={props.detector}
-              detectorInterval={get(
-                props.detector,
-                'detectionInterval.period.interval'
-              )}
-              unit={get(props.detector, 'detectionInterval.period.unit')}
               monitor={props.monitor}
               isHCDetector={props.isHCDetector}
               onDatePickerRangeChange={handleDatePickerRangeChange}

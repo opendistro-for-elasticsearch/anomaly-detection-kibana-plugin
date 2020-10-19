@@ -321,14 +321,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         anomalySummary={bucketizedAnomalySummary}
         isLoading={isLoading || isLoadingAnomalyResults}
         showAlerts={true}
-        detectorId={props.detector.id}
-        detectorName={props.detector.name}
         detector={props.detector}
-        detectorInterval={get(
-          props.detector,
-          'detectionInterval.period.interval'
-        )}
-        unit={get(props.detector, 'detectionInterval.period.unit')}
         monitor={props.monitor}
         isHCDetector={isHCDetector}
         detectorCategoryField={detectorCategoryField}
@@ -392,17 +385,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                         anomalyGradeSeriesName="Anomaly grade"
                         confidenceSeriesName="Confidence"
                         showAlerts={true}
-                        detectorId={props.detector.id}
-                        detectorName={props.detector.name}
                         detector={props.detector}
-                        detectorInterval={get(
-                          props.detector,
-                          'detectionInterval.period.interval'
-                        )}
-                        unit={get(
-                          props.detector,
-                          'detectionInterval.period.unit'
-                        )}
                         monitor={props.monitor}
                         isHCDetector={isHCDetector}
                         selectedHeatmapCell={selectedHeatmapCell}

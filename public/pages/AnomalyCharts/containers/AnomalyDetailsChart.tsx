@@ -88,11 +88,7 @@ interface AnomalyDetailsChartProps {
   showAlerts?: boolean;
   anomalyGradeSeriesName: string;
   confidenceSeriesName: string;
-  detectorId: string;
-  detectorName: string;
-  detector?: Detector;
-  detectorInterval?: number;
-  unit?: string;
+  detector: Detector;
   monitor?: Monitor;
   isHCDetector?: boolean;
   selectedHeatmapCell?: HeatmapCell;
@@ -356,9 +352,7 @@ export const AnomalyDetailsChart = React.memo(
 
         {showAlertsFlyout ? (
           <AlertsFlyout
-            // @ts-ignore
             detectorId={get(props.detector, 'id', '')}
-            // @ts-ignore
             detectorName={get(props.detector, 'name', '')}
             detectorInterval={get(
               props.detector,

@@ -42,11 +42,7 @@ interface AnomalyOccurrenceChartProps {
   showAlerts?: boolean;
   anomalyGradeSeriesName: string;
   confidenceSeriesName: string;
-  detectorId: string;
-  detectorName: string;
-  detector?: Detector;
-  detectorInterval?: number;
-  unit?: string;
+  detector: Detector;
   monitor?: Monitor;
   isHCDetector?: boolean;
   selectedHeatmapCell?: HeatmapCell;
@@ -99,14 +95,7 @@ export const AnomalyOccurrenceChart = React.memo(
           anomalyGradeSeriesName={props.anomalyGradeSeriesName}
           confidenceSeriesName={props.confidenceSeriesName}
           showAlerts={props.showAlerts}
-          detectorId={props.detector ? props.detector.id : ''}
-          detectorName={props.detector ? props.detector.name : ''}
           detector={props.detector}
-          detectorInterval={get(
-            props.detector,
-            'detectionInterval.period.interval'
-          )}
-          unit={get(props.detector, 'detectionInterval.period.unit')}
           monitor={props.monitor}
           isHCDetector={props.isHCDetector}
           selectedHeatmapCell={props.selectedHeatmapCell}

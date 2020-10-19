@@ -34,7 +34,6 @@ import { ListControls } from '../components/ListControls/ListControls';
 import { DetectorResultsQueryParams } from 'server/models/types';
 import { AnomalyData } from '../../../models/interfaces';
 import { getTitleWithCount } from '../../../utils/utils';
-import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 
 interface AnomalyResultsTableProps {
   anomalies: AnomalyData[];
@@ -73,16 +72,18 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
   };
 
   useEffect(() => {
-    const anomalies = props.anomalies
-      ? props.anomalies
-          .filter((anomaly) => anomaly.anomalyGrade > 0)
-          .map((anomaly) => {
-            return {
-              ...anomaly,
-              [ENTITY_VALUE_FIELD]: get(anomaly, 'entity[0].value'),
-            };
-          })
+    let anomalies = props.anomalies
+      ? props.anomalies.filter((anomaly) => anomaly.anomalyGrade > 0)
       : [];
+
+    if (props.isHCDetector) {
+      anomalies = anomalies.map((anomaly) => {
+        return {
+          ...anomaly,
+          [ENTITY_VALUE_FIELD]: get(anomaly, 'entity[0].value'),
+        };
+      });
+    }
 
     anomalies.sort(
       sortFieldCompare(
