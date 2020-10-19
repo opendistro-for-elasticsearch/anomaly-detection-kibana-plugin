@@ -36,6 +36,7 @@ import { focusOnFeatureAccordion } from '../../EditFeatures/utils/helpers';
 import moment from 'moment';
 import { HeatmapCell } from './AnomalyHeatmapChart';
 import { filterWithHeatmapFilter } from '../../utils/anomalyResultUtils';
+import { getDateRangeWithSelectedHeatmapCell } from '../utils/anomalyChartUtils';
 
 interface FeatureBreakDownProps {
   title?: string;
@@ -104,12 +105,7 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
       return props.annotations;
     }
   };
-  const getDateRange = () => {
-    if (props.isHCDetector && props.selectedHeatmapCell) {
-      return props.selectedHeatmapCell.dateRange;
-    }
-    return props.dateRange;
-  };
+
   return (
     <React.Fragment>
       {props.title ? (
@@ -150,7 +146,11 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
               )}
               annotations={getAnnotationData()}
               isLoading={props.isLoading}
-              dateRange={getDateRange()}
+              dateRange={getDateRangeWithSelectedHeatmapCell(
+                props.dateRange,
+                props.isHCDetector,
+                props.selectedHeatmapCell
+              )}
               featureType={
                 get(
                   props,

@@ -60,7 +60,11 @@ import {
   convertAlerts,
   disabledHistoryAnnotations,
   generateAlertAnnotations,
+  getAnomalyGradeWording,
+  getAnomalyOccurrenceWording,
   getAnomalySummary,
+  getConfidenceWording,
+  getLastAnomalyOccurrenceWording,
 } from '../utils/anomalyChartUtils';
 import {
   ANOMALY_CHART_THEME,
@@ -169,10 +173,9 @@ export const AnomalyDetailsChart = React.memo(
       }
       if (
         props.monitor &&
-        props.dateRange.startDate &&
+        props.dateRange &&
         // only load alert stats for non HC detector
-        props.isHCDetector != undefined &&
-        !props.isHCDetector
+        props.isHCDetector !== true
       ) {
         getMonitorAlerts(
           props.monitor.id,
@@ -180,7 +183,7 @@ export const AnomalyDetailsChart = React.memo(
           props.dateRange.endDate
         );
       }
-    }, [props.monitor, props.dateRange.startDate]);
+    }, [props.monitor, props.dateRange.startDate, props.dateRange.endDate]);
 
     const anomalyChartTimeFormatter = niceTimeFormatter([
       zoomRange.startDate,
@@ -192,60 +195,41 @@ export const AnomalyDetailsChart = React.memo(
       handleZoomRangeChange(startDate, endDate);
     };
 
-    const showLoader = useDelayedLoader(props.isLoading || isLoadingAlerts);
+    const isLoading = props.isLoading || isLoadingAlerts;
+    const showLoader = useDelayedLoader(isLoading);
 
     return (
       <React.Fragment>
         <EuiFlexGroup style={{ padding: '20px' }}>
           <EuiFlexItem>
             <EuiStat
-              title={
-                props.isLoading || isLoadingAlerts
-                  ? '-'
-                  : anomalySummary.anomalyOccurrence
-              }
-              description={
-                props.showAlerts
-                  ? 'Anomaly occurrences'
-                  : 'Sample anomaly occurrences'
-              }
+              title={isLoading ? '-' : anomalySummary.anomalyOccurrence}
+              description={getAnomalyOccurrenceWording(props.showAlerts)}
               titleSize="s"
             />
           </EuiFlexItem>
           <EuiFlexItem>
             <AnomalyStatWithTooltip
-              isLoading={props.isLoading || isLoadingAlerts}
+              isLoading={isLoading}
               minValue={anomalySummary.minAnomalyGrade}
               maxValue={anomalySummary.maxAnomalyGrade}
-              description={
-                props.showAlerts ? 'Anomaly grade' : 'Sample anomaly grade'
-              }
+              description={getAnomalyGradeWording(props.showAlerts)}
               tooltip="Indicates to what extent this data point is anomalous. The scale ranges from 0 to 1."
             />
           </EuiFlexItem>
           <EuiFlexItem>
             <AnomalyStatWithTooltip
-              isLoading={props.isLoading || isLoadingAlerts}
+              isLoading={isLoading}
               minValue={anomalySummary.minConfidence}
               maxValue={anomalySummary.maxConfidence}
-              description={
-                props.showAlerts ? 'Confidence' : 'Sample confidence'
-              }
+              description={getConfidenceWording(props.showAlerts)}
               tooltip="Indicates the level of confidence in the anomaly result."
             />
           </EuiFlexItem>
           <EuiFlexItem>
             <EuiStat
-              title={
-                props.isLoading || isLoadingAlerts
-                  ? ''
-                  : anomalySummary.lastAnomalyOccurrence
-              }
-              description={
-                props.showAlerts
-                  ? 'Last anomaly occurrence'
-                  : 'Last sample anomaly occurrence'
-              }
+              title={isLoading ? '' : anomalySummary.lastAnomalyOccurrence}
+              description={getLastAnomalyOccurrenceWording(props.showAlerts)}
               titleSize="s"
             />
           </EuiFlexItem>
@@ -255,7 +239,7 @@ export const AnomalyDetailsChart = React.memo(
                 monitor={props.monitor}
                 showAlertsFlyout={() => setShowAlertsFlyout(true)}
                 totalAlerts={totalAlerts}
-                isLoading={props.isLoading}
+                isLoading={isLoading}
               />
             </EuiFlexItem>
           ) : null}
@@ -269,7 +253,7 @@ export const AnomalyDetailsChart = React.memo(
                 opacity: showLoader ? 0.2 : 1,
               }}
             >
-              {props.isLoading || isLoadingAlerts ? (
+              {isLoading ? (
                 <EuiFlexGroup
                   justifyContent="spaceAround"
                   style={{ paddingTop: '150px' }}
@@ -373,11 +357,19 @@ export const AnomalyDetailsChart = React.memo(
         {showAlertsFlyout ? (
           <AlertsFlyout
             // @ts-ignore
-            detectorId={props.detectorId}
+            detectorId={get(props.detector, 'id', '')}
             // @ts-ignore
-            detectorName={props.detectorName}
-            detectorInterval={get(props, 'detectorInterval', 1)}
-            unit={get(props, 'unit', 'Minutes')}
+            detectorName={get(props.detector, 'name', '')}
+            detectorInterval={get(
+              props.detector,
+              'detectionInterval.period.interval',
+              1
+            )}
+            unit={get(
+              props.detector,
+              'detectionInterval.period.unit',
+              'Minutes'
+            )}
             monitor={props.monitor}
             onClose={() => setShowAlertsFlyout(false)}
           />

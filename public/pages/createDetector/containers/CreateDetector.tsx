@@ -137,7 +137,7 @@ export function CreateDetector(props: CreateADProps) {
     try {
       const detectorResp = await dispatch(createDetector(detectorToBeCreated));
       toastNotifications.addSuccess(
-        `Detector created: ${detectorResp.data.response.name}`
+        `Detector created: ${detectorToBeCreated.name}`
       );
       props.history.push(
         `/detectors/${detectorResp.data.response.id}/configurations/`

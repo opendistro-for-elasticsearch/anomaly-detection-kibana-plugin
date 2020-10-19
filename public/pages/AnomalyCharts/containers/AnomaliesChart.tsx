@@ -40,6 +40,12 @@ import {
   HeatmapCell,
 } from '../containers/AnomalyHeatmapChart';
 import {
+  getAnomalyGradeWording,
+  getConfidenceWording,
+  getFeatureBreakdownWording,
+  getFeatureDataWording,
+} from '../utils/anomalyChartUtils';
+import {
   DATE_PICKER_QUICK_OPTIONS,
   INITIAL_ANOMALY_SUMMARY,
 } from '../utils/constants';
@@ -59,8 +65,6 @@ interface AnomaliesChartProps {
   dateRange: DateRange;
   isLoading: boolean;
   showAlerts?: boolean;
-  anomalyGradeSeriesName: string;
-  confidenceSeriesName: string;
   detectorId: string;
   detectorName: string;
   detector?: Detector;
@@ -213,7 +217,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                         unit={props.unit}
                         onHeatmapCellSelected={props.onHeatmapCellSelected}
                       />,
-                      props.showAlerts === undefined || !props.showAlerts
+                      props.showAlerts !== true
                         ? [
                             <EuiSpacer size="m" />,
                             <AnomalyOccurrenceChart
@@ -229,9 +233,13 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                               bucketizedAnomalies={false}
                               anomalySummary={INITIAL_ANOMALY_SUMMARY}
                               isLoading={props.isLoading}
-                              anomalyGradeSeriesName="Anomaly grade"
-                              confidenceSeriesName="Confidence"
-                              showAlerts={false}
+                              anomalyGradeSeriesName={getAnomalyGradeWording(
+                                props.showAlerts
+                              )}
+                              confidenceSeriesName={getConfidenceWording(
+                                props.showAlerts
+                              )}
+                              showAlerts={props.showAlerts}
                               detectorId={props.detectorId}
                               detectorName={props.detectorName}
                               detector={props.detector}
@@ -248,7 +256,9 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                             />,
                             <EuiSpacer size="m" />,
                             <FeatureBreakDown
-                              title="Sample feature breakdown"
+                              title={getFeatureBreakdownWording(
+                                props.showAlerts
+                              )}
                               //@ts-ignore
                               detector={props.newDetector}
                               //@ts-ignore
@@ -259,7 +269,9 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                               isLoading={props.isLoading}
                               //@ts-ignore
                               dateRange={props.zoomRange}
-                              featureDataSeriesName="Sample feature output"
+                              featureDataSeriesName={getFeatureDataWording(
+                                props.showAlerts
+                              )}
                               isHCDetector={props.isHCDetector}
                               selectedHeatmapCell={props.selectedHeatmapCell}
                             />,
@@ -279,8 +291,8 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
               bucketizedAnomalies={props.bucketizedAnomalies}
               anomalySummary={props.anomalySummary}
               isLoading={props.isLoading}
-              anomalyGradeSeriesName="Anomaly grade"
-              confidenceSeriesName="Confidence"
+              anomalyGradeSeriesName={getAnomalyGradeWording(props.showAlerts)}
+              confidenceSeriesName={getConfidenceWording(props.showAlerts)}
               showAlerts={props.showAlerts}
               detectorId={props.detectorId}
               detectorName={props.detectorName}

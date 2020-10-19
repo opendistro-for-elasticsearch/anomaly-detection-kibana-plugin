@@ -58,6 +58,7 @@ import { getDetectorResults } from '../../../redux/reducers/anomalyResults';
 import { searchResults } from '../../../redux/reducers/anomalyResults';
 import { AnomalyOccurrenceChart } from '../../AnomalyCharts/containers/AnomalyOccurrenceChart';
 import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
+import { getAnomalyHistoryWording } from '../../AnomalyCharts/utils/anomalyChartUtils';
 
 interface AnomalyHistoryProps {
   detector: Detector;
@@ -312,15 +313,13 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   return (
     <Fragment>
       <AnomaliesChart
-        title="Anomaly history"
+        title={getAnomalyHistoryWording(true)}
         dateRange={dateRange}
         onDateRangeChange={handleDateRangeChange}
         onZoomRangeChange={handleZoomChange}
         bucketizedAnomalies={bucketizedAnomalyResults !== undefined}
         anomalySummary={bucketizedAnomalySummary}
         isLoading={isLoading || isLoadingAnomalyResults}
-        anomalyGradeSeriesName="Anomaly grade"
-        confidenceSeriesName="Confidence"
         showAlerts={true}
         detectorId={props.detector.id}
         detectorName={props.detector.name}

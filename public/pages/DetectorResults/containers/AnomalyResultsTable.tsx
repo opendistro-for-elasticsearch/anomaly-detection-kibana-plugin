@@ -62,7 +62,7 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
     ? props.anomalies.filter((anomaly) => anomaly.anomalyGrade > 0)
     : [];
 
-  const sortFiledCompare = (field: string, sortDirection: SORT_DIRECTION) => {
+  const sortFieldCompare = (field: string, sortDirection: SORT_DIRECTION) => {
     return (a: any, b: any) => {
       if (get(a, `${field}`) > get(b, `${field}`))
         return sortDirection === SORT_DIRECTION.ASC ? 1 : -1;
@@ -85,7 +85,7 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
       : [];
 
     anomalies.sort(
-      sortFiledCompare(
+      sortFieldCompare(
         state.queryParams.sortField,
         state.queryParams.sortDirection
       )

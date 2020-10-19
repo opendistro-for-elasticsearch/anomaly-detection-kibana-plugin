@@ -269,7 +269,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
         getFeatureDataMissingMessageAndActionItem(
           featureMissingSeverity,
           featureNamesAtHighSev,
-          !isEmpty(detector.categoryField)
+          isHCDetector
         ),
         'message',
         ''
@@ -359,7 +359,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
           getFeatureDataMissingMessageAndActionItem(
             featureMissingSeverity,
             featureNamesAtHighSev,
-            !isEmpty(detector.categoryField)
+            isHCDetector
           ),
           'actionItem',
           ''

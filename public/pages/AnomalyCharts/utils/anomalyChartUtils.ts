@@ -27,6 +27,7 @@ import { DEFAULT_ANOMALY_SUMMARY } from './constants';
 import { Datum, PlotData } from 'plotly.js';
 import moment from 'moment';
 import { calculateTimeWindowsWithMaxDataPoints } from '../../utils/anomalyResultUtils';
+import { HeatmapCell } from '../containers/AnomalyHeatmapChart';
 
 export const convertAlerts = (response: any): MonitorAlert[] => {
   const alerts = get(response, 'data.response.alerts', []);
@@ -171,14 +172,15 @@ export enum AnomalyHeatmapSortType {
   OCCURRENCES = 'by_occurrences',
 }
 
-const getColorForValue = (value: number) => {
+const getHeatmapColorByValue = (value: number) => {
+  // check if value is larger than largest value in color scale
   if (
     value >=
     ANOMALY_HEATMAP_COLORSCALE[ANOMALY_HEATMAP_COLORSCALE.length - 1][0]
   ) {
     return ANOMALY_HEATMAP_COLORSCALE[ANOMALY_HEATMAP_COLORSCALE.length - 1][1];
   }
-
+  // check if value is smaller than smallest value in color scale
   if (value <= ANOMALY_HEATMAP_COLORSCALE[0][0]) {
     return ANOMALY_HEATMAP_COLORSCALE[0][1];
   }
@@ -215,6 +217,8 @@ export const getAnomaliesHeatmapData = (
   if (isEmpty(entityAnomaliesMap)) {
     // put placeholder data so that heatmap won't look empty
     for (let i = 0; i < displayTopNum; i++) {
+      // using blank string with different length as entity values instead of
+      // only 1 whitesapce for all entities, to avoid heatmap with single row
       const blankStrValue = buildBlankStringWithLength(i);
       entityAnomaliesMap.set(blankStrValue, []);
     }
@@ -232,6 +236,24 @@ export const getAnomaliesHeatmapData = (
   entityAnomaliesMap.forEach((entityAnomalies, entity) => {
     const maxAnomalyGradesForEntity = [] as number[];
     const numAnomalyGradesForEntity = [] as number[];
+    if (
+      (isEmpty(entityAnomalies) ||
+        isEmpty(
+          entityAnomalies.filter(
+            (anomaly) => get(anomaly, 'anomalyGrade', 0) > 0
+          )
+        )) &&
+      !isEmpty(entity.trim())
+    ) {
+      console.log(
+        `find entity ${entity} with empty anomalies`,
+        entityAnomalies
+      );
+      // skip non-blank entity with empty anomalies,
+      // keep blank entity as it is placeholder data
+      // for totally emtpy anomaly data state
+      return;
+    }
     entityValues.push(entity);
     timeWindows.forEach((timeWindow) => {
       const anomaliesInWindow = entityAnomalies.filter(
@@ -281,6 +303,7 @@ export const getAnomaliesHeatmapData = (
         '<b>Max anomaly grade</b>: %{z}<br>' +
         '<b>Anomaly occurrences</b>: %{text}' +
         '<extra></extra>',
+      cellTimeInterval: timeWindows[0].endDate - timeWindows[0].startDate,
     } as PlotData;
   const resultPlotData = sortHeatmapPlotData(plotData, sortType, displayTopNum);
   return [resultPlotData];
@@ -414,7 +437,7 @@ export const getSelectedHeatmapCellPlotData = (
     }
     selectedZData.push(row);
   }
-  const colorForCell = getColorForValue(selectedValue);
+  const colorForCell = getHeatmapColorByValue(selectedValue);
   //@ts-ignore
   return [
     {
@@ -429,4 +452,51 @@ export const getSelectedHeatmapCellPlotData = (
       hovertemplate: null,
     },
   ] as PlotData[];
+};
+
+export const getAnomalyGradeWording = (isNotSample: boolean | undefined) => {
+  return isNotSample ? 'Anomaly grade' : 'Sample anomaly grade';
+};
+
+export const getConfidenceWording = (isNotSample: boolean | undefined) => {
+  return isNotSample ? 'Confidence' : 'Sample confidence';
+};
+
+export const getFeatureBreakdownWording = (
+  isNotSample: boolean | undefined
+) => {
+  return isNotSample ? 'Feature breakdown' : 'Sample feature breakdown';
+};
+
+export const getFeatureDataWording = (isNotSample: boolean | undefined) => {
+  return isNotSample ? 'Feature output' : 'Sample feature output';
+};
+
+export const getLastAnomalyOccurrenceWording = (
+  isNotSample: boolean | undefined
+) => {
+  return isNotSample
+    ? 'Last anomaly occurrence'
+    : 'Last sample anomaly occurrence';
+};
+
+export const getAnomalyOccurrenceWording = (
+  isNotSample: boolean | undefined
+) => {
+  return isNotSample ? 'Anomaly occurrences' : 'Sample anomaly occurrences';
+};
+
+export const getAnomalyHistoryWording = (isNotSample: boolean | undefined) => {
+  return isNotSample ? 'Anomaly history' : 'Sample anomaly history';
+};
+
+export const getDateRangeWithSelectedHeatmapCell = (
+  originalDateRange: DateRange,
+  isHCDetector: boolean | undefined,
+  heatmapCell: HeatmapCell | undefined
+) => {
+  if (isHCDetector && heatmapCell) {
+    return heatmapCell.dateRange;
+  }
+  return originalDateRange;
 };

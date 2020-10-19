@@ -21,7 +21,10 @@ import { Monitor, Detector, DateRange } from '../../../models/interfaces';
 import { AnomalyDetailsChart } from './AnomalyDetailsChart';
 import { HeatmapCell } from './AnomalyHeatmapChart';
 import { filterWithHeatmapFilter } from '../../utils/anomalyResultUtils';
-import { getAnomalySummary } from '../utils/anomalyChartUtils';
+import {
+  getAnomalySummary,
+  getDateRangeWithSelectedHeatmapCell,
+} from '../utils/anomalyChartUtils';
 
 interface AnomalyOccurrenceChartProps {
   onDateRangeChange(
@@ -79,24 +82,22 @@ export const AnomalyOccurrenceChart = React.memo(
       }
     };
 
-    const getDateRange = () => {
-      if (props.isHCDetector && props.selectedHeatmapCell) {
-        return props.selectedHeatmapCell.dateRange;
-      }
-      return props.dateRange;
-    };
     return (
       <ContentPanel title={props.title}>
         <AnomalyDetailsChart
-          dateRange={getDateRange()}
+          dateRange={getDateRangeWithSelectedHeatmapCell(
+            props.dateRange,
+            props.isHCDetector,
+            props.selectedHeatmapCell
+          )}
           onDateRangeChange={props.onDateRangeChange}
           onZoomRangeChange={props.onZoomRangeChange}
           anomalies={getAnomaliesForChart()}
           bucketizedAnomalies={props.bucketizedAnomalies}
           anomalySummary={getAnomalySummaryForChart()}
           isLoading={props.isLoading}
-          anomalyGradeSeriesName="Anomaly grade"
-          confidenceSeriesName="Confidence"
+          anomalyGradeSeriesName={props.anomalyGradeSeriesName}
+          confidenceSeriesName={props.confidenceSeriesName}
           showAlerts={props.showAlerts}
           detectorId={props.detector ? props.detector.id : ''}
           detectorName={props.detector ? props.detector.name : ''}

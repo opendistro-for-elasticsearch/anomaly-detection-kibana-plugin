@@ -28,6 +28,11 @@ import {
 } from '@elastic/eui';
 import { get, isEmpty } from 'lodash';
 import moment from 'moment';
+import {
+  getAnomalyHistoryWording,
+  getFeatureBreakdownWording,
+  getFeatureDataWording,
+} from '../../AnomalyCharts/utils/anomalyChartUtils';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
@@ -154,7 +159,6 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
         newDetector,
         true
       );
-      console.log('updatedDetector in SampleAnomalies', updatedDetector);
       setPreviewDone(false);
       setZoomRange({ ...dateRange });
       setNewDetector(updatedDetector);
@@ -226,13 +230,11 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
           {!firstPreview ? (
             <Fragment>
               <AnomaliesChart
-                title="Sample anomaly history"
+                title={getAnomalyHistoryWording(false)}
                 onDateRangeChange={handleDateRangeChange}
                 onZoomRangeChange={handleZoomChange}
                 isLoading={isLoading}
                 dateRange={dateRange}
-                anomalyGradeSeriesName="Sample anomaly grade"
-                confidenceSeriesName="Sample confidence"
                 detectorId={props.detector.id}
                 detectorName={props.detector.name}
                 isHCDetector={isHCDetector}
@@ -256,7 +258,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                 </EuiFlexGroup>
               ) : isHCDetector ? null : (
                 <FeatureBreakDown
-                  title="Sample feature breakdown"
+                  title={getFeatureBreakdownWording(false)}
                   detector={newDetector}
                   anomaliesResult={anomaliesResult}
                   annotations={generateAnomalyAnnotations(
@@ -264,7 +266,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                   )}
                   isLoading={isLoading}
                   dateRange={zoomRange}
-                  featureDataSeriesName="Sample feature output"
+                  featureDataSeriesName={getFeatureDataWording(false)}
                 />
               )}
             </Fragment>

@@ -73,8 +73,6 @@ const renderDataFilter = () => ({
         anomalySummary={INITIAL_ANOMALY_SUMMARY}
         dateRange={dateRange}
         isLoading={false}
-        anomalyGradeSeriesName="anomaly grade"
-        confidenceSeriesName="confidence"
         detectorId="testDetectorId"
         detectorName="testDetectorName"
         anomaliesResult={anomaliesResult}

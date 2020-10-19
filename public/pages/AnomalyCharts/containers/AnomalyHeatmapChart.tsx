@@ -42,6 +42,7 @@ import {
   sortHeatmapPlotData,
   filterHeatmapPlotDataByY,
 } from '../utils/anomalyChartUtils';
+import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
 
 interface AnomalyHeatmapChartProps {
   title: string;
@@ -126,7 +127,7 @@ export const AnomalyHeatmapChart = React.memo(
       originalHeatmapData
     );
 
-    const [sortByFeildValue, setSortByFeildValue] = useState(
+    const [sortByFieldValue, setSortByFieldValue] = useState(
       SORT_BY_FIELD_OPTIONS[0].value
     );
 
@@ -198,11 +199,7 @@ export const AnomalyHeatmapChart = React.memo(
 
           const selectedStartDate =
             selectedEndDate -
-            getHeatmapCellDateRangeInterval(
-              //@ts-ignore
-              heatmapData[0].x,
-              selectedCellIndices[1]
-            );
+            get(selectedHeatmapData, '[0].cellTimeInterval', MIN_IN_MILLI_SECS);
           props.onHeatmapCellSelected({
             dateRange: {
               startDate: selectedStartDate,
@@ -212,27 +209,6 @@ export const AnomalyHeatmapChart = React.memo(
           } as HeatmapCell);
         }
       }
-    };
-
-    const getHeatmapCellDateRangeInterval = (
-      dates: string[],
-      index: number
-    ) => {
-      if (dates.length < 2) {
-        // if only less than 2 dates in X axis, it means the props.dateRange is too small.
-        // we can just use props.dateRange interval for heatmap cell
-        return props.dateRange.endDate - props.dateRange.startDate;
-      }
-      let prevIndex = index;
-      let nextIndex = index + 1;
-      if (nextIndex >= dates.length) {
-        nextIndex = index;
-        prevIndex = index - 1;
-      }
-      return (
-        moment(dates[nextIndex], HEATMAP_X_AXIS_DATE_FORMAT).valueOf() -
-        moment(dates[prevIndex], HEATMAP_X_AXIS_DATE_FORMAT).valueOf()
-      );
     };
 
     const getColorPaletteFlexItem = (hexCode: string) => {
@@ -255,7 +231,7 @@ export const AnomalyHeatmapChart = React.memo(
         const updateHeatmapPlotData = getAnomaliesHeatmapData(
           props.anomalies,
           props.dateRange,
-          sortByFeildValue,
+          sortByFieldValue,
           displayTopEntityNum
         );
         setOriginalHeatmapData(updateHeatmapPlotData);
@@ -279,7 +255,7 @@ export const AnomalyHeatmapChart = React.memo(
           const updateHeatmapPlotData = getAnomaliesHeatmapData(
             props.anomalies,
             props.dateRange,
-            sortByFeildValue,
+            sortByFieldValue,
             displayTopEntityNum
           );
           setOriginalHeatmapData(updateHeatmapPlotData);
@@ -302,7 +278,7 @@ export const AnomalyHeatmapChart = React.memo(
       let selectedHeatmapData = filterHeatmapPlotDataByY(
         originalHeatmapData[0],
         selectedYs,
-        sortByFeildValue
+        sortByFieldValue
       );
       selectedHeatmapData.opacity = 1;
 
@@ -317,7 +293,7 @@ export const AnomalyHeatmapChart = React.memo(
     };
 
     const handleSortByFieldChange = (value: any) => {
-      setSortByFeildValue(value);
+      setSortByFieldValue(value);
       const sortedHeatmapData = sortHeatmapPlotData(
         heatmapData[0],
         value,
@@ -373,7 +349,7 @@ export const AnomalyHeatmapChart = React.memo(
                   <EuiFlexItem style={{ minWidth: 150 }}>
                     <EuiSuperSelect
                       options={SORT_BY_FIELD_OPTIONS}
-                      valueOfSelected={sortByFeildValue}
+                      valueOfSelected={sortByFieldValue}
                       onChange={(value) => handleSortByFieldChange(value)}
                       hasDividers
                     />
