@@ -40,7 +40,7 @@ import { toastNotifications } from 'ui/notify';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { DateRange, Detector } from '../../../models/interfaces';
 import { AppState } from '../../../redux/reducers';
-import { previewDetector } from '../../../redux/reducers/anomalies';
+import { previewDetector } from '../../../redux/reducers/previewAnomalies';
 import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
 import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 import { FeatureBreakDown } from '../../AnomalyCharts/containers/FeatureBreakDown';
