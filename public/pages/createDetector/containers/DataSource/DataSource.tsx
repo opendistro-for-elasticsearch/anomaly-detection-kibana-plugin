@@ -38,6 +38,7 @@ interface DataSourceProps {
   formikProps: FormikProps<ADFormikValues>;
   origIndex: string;
   setNewIndexSelected: (isNew: boolean) => void;
+  isEdit: boolean;
 }
 
 function DataSource(props: DataSourceProps) {
@@ -104,7 +105,7 @@ function DataSource(props: DataSourceProps) {
   };
 
   const isDifferentIndex = () => {
-    return !isEmpty(props.origIndex) && indexName !== props.origIndex;
+    return props.isEdit && indexName !== props.origIndex;
   };
 
   return (

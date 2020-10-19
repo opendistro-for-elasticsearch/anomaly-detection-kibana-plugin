@@ -230,7 +230,6 @@ export function CreateDetector(props: CreateADProps) {
     setSampleCalloutVisible(false);
   };
 
-  console.log('newIndexSelected: ', newIndexSelected);
   return (
     <EuiPage>
       <EuiPageBody>
@@ -264,6 +263,7 @@ export function CreateDetector(props: CreateADProps) {
                 formikProps={formikProps}
                 origIndex={props.isEdit ? get(detector, 'indices.0', '') : null}
                 setNewIndexSelected={setNewIndexSelected}
+                isEdit={props.isEdit}
               />
               <EuiSpacer />
               <Settings />
