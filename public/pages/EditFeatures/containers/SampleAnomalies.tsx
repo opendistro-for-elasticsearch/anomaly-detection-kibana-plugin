@@ -223,9 +223,9 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
           <EuiSpacer />
           {previewDone && !anomaliesResult.anomalies.length ? (
             <EuiCallOut
-              title={
-                'No sample anomaly result generated. Please check detector interval and make sure you have >400 data points during preview date range'
-              }
+              title={`No sample anomaly result generated. Please check detector interval and make sure you have >400 data points${
+                isHCDetector ? ' for some entities ' : ' '
+              }during preview date range`}
               color="warning"
               iconType="alert"
             ></EuiCallOut>
