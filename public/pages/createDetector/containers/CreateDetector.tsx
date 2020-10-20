@@ -40,6 +40,8 @@ import {
   createDetector,
   searchDetector,
   updateDetector,
+  matchDetector,
+  getDetectorCount,
 } from '../../../redux/reducers/ad';
 import { getIndices } from '../../../redux/reducers/elasticsearch';
 import { AppState } from '../../../redux/reducers';
@@ -153,9 +155,10 @@ export function CreateDetector(props: CreateADProps) {
       );
     } catch (err) {
       const resp = await dispatch(
-        searchDetector({
-          query: { bool: { must_not: { match: { name: '' } } } },
-        })
+        getDetectorCount()
+        // searchDetector({
+        //   query: { bool: { must_not: { match: { name: '' } } } },
+        // })
       );
       const totalDetectors = resp.data.response.totalDetectors;
       if (totalDetectors === MAX_DETECTORS) {
@@ -210,7 +213,8 @@ export function CreateDetector(props: CreateADProps) {
       }
       //TODO::Avoid making call if value is same
       const resp = await dispatch(
-        searchDetector({ query: { term: { 'name.keyword': detectorName } } })
+        matchDetector(detectorName)
+        //searchDetector({ query: { term: { 'name.keyword': detectorName } } })
       );
       const totalDetectors = resp.data.response.totalDetectors;
       if (totalDetectors === 0) {

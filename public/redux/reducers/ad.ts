@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ const DELETE_DETECTOR = 'ad/DELETE_DETECTOR';
 const START_DETECTOR = 'ad/START_DETECTOR';
 const STOP_DETECTOR = 'ad/STOP_DETECTOR';
 const GET_DETECTOR_PROFILE = 'ad/GET_DETECTOR_PROFILE';
+const MATCH_DETECTOR = 'ad/MATCH_DETECTOR';
+const GET_DETECTOR_COUNT = 'ad/GET_DETECTOR_COUNT';
 
 export interface Detectors {
   requesting: boolean;
@@ -264,6 +266,40 @@ const reducer = handleActions<Detectors>(
         errorMessage: action.error,
       }),
     },
+    [MATCH_DETECTOR]: {
+      REQUEST: (state: Detectors): Detectors => ({
+        ...state,
+        requesting: true,
+        errorMessage: '',
+      }),
+      SUCCESS: (state: Detectors): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: '',
+      }),
+      FAILURE: (state: Detectors, action: APIResponseAction): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
+      }),
+    },
+    [GET_DETECTOR_COUNT]: {
+      REQUEST: (state: Detectors): Detectors => ({
+        ...state,
+        requesting: true,
+        errorMessage: '',
+      }),
+      SUCCESS: (state: Detectors): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: '',
+      }),
+      FAILURE: (state: Detectors, action: APIResponseAction): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
+      }),
+    },
   },
   initialDetectorsState
 );
@@ -342,6 +378,21 @@ export const getDetectorProfile = (detectorId: string): APIAction => ({
       params: detectorId,
     }),
   detectorId,
+});
+
+export const matchDetector = (detectorName: string): APIAction => ({
+  type: MATCH_DETECTOR,
+  request: (client: IHttpService) =>
+    client.get(`..${AD_NODE_API.DETECTOR}/${detectorName}/_match`, {
+      params: detectorName,
+    }),
+  detectorName,
+});
+
+export const getDetectorCount = (): APIAction => ({
+  type: GET_DETECTOR_COUNT,
+  request: (client: IHttpService) =>
+    client.get(`..${AD_NODE_API.DETECTOR}/_count`, {}),
 });
 
 export default reducer;
