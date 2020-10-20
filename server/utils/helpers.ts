@@ -75,7 +75,7 @@ export const prettifyErrorMessage = (rawErrorMessage: string) => {
   const match = rawErrorMessage.match(PERMISSIONS_ERROR_PATTERN);
   if (isEmpty(match)) {
     return rawErrorMessage;
+  } else {
+    return `User ${match[2]} has no permissions to [${match[1]}].`;
   }
-  //@ts-ignore
-  return `User ${match[2]} has no permissions to [${match[1]}].`;
 };

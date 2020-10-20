@@ -110,7 +110,6 @@ export const loadSampleData = (
           const firstErrorReason = isEmpty(errorItems)
             ? 'Error while bulk inserting. Please try again.'
             : prettifyErrorMessage(errorItems[0].index.error.reason);
-          console.log(firstErrorReason);
           return Promise.reject(new Error(firstErrorReason));
         }
       } catch (err) {
