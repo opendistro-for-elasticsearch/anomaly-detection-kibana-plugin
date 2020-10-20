@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -24,12 +24,12 @@ import { Anomalies } from '../../models/interfaces';
 
 const PREVIEW_DETECTOR = 'ad/PREVIEW_DETECTOR';
 
-export interface Anomalies {
+export interface PreviewAnomalies {
   requesting: boolean;
   anomaliesResult: Anomalies;
   errorMessage: string;
 }
-export const initialDetectorsState: Anomalies = {
+export const initialDetectorsState: PreviewAnomalies = {
   requesting: false,
   anomaliesResult: {
     anomalies: [],
@@ -38,20 +38,26 @@ export const initialDetectorsState: Anomalies = {
   errorMessage: '',
 };
 
-const reducer = handleActions<Anomalies>(
+const reducer = handleActions<PreviewAnomalies>(
   {
     [PREVIEW_DETECTOR]: {
-      REQUEST: (state: Anomalies): Anomalies => ({
+      REQUEST: (state: PreviewAnomalies): PreviewAnomalies => ({
         ...state,
         requesting: true,
         errorMessage: '',
       }),
-      SUCCESS: (state: Anomalies, action: APIResponseAction): Anomalies => ({
+      SUCCESS: (
+        state: PreviewAnomalies,
+        action: APIResponseAction
+      ): PreviewAnomalies => ({
         ...state,
         requesting: false,
         anomaliesResult: action.result.data.response,
       }),
-      FAILURE: (state: Anomalies, action: APIResponseAction): Anomalies => ({
+      FAILURE: (
+        state: PreviewAnomalies,
+        action: APIResponseAction
+      ): PreviewAnomalies => ({
         ...state,
         requesting: false,
         errorMessage: action.error,

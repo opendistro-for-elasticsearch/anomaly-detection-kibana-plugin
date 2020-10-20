@@ -40,7 +40,10 @@ export interface AlertingApis {
   [API_ROUTE: string]: string;
   readonly ALERTING_BASE: string;
 }
-
+export type Entity = {
+  name: string;
+  value: string;
+};
 export type Anomaly = {
   anomalyGrade: number;
   confidence: number;
@@ -48,6 +51,7 @@ export type Anomaly = {
   startTime: number;
   endTime: number;
   plotTime: number;
+  entity?: Entity[];
 };
 //Plot time is middle of start and end time to provide better visualization to customers
 // Example, if window is 10 mins, in a given startTime and endTime of 12:10 to 12:20 respectively.

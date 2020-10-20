@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import {
   EuiFlexItem,
   EuiFlexGroup,
@@ -29,10 +29,14 @@ import {
   Anomalies,
   DateRange,
   FEATURE_TYPE,
+  EntityData,
 } from '../../../models/interfaces';
 import { NoFeaturePrompt } from '../components/FeatureChart/NoFeaturePrompt';
 import { focusOnFeatureAccordion } from '../../EditFeatures/utils/helpers';
 import moment from 'moment';
+import { HeatmapCell } from './AnomalyHeatmapChart';
+import { filterWithHeatmapFilter } from '../../utils/anomalyResultUtils';
+import { getDateRangeWithSelectedHeatmapCell } from '../utils/anomalyChartUtils';
 
 interface FeatureBreakDownProps {
   title?: string;
@@ -45,9 +49,63 @@ interface FeatureBreakDownProps {
   showFeatureMissingDataPointAnnotation?: boolean;
   rawAnomalyResults?: Anomalies;
   isFeatureDataMissing?: boolean;
+  isHCDetector?: boolean;
+  selectedHeatmapCell?: HeatmapCell;
 }
 
 export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
+  const getFeatureDataForChart = (
+    anomaliesResult: Anomalies,
+    featureId: string
+  ) => {
+    const originalFeatureData = get(
+      anomaliesResult,
+      `featureData.${featureId}`,
+      []
+    );
+    if (props.isHCDetector) {
+      if (props.selectedHeatmapCell) {
+        const anomaliesFound = get(anomaliesResult, 'anomalies', []);
+        const filteredFeatureData = [];
+        for (let i = 0; i < anomaliesFound.length; i++) {
+          const currentAnomalyData = anomaliesResult.anomalies[i];
+          if (
+            !isEmpty(get(currentAnomalyData, 'entity', [] as EntityData[])) &&
+            get(currentAnomalyData, 'entity', [] as EntityData[])[0].value ===
+              props.selectedHeatmapCell.entityValue &&
+            get(currentAnomalyData, 'plotTime', 0) >=
+              props.selectedHeatmapCell.dateRange.startDate &&
+            get(currentAnomalyData, 'plotTime', 0) <=
+              props.selectedHeatmapCell.dateRange.endDate
+          ) {
+            filteredFeatureData.push(originalFeatureData[i]);
+          }
+        }
+        return filteredFeatureData;
+      } else {
+        return [];
+      }
+    } else {
+      return originalFeatureData;
+    }
+  };
+  const getAnnotationData = () => {
+    if (props.isHCDetector) {
+      if (props.selectedHeatmapCell) {
+        return filterWithHeatmapFilter(
+          props.annotations,
+          props.selectedHeatmapCell,
+          true,
+          'coordinates.x0'
+        );
+      } else {
+        return [];
+      }
+    } else {
+      return props.annotations;
+    }
+  };
+
   return (
     <React.Fragment>
       {props.title ? (
@@ -77,19 +135,22 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
           <React.Fragment key={`${feature.featureName}-${feature.featureId}`}>
             <FeatureChart
               feature={feature}
-              featureData={get(
-                props,
-                `anomaliesResult.featureData.${feature.featureId}`,
-                []
+              featureData={
+                //@ts-ignore
+                getFeatureDataForChart(props.anomaliesResult, feature.featureId)
+              }
+              rawFeatureData={getFeatureDataForChart(
+                //@ts-ignore
+                props.rawAnomalyResults,
+                feature.featureId
               )}
-              rawFeatureData={get(
-                props,
-                `rawAnomalyResults.featureData.${feature.featureId}`,
-                []
-              )}
-              annotations={props.annotations}
+              annotations={getAnnotationData()}
               isLoading={props.isLoading}
-              dateRange={props.dateRange}
+              dateRange={getDateRangeWithSelectedHeatmapCell(
+                props.dateRange,
+                props.isHCDetector,
+                props.selectedHeatmapCell
+              )}
               featureType={
                 get(
                   props,
@@ -128,6 +189,11 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
                 props.showFeatureMissingDataPointAnnotation
               }
               detectorEnabledTime={props.detector.enabledTime}
+              titlePrefix={
+                props.selectedHeatmapCell
+                  ? props.selectedHeatmapCell.entityValue
+                  : undefined
+              }
             />
             <EuiSpacer size="m" />
           </React.Fragment>

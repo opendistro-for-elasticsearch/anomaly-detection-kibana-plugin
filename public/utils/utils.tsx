@@ -24,22 +24,31 @@ import { darkModeEnabled } from '../utils/kibanaUtils';
 import { ALERTING_PLUGIN_NAME, NAME_REGEX } from './constants';
 import { MAX_FEATURE_NAME_SIZE } from './constants';
 
-export const validateName = (featureName: string): string | undefined => {
-  if (isEmpty(featureName)) {
-    return 'Required';
-  }
-  if (featureName.length > MAX_FEATURE_NAME_SIZE) {
-    return `Name is too big maximum limit is ${MAX_FEATURE_NAME_SIZE}`;
-  }
-  if (!NAME_REGEX.test(featureName)) {
-    return 'Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)';
-  }
+export const validateFeatureName = (
+  featureName: string
+): string | undefined => {
+  return validateName(featureName, 'feature');
 };
 
-export const validateCategoryField = (val: any): string | undefined => {
-  return !val || val.length === 0
-    ? 'You must select a category field'
-    : undefined;
+export const validateDetectorName = (
+  detectorName: string
+): string | undefined => {
+  return validateName(detectorName, 'detector');
+};
+
+export const validateName = (
+  name: string,
+  fieldName: string
+): string | undefined => {
+  if (isEmpty(name)) {
+    return `You must enter a ${fieldName} name`;
+  }
+  if (name.length > MAX_FEATURE_NAME_SIZE) {
+    return `Name is too big maximum limit is ${MAX_FEATURE_NAME_SIZE}`;
+  }
+  if (!NAME_REGEX.test(name)) {
+    return 'Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)';
+  }
 };
 
 export const isInvalid = (name: string, form: any) =>
@@ -47,13 +56,37 @@ export const isInvalid = (name: string, form: any) =>
 
 export const getError = (name: string, form: any) => get(form.errors, name);
 
-export const required = (val: any): string | undefined => {
-  // if val is number, skip check as number value already exists
-  return typeof val !== 'number' && !val ? 'Required' : undefined;
+export const requiredSelectField = (val: any): string | undefined => {
+  return required(val, 'You must select a field');
 };
 
-export const requiredNonEmptyArray = (val: any): string | undefined => {
-  return !val || val.length === 0 ? 'Required' : undefined;
+export const required = (
+  val: any,
+  customErrorMessage?: string
+): string | undefined => {
+  // if val is number, skip check as number value already exists
+  const message = !isEmpty(customErrorMessage)
+    ? customErrorMessage
+    : 'Required';
+  return typeof val !== 'number' && !val ? message : undefined;
+};
+
+export const requiredNonEmptyArray = (
+  val: any,
+  customErrorMessage?: string
+): string | undefined => {
+  const message = !isEmpty(customErrorMessage)
+    ? customErrorMessage
+    : 'Required';
+  return !val || val.length === 0 ? message : undefined;
+};
+
+export const requiredNonEmptyFieldSelected = (val: any): string | undefined => {
+  return requiredNonEmptyArray(val, 'You must select a field');
+};
+
+export const validateCategoryField = (val: any): string | undefined => {
+  return requiredNonEmptyArray(val, 'You must select a category field');
 };
 
 export const validatePositiveInteger = (value: any) => {

@@ -44,7 +44,7 @@ import {
 import { getIndices } from '../../../redux/reducers/elasticsearch';
 import { AppState } from '../../../redux/reducers';
 import { BREADCRUMBS, MAX_DETECTORS } from '../../../utils/constants';
-import { getErrorMessage, validateName } from '../../../utils/utils';
+import { getErrorMessage, validateDetectorName } from '../../../utils/utils';
 import { DetectorInfo } from '../components/DetectorInfo';
 import { useFetchDetectorInfo } from '../hooks/useFetchDetectorInfo';
 import { DataSource } from './DataSource/index';
@@ -143,7 +143,7 @@ export function CreateDetector(props: CreateADProps) {
     try {
       const detectorResp = await dispatch(createDetector(detectorToBeCreated));
       toastNotifications.addSuccess(
-        `Detector created: ${detectorResp.data.response.name}`
+        `Detector created: ${detectorToBeCreated.name}`
       );
       props.history.push(
         `/detectors/${detectorResp.data.response.id}/configurations/`
@@ -199,7 +199,7 @@ export function CreateDetector(props: CreateADProps) {
     if (isEmpty(detectorName)) {
       throw 'Detector name cannot be empty';
     } else {
-      const error = validateName(detectorName);
+      const error = validateDetectorName(detectorName);
       if (error) {
         throw error;
       }

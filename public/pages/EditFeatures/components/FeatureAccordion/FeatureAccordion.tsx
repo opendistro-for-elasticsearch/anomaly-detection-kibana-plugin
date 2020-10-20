@@ -25,7 +25,7 @@ import {
   EuiFieldText,
   EuiCheckbox,
 } from '@elastic/eui';
-import { validateName } from '../../../../utils/utils';
+import { validateFeatureName } from '../../../../utils/utils';
 import { Field, FieldProps } from 'formik';
 import { required, isInvalid, getError } from '../../../../utils/utils';
 import { get } from 'lodash';
@@ -106,8 +106,12 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
       key={props.index}
       buttonContent={featureButtonContent(props.feature, props.index)}
       //@ts-ignore
-      buttonClassName="euiAccordionForm__button"
-      className="euiAccordionForm"
+      buttonClassName={
+        props.index === 0
+          ? 'euiAccordionForm__noTopPaddingButton'
+          : 'euiAccordionForm__button'
+      }
+      className="euiAccordion__noTopBorder"
       paddingSize="l"
       initialIsOpen={initialIsOpen}
       extraAction={deleteAction(props.onDelete)}
@@ -118,7 +122,7 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
       <Field
         id={`featureList.${props.index}.featureName`}
         name={`featureList.${props.index}.featureName`}
-        validate={validateName}
+        validate={validateFeatureName}
       >
         {({ field, form }: FieldProps) => (
           <EuiFormRow
@@ -177,7 +181,7 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
                     ? FEATURE_TYPE.SIMPLE
                     : FEATURE_TYPE.CUSTOM
                 }
-                onChange={e => {
+                onChange={(e) => {
                   props.handleChange(e);
                   if (
                     e.currentTarget.value === FEATURE_TYPE.CUSTOM &&

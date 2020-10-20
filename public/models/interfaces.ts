@@ -127,6 +127,11 @@ export type DetectorListItem = {
   enabledTime?: number;
 };
 
+export type EntityData = {
+  name: string;
+  value: string;
+};
+
 export type AnomalyData = {
   anomalyGrade: number;
   anomalyScore?: number;
@@ -135,6 +140,8 @@ export type AnomalyData = {
   endTime: number;
   startTime: number;
   plotTime?: number;
+  entity?: EntityData[];
+  features?: { [key: string]: FeatureAggregationData };
 };
 
 export type FeatureAggregationData = {

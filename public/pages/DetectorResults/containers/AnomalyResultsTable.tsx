@@ -25,7 +25,11 @@ import React, { useEffect, useState } from 'react';
 import chrome from 'ui/chrome';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
-import { staticColumn } from '../utils/tableUtils';
+import {
+  entityValueColumn,
+  ENTITY_VALUE_FIELD,
+  staticColumn,
+} from '../utils/tableUtils';
 import { ListControls } from '../components/ListControls/ListControls';
 import { DetectorResultsQueryParams } from 'server/models/types';
 import { AnomalyData } from '../../../models/interfaces';
@@ -33,6 +37,7 @@ import { getTitleWithCount } from '../../../utils/utils';
 
 interface AnomalyResultsTableProps {
   anomalies: AnomalyData[];
+  isHCDetector?: boolean;
 }
 
 interface ListState {
@@ -51,12 +56,12 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
       sortField: 'startTime',
     },
   });
-  const [targetAnomalies, setTargetAnomalies] = useState<AnomalyData[]>([]);
+  const [targetAnomalies, setTargetAnomalies] = useState<any[]>([] as any[]);
   const totalAnomalies = props.anomalies
-    ? props.anomalies.filter(anomaly => anomaly.anomalyGrade > 0)
+    ? props.anomalies.filter((anomaly) => anomaly.anomalyGrade > 0)
     : [];
 
-  const sortFiledCompare = (field: string, sortDirection: SORT_DIRECTION) => {
+  const sortFieldCompare = (field: string, sortDirection: SORT_DIRECTION) => {
     return (a: any, b: any) => {
       if (get(a, `${field}`) > get(b, `${field}`))
         return sortDirection === SORT_DIRECTION.ASC ? 1 : -1;
@@ -67,12 +72,21 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
   };
 
   useEffect(() => {
-    const anomalies = props.anomalies
-      ? props.anomalies.filter(anomaly => anomaly.anomalyGrade > 0)
+    let anomalies = props.anomalies
+      ? props.anomalies.filter((anomaly) => anomaly.anomalyGrade > 0)
       : [];
 
+    if (props.isHCDetector) {
+      anomalies = anomalies.map((anomaly) => {
+        return {
+          ...anomaly,
+          [ENTITY_VALUE_FIELD]: get(anomaly, 'entity[0].value'),
+        };
+      });
+    }
+
     anomalies.sort(
-      sortFiledCompare(
+      sortFieldCompare(
         state.queryParams.sortField,
         state.queryParams.sortDirection
       )
@@ -134,7 +148,15 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
 
       <EuiBasicTable
         items={targetAnomalies}
-        columns={staticColumn}
+        columns={
+          props.isHCDetector
+            ? [
+                ...staticColumn.slice(0, 2),
+                entityValueColumn,
+                ...staticColumn.slice(2),
+              ]
+            : staticColumn
+        }
         onChange={handleTableChange}
         sorting={sorting}
         pagination={pagination}

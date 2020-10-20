@@ -74,6 +74,7 @@ export const convertDetectorKeysToCamelCase = (response: object) => {
     enabled: get(response, 'adJob.enabled', false),
     enabledTime: get(response, 'adJob.enabled_time'),
     disabledTime: get(response, 'adJob.disabled_time'),
+    categoryField: get(response, 'category_field'),
   };
 };
 
@@ -151,6 +152,7 @@ export const anomalyResultMapper = (anomalyResults: any[]): AnomalyResults => {
       startTime: rest.dataStartTime,
       endTime: rest.dataEndTime,
       plotTime: rest.dataEndTime,
+      ...(rest.entity !== undefined ? { entity: rest.entity } : {}),
     });
     featureData.forEach((feature: any) => {
       resultData.featureData[feature.featureId].push({

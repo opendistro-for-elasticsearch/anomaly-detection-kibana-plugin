@@ -188,7 +188,7 @@ export function EditFeatures(props: EditFeaturesProps) {
 
               <EuiFlexGroup
                 alignItems="center"
-                style={{ padding: '12px 24px' }}
+                style={{ padding: '16px 24px 0px' }}
               >
                 <EuiFlexItem grow={false}>
                   <EuiButton
@@ -422,6 +422,7 @@ export function EditFeatures(props: EditFeaturesProps) {
                 detector={detector}
                 featureList={values.featureList}
                 shingleSize={values.shingleSize}
+                categoryFields={values.categoryField}
                 errors={errors}
                 setFieldTouched={setFieldTouched}
               />

@@ -19,6 +19,8 @@ import { AnomaliesChart } from '../AnomaliesChart';
 import moment from 'moment';
 import { initialState, mockedStore } from '../../../../redux/utils/testUtils';
 import { Provider } from 'react-redux';
+import { INITIAL_ANOMALY_SUMMARY } from '../../utils/constants';
+import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
 
 const initialStartTime = moment('2019-10-10T09:00:00');
 const initialEndTime = initialStartTime.clone().add(2, 'd');
@@ -35,6 +37,19 @@ const anomalies = [
     plotTime: initialStartTime.add(90, 'seconds').valueOf(),
   },
 ];
+const anomaliesResult = {
+  anomalies: anomalies,
+  featureData: {
+    testFeatureId: [
+      {
+        data: 10,
+        endTime: anomalies[0].endTime,
+        startTime: anomalies[0].startTime,
+        plotTime: anomalies[0].plotTime,
+      },
+    ],
+  },
+};
 
 const renderDataFilter = () => ({
   ...render(
@@ -46,7 +61,7 @@ const renderDataFilter = () => ({
           dataTypes: {
             keyword: ['cityName.keyword'],
             integer: ['age'],
-            text: ['cityName'], 
+            text: ['cityName'],
           },
         },
       })}
@@ -55,16 +70,12 @@ const renderDataFilter = () => ({
         onDateRangeChange={jest.fn()}
         onZoomRangeChange={jest.fn()}
         title="test"
-        anomalies={anomalies}
-        atomicAnomalies={true}
-        anomalySummary={undefined}
+        bucketizedAnomalies={true}
+        anomalySummary={INITIAL_ANOMALY_SUMMARY}
         dateRange={dateRange}
         isLoading={false}
-        anomalyGradeSeriesName="anomaly grade"
-        confidenceSeriesName="confidence"
-        detectorId="testDetectorId"
-        detectorName="testDetectorName"
-        annotations={[]}
+        anomaliesResult={anomaliesResult}
+        detector={getRandomDetector(true)}
       />
     </Provider>
   ),
