@@ -58,6 +58,7 @@ import { CatIndex } from '../../../../server/models/types';
 import { SampleDataCallout } from '../../SampleData/components/SampleDataCallout/SampleDataCallout';
 import { containsDetectorsIndex } from '../../SampleData/utils/helpers';
 import { clearModelConfiguration } from './utils/helpers';
+import { prettifyErrorMessage } from '../../../../server/utils/helpers';
 
 interface CreateRouterProps {
   detectorId?: string;
@@ -135,7 +136,9 @@ export function CreateDetector(props: CreateADProps) {
       props.history.push(`/detectors/${detectorId}/configurations/`);
     } catch (err) {
       toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem updating detector')
+        prettifyErrorMessage(
+          getErrorMessage(err, 'There was a problem updating detector')
+        )
       );
     }
   };
@@ -163,7 +166,9 @@ export function CreateDetector(props: CreateADProps) {
         );
       } else {
         toastNotifications.addDanger(
-          getErrorMessage(err, 'There was a problem creating detector')
+          prettifyErrorMessage(
+            getErrorMessage(err, 'There was a problem creating detector')
+          )
         );
       }
     }

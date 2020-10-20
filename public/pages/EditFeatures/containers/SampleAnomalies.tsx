@@ -51,6 +51,7 @@ import {
   FeaturesFormikValues,
   prepareDetector,
 } from './utils/formikToFeatures';
+import { prettifyErrorMessage } from '../../../../server/utils/helpers';
 
 interface SampleAnomaliesProps {
   detector: Detector;
@@ -144,7 +145,9 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
       console.error(`Fail to preview detector ${detector.id}`, err);
       setIsLoading(false);
       toastNotifications.addDanger(
-        getPreviewErrorMessage(err, 'There was a problem previewing detector')
+        prettifyErrorMessage(
+          getPreviewErrorMessage(err, 'There was a problem previewing detector')
+        )
       );
     }
   }

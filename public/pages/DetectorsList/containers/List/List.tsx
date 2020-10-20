@@ -86,6 +86,10 @@ import { Monitor } from '../../../../models/interfaces';
 import { ConfirmStartDetectorsModal } from '../ConfirmActionModals/ConfirmStartDetectorsModal';
 import { ConfirmStopDetectorsModal } from '../ConfirmActionModals/ConfirmStopDetectorsModal';
 import { ConfirmDeleteDetectorsModal } from '../ConfirmActionModals/ConfirmDeleteDetectorsModal';
+import {
+  NO_PERMISSIONS_KEY_WORD,
+  prettifyErrorMessage,
+} from '../../../../../server/utils/helpers';
 
 export interface ListRouterParams {
   from: string;
@@ -183,7 +187,11 @@ export const DetectorList = (props: ListProps) => {
       errorGettingDetectors !== SINGLE_DETECTOR_ERROR_MSG
     ) {
       console.error(errorGettingDetectors);
-      toastNotifications.addDanger('Unable to get all detectors');
+      toastNotifications.addDanger(
+        errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
+          ? prettifyErrorMessage(errorGettingDetectors)
+          : 'Unable to get all detectors'
+      );
       setIsLoadingFinalDetectors(false);
     }
   }, [errorGettingDetectors]);
@@ -465,7 +473,9 @@ export const DetectorList = (props: ListProps) => {
       })
       .catch((error) => {
         toastNotifications.addDanger(
-          `Error starting all selected detectors: ${error}`
+          prettifyErrorMessage(
+            `Error starting all selected detectors: ${error}`
+          )
         );
       })
       .finally(() => {
@@ -491,7 +501,9 @@ export const DetectorList = (props: ListProps) => {
       })
       .catch((error) => {
         toastNotifications.addDanger(
-          `Error stopping all selected detectors: ${error}`
+          prettifyErrorMessage(
+            `Error stopping all selected detectors: ${error}`
+          )
         );
         if (listener) listener.onException();
       })
@@ -520,7 +532,9 @@ export const DetectorList = (props: ListProps) => {
       })
       .catch((error) => {
         toastNotifications.addDanger(
-          `Error deleting all selected detectors: ${error}`
+          prettifyErrorMessage(
+            `Error deleting all selected detectors: ${error}`
+          )
         );
       })
       .finally(() => {
