@@ -48,6 +48,10 @@ import { DETECTOR_STATE, BREADCRUMBS } from '../../../utils/constants';
 import { getDetectorStateOptions } from '../../DetectorsList/utils/helpers';
 import { DashboardHeader } from '../Components/utils/DashboardHeader';
 import { EmptyDashboard } from '../Components/EmptyDashboard/EmptyDashboard';
+import {
+  prettifyErrorMessage,
+  NO_PERMISSIONS_KEY_WORD,
+} from '../../../../server/utils/helpers';
 
 export function DashboardOverview() {
   const dispatch = useDispatch();
@@ -177,7 +181,11 @@ export function DashboardOverview() {
   useEffect(() => {
     if (errorGettingDetectors) {
       console.error(errorGettingDetectors);
-      toastNotifications.addDanger('Unable to get all detectors');
+      toastNotifications.addDanger(
+        errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
+          ? prettifyErrorMessage(errorGettingDetectors)
+          : 'Unable to get all detectors.'
+      );
       setIsLoadingDetectors(false);
     }
   }, [errorGettingDetectors]);

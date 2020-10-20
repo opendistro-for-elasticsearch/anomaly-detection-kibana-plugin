@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { get, omit, cloneDeep } from 'lodash';
+import { get, omit, cloneDeep, isEmpty } from 'lodash';
 import { AnomalyResults } from 'server/models/interfaces';
 import { GetDetectorsQueryParams } from '../../models/types';
 import { mapKeysDeep, toCamel, toSnake } from '../../utils/helpers';
@@ -246,4 +246,10 @@ export const isIndexNotFoundError = (err: any) => {
     err.statusCode === 404 &&
     get<string>(err, 'body.error.type', '') === 'index_not_found_exception'
   );
+};
+
+export const getErrorMessage = (err: any) => {
+  return !isEmpty(get(err, 'body.error.reason'))
+    ? get(err, 'body.error.reason')
+    : get(err, 'message');
 };

@@ -27,7 +27,7 @@ import {
   ServerResponse,
 } from '../models/types';
 import { Router } from '../router';
-import { isIndexNotFoundError } from './utils/adHelpers';
+import { getErrorMessage, isIndexNotFoundError } from './utils/adHelpers';
 
 export default function (apiRouter: Router) {
   apiRouter.get('/_indices', getIndices);
@@ -88,7 +88,10 @@ const executeSearch = async (
     return { ok: true, response: results };
   } catch (err) {
     console.error('Anomaly detector - Unable to execute search', err);
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -114,7 +117,10 @@ const getIndices = async (
       return { ok: true, response: { indices: [] } };
     }
     console.log('Anomaly detector - Unable to get indices', err);
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -133,7 +139,10 @@ const getAliases = async (
     return { ok: true, response: { aliases: response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to get aliases', err);
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -153,7 +162,10 @@ const createIndex = async (
     });
   } catch (err) {
     console.log('Anomaly detector - Unable to create index', err);
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
   try {
     const response: CatIndex[] = await callWithRequest(req, 'cat.indices', {
@@ -164,7 +176,10 @@ const createIndex = async (
     return { ok: true, response: { indices: response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to get indices', err);
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -183,7 +198,10 @@ const bulk = async (
     return { ok: true, response: { response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to perform bulk action', err);
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -205,7 +223,10 @@ const deleteIndex = async (
     );
     // Ignore the error if it's an index_not_found_exception
     if (!isIndexNotFoundError(err)) {
-      return { ok: false, error: err.message };
+      return {
+        ok: false,
+        error: getErrorMessage(err),
+      };
     }
   }
   try {
@@ -217,7 +238,10 @@ const deleteIndex = async (
     return { ok: true, response: { indices: response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to get indices', err);
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -234,6 +258,9 @@ const getMapping = async (
     return { ok: true, response: { mappings: response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to get mappings', err);
-    return { ok: false, error: err };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };

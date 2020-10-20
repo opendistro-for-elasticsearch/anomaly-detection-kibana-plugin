@@ -30,6 +30,7 @@ export const useFetchDetectorInfo = (
   detector: Detector;
   hasError: boolean;
   isLoadingDetector: boolean;
+  errorMessage: string;
 } => {
   const dispatch = useDispatch();
   const detector = useSelector(
@@ -60,5 +61,6 @@ export const useFetchDetectorInfo = (
     detector: detector || {},
     hasError: !isEmpty(hasError) && isEmpty(detector),
     isLoadingDetector: isDetectorRequesting || isIndicesRequesting,
+    errorMessage: hasError,
   };
 };

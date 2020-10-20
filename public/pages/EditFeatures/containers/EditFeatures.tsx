@@ -77,6 +77,7 @@ import {
 } from '../utils/helpers';
 import { SampleAnomalies } from './SampleAnomalies';
 import { CategoryField } from '../components/CategoryField/CategoryField';
+import { prettifyErrorMessage } from '../../../../server/utils/helpers';
 
 interface FeaturesRouterProps {
   detectorId?: string;
@@ -224,7 +225,9 @@ export function EditFeatures(props: EditFeaturesProps) {
       );
     } catch (err) {
       toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem starting detector job')
+        prettifyErrorMessage(
+          getErrorMessage(err, 'There was a problem starting detector job')
+        )
       );
     }
   };
@@ -251,7 +254,9 @@ export function EditFeatures(props: EditFeaturesProps) {
       props.history.push(`/detectors/${detectorId}/configurations`);
     } catch (err) {
       toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem updating feature')
+        prettifyErrorMessage(
+          getErrorMessage(err, 'There was a problem updating feature')
+        )
       );
       setSubmitting(false);
     }

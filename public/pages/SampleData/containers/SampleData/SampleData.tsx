@@ -53,6 +53,7 @@ import {
 } from '../../utils/helpers';
 import { SampleDataBox } from '../../components/SampleDataBox/SampleDataBox';
 import { SampleDetailsFlyout } from '../../components/SampleDetailsFlyout/SampleDetailsFlyout';
+import { prettifyErrorMessage } from '../../../../../server/utils/helpers';
 
 export const SampleData = () => {
   const dispatch = useDispatch();
@@ -125,8 +126,9 @@ export const SampleData = () => {
     if (!containsSampleIndex(visibleIndices, sampleType)) {
       await dispatch(createIndex(indexConfig)).catch((error: any) => {
         errorDuringAction = true;
-        errorMessage = 'Error creating sample index.';
-        console.error('Error creating sample index: ', error);
+        errorMessage =
+          'Error creating sample index. ' + prettifyErrorMessage(error);
+        console.error(errorMessage);
       });
     }
 
@@ -134,8 +136,8 @@ export const SampleData = () => {
     if (!errorDuringAction) {
       await dispatch(createSampleData(sampleType)).catch((error: any) => {
         errorDuringAction = true;
-        errorMessage = error;
-        console.error('Error bulk inserting data: ', error);
+        errorMessage = prettifyErrorMessage(error);
+        console.error('Error bulk inserting data: ', errorMessage);
       });
     }
 
@@ -147,14 +149,14 @@ export const SampleData = () => {
           // Start the detector
           dispatch(startDetector(detectorId)).catch((error: any) => {
             errorDuringAction = true;
-            errorMessage = error.data.message;
-            console.error('Error starting sample detector: ', error);
+            errorMessage = prettifyErrorMessage(error.data.message);
+            console.error('Error starting sample detector: ', errorMessage);
           });
         })
         .catch((error: any) => {
           errorDuringAction = true;
-          errorMessage = error;
-          console.error('Error creating sample detector: ', error);
+          errorMessage = prettifyErrorMessage(error);
+          console.error('Error creating sample detector: ', errorMessage);
         });
     }
 

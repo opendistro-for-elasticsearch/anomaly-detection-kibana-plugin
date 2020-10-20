@@ -35,7 +35,6 @@ import { SORT_DIRECTION, AD_DOC_FIELDS } from '../utils/constants';
 import {
   mapKeysDeep,
   toCamel,
-  toSnake,
   toFixedNumberForAnomaly,
 } from '../utils/helpers';
 import {
@@ -48,8 +47,9 @@ import {
   getDetectorsWithJob,
   getDetectorInitProgress,
   isIndexNotFoundError,
+  getErrorMessage,
 } from './utils/adHelpers';
-import { set } from 'lodash';
+import { isEmpty, set } from 'lodash';
 
 type PutDetectorParams = {
   detectorId: string;
@@ -89,7 +89,10 @@ const deleteDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - deleteDetector', err);
-    return { ok: false, error: err.body || err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -116,7 +119,10 @@ const previewDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - previewDetector', err);
-    return { ok: false, error: err };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -160,11 +166,10 @@ const putDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - PutDetector', err);
-    //FIXME: This is temporary as backend should send error message inside message instead of body
-    if (err.statusCode === 400) {
-      return { ok: false, error: err.body.error.reason };
-    }
-    return { ok: false, error: err.message.data.error };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -215,7 +220,10 @@ const getDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - Unable to get detector', err);
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -235,7 +243,10 @@ const startDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - startDetector', err);
-    return { ok: false, error: err.body || err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -255,7 +266,10 @@ const stopDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - stopDetector', err);
-    return { ok: false, error: err.body || err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -275,7 +289,10 @@ const getDetectorProfile = async (
     };
   } catch (err) {
     console.log('Anomaly detector - detectorProfile', err);
-    return { ok: false, error: err.body || err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -311,7 +328,10 @@ const searchDetector = async (
     if (isIndexNotFoundError(err)) {
       return { ok: true, response: { totalDetectors: 0, detectors: [] } };
     }
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -335,7 +355,10 @@ const searchResults = async (
     if (isIndexNotFoundError(err)) {
       return { ok: true, response: { totalDetectors: 0, detectors: [] } };
     }
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -488,7 +511,9 @@ const getDetectors = async (
       } catch (err) {
         console.log('Error getting detector profile ', err);
         return Promise.reject(
-          new Error('Error retrieving all detector states')
+          new Error(
+            'Error retrieving all detector states: ' + getErrorMessage(err)
+          )
         );
       }
     });
@@ -515,7 +540,9 @@ const getDetectors = async (
         return detectorResp;
       } catch (err) {
         console.log('Error getting detector ', err);
-        return Promise.reject(new Error('Error retrieving all detectors'));
+        return Promise.reject(
+          new Error('Error retrieving all detectors: ' + getErrorMessage(err))
+        );
       }
     });
     const detectorsWithJobResponses = await Promise.all(
@@ -544,7 +571,10 @@ const getDetectors = async (
     if (isIndexNotFoundError(err)) {
       return { ok: true, response: { totalDetectors: 0, detectorList: [] } };
     }
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 
@@ -698,7 +728,10 @@ const getAnomalyResults = async (
     };
   } catch (err) {
     console.log('Anomaly detector - Unable to get results', err);
-    return { ok: false, error: err.message };
+    return {
+      ok: false,
+      error: getErrorMessage(err),
+    };
   }
 };
 

@@ -22,6 +22,8 @@ import fs from 'fs';
 import { createUnzip } from 'zlib';
 //@ts-ignore
 import { CallClusterWithRequest } from 'src/legacy/core_plugins/elasticsearch';
+import { isEmpty } from 'lodash';
+import { prettifyErrorMessage } from '../../utils/helpers';
 
 const BULK_INSERT_SIZE = 500;
 
@@ -104,10 +106,11 @@ export const loadSampleData = (
           body: bulkBody,
         });
         if (resp.errors) {
-          console.log('Error while bulk inserting. ', resp.errors);
-          return Promise.reject(
-            new Error('Error while bulk inserting. Please try again.')
-          );
+          const errorItems = resp.items;
+          const firstErrorReason = isEmpty(errorItems)
+            ? 'Error while bulk inserting. Please try again.'
+            : prettifyErrorMessage(errorItems[0].index.error.reason);
+          return Promise.reject(new Error(firstErrorReason));
         }
       } catch (err) {
         console.log('Error while bulk inserting. ', err);

@@ -54,6 +54,10 @@ import { DETECTOR_DETAIL_TABS } from '../utils/constants';
 import { DetectorConfig } from '../../DetectorConfig/containers/DetectorConfig';
 import { AnomalyResults } from '../../DetectorResults/containers/AnomalyResults';
 import { DETECTOR_STATE_COLOR } from '../../utils/constants';
+import {
+  NO_PERMISSIONS_KEY_WORD,
+  prettifyErrorMessage,
+} from '../../../../server/utils/helpers';
 
 export interface DetectorRouterProps {
   detectorId?: string;
@@ -91,9 +95,12 @@ interface DetectorDetailModel {
 export const DetectorDetail = (props: DetectorDetailProps) => {
   const dispatch = useDispatch();
   const detectorId = get(props, 'match.params.detectorId', '') as string;
-  const { detector, hasError, isLoadingDetector } = useFetchDetectorInfo(
-    detectorId
-  );
+  const {
+    detector,
+    hasError,
+    isLoadingDetector,
+    errorMessage,
+  } = useFetchDetectorInfo(detectorId);
   const { monitor, fetchMonitorError, isLoadingMonitor } = useFetchMonitorInfo(
     detectorId
   );
@@ -117,7 +124,11 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   useEffect(() => {
     if (hasError) {
-      toastNotifications.addDanger('Unable to find detector');
+      toastNotifications.addDanger(
+        errorMessage.includes(NO_PERMISSIONS_KEY_WORD)
+          ? prettifyErrorMessage(errorMessage)
+          : 'Unable to find detector'
+      );
       props.history.push('/detectors');
     }
   }, [hasError]);
@@ -192,7 +203,9 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
       );
     } catch (err) {
       toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem starting detector job')
+        prettifyErrorMessage(
+          getErrorMessage(err, 'There was a problem starting detector job')
+        )
       );
     }
   };
@@ -206,7 +219,9 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
       if (listener) listener.onSuccess();
     } catch (err) {
       toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem stopping detector job')
+        prettifyErrorMessage(
+          getErrorMessage(err, 'There was a problem stopping detector job')
+        )
       );
       if (listener) listener.onException();
     }
@@ -220,7 +235,9 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
       props.history.push('/detectors');
     } catch (err) {
       toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem deleting detector')
+        prettifyErrorMessage(
+          getErrorMessage(err, 'There was a problem deleting detector')
+        )
       );
       hideDeleteDetectorModal();
     }

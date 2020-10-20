@@ -15,6 +15,7 @@
 
 import {
   camelCase,
+  isEmpty,
   isPlainObject,
   map,
   mapKeys,
@@ -27,11 +28,11 @@ import { SHOW_DECIMAL_NUMBER_THRESHOLD } from '../../public/pages/Dashboard/util
 
 export function mapKeysDeep(obj: object, fn: any): object | any[] {
   if (Array.isArray(obj)) {
-    return map(obj, innerObj => mapKeysDeep(innerObj, fn));
+    return map(obj, (innerObj) => mapKeysDeep(innerObj, fn));
   } else {
     //@ts-ignore
     return isPlainObject(obj)
-      ? mapValues(mapKeys(obj, fn), value => mapKeysDeep(value, fn))
+      ? mapValues(mapKeys(obj, fn), (value) => mapKeysDeep(value, fn))
       : obj;
   }
 }
@@ -61,4 +62,20 @@ export const formatAnomalyNumber = (num: number): string => {
   return num >= SHOW_DECIMAL_NUMBER_THRESHOLD
     ? num.toFixed(2)
     : num.toExponential(2);
+};
+
+const PERMISSIONS_ERROR_PATTERN = /no permissions for \[(.+)\] and User \[name=(.+), backend_roles/;
+
+export const NO_PERMISSIONS_KEY_WORD = 'no permissions';
+
+export const prettifyErrorMessage = (rawErrorMessage: string) => {
+  if (isEmpty(rawErrorMessage)) {
+    return 'Unknow error is returned.';
+  }
+  const match = rawErrorMessage.match(PERMISSIONS_ERROR_PATTERN);
+  if (isEmpty(match)) {
+    return rawErrorMessage;
+  } else {
+    return `User ${match[2]} has no permissions to [${match[1]}].`;
+  }
 };
