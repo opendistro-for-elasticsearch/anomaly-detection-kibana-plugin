@@ -154,13 +154,8 @@ export function CreateDetector(props: CreateADProps) {
         `/detectors/${detectorResp.data.response.id}/configurations/`
       );
     } catch (err) {
-      const resp = await dispatch(
-        getDetectorCount()
-        // searchDetector({
-        //   query: { bool: { must_not: { match: { name: '' } } } },
-        // })
-      );
-      const totalDetectors = resp.data.response.totalDetectors;
+      const resp = await dispatch(getDetectorCount());
+      const totalDetectors = resp.data.response.count;
       if (totalDetectors === MAX_DETECTORS) {
         toastNotifications.addDanger(
           'Cannot create detector - limit of ' +
@@ -198,12 +193,6 @@ export function CreateDetector(props: CreateADProps) {
   };
 
   const handleValidateName = async (detectorName: string) => {
-    const {
-      isEdit,
-      match: {
-        params: { detectorId },
-      },
-    } = props;
     if (isEmpty(detectorName)) {
       throw 'Detector name cannot be empty';
     } else {
@@ -212,24 +201,17 @@ export function CreateDetector(props: CreateADProps) {
         throw error;
       }
       //TODO::Avoid making call if value is same
-      const resp = await dispatch(
-        matchDetector(detectorName)
-        //searchDetector({ query: { term: { 'name.keyword': detectorName } } })
-      );
-      const totalDetectors = resp.data.response.totalDetectors;
-      if (totalDetectors === 0) {
+      const resp = await dispatch(matchDetector(detectorName));
+      const match = resp.data.response.match;
+      if (!match) {
         return undefined;
       }
       //If more than one detectors found, duplicate exists.
-      if (!isEdit && totalDetectors > 0) {
+      if (!props.isEdit && match) {
         throw 'Duplicate detector name';
       }
       // if it is in edit mode
-      if (
-        isEdit &&
-        (totalDetectors > 1 ||
-          get(resp, 'data.response.detectors.0.id', '') !== detectorId)
-      ) {
+      if (props.isEdit && detectorName !== detector?.name) {
         throw 'Duplicate detector name';
       }
     }

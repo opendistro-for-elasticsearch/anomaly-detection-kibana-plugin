@@ -141,7 +141,7 @@ export default function adPlugin(Client: any, config: any, components: any) {
   });
   ad.matchDetector = ca({
     url: {
-      fmt: `${API.DETECTOR_BASE}/_match?name=<%=detectorName%>`,
+      fmt: `${API.DETECTOR_BASE}/match?name=<%=detectorName%>`,
       req: {
         detectorName: {
           type: 'string',
@@ -154,7 +154,7 @@ export default function adPlugin(Client: any, config: any, components: any) {
   });
   ad.detectorCount = ca({
     url: {
-      fmt: `${API.DETECTOR_BASE}/_count`,
+      fmt: `${API.DETECTOR_BASE}/count`,
     },
     method: 'GET',
   });
