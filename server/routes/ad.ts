@@ -754,7 +754,6 @@ const matchDetector = async (
 ): Promise<ServerResponse<AnomalyResults>> => {
   try {
     const { detectorName } = req.params;
-    console.log('calling matchDetector() w/ detector name: ', detectorName);
     const response = await callWithRequest(req, 'ad.matchDetector', {
       detectorName,
     });
@@ -764,7 +763,7 @@ const matchDetector = async (
     };
   } catch (err) {
     console.log('Anomaly detector - matchDetector', err);
-    return { ok: false, error: err.message };
+    return { ok: false, error: getErrorMessage(err) };
   }
 };
 
@@ -773,7 +772,6 @@ const getDetectorCount = async (
   h: ResponseToolkit,
   callWithRequest: CallClusterWithRequest
 ): Promise<ServerResponse<AnomalyResults>> => {
-  console.log('calling getDetectorCount():');
   try {
     const response = await callWithRequest(req, 'ad.detectorCount');
     return {
@@ -782,7 +780,7 @@ const getDetectorCount = async (
     };
   } catch (err) {
     console.log('Anomaly detector - getDetectorCount', err);
-    return { ok: false, error: err.message };
+    return { ok: false, error: getErrorMessage(err) };
   }
 };
 
