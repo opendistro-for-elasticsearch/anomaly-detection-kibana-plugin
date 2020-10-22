@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - e2e-fix
 env:
   KIBANA_VERSION: 7.9.1
   ODFE_VERSION: 1.11.0
