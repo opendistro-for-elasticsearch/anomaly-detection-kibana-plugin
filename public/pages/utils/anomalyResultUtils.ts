@@ -76,7 +76,8 @@ export const getLiveAnomalyResults = (
 
 export const buildParamsForGetAnomalyResultsWithDateRange = (
   startTime: number,
-  endTime: number
+  endTime: number,
+  anomalyOnly: boolean = false
 ) => {
   return {
     from: 0,
@@ -88,6 +89,7 @@ export const buildParamsForGetAnomalyResultsWithDateRange = (
       endTime: endTime,
       fieldName: AD_DOC_FIELDS.DATA_START_TIME,
     },
+    anomalyThreshold: anomalyOnly ? 0 : -1,
   };
 };
 
