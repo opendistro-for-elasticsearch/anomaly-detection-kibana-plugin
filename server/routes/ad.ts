@@ -71,6 +71,8 @@ export default function (apiRouter: Router) {
   apiRouter.post('/detectors/{detectorId}/start', startDetector);
   apiRouter.post('/detectors/{detectorId}/stop', stopDetector);
   apiRouter.get('/detectors/{detectorId}/_profile', getDetectorProfile);
+  apiRouter.get('/detectors/{detectorName}/_match', matchDetector);
+  apiRouter.get('/detectors/_count', getDetectorCount);
 }
 
 const deleteDetector = async (
@@ -742,6 +744,43 @@ const getAnomalyResults = async (
       ok: false,
       error: getErrorMessage(err),
     };
+  }
+};
+
+const matchDetector = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<AnomalyResults>> => {
+  try {
+    const { detectorName } = req.params;
+    const response = await callWithRequest(req, 'ad.matchDetector', {
+      detectorName,
+    });
+    return {
+      ok: true,
+      response: response,
+    };
+  } catch (err) {
+    console.log('Anomaly detector - matchDetector', err);
+    return { ok: false, error: getErrorMessage(err) };
+  }
+};
+
+const getDetectorCount = async (
+  req: Request,
+  h: ResponseToolkit,
+  callWithRequest: CallClusterWithRequest
+): Promise<ServerResponse<AnomalyResults>> => {
+  try {
+    const response = await callWithRequest(req, 'ad.detectorCount');
+    return {
+      ok: true,
+      response: response,
+    };
+  } catch (err) {
+    console.log('Anomaly detector - getDetectorCount', err);
+    return { ok: false, error: getErrorMessage(err) };
   }
 };
 
