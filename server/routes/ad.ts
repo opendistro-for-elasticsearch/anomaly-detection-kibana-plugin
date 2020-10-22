@@ -590,6 +590,7 @@ const getAnomalyResults = async (
       sortDirection = SORT_DIRECTION.DESC,
       sortField = AD_DOC_FIELDS.DATA_START_TIME,
       dateRangeFilter = undefined,
+      anomalyThreshold = -1,
       //@ts-ignore
     } = req.query as {
       from: number;
@@ -597,6 +598,7 @@ const getAnomalyResults = async (
       sortDirection: SORT_DIRECTION;
       sortField?: string;
       dateRangeFilter?: string;
+      anomalyThreshold: number;
     };
     const { detectorId } = req.params;
 
@@ -628,6 +630,14 @@ const getAnomalyResults = async (
             {
               term: {
                 detector_id: detectorId,
+              },
+            },
+
+            {
+              range: {
+                anomaly_grade: {
+                  gt: anomalyThreshold,
+                },
               },
             },
           ],

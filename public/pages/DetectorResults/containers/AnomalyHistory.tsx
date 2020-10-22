@@ -170,10 +170,17 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     try {
       const params = buildParamsForGetAnomalyResultsWithDateRange(
         dateRange.startDate -
-          FEATURE_DATA_CHECK_WINDOW_OFFSET *
-            detectorInterval *
-            MIN_IN_MILLI_SECS,
-        dateRange.endDate
+          // for non HC detector, rawData is used for feature missing check
+          // which needs window offset for time range.
+          // But it is not needed for HC detector
+          (isHCDetector
+            ? 0
+            : FEATURE_DATA_CHECK_WINDOW_OFFSET *
+              detectorInterval *
+              MIN_IN_MILLI_SECS),
+        dateRange.endDate,
+        // get anomaly only data if HC detector
+        isHCDetector
       );
       const detectorResultResponse = await dispatch(
         getDetectorResults(props.detector.id, params)
@@ -241,7 +248,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     : bucketizedAnomalyResults
     ? bucketizedAnomalyResults
     : atomicAnomalyResults;
-
   const handleDateRangeChange = useCallback(
     (startDate: number, endDate: number, dateRangeOption?: string) => {
       setDateRange({
