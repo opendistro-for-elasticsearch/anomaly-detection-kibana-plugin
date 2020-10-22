@@ -38,7 +38,6 @@ import { toastNotifications } from 'ui/notify';
 import { APIAction } from '../../../redux/middleware/types';
 import {
   createDetector,
-  searchDetector,
   updateDetector,
   matchDetector,
   getDetectorCount,
@@ -155,7 +154,7 @@ export function CreateDetector(props: CreateADProps) {
       );
     } catch (err) {
       const resp = await dispatch(getDetectorCount());
-      const totalDetectors = resp.data.response.count;
+      const totalDetectors = get(resp, 'data.response.count', 0);
       if (totalDetectors === MAX_DETECTORS) {
         toastNotifications.addDanger(
           'Cannot create detector - limit of ' +
@@ -202,7 +201,7 @@ export function CreateDetector(props: CreateADProps) {
       }
       //TODO::Avoid making call if value is same
       const resp = await dispatch(matchDetector(detectorName));
-      const match = resp.data.response.match;
+      const match = get(resp, 'data.response.match', false);
       if (!match) {
         return undefined;
       }
