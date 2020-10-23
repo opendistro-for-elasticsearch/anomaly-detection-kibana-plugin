@@ -14,6 +14,7 @@
  */
 
 import React from 'react';
+import { isEmpty } from 'lodash';
 import { EuiDataGrid } from '@elastic/eui';
 import { CatIndex } from '../../../../server/models/types';
 import { Detector, DetectorListItem } from '../../../models/interfaces';
@@ -25,6 +26,9 @@ import {
 } from '../utils/constants';
 
 export const containsDetectorsIndex = (indices: CatIndex[]) => {
+  if (isEmpty(indices)) {
+    return false;
+  }
   return indices.map((index) => index.index).includes(ANOMALY_DETECTORS_INDEX);
 };
 

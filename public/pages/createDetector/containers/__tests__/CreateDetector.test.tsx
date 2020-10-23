@@ -89,10 +89,10 @@ describe('<CreateDetector /> spec', () => {
 
     test('prevent duplicate detector name', async () => {
       const randomDetector = getRandomDetector();
-      httpClientMock.post = jest.fn().mockResolvedValue({
+      httpClientMock.get = jest.fn().mockResolvedValue({
         data: {
           ok: true,
-          response: { detectors: [randomDetector], totalDetectors: 1 },
+          response: { count: 0, match: true },
         },
       });
       const { getByPlaceholderText, getByText } = renderWithRouter();
