@@ -197,7 +197,7 @@ const getHeatmapColorByValue = (value: number) => {
 
 const NUM_CELLS = 20;
 
-export const HEATMAP_X_AXIS_DATE_FORMAT = 'MM-DD HH:mm YYYY';
+export const HEATMAP_X_AXIS_DATE_FORMAT = 'MM-DD HH:mm:ss YYYY';
 
 const buildBlankStringWithLength = (length: number) => {
   let result = '';
