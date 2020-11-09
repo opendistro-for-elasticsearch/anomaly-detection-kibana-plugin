@@ -33,9 +33,8 @@ export class AnomalyDetectionKibanaPlugin
   public async setup(core: CoreSetup) {
     // Create router
     const apiRouter: Router = createRouter(
-      core.http,
-      BASE_NODE_API_PATH,
-      core.elasticsearch
+      core.http.createRouter(),
+      BASE_NODE_API_PATH
     );
     // Add server routes
     registerElasticsearchRoute(apiRouter);
