@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -12,44 +12,40 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
-//@ts-ignore
-import { Legacy, Logger, PluginInitializerContext, PluginName } from 'kibana';
 import { BASE_NODE_API_PATH } from '../utils/constants';
-import { createAdCluster } from './cluster';
 import { default as createRouter, Router } from './router';
 import registerADRoutes from './routes/ad';
 import registerAlertingRoutes from './routes/alerting';
 import registerElasticsearchRoute from './routes/elasticsearch';
 import registerSampleDataRoutes from './routes/sampleData';
+import {
+  AnomalyDetectionKibanaPluginSetup,
+  AnomalyDetectionKibanaPluginStart,
+} from '.';
+import { Plugin, CoreSetup, CoreStart } from '../../../src/core/server';
 
-interface CoreSetup {
-  elasticsearch: Legacy.Plugins.elasticsearch.Plugin;
-  http: Legacy.Server;
-  config: Legacy.KibanaConfig;
-}
-
-export class ADPlugin {
-  private readonly log: Logger;
-
-  constructor(private readonly initializerContext: PluginInitializerContext) {
-    this.log = this.initializerContext.logger.get();
-  }
-
-  public setup(core: CoreSetup, deps: Record<PluginName, unknown>) {
-    this.log.info(`Setting up AD with core contract`);
-    createAdCluster(core.elasticsearch, core.config);
+export class AnomalyDetectionKibanaPlugin
+  implements
+    Plugin<
+      AnomalyDetectionKibanaPluginSetup,
+      AnomalyDetectionKibanaPluginStart
+    > {
+  public async setup(core: CoreSetup) {
+    // Create router
     const apiRouter: Router = createRouter(
       core.http,
       BASE_NODE_API_PATH,
       core.elasticsearch
     );
+    // Add server routes
     registerElasticsearchRoute(apiRouter);
     registerADRoutes(apiRouter);
     registerAlertingRoutes(apiRouter);
     registerSampleDataRoutes(apiRouter);
+    return {};
   }
 
-  public start() {}
-  public stop() {}
+  public async start(core: CoreStart) {
+    return {};
+  }
 }

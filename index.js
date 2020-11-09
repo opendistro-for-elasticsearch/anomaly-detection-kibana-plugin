@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ export default (kibana) => {
         icon:
           'plugins/opendistro-anomaly-detection-kibana/images/anomaly_detection_icon.svg',
         category: DEFAULT_APP_CATEGORIES.kibana,
-        order:8030,
+        order: 8030,
       },
       styleSheetPaths: [
         resolve(__dirname, 'public/app.scss'),
@@ -41,39 +41,6 @@ export default (kibana) => {
       hacks: [],
     },
 
-    config(Joi) {
-      return Joi.object({
-        enabled: Joi.boolean().default(true),
-      }).default();
-    },
-
-    init(server) {
-      // eslint-disable-line no-unused-vars
-      // Add server routes and initialize the plugin here
-      // This is core shim for the kibana plugins
-      const coreSetup = {
-        elasticsearch: server.plugins.elasticsearch,
-        config: server.config.bind(server),
-        http: {
-          route: server.route.bind(server),
-        },
-      };
-      // Core server has logging framework we can utilize that once moved to new kibana platform version.
-      // https://github.com/elastic/kibana/blob/master/src/core/server/logging/README.md
-      const initializerContext = {
-        logger: {
-          get() {
-            return {
-              info: (log) => console.log(log),
-              error: (log) => console.error(log),
-              warn: (log) => console.warn(log),
-            };
-          },
-        },
-      };
-      // plugins shim
-      const pluginsSetup = {};
-      new ADPlugin(initializerContext).setup(coreSetup, pluginsSetup);
-    },
+    // Have removed server side code.
   });
 };
