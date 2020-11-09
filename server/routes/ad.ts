@@ -13,13 +13,10 @@
  * permissions and limitations under the License.
  */
 
-import { Request, ResponseToolkit } from 'hapi';
 //@ts-ignore
 import get from 'lodash/get';
 import orderBy from 'lodash/orderBy';
 import pullAll from 'lodash/pullAll';
-//@ts-ignore
-import { CallClusterWithRequest } from 'src/legacy/core_plugins/elasticsearch';
 import { AnomalyResults, SearchResponse } from '../models/interfaces';
 import {
   AnomalyResult,
@@ -49,7 +46,13 @@ import {
   isIndexNotFoundError,
   getErrorMessage,
 } from './utils/adHelpers';
-import { isEmpty, set } from 'lodash';
+import { set } from 'lodash';
+import {
+  RequestHandlerContext,
+  KibanaRequest,
+  KibanaResponseFactory,
+  IKibanaResponse,
+} from '../../../../src/core/server';
 
 type PutDetectorParams = {
   detectorId: string;
@@ -76,15 +79,19 @@ export default function (apiRouter: Router) {
 }
 
 const deleteDetector = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<AnomalyResults>> => {
   try {
-    const { detectorId } = req.params;
-    const response = await callWithRequest(req, 'ad.deleteDetector', {
-      detectorId,
-    });
+    //@ts-ignore
+    const { detectorId } = request.params;
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.deleteDetector',
+      {
+        detectorId,
+      }
+    );
     return {
       ok: true,
       response: response,
@@ -99,20 +106,23 @@ const deleteDetector = async (
 };
 
 const previewDetector = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<AnomalyResults>> => {
   try {
-    const { detectorId } = req.params;
     //@ts-ignore
+    const { detectorId } = request.params;
     const requestBody = JSON.stringify(
-      convertPreviewInputKeysToSnakeCase(req.payload)
+      convertPreviewInputKeysToSnakeCase(request.body)
     );
-    const response = await callWithRequest(req, 'ad.previewDetector', {
-      detectorId,
-      body: requestBody,
-    });
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.previewDetector',
+      {
+        detectorId,
+        body: requestBody,
+      }
+    );
     const transformedKeys = mapKeysDeep(response, toCamel);
     return {
       ok: true,
@@ -129,18 +139,19 @@ const previewDetector = async (
 };
 
 const putDetector = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<Detector>> => {
   try {
-    const { detectorId } = req.params;
-    const { ifSeqNo, ifPrimaryTerm } = req.query as {
+    //@ts-ignore
+    const { detectorId } = request.params;
+    const { ifSeqNo, ifPrimaryTerm } = request.query as {
       ifSeqNo?: string;
       ifPrimaryTerm?: string;
     };
     const requestBody = JSON.stringify(
-      convertDetectorKeysToSnakeCase(req.payload)
+      convertDetectorKeysToSnakeCase(request.body)
     );
     let params: PutDetectorParams = {
       detectorId: detectorId,
@@ -150,11 +161,17 @@ const putDetector = async (
     };
     let response;
     if (ifSeqNo && ifPrimaryTerm) {
-      response = await callWithRequest(req, 'ad.updateDetector', params);
+      response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+        'ad.updateDetector',
+        params
+      );
     } else {
-      response = await callWithRequest(req, 'ad.createDetector', {
-        body: params.body,
-      });
+      response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+        'ad.createDetector',
+        {
+          body: params.body,
+        }
+      );
     }
     const resp = {
       ...response.anomaly_detector,
@@ -176,19 +193,22 @@ const putDetector = async (
 };
 
 const getDetector = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<Detector>> => {
   try {
-    const { detectorId } = req.params;
-    const response = await callWithRequest(req, 'ad.getDetector', {
-      detectorId,
-    });
+    //@ts-ignore
+    const { detectorId } = request.params;
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.getDetector',
+      {
+        detectorId,
+      }
+    );
     let detectorState;
     try {
-      const detectorStateResp = await callWithRequest(
-        req,
+      const detectorStateResp = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
         'ad.detectorProfile',
         {
           detectorId: detectorId,
@@ -230,15 +250,19 @@ const getDetector = async (
 };
 
 const startDetector = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<AnomalyResults>> => {
   try {
-    const { detectorId } = req.params;
-    const response = await callWithRequest(req, 'ad.startDetector', {
-      detectorId,
-    });
+    //@ts-ignore
+    const { detectorId } = request.params;
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.startDetector',
+      {
+        detectorId,
+      }
+    );
     return {
       ok: true,
       response: response,
@@ -253,15 +277,19 @@ const startDetector = async (
 };
 
 const stopDetector = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<AnomalyResults>> => {
   try {
-    const { detectorId } = req.params;
-    const response = await callWithRequest(req, 'ad.stopDetector', {
-      detectorId,
-    });
+    //@ts-ignore
+    const { detectorId } = request.params;
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.stopDetector',
+      {
+        detectorId,
+      }
+    );
     return {
       ok: true,
       response: response,
@@ -276,15 +304,19 @@ const stopDetector = async (
 };
 
 const getDetectorProfile = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
   try {
-    const { detectorId } = req.params;
-    const response = await callWithRequest(req, 'ad.detectorProfile', {
-      detectorId,
-    });
+    //@ts-ignore
+    const { detectorId } = request.params;
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.detectorProfile',
+      {
+        detectorId,
+      }
+    );
     return {
       ok: true,
       response,
@@ -299,15 +331,13 @@ const getDetectorProfile = async (
 };
 
 const searchDetector = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
   try {
-    //@ts-ignore
-    const requestBody = JSON.stringify(req.payload);
-    const response: SearchResponse<Detector> = await callWithRequest(
-      req,
+    const requestBody = JSON.stringify(request.body);
+    const response: SearchResponse<Detector> = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
       'ad.searchDetector',
       { body: requestBody }
     );
@@ -338,16 +368,18 @@ const searchDetector = async (
 };
 
 const searchResults = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
   try {
-    //@ts-ignore
-    const requestBody = JSON.stringify(req.payload);
-    const response = await callWithRequest(req, 'ad.searchResults', {
-      body: requestBody,
-    });
+    const requestBody = JSON.stringify(request.body);
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.searchResults',
+      {
+        body: requestBody,
+      }
+    );
     return {
       ok: true,
       response,
@@ -365,9 +397,9 @@ const searchResults = async (
 };
 
 const getDetectors = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
   try {
     const {
@@ -377,8 +409,7 @@ const getDetectors = async (
       indices = '',
       sortDirection = SORT_DIRECTION.DESC,
       sortField = 'name',
-      //@ts-ignore
-    } = req.query as GetDetectorsQueryParams;
+    } = request.query as GetDetectorsQueryParams;
     const mustQueries = [];
     if (search.trim()) {
       mustQueries.push({
@@ -420,8 +451,7 @@ const getDetectors = async (
         },
       },
     };
-    const response: SearchResponse<Detector> = await callWithRequest(
-      req,
+    const response: SearchResponse<Detector> = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
       'ad.searchDetector',
       { body: requestBody }
     );
@@ -442,16 +472,19 @@ const getDetectors = async (
     );
     //Given each detector from previous result, get aggregation to power list
     const allDetectorIds = Object.keys(allDetectors);
-    const aggregationResult = await callWithRequest(req, 'ad.searchResults', {
-      body: getResultAggregationQuery(allDetectorIds, {
-        from,
-        size,
-        sortField,
-        sortDirection,
-        search,
-        indices,
-      }),
-    });
+    const aggregationResult = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.searchResults',
+      {
+        body: getResultAggregationQuery(allDetectorIds, {
+          from,
+          size,
+          sortField,
+          sortDirection,
+          search,
+          indices,
+        }),
+      }
+    );
     const aggsDetectors = get(
       aggregationResult,
       'aggregations.unique_detectors.buckets',
@@ -502,8 +535,7 @@ const getDetectors = async (
 
     const detectorStatePromises = allIds.map(async (id: string) => {
       try {
-        const detectorStateResp = await callWithRequest(
-          req,
+        const detectorStateResp = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
           'ad.detectorProfile',
           {
             detectorId: id,
@@ -536,9 +568,12 @@ const getDetectors = async (
     // get ad job
     const detectorsWithJobPromises = allIds.map(async (id: string) => {
       try {
-        const detectorResp = await callWithRequest(req, 'ad.getDetector', {
-          detectorId: id,
-        });
+        const detectorResp = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+          'ad.getDetector',
+          {
+            detectorId: id,
+          }
+        );
         return detectorResp;
       } catch (err) {
         console.log('Error getting detector ', err);
@@ -581,9 +616,9 @@ const getDetectors = async (
 };
 
 const getAnomalyResults = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<AnomalyResultsResponse>> => {
   try {
     const {
@@ -593,8 +628,7 @@ const getAnomalyResults = async (
       sortField = AD_DOC_FIELDS.DATA_START_TIME,
       dateRangeFilter = undefined,
       anomalyThreshold = -1,
-      //@ts-ignore
-    } = req.query as {
+    } = request.query as {
       from: number;
       size: number;
       sortDirection: SORT_DIRECTION;
@@ -602,7 +636,8 @@ const getAnomalyResults = async (
       dateRangeFilter?: string;
       anomalyThreshold: number;
     };
-    const { detectorId } = req.params;
+    //@ts-ignore
+    const { detectorId } = request.params;
 
     //Allowed sorting columns
     const sortQueryMap = {
@@ -678,9 +713,12 @@ const getAnomalyResults = async (
       console.log('wrong date range filter', error);
     }
 
-    const response = await callWithRequest(req, 'ad.searchResults', {
-      body: requestBody,
-    });
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.searchResults',
+      {
+        body: requestBody,
+      }
+    );
 
     const totalResults: number = get(response, 'hits.total.value', 0);
 
@@ -748,15 +786,19 @@ const getAnomalyResults = async (
 };
 
 const matchDetector = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<AnomalyResults>> => {
   try {
-    const { detectorName } = req.params;
-    const response = await callWithRequest(req, 'ad.matchDetector', {
-      detectorName,
-    });
+    //@ts-ignore
+    const { detectorName } = request.params;
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.matchDetector',
+      {
+        detectorName,
+      }
+    );
     return {
       ok: true,
       response: response,
@@ -768,12 +810,14 @@ const matchDetector = async (
 };
 
 const getDetectorCount = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<AnomalyResults>> => {
   try {
-    const response = await callWithRequest(req, 'ad.detectorCount');
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'ad.detectorCount'
+    );
     return {
       ok: true,
       response: response,

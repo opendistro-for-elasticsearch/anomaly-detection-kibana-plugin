@@ -15,13 +15,12 @@
 
 //@ts-ignore
 import moment from 'moment';
-import readline from 'readline';
-import { Request } from 'hapi';
-
+import readline from 'readline';\
+import {
+  RequestHandlerContext,
+} from '../../../../../src/core/server';
 import fs from 'fs';
 import { createUnzip } from 'zlib';
-//@ts-ignore
-import { CallClusterWithRequest } from 'src/legacy/core_plugins/elasticsearch';
 import { isEmpty } from 'lodash';
 import { prettifyErrorMessage } from '../../utils/helpers';
 
@@ -30,8 +29,7 @@ const BULK_INSERT_SIZE = 500;
 export const loadSampleData = (
   filePath: string,
   indexName: string,
-  req: Request,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
 ) => {
   return new Promise((resolve, reject) => {
     let count: number = 0;
@@ -102,7 +100,7 @@ export const loadSampleData = (
     const bulkInsert = async (docs: any[]) => {
       try {
         const bulkBody = prepareBody(docs, offset);
-        const resp = await callWithRequest(req, 'bulk', {
+        const resp = await context.core.elasticsearch.legacy.client.callAsCurrentUser('bulk', {
           body: bulkBody,
         });
         if (resp.errors) {

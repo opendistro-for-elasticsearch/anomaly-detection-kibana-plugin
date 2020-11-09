@@ -16,7 +16,6 @@
 import 'babel-polyfill';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
-import { ADPlugin } from './server/plugin';
 import { DEFAULT_APP_CATEGORIES } from '../../src/core/utils';
 
 export default (kibana) => {

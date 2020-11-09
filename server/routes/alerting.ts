@@ -13,16 +13,19 @@
  * permissions and limitations under the License.
  */
 
-import { Request, ResponseToolkit } from 'hapi';
 //@ts-ignore
 import { get, set } from 'lodash';
-//@ts-ignore
-import { CallClusterWithRequest } from 'src/legacy/core_plugins/elasticsearch';
 import { SearchResponse } from '../models/interfaces';
 import { Monitor, ServerResponse } from '../models/types';
 import { Router } from '../router';
 import { MAX_MONITORS } from '../utils/constants';
 import { getErrorMessage } from './utils/adHelpers';
+import {
+  RequestHandlerContext,
+  KibanaRequest,
+  KibanaResponseFactory,
+  IKibanaResponse,
+} from '../../../../src/core/server';
 
 export default function (apiRouter: Router) {
   apiRouter.post('/monitors/_search', searchMonitors);
@@ -30,9 +33,9 @@ export default function (apiRouter: Router) {
 }
 
 const searchMonitors = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
   try {
     const requestBody = {
@@ -56,8 +59,7 @@ const searchMonitors = async (
         },
       },
     };
-    const response: SearchResponse<Monitor> = await callWithRequest(
-      req,
+    const response: SearchResponse<Monitor> = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
       'alerting.searchMonitors',
       { body: requestBody }
     );
@@ -96,21 +98,24 @@ const searchMonitors = async (
 };
 
 const searchAlerts = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
   try {
-    const { monitorId, startTime, endTime } = req.query as {
+    const { monitorId, startTime, endTime } = request.query as {
       monitorId?: string;
       startTime?: number;
       endTime?: number;
     };
-    const response = await callWithRequest(req, 'alerting.searchAlerts', {
-      monitorId: monitorId,
-      startTime: startTime,
-      endTime: endTime,
-    });
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'alerting.searchAlerts',
+      {
+        monitorId: monitorId,
+        startTime: startTime,
+        endTime: endTime,
+      }
+    );
     return {
       ok: true,
       response,

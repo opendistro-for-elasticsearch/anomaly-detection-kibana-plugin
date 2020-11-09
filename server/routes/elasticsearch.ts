@@ -13,10 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { Request, ResponseToolkit } from 'hapi';
 import { get } from 'lodash';
-//@ts-ignore
-import { CallClusterWithRequest } from 'src/legacy/core_plugins/elasticsearch';
 import { SearchResponse } from '../models/interfaces';
 import {
   CatIndex,
@@ -28,6 +25,12 @@ import {
 } from '../models/types';
 import { Router } from '../router';
 import { getErrorMessage, isIndexNotFoundError } from './utils/adHelpers';
+import {
+  RequestHandlerContext,
+  KibanaRequest,
+  KibanaResponseFactory,
+  IKibanaResponse,
+} from '../../../../src/core/server';
 
 export default function (apiRouter: Router) {
   apiRouter.get('/_indices', getIndices);
@@ -46,9 +49,9 @@ type SearchParams = {
 };
 
 const executeSearch = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<SearchResponse<any>>> => {
   try {
     const {
@@ -59,7 +62,7 @@ const executeSearch = async (
       collapse = undefined,
       aggs = undefined,
       rawQuery = undefined,
-    } = req.payload as {
+    } = request.body as {
       index: string;
       query?: object;
       size?: number;
@@ -79,8 +82,7 @@ const executeSearch = async (
 
     const params: SearchParams = { index, size, body: requestBody };
 
-    const results: SearchResponse<any> = await callWithRequest(
-      req,
+    const results: SearchResponse<any> = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
       'search',
       params
     );
@@ -96,17 +98,20 @@ const executeSearch = async (
 };
 
 const getIndices = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<GetIndicesResponse>> => {
-  const { index } = req.query as { index: string };
+  const { index } = request.query as { index: string };
   try {
-    const response: CatIndex[] = await callWithRequest(req, 'cat.indices', {
-      index,
-      format: 'json',
-      h: 'health,index',
-    });
+    const response: CatIndex[] = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'cat.indices',
+      {
+        index,
+        format: 'json',
+        h: 'health,index',
+      }
+    );
     return { ok: true, response: { indices: response } };
   } catch (err) {
     // In case no matching indices is found it throws an error.
@@ -125,17 +130,20 @@ const getIndices = async (
 };
 
 const getAliases = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<GetAliasesResponse>> => {
-  const { alias } = req.query as { alias: string };
+  const { alias } = request.query as { alias: string };
   try {
-    const response: IndexAlias[] = await callWithRequest(req, 'cat.aliases', {
-      alias,
-      format: 'json',
-      h: 'alias,index',
-    });
+    const response: IndexAlias[] = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'cat.aliases',
+      {
+        alias,
+        format: 'json',
+        h: 'alias,index',
+      }
+    );
     return { ok: true, response: { aliases: response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to get aliases', err);
@@ -147,19 +155,23 @@ const getAliases = async (
 };
 
 const createIndex = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
   //@ts-ignore
-  const index = req.payload.indexConfig.index;
+  const index = request.body.indexConfig.index;
   //@ts-ignore
-  const body = req.payload.indexConfig.body;
+  const body = request.body.indexConfig.body;
   try {
-    await callWithRequest(req, 'indices.create', {
-      index: index,
-      body: body,
-    });
+    await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      req,
+      'indices.create',
+      {
+        index: index,
+        body: body,
+      }
+    );
   } catch (err) {
     console.log('Anomaly detector - Unable to create index', err);
     return {
@@ -168,11 +180,14 @@ const createIndex = async (
     };
   }
   try {
-    const response: CatIndex[] = await callWithRequest(req, 'cat.indices', {
-      index,
-      format: 'json',
-      h: 'health,index',
-    });
+    const response: CatIndex[] = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'cat.indices',
+      {
+        index,
+        format: 'json',
+        h: 'health,index',
+      }
+    );
     return { ok: true, response: { indices: response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to get indices', err);
@@ -184,16 +199,19 @@ const createIndex = async (
 };
 
 const bulk = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<GetAliasesResponse>> => {
   //@ts-ignore
-  const body = req.payload.body;
+  const body = request.body.body;
   try {
-    const response: any = await callWithRequest(req, 'bulk', {
-      body: body,
-    });
+    const response: any = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'bulk',
+      {
+        body: body,
+      }
+    );
     //@ts-ignore
     return { ok: true, response: { response } };
   } catch (err) {
@@ -206,16 +224,19 @@ const bulk = async (
 };
 
 const deleteIndex = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
   //@ts-ignore
-  const index = req.payload.index;
+  const index = request.body.index;
   try {
-    await callWithRequest(req, 'indices.delete', {
-      index: index,
-    });
+    await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'indices.delete',
+      {
+        index: index,
+      }
+    );
   } catch (err) {
     console.log(
       'Anomaly detector - Unable to perform delete index action',
@@ -230,11 +251,14 @@ const deleteIndex = async (
     }
   }
   try {
-    const response: CatIndex[] = await callWithRequest(req, 'cat.indices', {
-      index,
-      format: 'json',
-      h: 'health,index',
-    });
+    const response: CatIndex[] = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'cat.indices',
+      {
+        index,
+        format: 'json',
+        h: 'health,index',
+      }
+    );
     return { ok: true, response: { indices: response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to get indices', err);
@@ -246,15 +270,18 @@ const deleteIndex = async (
 };
 
 const getMapping = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<GetMappingResponse>> => {
-  const { index } = req.query as { index: string };
+  const { index } = request.query as { index: string };
   try {
-    const response = await callWithRequest(req, 'indices.getMapping', {
-      index,
-    });
+    const response = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+      'indices.getMapping',
+      {
+        index,
+      }
+    );
     return { ok: true, response: { mappings: response } };
   } catch (err) {
     console.log('Anomaly detector - Unable to get mappings', err);

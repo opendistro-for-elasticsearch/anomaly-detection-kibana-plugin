@@ -25,7 +25,7 @@ type RouteHandler = (
   context: RequestHandlerContext,
   request: KibanaRequest,
   response: KibanaResponseFactory
-) => Promise<IKibanaResponse<any>>;
+) => Promise<any>;
 
 type Route = (path: string, handler: RouteHandler) => Router;
 

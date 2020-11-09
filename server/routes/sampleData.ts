@@ -15,14 +15,17 @@
 
 //@ts-ignore
 import moment from 'moment';
-import { Request, ResponseToolkit } from 'hapi';
 import path from 'path';
-//@ts-ignore
-import { CallClusterWithRequest } from 'src/legacy/core_plugins/elasticsearch';
 import { ServerResponse } from '../models/types';
 import { Router } from '../router';
 import { SAMPLE_TYPE } from '../../public/utils/constants';
 import { loadSampleData } from '../sampleData/utils/helpers';
+import {
+  RequestHandlerContext,
+  KibanaRequest,
+  KibanaResponseFactory,
+  IKibanaResponse,
+} from '../../../../src/core/server';
 
 export default function (apiRouter: Router) {
   apiRouter.post('/create_sample_data', createSampleData);
@@ -30,12 +33,12 @@ export default function (apiRouter: Router) {
 
 // Get the zip file stored in server, unzip it, and bulk insert it
 const createSampleData = async (
-  req: Request,
-  h: ResponseToolkit,
-  callWithRequest: CallClusterWithRequest
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
   //@ts-ignore
-  const type = req.payload.type as SAMPLE_TYPE;
+  const type = request.body.type as SAMPLE_TYPE;
   try {
     let filePath = '';
     let indexName = '';
@@ -67,7 +70,7 @@ const createSampleData = async (
       }
     }
 
-    await loadSampleData(filePath, indexName, req, callWithRequest);
+    await loadSampleData(filePath, indexName, context);
 
     //@ts-ignore
     return { ok: true };
