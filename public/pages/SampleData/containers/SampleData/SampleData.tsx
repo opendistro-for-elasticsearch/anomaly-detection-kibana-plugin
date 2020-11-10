@@ -145,7 +145,8 @@ export const SampleData = () => {
     if (!errorDuringAction) {
       await dispatch(createDetector(detectorConfig))
         .then(function (response: any) {
-          const detectorId = response.data.response.id;
+          // TODO: changed from response.data -> response.body bc of new HttpResponse middleware type
+          const detectorId = response.body.response.id;
           // Start the detector
           dispatch(startDetector(detectorId)).catch((error: any) => {
             errorDuringAction = true;
