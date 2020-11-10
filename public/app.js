@@ -24,41 +24,41 @@ import { Provider } from 'react-redux';
 import configureStore from './redux/configureStore';
 import { darkModeEnabled } from './utils/kibanaUtils';
 
-const app = uiModules.get('apps/awsSearchServicesKibanaAdPlugin');
+// const app = uiModules.get('apps/awsSearchServicesKibanaAdPlugin');
 
-//Load Chart's dark mode CSS
-if (darkModeEnabled()) {
-  require('@elastic/charts/dist/theme_only_dark.css');
-} else {
-  require('@elastic/charts/dist/theme_only_light.css');
-}
+// //Load Chart's dark mode CSS
+// if (darkModeEnabled()) {
+//   require('@elastic/charts/dist/theme_only_dark.css');
+// } else {
+//   require('@elastic/charts/dist/theme_only_light.css');
+// }
 
-app.config($locationProvider => {
-  $locationProvider.html5Mode({
-    enabled: false,
-    requireBase: false,
-    rewriteLinks: false,
-  });
-});
-app.config(stateManagementConfigProvider =>
-  stateManagementConfigProvider.disable()
-);
+// app.config($locationProvider => {
+//   $locationProvider.html5Mode({
+//     enabled: false,
+//     requireBase: false,
+//     rewriteLinks: false,
+//   });
+// });
+// app.config(stateManagementConfigProvider =>
+//   stateManagementConfigProvider.disable()
+// );
 
-function RootController($scope, $element, $http) {
-  const store = configureStore($http);
-  const domNode = $element[0];
-  render(
-    <Provider store={store}>
-      <Router>
-        <Route render={props => <Main httpClient={$http} {...props} />} />
-      </Router>
-    </Provider>,
-    domNode
-  );
+// function RootController($scope, $element, $http) {
+//   const store = configureStore($http);
+//   const domNode = $element[0];
+//   render(
+//     <Provider store={store}>
+//       <Router>
+//         <Route render={(props) => <Main httpClient={$http} {...props} />} />
+//       </Router>
+//     </Provider>,
+//     domNode
+//   );
 
-  $scope.$on('$destroy', () => {
-    unmountComponentAtNode(domNode);
-  });
-}
+//   $scope.$on('$destroy', () => {
+//     unmountComponentAtNode(domNode);
+//   });
+// }
 
-chrome.setRootController('awsSearchServicesKibanaAdPlugin', RootController);
+// chrome.setRootController('awsSearchServicesKibanaAdPlugin', RootController);
