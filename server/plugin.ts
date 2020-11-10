@@ -22,7 +22,13 @@ import {
   AnomalyDetectionKibanaPluginSetup,
   AnomalyDetectionKibanaPluginStart,
 } from '.';
-import { Plugin, CoreSetup, CoreStart } from '../../../src/core/server';
+import {
+  Plugin,
+  CoreSetup,
+  CoreStart,
+  PluginInitializerContext,
+  Logger,
+} from '../../../src/core/server';
 
 export class AnomalyDetectionKibanaPlugin
   implements
@@ -30,6 +36,10 @@ export class AnomalyDetectionKibanaPlugin
       AnomalyDetectionKibanaPluginSetup,
       AnomalyDetectionKibanaPluginStart
     > {
+  private readonly logger: Logger;
+  constructor(private readonly initializerContext: PluginInitializerContext) {
+    this.logger = initializerContext.logger.get();
+  }
   public async setup(core: CoreSetup) {
     // Create router
     const apiRouter: Router = createRouter(
