@@ -31,10 +31,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
-//@ts-ignore
-import chrome from 'ui/chrome';
-//@ts-ignore
-import { toastNotifications } from 'ui/notify';
+import { CoreStart } from '../../../../../../src/core/public';
 import { APIAction } from '../../../redux/middleware/types';
 import {
   createDetector,
@@ -67,6 +64,7 @@ interface CreateRouterProps {
 
 interface CreateADProps extends RouteComponentProps<CreateRouterProps> {
   isEdit: boolean;
+  core: CoreStart;
 }
 
 export function CreateDetector(props: CreateADProps) {
@@ -114,12 +112,14 @@ export function CreateDetector(props: CreateADProps) {
         href: `#/detectors/${detectorId}`,
       });
     }
-    chrome.breadcrumbs.set(breadCrumbs);
+    props.core.chrome.setBreadcrumbs(breadCrumbs);
   });
   // If no detector found with ID, redirect it to list
   useEffect(() => {
     if (props.isEdit && hasError) {
-      toastNotifications.addDanger('Unable to find detector for edit');
+      props.core.notifications.toasts.addDanger(
+        'Unable to find detector for edit'
+      );
       props.history.push(`/detectors`);
     }
   }, [props.isEdit]);
@@ -131,12 +131,12 @@ export function CreateDetector(props: CreateADProps) {
         ? clearModelConfiguration(detectorToBeUpdated)
         : detectorToBeUpdated;
       await dispatch(updateDetector(detectorId, preparedDetector));
-      toastNotifications.addSuccess(
+      props.core.notifications.toasts.addSuccess(
         `Detector updated: ${preparedDetector.name}`
       );
       props.history.push(`/detectors/${detectorId}/configurations/`);
     } catch (err) {
-      toastNotifications.addDanger(
+      props.core.notifications.toasts.addDanger(
         prettifyErrorMessage(
           getErrorMessage(err, 'There was a problem updating detector')
         )
@@ -146,7 +146,7 @@ export function CreateDetector(props: CreateADProps) {
   const handleCreate = async (detectorToBeCreated: Detector) => {
     try {
       const detectorResp = await dispatch(createDetector(detectorToBeCreated));
-      toastNotifications.addSuccess(
+      props.core.notifications.toasts.addSuccess(
         `Detector created: ${detectorToBeCreated.name}`
       );
       props.history.push(
@@ -156,13 +156,13 @@ export function CreateDetector(props: CreateADProps) {
       const resp = await dispatch(getDetectorCount());
       const totalDetectors = get(resp, 'data.response.count', 0);
       if (totalDetectors === MAX_DETECTORS) {
-        toastNotifications.addDanger(
+        props.core.notifications.toasts.addDanger(
           'Cannot create detector - limit of ' +
             MAX_DETECTORS +
             ' detectors reached'
         );
       } else {
-        toastNotifications.addDanger(
+        props.core.notifications.toasts.addDanger(
           prettifyErrorMessage(
             getErrorMessage(err, 'There was a problem creating detector')
           )

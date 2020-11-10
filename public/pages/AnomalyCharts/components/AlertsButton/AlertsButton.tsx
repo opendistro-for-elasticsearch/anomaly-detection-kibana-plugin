@@ -15,8 +15,6 @@
 
 import { EuiButton, EuiButtonProps } from '@elastic/eui';
 import React, { Fragment } from 'react';
-//@ts-ignore
-import { toastNotifications } from 'ui/notify';
 import {
   getAlertingCreateMonitorLink,
   getAlertingMonitorListLink,
@@ -46,7 +44,7 @@ export const AlertsButton = (props: AlertsButtonProps) => (
           props.detectorId,
           props.detectorName,
           props.detectorInterval,
-          props.unit.toUpperCase(),
+          props.unit.toUpperCase()
         )}`}
         {...props}
       >

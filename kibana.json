@@ -2,7 +2,7 @@
   "id": "opendistroAnomalyDetectionKibana",
   "version": "1.11.0.0",
   "kibanaVersion": "7.9.1",
-  "configPath": ["opendistro-anomaly-detection-kibana"],
+  "configPath": ["opendistro_anomaly_detection_kibana"],
   "requiredPlugins": ["kibana", "elasticsearch"],
   "optionalPlugins": ["opendistro-alerting", "opendistro_alerting"],
   "server": true,
