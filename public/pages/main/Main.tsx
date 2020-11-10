@@ -27,6 +27,8 @@ import { APP_PATH } from '../../utils/constants';
 import { DetectorDetail } from '../DetectorDetail';
 import { EditFeatures } from '../EditFeatures/containers/EditFeatures';
 import { DashboardOverview } from '../Dashboard/Container/DashboardOverview';
+import { CoreServicesConsumer } from '../../components/CoreServices/CoreServices';
+import { CoreStart } from '../../../../../src/core/public';
 
 enum Navigation {
   AnomalyDetection = 'Anomaly detection',
@@ -76,56 +78,64 @@ export function Main(props: MainProps) {
   ];
 
   return (
-    <EuiPage style={{ height: '100%' }}>
-      <EuiPageSideBar style={{ minWidth: 150 }} hidden={hideSideNavBar}>
-        <EuiSideNav style={{ width: 150 }} items={sideNav} />
-      </EuiPageSideBar>
-      <EuiPageBody>
-        <Switch>
-          <Route
-            path={APP_PATH.DASHBOARD}
-            render={(props: RouteComponentProps) => <DashboardOverview />}
-          />
-          <Route
-            exact
-            path={APP_PATH.LIST_DETECTORS}
-            render={(props: RouteComponentProps<ListRouterParams>) => (
-              <DetectorList {...props} />
-            )}
-          />
-          <Route
-            exact
-            path={APP_PATH.SAMPLE_DETECTORS}
-            render={() => <SampleData />}
-          />
-          <Route
-            exact
-            path={APP_PATH.CREATE_DETECTOR}
-            render={(props: RouteComponentProps) => (
-              <CreateDetector {...props} isEdit={false} />
-            )}
-          />
-          <Route
-            exact
-            path={APP_PATH.EDIT_DETECTOR}
-            render={(props: RouteComponentProps) => (
-              <CreateDetector {...props} isEdit={true} />
-            )}
-          />
-          <Route
-            exact
-            path={APP_PATH.EDIT_FEATURES}
-            render={(props: RouteComponentProps) => <EditFeatures {...props} />}
-          />
-          <Route
-            path={APP_PATH.DETECTOR_DETAIL}
-            render={(props: RouteComponentProps) => (
-              <DetectorDetail {...props} />
-            )}
-          />
-          <Redirect from="/" to={APP_PATH.DASHBOARD} />
-        </Switch>
-      </EuiPageBody>
-    </EuiPage>
+    <CoreServicesConsumer>
+      {(core: CoreStart | null) =>
+        core && (
+          <EuiPage style={{ height: '100%' }}>
+            <EuiPageSideBar style={{ minWidth: 150 }} hidden={hideSideNavBar}>
+              <EuiSideNav style={{ width: 150 }} items={sideNav} />
+            </EuiPageSideBar>
+            <EuiPageBody>
+              <Switch>
+                <Route
+                  path={APP_PATH.DASHBOARD}
+                  render={(props: RouteComponentProps) => <DashboardOverview />}
+                />
+                <Route
+                  exact
+                  path={APP_PATH.LIST_DETECTORS}
+                  render={(props: RouteComponentProps<ListRouterParams>) => (
+                    <DetectorList {...props} />
+                  )}
+                />
+                <Route
+                  exact
+                  path={APP_PATH.SAMPLE_DETECTORS}
+                  render={() => <SampleData />}
+                />
+                <Route
+                  exact
+                  path={APP_PATH.CREATE_DETECTOR}
+                  render={(props: RouteComponentProps) => (
+                    <CreateDetector {...props} isEdit={false} />
+                  )}
+                />
+                <Route
+                  exact
+                  path={APP_PATH.EDIT_DETECTOR}
+                  render={(props: RouteComponentProps) => (
+                    <CreateDetector {...props} isEdit={true} />
+                  )}
+                />
+                <Route
+                  exact
+                  path={APP_PATH.EDIT_FEATURES}
+                  render={(props: RouteComponentProps) => (
+                    <EditFeatures {...props} />
+                  )}
+                />
+                <Route
+                  path={APP_PATH.DETECTOR_DETAIL}
+                  render={(props: RouteComponentProps) => (
+                    <DetectorDetail {...props} />
+                  )}
+                />
+                <Redirect from="/" to={APP_PATH.DASHBOARD} />
+              </Switch>
+            </EuiPageBody>
+          </EuiPage>
+        )
+      }
+    </CoreServicesConsumer>
   );
 }
