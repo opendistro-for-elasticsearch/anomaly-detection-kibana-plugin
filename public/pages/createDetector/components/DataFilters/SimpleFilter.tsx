@@ -53,9 +53,11 @@ import {
   getOperators,
   isNullOperator,
 } from './utils/helpers';
+import { CoreStart } from '../../../../../../../src/core/public';
 
 interface DataFilterProps {
   formikProps: FormikProps<ADFormikValues>;
+  core: CoreStart;
 }
 
 export const SimpleFilter = (props: DataFilterProps) => {
@@ -70,7 +72,7 @@ export const SimpleFilter = (props: DataFilterProps) => {
     } | null)[]
   >();
 
-  const darkMode = darkModeEnabled();
+  const darkMode = darkModeEnabled(props.core);
   const selectedIndices = get(props, 'formikProps.values.index[0].label', '');
   //Reset, if selectedIndices change filter could become invalid
   useEffect(() => {
@@ -140,7 +142,9 @@ export const SimpleFilter = (props: DataFilterProps) => {
             {values.filters.map((filter: UIFilter, index: number) => {
               return (
                 <EuiPanel key={index} className="filter-container">
-                  {get(props, 'formikProps.values.index.0.label', '').includes(':') ? (
+                  {get(props, 'formikProps.values.index.0.label', '').includes(
+                    ':'
+                  ) ? (
                     <div>
                       <EuiCallOut
                         title="This detector is using a remote cluster index, so you need to manually input the filter field."

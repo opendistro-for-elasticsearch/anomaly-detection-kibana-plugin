@@ -61,9 +61,11 @@ import { darkModeEnabled } from '../../../utils/kibanaUtils';
 import { EuiIcon } from '@elastic/eui';
 import { formatAnomalyNumber } from '../../../../server/utils/helpers';
 import { getDetectorLiveResults } from '../../../redux/reducers/liveAnomalyResults';
+import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
+  core: CoreStart;
 }
 
 export const AnomalyResultsLiveChart = (
@@ -197,12 +199,12 @@ export const AnomalyResultsLiveChart = (
   };
 
   const latestAnomalyGrade = get(liveAnomalyResults, 'liveAnomalies', []).find(
-    anomaly => anomaly.anomalyGrade > 0
+    (anomaly) => anomaly.anomalyGrade > 0
   );
 
   const fullScreenButton = () => (
     <EuiButton
-      onClick={() => setIsFullScreen(isFullScreen => !isFullScreen)}
+      onClick={() => setIsFullScreen((isFullScreen) => !isFullScreen)}
       iconType={isFullScreen ? 'exit' : 'fullScreen'}
       aria-label="View full screen"
     >
@@ -283,9 +285,10 @@ export const AnomalyResultsLiveChart = (
                     size="s"
                     title={`No anomalies found during the last ${
                       LIVE_CHART_CONFIG.MONITORING_INTERVALS
-                    } intervals (${LIVE_CHART_CONFIG.MONITORING_INTERVALS *
-                      props.detector.detectionInterval.period
-                        .interval} minutes).`}
+                    } intervals (${
+                      LIVE_CHART_CONFIG.MONITORING_INTERVALS *
+                      props.detector.detectionInterval.period.interval
+                    } minutes).`}
                     style={{
                       width: '97%', // ensure width reaches NOW line
                     }}
@@ -305,11 +308,11 @@ export const AnomalyResultsLiveChart = (
                     dataValues={annotations || []}
                     id="annotations"
                     style={{
-                      stroke: darkModeEnabled()
+                      stroke: darkModeEnabled(props.core)
                         ? 'red'
                         : CHART_COLORS.ANOMALY_GRADE_COLOR,
                       opacity: 0.8,
-                      fill: darkModeEnabled()
+                      fill: darkModeEnabled(props.core)
                         ? 'red'
                         : CHART_COLORS.ANOMALY_GRADE_COLOR,
                     }}

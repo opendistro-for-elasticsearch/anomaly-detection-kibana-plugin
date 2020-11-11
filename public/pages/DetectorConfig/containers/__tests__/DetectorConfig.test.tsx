@@ -21,13 +21,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import {
-  render,
-  fireEvent,
-  wait,
-} from '@testing-library/react';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
+import { render, fireEvent, wait } from '@testing-library/react';
 import { DetectorConfig } from '../DetectorConfig';
 import {
   Detector,
@@ -38,9 +32,7 @@ import {
   UiFeature,
   FeatureAttributes,
 } from '../../../../models/interfaces';
-import {
-  getRandomDetector,
-} from '../../../../redux/reducers/__tests__/utils';
+import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
 import configureStore from '../../../../redux/configureStore';
 import { httpClientMock } from '../../../../../test/mocks';
 import userEvent from '@testing-library/user-event';
@@ -164,9 +156,7 @@ describe('<DetectorConfig /> spec', () => {
     const { getByText, queryByText } = renderWithRouter(randomDetector);
     await wait(() => {
       getByText('Model parameters are required to run a detector');
-      queryByText(
-        'Set the index fields'
-      );
+      queryByText('Set the index fields');
       getByText('Model configuration');
       getByText(randomDetector.name);
       getByText(randomDetector.indices[0]);
@@ -177,9 +167,7 @@ describe('<DetectorConfig /> spec', () => {
       getByText(randomDetector.description);
       // filter should be -
       getByText('-');
-      queryByText(
-        'Set the index fields'
-      );
+      queryByText('Set the index fields');
     });
   });
 

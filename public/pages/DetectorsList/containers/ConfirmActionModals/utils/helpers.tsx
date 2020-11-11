@@ -15,10 +15,6 @@
 
 import React from 'react';
 import { EuiLink, EuiText, EuiIcon, EuiDataGrid } from '@elastic/eui';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { getAlertingMonitorListLink } from '../../../../../utils/utils';
 import { Monitor } from '../../../../../models/interfaces';
 import { DetectorListItem } from '../../../../../models/interfaces';
@@ -259,7 +255,7 @@ export const getNamesAndMonitorsAndStatesGrid = (
 
 export const containsEnabledDetectors = (detectors: DetectorListItem[]) => {
   const enabledDetectors = detectors.filter(
-    detector =>
+    (detector) =>
       detector.curState === DETECTOR_STATE.RUNNING ||
       detector.curState === DETECTOR_STATE.INIT
   );

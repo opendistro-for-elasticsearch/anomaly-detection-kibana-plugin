@@ -35,8 +35,6 @@ import {
 } from '../../AnomalyCharts/utils/anomalyChartUtils';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { DateRange, Detector } from '../../../models/interfaces';
 import { AppState } from '../../../redux/reducers';
@@ -52,6 +50,7 @@ import {
   prepareDetector,
 } from './utils/formikToFeatures';
 import { prettifyErrorMessage } from '../../../../server/utils/helpers';
+import { CoreStart } from '../../../../../../src/core/public';
 
 interface SampleAnomaliesProps {
   detector: Detector;
@@ -60,6 +59,7 @@ interface SampleAnomaliesProps {
   categoryFields: string[];
   errors: any;
   setFieldTouched: any;
+  core: CoreStart;
 }
 
 export function SampleAnomalies(props: SampleAnomaliesProps) {
@@ -144,7 +144,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
     } catch (err) {
       console.error(`Fail to preview detector ${detector.id}`, err);
       setIsLoading(false);
-      toastNotifications.addDanger(
+      props.core.notifications.toasts.addDanger(
         prettifyErrorMessage(
           getPreviewErrorMessage(err, 'There was a problem previewing detector')
         )
@@ -247,6 +247,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                 zoomRange={zoomRange}
                 anomaliesResult={anomaliesResult}
                 showAlerts={false}
+                core={props.core}
               />
               <EuiSpacer />
               {isLoading ? (
@@ -269,6 +270,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                   isLoading={isLoading}
                   dateRange={zoomRange}
                   featureDataSeriesName={getFeatureDataWording(false)}
+                  core={props.core}
                 />
               )}
             </Fragment>

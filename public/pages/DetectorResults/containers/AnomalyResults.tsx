@@ -31,8 +31,6 @@ import { get, isEmpty } from 'lodash';
 import React, { useEffect, Fragment, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { AppState } from '../../../redux/reducers';
 import {
   BREADCRUMBS,
@@ -68,11 +66,13 @@ import {
   getAssociatedIndex,
 } from '../../SampleData/utils/helpers';
 import { SampleIndexDetailsCallout } from '../../SampleData/components/SampleIndexDetailsCallout/SampleIndexDetailsCallout';
+import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomalyResultsProps extends RouteComponentProps {
   detectorId: string;
   onStartDetector(): void;
   onSwitchToConfiguration(): void;
+  core: CoreStart;
 }
 
 export function AnomalyResults(props: AnomalyResultsProps) {
@@ -83,7 +83,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   );
 
   useEffect(() => {
-    chrome.breadcrumbs.set([
+    props.core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.DETECTORS,
       { text: detector ? detector.name : '' },
@@ -485,7 +485,10 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       ) : null}
                     </EuiCallOut>
                   ) : null}
-                  <AnomalyResultsLiveChart detector={detector} />
+                  <AnomalyResultsLiveChart
+                    detector={detector}
+                    core={props.core}
+                  />
                   <EuiSpacer size="l" />
                   <AnomalyHistory
                     detector={detector}
@@ -494,6 +497,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       props.history.push(`/detectors/${detectorId}/features`)
                     }
                     isFeatureDataMissing={isDetectorMissingData}
+                    core={props.core}
                   />
                 </Fragment>
               ) : detector ? (

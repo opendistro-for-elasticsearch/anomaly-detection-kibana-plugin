@@ -21,8 +21,6 @@ import {
 } from '@elastic/eui';
 import { get } from 'lodash';
 import React, { useEffect, useState } from 'react';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import {
@@ -34,10 +32,12 @@ import { ListControls } from '../components/ListControls/ListControls';
 import { DetectorResultsQueryParams } from 'server/models/types';
 import { AnomalyData } from '../../../models/interfaces';
 import { getTitleWithCount } from '../../../utils/utils';
+import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomalyResultsTableProps {
   anomalies: AnomalyData[];
   isHCDetector?: boolean;
+  core: CoreStart;
 }
 
 interface ListState {
@@ -134,7 +134,11 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
   };
   return (
     <ContentPanel
-      title={getTitleWithCount('Anomaly occurrences', totalAnomalies.length)}
+      title={getTitleWithCount(
+        'Anomaly occurrences',
+        totalAnomalies.length,
+        props.core
+      )}
       titleSize="xs"
       titleClassName="preview-title"
     >

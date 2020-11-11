@@ -33,11 +33,13 @@ import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { CodeModal } from '../components/CodeModal/CodeModal';
 import { getTitleWithCount } from '../../../utils/utils';
 import { AdditionalSettings } from '../components/AdditionalSettings/AdditionalSettings';
+import { CoreStart } from '../../../../../../src/core/public';
 
 interface FeaturesProps {
   detectorId: string;
   detector: Detector;
   onEditFeatures(): void;
+  core: CoreStart;
 }
 
 interface FeaturesState {
@@ -242,7 +244,7 @@ export class Features extends Component<FeaturesProps, FeaturesState> {
         ) : (
           <div>
             <ContentPanel
-              title={getTitleWithCount('Features', featureNum)}
+              title={getTitleWithCount('Features', featureNum, this.props.core)}
               titleSize="s"
             >
               <EuiBasicTable

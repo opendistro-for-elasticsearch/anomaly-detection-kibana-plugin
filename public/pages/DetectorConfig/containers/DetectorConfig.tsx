@@ -22,11 +22,13 @@ import { AppState } from '../../../redux/reducers';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDetector } from '../../../redux/reducers/ad';
 import { EuiLoadingSpinner } from '@elastic/eui';
+import { CoreStart } from '../../../../../../src/core/public';
 
 interface DetectorConfigProps extends RouteComponentProps {
   detectorId: string;
   onEditFeatures(): void;
   onEditDetector(): void;
+  core: CoreStart;
 }
 
 export function DetectorConfig(props: DetectorConfigProps) {
@@ -54,6 +56,7 @@ export function DetectorConfig(props: DetectorConfigProps) {
             detectorId={props.detectorId}
             detector={detector}
             onEditFeatures={props.onEditFeatures}
+            core={props.core}
           />
         </EuiPageBody>
       ) : (

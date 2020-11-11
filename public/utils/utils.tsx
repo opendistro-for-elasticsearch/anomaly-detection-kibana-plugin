@@ -17,12 +17,11 @@ import { get, isEmpty } from 'lodash';
 import React from 'react';
 import { EuiTitle } from '@elastic/eui';
 //@ts-ignore
-import { isAngularHttpError } from 'ui/notify';
-//@ts-ignore
 import { npStart } from 'ui/new_platform';
 import { darkModeEnabled } from '../utils/kibanaUtils';
 import { ALERTING_PLUGIN_NAME, NAME_REGEX } from './constants';
 import { MAX_FEATURE_NAME_SIZE } from './constants';
+import { CoreStart } from '../../../../src/core/public';
 
 export const validateFeatureName = (
   featureName: string
@@ -102,7 +101,6 @@ export const validateNonNegativeInteger = (value: any) => {
 export const getErrorMessage = (err: any, defaultMessage: string) => {
   if (typeof err === 'string') return err;
   if (err && err.message) return err.message;
-  if (isAngularHttpError && isAngularHttpError(err)) return err.data.message;
   return defaultMessage;
 };
 
@@ -154,9 +152,14 @@ export interface Listener {
   onException(): void;
 }
 
-const detectorCountFontColor = darkModeEnabled() ? '#98A2B3' : '#535966';
+const detectorCountFontColor = (core: CoreStart) =>
+  darkModeEnabled(core) ? '#98A2B3' : '#535966';
 
-export const getTitleWithCount = (title: string, count: number | string) => {
+export const getTitleWithCount = (
+  title: string,
+  count: number | string,
+  core: CoreStart
+) => {
   return (
     <EuiTitle size={'s'} className={''}>
       <h3
@@ -166,7 +169,7 @@ export const getTitleWithCount = (title: string, count: number | string) => {
         }}
       >
         <p>{title}&nbsp;</p>
-        <p style={{ color: detectorCountFontColor }}>{`(${count})`}</p>
+        <p style={{ color: detectorCountFontColor(core) }}>{`(${count})`}</p>
       </h3>
     </EuiTitle>
   );

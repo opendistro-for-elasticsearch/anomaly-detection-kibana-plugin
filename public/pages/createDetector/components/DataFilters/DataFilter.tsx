@@ -23,8 +23,11 @@ import { SimpleFilter } from './SimpleFilter';
 import { QueryDataFilter } from './QueryDataFilter';
 import { FILTER_TYPES } from '../../../../models/interfaces';
 import { FormattedFormRow } from '../FormattedFormRow/FormattedFormRow';
+import { CoreStart } from '../../../../../../../src/core/public';
+
 interface DataFilterProps {
   formikProps: FormikProps<ADFormikValues>;
+  core: CoreStart;
 }
 
 function DataFilter(props: DataFilterProps) {
@@ -55,7 +58,7 @@ function DataFilter(props: DataFilterProps) {
           </FormattedFormRow>
           <EuiHorizontalRule margin="none" />
           {field.value === FILTER_TYPES.SIMPLE ? (
-            <SimpleFilter formikProps={props.formikProps} />
+            <SimpleFilter formikProps={props.formikProps} core={props.core} />
           ) : (
             <QueryDataFilter />
           )}

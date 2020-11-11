@@ -51,6 +51,7 @@ import {
 } from '../utils/constants';
 import { AnomalyOccurrenceChart } from './AnomalyOccurrenceChart';
 import { FeatureBreakDown } from './FeatureBreakDown';
+import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomaliesChartProps {
   onDateRangeChange(
@@ -75,6 +76,7 @@ interface AnomaliesChartProps {
   newDetector?: Detector;
   zoomRange?: DateRange;
   anomaliesResult: Anomalies | undefined;
+  core: CoreStart;
 }
 
 export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
@@ -270,6 +272,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                               )}
                               isHCDetector={props.isHCDetector}
                               selectedHeatmapCell={props.selectedHeatmapCell}
+                              core={props.core}
                             />,
                           ]
                         : null,
@@ -294,6 +297,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
               monitor={props.monitor}
               isHCDetector={props.isHCDetector}
               onDatePickerRangeChange={handleDatePickerRangeChange}
+              core={props.core}
             />
           )}
         </EuiFlexGroup>

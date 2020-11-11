@@ -15,10 +15,6 @@
 
 import React from 'react';
 import { EuiCallOut, EuiLink, EuiIcon } from '@elastic/eui';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { getAlertingMonitorListLink } from '../../../../utils/utils';
 
 interface MonitorCalloutProps {

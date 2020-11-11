@@ -20,10 +20,6 @@ import {
   EuiRadioGroup,
 } from '@elastic/eui';
 import React from 'react';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { ConfirmModal } from '../../../DetectorDetail/components/ConfirmModal/ConfirmModal';
 import { SAVE_FEATURE_OPTIONS } from '../../utils/constants';
 

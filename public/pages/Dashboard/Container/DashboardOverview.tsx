@@ -30,10 +30,7 @@ import {
   EuiLoadingSpinner,
   EuiSpacer,
 } from '@elastic/eui';
-//@ts-ignore
-import chrome from 'ui/chrome';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
+import { CoreStart } from '../../../../../../src/core/public';
 import { AnomalousDetectorsList } from '../Components/AnomalousDetectorsList';
 import {
   GET_ALL_DETECTORS_QUERY_PARAMS,
@@ -53,7 +50,11 @@ import {
   NO_PERMISSIONS_KEY_WORD,
 } from '../../../../server/utils/helpers';
 
-export function DashboardOverview() {
+interface DashboardOverviewProps {
+  core: CoreStart;
+}
+
+export function DashboardOverview(props: DashboardOverviewProps) {
   const dispatch = useDispatch();
 
   const adState = useSelector((state: AppState) => state.ad);
@@ -181,7 +182,7 @@ export function DashboardOverview() {
   useEffect(() => {
     if (errorGettingDetectors) {
       console.error(errorGettingDetectors);
-      toastNotifications.addDanger(
+      props.core.notifications.toasts.addDanger(
         errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
           ? prettifyErrorMessage(errorGettingDetectors)
           : 'Unable to get all detectors.'
@@ -191,7 +192,7 @@ export function DashboardOverview() {
   }, [errorGettingDetectors]);
 
   useEffect(() => {
-    chrome.breadcrumbs.set([
+    props.core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.DASHBOARD,
     ]);

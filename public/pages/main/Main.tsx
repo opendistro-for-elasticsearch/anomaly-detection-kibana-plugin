@@ -89,45 +89,47 @@ export function Main(props: MainProps) {
               <Switch>
                 <Route
                   path={APP_PATH.DASHBOARD}
-                  render={(props: RouteComponentProps) => <DashboardOverview />}
+                  render={(props: RouteComponentProps) => (
+                    <DashboardOverview core={core} />
+                  )}
                 />
                 <Route
                   exact
                   path={APP_PATH.LIST_DETECTORS}
                   render={(props: RouteComponentProps<ListRouterParams>) => (
-                    <DetectorList {...props} />
+                    <DetectorList {...props} core={core} />
                   )}
                 />
                 <Route
                   exact
                   path={APP_PATH.SAMPLE_DETECTORS}
-                  render={() => <SampleData />}
+                  render={() => <SampleData core={core} />}
                 />
                 <Route
                   exact
                   path={APP_PATH.CREATE_DETECTOR}
                   render={(props: RouteComponentProps) => (
-                    <CreateDetector {...props} isEdit={false} />
+                    <CreateDetector {...props} isEdit={false} core={core} />
                   )}
                 />
                 <Route
                   exact
                   path={APP_PATH.EDIT_DETECTOR}
                   render={(props: RouteComponentProps) => (
-                    <CreateDetector {...props} isEdit={true} />
+                    <CreateDetector {...props} isEdit={true} core={core} />
                   )}
                 />
                 <Route
                   exact
                   path={APP_PATH.EDIT_FEATURES}
                   render={(props: RouteComponentProps) => (
-                    <EditFeatures {...props} />
+                    <EditFeatures {...props} core={core} />
                   )}
                 />
                 <Route
                   path={APP_PATH.DETECTOR_DETAIL}
                   render={(props: RouteComponentProps) => (
-                    <DetectorDetail {...props} />
+                    <DetectorDetail {...props} core={core} />
                   )}
                 />
                 <Redirect from="/" to={APP_PATH.DASHBOARD} />

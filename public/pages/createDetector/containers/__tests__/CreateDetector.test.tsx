@@ -22,8 +22,6 @@ import {
   Switch,
 } from 'react-router-dom';
 import { render, fireEvent, wait } from '@testing-library/react';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
 import { CreateDetector } from '../CreateDetector';
 import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
 import configureStore from '../../../../redux/configureStore';

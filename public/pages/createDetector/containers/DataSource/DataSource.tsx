@@ -33,12 +33,14 @@ import { validateIndex } from '../../../utils/validate';
 import { DataFilter } from '../../components/DataFilters/DataFilter';
 import { FormattedFormRow } from '../../components/FormattedFormRow/FormattedFormRow';
 import { ADFormikValues } from '../../containers/models/interfaces';
+import { CoreStart } from '../../../../../../../src/core/public';
 
 interface DataSourceProps {
   formikProps: FormikProps<ADFormikValues>;
   origIndex: string;
   setNewIndexSelected: (isNew: boolean) => void;
   isEdit: boolean;
+  core: CoreStart;
 }
 
 function DataSource(props: DataSourceProps) {
@@ -208,7 +210,7 @@ function DataSource(props: DataSourceProps) {
           </FormattedFormRow>
         )}
       </Field>
-      <DataFilter formikProps={props.formikProps} />
+      <DataFilter formikProps={props.formikProps} core={props.core} />
     </ContentPanel>
   );
 }

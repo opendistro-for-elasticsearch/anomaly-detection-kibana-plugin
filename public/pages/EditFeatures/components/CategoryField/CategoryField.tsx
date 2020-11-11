@@ -32,15 +32,11 @@ import { Field, FieldProps } from 'formik';
 import { get, isEmpty } from 'lodash';
 import React, { useState, useEffect } from 'react';
 import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
 import {
   isInvalid,
   getError,
   validateCategoryField,
 } from '../../../../utils/utils';
-//@ts-ignore
-import chrome from 'ui/chrome';
 
 interface CategoryFieldProps {
   isHCDetector: boolean;

@@ -59,12 +59,14 @@ import { searchResults } from '../../../redux/reducers/anomalyResults';
 import { AnomalyOccurrenceChart } from '../../AnomalyCharts/containers/AnomalyOccurrenceChart';
 import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 import { getAnomalyHistoryWording } from '../../AnomalyCharts/utils/anomalyChartUtils';
+import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomalyHistoryProps {
   detector: Detector;
   monitor: Monitor | undefined;
   createFeature(): void;
   isFeatureDataMissing?: boolean;
+  core: CoreStart;
 }
 
 export const AnomalyHistory = (props: AnomalyHistoryProps) => {
@@ -335,6 +337,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         onHeatmapCellSelected={handleHeatmapCellSelected}
         selectedHeatmapCell={selectedHeatmapCell}
         anomaliesResult={anomalyResults}
+        core={props.core}
       >
         <EuiTabs>{renderTabs()}</EuiTabs>
 
@@ -416,6 +419,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                     'plotTime'
                   )}
                   isHCDetector={isHCDetector}
+                  core={props.core}
                 />,
               ]
             )}

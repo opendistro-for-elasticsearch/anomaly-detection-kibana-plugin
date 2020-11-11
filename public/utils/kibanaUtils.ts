@@ -13,9 +13,8 @@
  * permissions and limitations under the License.
  */
 
-//@ts-ignore
-import chrome from 'ui/chrome';
+import { CoreStart } from '../../../../src/core/public';
 
-export const darkModeEnabled = (): boolean => {
-  return chrome.getUiSettingsClient().get('theme:darkMode') || false;
+export const darkModeEnabled = (core: CoreStart): boolean => {
+  return core.uiSettings.get('theme:darkMode') || false;
 };

@@ -254,6 +254,7 @@ export function CreateDetector(props: CreateADProps) {
                 origIndex={props.isEdit ? get(detector, 'indices.0', '') : null}
                 setNewIndexSelected={setNewIndexSelected}
                 isEdit={props.isEdit}
+                core={props.core}
               />
               <EuiSpacer />
               <Settings />
