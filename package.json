@@ -85,7 +85,6 @@
     "formik": "^1.5.8",
     "lodash": "^4.17.19",
     "plotly.js": "^1.55.2",
-    "query-string": "^6.8.2",
     "react-plotly.js": "^2.4.0",
     "react-redux": "^7.1.0",
     "react-vis": "^1.11.7",
