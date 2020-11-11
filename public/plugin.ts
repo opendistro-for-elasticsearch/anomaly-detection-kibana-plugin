@@ -37,8 +37,9 @@ export class AnomalyDetectionKibanaPlugin
 
   public setup(core: CoreSetup): AnomalyDetectionKibanaPluginSetup {
     core.application.register({
-      id: 'anomalyDetection',
+      id: 'opendistro-anomaly-detection-kibana',
       title: 'Anomaly Detection',
+      order: 8030,
       mount: async (params: AppMountParameters) => {
         const { renderApp } = await import('./anomaly_detection_app');
         const [coreStart, depsStart] = await core.getStartServices();

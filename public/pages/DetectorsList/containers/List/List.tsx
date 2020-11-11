@@ -187,7 +187,7 @@ export const DetectorList = (props: ListProps) => {
     ) {
       console.error(errorGettingDetectors);
       props.core.notifications.toasts.addDanger(
-        errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
+        typeof errorGettingDetectors === 'string' && errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
           ? prettifyErrorMessage(errorGettingDetectors)
           : 'Unable to get all detectors'
       );

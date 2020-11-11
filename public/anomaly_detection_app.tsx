@@ -15,11 +15,12 @@
 
 import { CoreStart, AppMountParameters } from '../../../src/core/public';
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import ReactDOM from 'react-dom';
 import { HashRouter as Router, Route } from 'react-router-dom';
 import { Main } from './pages/main';
 import { Provider } from 'react-redux';
 import configureStore from './redux/configureStore';
+import { CoreServicesContext } from './components/CoreServices/CoreServices';
 
 export function renderApp(coreStart: CoreStart, params: AppMountParameters) {
   const http = coreStart.http;
@@ -33,14 +34,18 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters) {
   } else {
     require('@elastic/charts/dist/theme_only_light.css');
   }
-  render(
+  ReactDOM.render(
     <Provider store={store}>
       <Router>
         {/* TODO: confirm this works when angular has been removed */}
-        <Route render={(props) => <Main httpClient={http} {...props} />} />
+        <Route render={(props) => 
+          <CoreServicesContext.Provider value={coreStart}>
+            <Main httpClient={http} {...props} /> 
+          </CoreServicesContext.Provider>}
+        />
       </Router>
     </Provider>,
     params.element
   );
-  return () => unmountComponentAtNode(params.element);
+  return () => ReactDOM.unmountComponentAtNode(params.element);
 }
