@@ -33,6 +33,7 @@ import { Listener } from '../../../../utils/utils';
 import { EuiSpacer } from '@elastic/eui';
 import { getNamesAndMonitorsGrid } from './utils/helpers';
 import { get, isEmpty } from 'lodash';
+import { CoreStart } from '../../../../../../../src/core/public';
 
 interface ConfirmStopDetectorsModalProps {
   detectors: DetectorListItem[];
@@ -41,6 +42,7 @@ interface ConfirmStopDetectorsModalProps {
   onConfirm(): void;
   onStopDetectors(listener?: Listener): void;
   isListLoading: boolean;
+  core: CoreStart;
 }
 
 export const ConfirmStopDetectorsModal = (
@@ -81,7 +83,11 @@ export const ConfirmStopDetectorsModal = (
             {isLoading ? (
               <EuiLoadingSpinner size="xl" />
             ) : (
-              getNamesAndMonitorsGrid(detectorsToDisplay, props.monitors)
+              getNamesAndMonitorsGrid(
+                detectorsToDisplay,
+                props.monitors,
+                props.core
+              )
             )}
           </div>
         </EuiModalBody>

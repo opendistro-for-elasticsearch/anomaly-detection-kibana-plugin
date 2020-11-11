@@ -21,6 +21,7 @@ import { DetectorListItem } from '../../../../../models/interfaces';
 import { PLUGIN_NAME } from '../../../../../utils/constants';
 import { get, isEmpty } from 'lodash';
 import { DETECTOR_STATE } from '../../../../../utils/constants';
+import { CoreStart } from '../../../../../../../../src/core/public';
 
 const getNames = (detectors: DetectorListItem[]) => {
   let data = [];
@@ -41,7 +42,8 @@ const getNames = (detectors: DetectorListItem[]) => {
 
 const getNamesAndMonitors = (
   detectors: DetectorListItem[],
-  monitors: { [key: string]: Monitor }
+  monitors: { [key: string]: Monitor },
+  core: CoreStart
 ) => {
   let data = [];
   for (let i = 0; i < detectors.length; i++) {
@@ -58,7 +60,7 @@ const getNamesAndMonitors = (
         ),
         Monitor: (
           <EuiLink
-            href={`${getAlertingMonitorListLink()}/${relatedMonitor.id}`}
+            href={`${getAlertingMonitorListLink(core)}/${relatedMonitor.id}`}
             target="_blank"
           >
             {relatedMonitor.name} <EuiIcon type="popout" size="s" />
@@ -84,7 +86,8 @@ const getNamesAndMonitors = (
 
 const getNamesAndMonitorsAndStates = (
   detectors: DetectorListItem[],
-  monitors: { [key: string]: Monitor }
+  monitors: { [key: string]: Monitor },
+  core: CoreStart
 ) => {
   let data = [];
   for (let i = 0; i < detectors.length; i++) {
@@ -104,7 +107,7 @@ const getNamesAndMonitorsAndStates = (
         ),
         Monitor: (
           <EuiLink
-            href={`${getAlertingMonitorListLink()}/${relatedMonitor.id}`}
+            href={`${getAlertingMonitorListLink(core)}/${relatedMonitor.id}`}
             target="_blank"
           >
             {relatedMonitor.name} <EuiIcon type="popout" size="s" />
@@ -165,9 +168,10 @@ export const getNamesGrid = (detectors: DetectorListItem[]) => {
 
 export const getNamesAndMonitorsGrid = (
   detectors: DetectorListItem[],
-  monitors: { [key: string]: Monitor }
+  monitors: { [key: string]: Monitor },
+  core: CoreStart
 ) => {
-  const gridData = getNamesAndMonitors(detectors, monitors);
+  const gridData = getNamesAndMonitors(detectors, monitors, core);
   return (
     <EuiDataGrid
       aria-label="Detector names and monitors"
@@ -207,9 +211,10 @@ export const getNamesAndMonitorsGrid = (
 
 export const getNamesAndMonitorsAndStatesGrid = (
   detectors: DetectorListItem[],
-  monitors: { [key: string]: Monitor }
+  monitors: { [key: string]: Monitor },
+  core: CoreStart
 ) => {
-  const gridData = getNamesAndMonitorsAndStates(detectors, monitors);
+  const gridData = getNamesAndMonitorsAndStates(detectors, monitors, core);
   return (
     <EuiDataGrid
       aria-label="Detector names and monitors and state"

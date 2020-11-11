@@ -583,6 +583,7 @@ export const DetectorList = (props: ListProps) => {
               onHide={handleHideModal}
               onConfirm={handleConfirmModal}
               isListLoading={isLoading}
+              core={props.core}
             />
           );
         }
@@ -596,6 +597,7 @@ export const DetectorList = (props: ListProps) => {
               onHide={handleHideModal}
               onConfirm={handleConfirmModal}
               isListLoading={isLoading}
+              core={props.core}
             />
           );
         }

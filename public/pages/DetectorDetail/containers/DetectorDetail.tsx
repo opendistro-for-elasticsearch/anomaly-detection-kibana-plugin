@@ -265,7 +265,11 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     backgroundColor: '#FFF',
   };
   const monitorCallout = monitor ? (
-    <MonitorCallout monitorId={monitor.id} monitorName={monitor.name} />
+    <MonitorCallout
+      monitorId={monitor.id}
+      monitorName={monitor.name}
+      core={props.core}
+    />
   ) : null;
 
   const deleteDetectorCallout = detector.enabled ? (

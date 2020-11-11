@@ -238,6 +238,7 @@ export const AnomalyDetailsChart = React.memo(
                 showAlertsFlyout={() => setShowAlertsFlyout(true)}
                 totalAlerts={totalAlerts}
                 isLoading={isLoading}
+                core={props.core}
               />
             </EuiFlexItem>
           ) : null}
@@ -368,6 +369,7 @@ export const AnomalyDetailsChart = React.memo(
             )}
             monitor={props.monitor}
             onClose={() => setShowAlertsFlyout(false)}
+            core={props.core}
           />
         ) : null}
       </React.Fragment>

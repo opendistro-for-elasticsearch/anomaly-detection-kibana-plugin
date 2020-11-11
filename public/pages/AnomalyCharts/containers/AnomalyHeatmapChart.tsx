@@ -43,6 +43,7 @@ import {
   filterHeatmapPlotDataByY,
 } from '../utils/anomalyChartUtils';
 import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
+import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomalyHeatmapChartProps {
   title: string;
@@ -56,6 +57,7 @@ interface AnomalyHeatmapChartProps {
   detectorInterval?: number;
   unit?: string;
   onHeatmapCellSelected(cell: HeatmapCell | undefined): void;
+  core: CoreStart;
 }
 
 export interface HeatmapCell {
@@ -487,6 +489,7 @@ export const AnomalyHeatmapChart = React.memo(
             unit={get(props, 'unit', 'Minutes')}
             monitor={props.monitor}
             onClose={() => setShowAlertsFlyout(false)}
+            core={props.core}
           />
         ) : null}
       </React.Fragment>

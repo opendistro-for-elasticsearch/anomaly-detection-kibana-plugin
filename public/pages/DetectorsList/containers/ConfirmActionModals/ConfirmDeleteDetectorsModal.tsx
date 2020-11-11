@@ -39,6 +39,7 @@ import {
   getNamesAndMonitorsAndStatesGrid,
   containsEnabledDetectors,
 } from './utils/helpers';
+import { CoreStart } from '../../../../../../../src/core/public';
 
 interface ConfirmDeleteDetectorsModalProps {
   detectors: DetectorListItem[];
@@ -48,6 +49,7 @@ interface ConfirmDeleteDetectorsModalProps {
   onStopDetectors(listener?: Listener): void;
   onDeleteDetectors(): void;
   isListLoading: boolean;
+  core: CoreStart;
 }
 
 export const ConfirmDeleteDetectorsModal = (
@@ -110,7 +112,8 @@ export const ConfirmDeleteDetectorsModal = (
             ) : (
               getNamesAndMonitorsAndStatesGrid(
                 detectorsToDisplay,
-                props.monitors
+                props.monitors,
+                props.core
               )
             )}
           </div>

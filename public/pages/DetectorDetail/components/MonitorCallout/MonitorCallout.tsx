@@ -16,10 +16,12 @@
 import React from 'react';
 import { EuiCallOut, EuiLink, EuiIcon } from '@elastic/eui';
 import { getAlertingMonitorListLink } from '../../../../utils/utils';
+import { CoreStart } from '../../../../../../../src/core/public';
 
 interface MonitorCalloutProps {
   monitorId: string;
   monitorName: string;
+  core: CoreStart;
 }
 
 export const MonitorCallout = (props: MonitorCalloutProps) => {
@@ -32,7 +34,7 @@ export const MonitorCallout = (props: MonitorCalloutProps) => {
       <p>
         Once a detector is stopped, monitor{' '}
         <EuiLink
-          href={`${getAlertingMonitorListLink()}/${props.monitorId}`}
+          href={`${getAlertingMonitorListLink(props.core)}/${props.monitorId}`}
           target="_blank"
         >
           {props.monitorName} <EuiIcon type="popout" size="s" />

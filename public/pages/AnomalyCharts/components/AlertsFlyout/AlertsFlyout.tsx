@@ -29,6 +29,7 @@ import React from 'react';
 import { EuiIcon } from '@elastic/eui';
 import { Monitor } from '../../../../models/interfaces';
 import { AlertsButton } from '../AlertsButton/AlertsButton';
+import { CoreStart } from '../../../../../../../src/core/public';
 
 type AlertsFlyoutProps = {
   detectorId: string;
@@ -37,6 +38,7 @@ type AlertsFlyoutProps = {
   unit: string;
   monitor?: Monitor;
   onClose(): void;
+  core: CoreStart;
 };
 
 const alertSteps = [
@@ -125,6 +127,7 @@ export const AlertsFlyout = (props: AlertsFlyoutProps) => {
               detectorName={props.detectorName}
               detectorInterval={props.detectorInterval}
               unit={props.unit}
+              core={props.core}
               fill
             />
           </EuiFlexItem>

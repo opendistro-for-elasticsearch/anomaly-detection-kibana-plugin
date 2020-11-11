@@ -16,8 +16,6 @@
 import { get, isEmpty } from 'lodash';
 import React from 'react';
 import { EuiTitle } from '@elastic/eui';
-//@ts-ignore
-import { npStart } from 'ui/new_platform';
 import { darkModeEnabled } from '../utils/kibanaUtils';
 import { ALERTING_PLUGIN_NAME, NAME_REGEX } from './constants';
 import { MAX_FEATURE_NAME_SIZE } from './constants';
@@ -104,14 +102,6 @@ export const getErrorMessage = (err: any, defaultMessage: string) => {
   return defaultMessage;
 };
 
-export const isAlertingInstalled = (): boolean => {
-  const navLinks = get(npStart, 'core.chrome.navLinks', undefined);
-  if (navLinks) {
-    return navLinks.has(ALERTING_PLUGIN_NAME);
-  }
-  return false;
-};
-
 const getPluginRootPath = (url: string, pluginName: string) => {
   return url.slice(0, url.indexOf(pluginName) + pluginName.length);
 };
@@ -120,10 +110,11 @@ export const getAlertingCreateMonitorLink = (
   detectorId: string,
   detectorName: string,
   detectorInterval: number,
-  unit: string
+  unit: string,
+  core: CoreStart
 ): string => {
   try {
-    const navLinks = get(npStart, 'core.chrome.navLinks', undefined);
+    const navLinks = get(core, 'chrome.navLinks', undefined);
     const url = `${navLinks.get(ALERTING_PLUGIN_NAME).url}`;
     const alertingRootUrl = getPluginRootPath(url, ALERTING_PLUGIN_NAME);
     return `${alertingRootUrl}#/create-monitor?searchType=ad&adId=${detectorId}&name=${detectorName}&interval=${
@@ -135,9 +126,9 @@ export const getAlertingCreateMonitorLink = (
   }
 };
 
-export const getAlertingMonitorListLink = (): string => {
+export const getAlertingMonitorListLink = (core: CoreStart): string => {
   try {
-    const navLinks = get(npStart, 'core.chrome.navLinks', undefined);
+    const navLinks = get(core, 'chrome.navLinks', undefined);
     const url = `${navLinks.get(ALERTING_PLUGIN_NAME).url}`;
     const alertingRootUrl = getPluginRootPath(url, ALERTING_PLUGIN_NAME);
     return `${alertingRootUrl}#/monitors`;

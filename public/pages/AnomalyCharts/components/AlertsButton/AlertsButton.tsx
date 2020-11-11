@@ -20,6 +20,7 @@ import {
   getAlertingMonitorListLink,
 } from '../../../../utils/utils';
 import { Monitor } from '../../../../models/interfaces';
+import { CoreStart } from '../../../../../../../src/core/public';
 
 export interface AlertsButtonProps extends EuiButtonProps {
   monitor?: Monitor;
@@ -27,13 +28,14 @@ export interface AlertsButtonProps extends EuiButtonProps {
   detectorName: string;
   detectorInterval: number;
   unit: string;
+  core: CoreStart;
 }
 
 export const AlertsButton = (props: AlertsButtonProps) => (
   <Fragment>
     {props.monitor ? (
       <EuiButton
-        href={`${getAlertingMonitorListLink()}/${props.monitor.id}`}
+        href={`${getAlertingMonitorListLink(props.core)}/${props.monitor.id}`}
         {...props}
       >
         Edit alert settings
@@ -44,7 +46,8 @@ export const AlertsButton = (props: AlertsButtonProps) => (
           props.detectorId,
           props.detectorName,
           props.detectorInterval,
-          props.unit.toUpperCase()
+          props.unit.toUpperCase(),
+          props.core
         )}`}
         {...props}
       >
