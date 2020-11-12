@@ -116,7 +116,7 @@ export const searchAlerts = (
   type: SEARCH_ALERTS,
   request: (client: HttpSetup) =>
     client.get(`..${ALERTING_NODE_API.ALERTS}`, {
-      params: {
+      query: {
         monitorId: monitorId,
         startTime: startTime,
         endTime: endTime,

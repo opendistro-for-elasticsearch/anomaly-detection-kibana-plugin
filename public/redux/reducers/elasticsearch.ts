@@ -272,13 +272,13 @@ export const getMappings = (searchKey: string = ''): APIAction => ({
 export const searchES = (requestData: any): APIAction => ({
   type: SEARCH_ES,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API._SEARCH}`, requestData),
+    client.post(`..${AD_NODE_API._SEARCH}`, {body: requestData}),
 });
 
 export const createIndex = (indexConfig: any): APIAction => ({
   type: CREATE_INDEX,
   request: (client: HttpSetup) =>
-    client.put(`..${AD_NODE_API.CREATE_INDEX}`, { indexConfig }),
+    client.put(`..${AD_NODE_API.CREATE_INDEX}`, { body: indexConfig }),
 });
 
 export const bulk = (body: any): APIAction => ({
@@ -290,7 +290,7 @@ export const bulk = (body: any): APIAction => ({
 export const deleteIndex = (index: string): APIAction => ({
   type: DELETE_INDEX,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DELETE_INDEX}`, { index }),
+    client.post(`..${AD_NODE_API.DELETE_INDEX}`, { body: index }),
 });
 
 export const getPrioritizedIndices = (searchKey: string): ThunkAction => async (

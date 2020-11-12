@@ -103,7 +103,7 @@ const searchAlerts = async (
   response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
   try {
-    const { monitorId, startTime, endTime } = request.query as {
+    const { monitorId, startTime, endTime } = request.url.query as {
       monitorId?: string;
       startTime?: number;
       endTime?: number;

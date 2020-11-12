@@ -165,7 +165,6 @@ const createIndex = async (
   const body = request.body.indexConfig.body;
   try {
     await context.core.elasticsearch.legacy.client.callAsCurrentUser(
-      req,
       'indices.create',
       {
         index: index,

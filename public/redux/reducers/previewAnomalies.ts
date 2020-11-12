@@ -73,7 +73,7 @@ export const previewDetector = (
 ): APIAction => ({
   type: PREVIEW_DETECTOR,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/preview`, requestBody),
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/preview`, {body: requestBody}),
 });
 
 export default reducer;

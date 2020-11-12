@@ -65,7 +65,7 @@ export const createSampleData = (sampleDataType: SAMPLE_TYPE): APIAction => ({
   type: CREATE_SAMPLE_DATA,
   request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API.CREATE_SAMPLE_DATA}`, {
-      type: sampleDataType,
+      body: sampleDataType
     }),
 });
 

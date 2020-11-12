@@ -409,6 +409,7 @@ const getDetectors = async (
       indices = '',
       sortDirection = SORT_DIRECTION.DESC,
       sortField = 'name',
+      //@ts-ignore
     } = request.url.query as GetDetectorsQueryParams;
     const mustQueries = [];
     if (search.trim()) {
@@ -628,7 +629,8 @@ const getAnomalyResults = async (
       sortField = AD_DOC_FIELDS.DATA_START_TIME,
       dateRangeFilter = undefined,
       anomalyThreshold = -1,
-    } = request.query as {
+      //@ts-ignore
+    } = request.url.query as {
       from: number;
       size: number;
       sortDirection: SORT_DIRECTION;

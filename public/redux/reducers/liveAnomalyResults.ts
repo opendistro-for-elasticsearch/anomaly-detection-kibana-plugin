@@ -69,7 +69,7 @@ export const getDetectorLiveResults = (
   type: DETECTOR_LIVE_RESULTS,
   request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/results`, {
-      params: queryParams,
+      query: queryParams,
     }),
 });
 

@@ -37,8 +37,7 @@ const createSampleData = async (
   request: KibanaRequest,
   response: KibanaResponseFactory
 ): Promise<ServerResponse<any>> => {
-  //@ts-ignore
-  const type = request.body.type as SAMPLE_TYPE;
+  const type = request.body as SAMPLE_TYPE;
   try {
     let filePath = '';
     let indexName = '';

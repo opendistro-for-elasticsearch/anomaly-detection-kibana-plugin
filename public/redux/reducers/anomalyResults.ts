@@ -85,7 +85,7 @@ export const getDetectorResults = (
   type: DETECTOR_RESULTS,
   request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/results`, {
-      params: queryParams,
+      query: queryParams,
     }),
 });
 
