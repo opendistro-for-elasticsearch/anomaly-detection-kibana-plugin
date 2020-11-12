@@ -49,8 +49,8 @@ const reducer = handleActions<Anomalies>(
       SUCCESS: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
         requesting: false,
-        totalLiveAnomalies: action.result.data.response.totalAnomalies,
-        liveAnomalies: action.result.data.response.results,
+        totalLiveAnomalies: action.result.response.totalAnomalies,
+        liveAnomalies: action.result.response.results,
       }),
       FAILURE: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,

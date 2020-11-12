@@ -51,9 +51,9 @@ const reducer = handleActions<Anomalies>(
       SUCCESS: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
         requesting: false,
-        total: action.result.data.response.totalAnomalies,
-        anomalies: action.result.data.response.results,
-        featureData: action.result.data.response.featureResults,
+        total: action.result.response.totalAnomalies,
+        anomalies: action.result.response.results,
+        featureData: action.result.response.featureResults,
       }),
       FAILURE: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,

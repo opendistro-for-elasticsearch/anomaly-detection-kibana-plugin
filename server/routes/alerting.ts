@@ -16,7 +16,7 @@
 //@ts-ignore
 import { get, set } from 'lodash';
 import { SearchResponse } from '../models/interfaces';
-import { Monitor, ServerResponse } from '../models/types';
+import { Monitor } from '../models/types';
 import { Router } from '../router';
 import { MAX_MONITORS } from '../utils/constants';
 import { getErrorMessage } from './utils/adHelpers';
@@ -42,8 +42,8 @@ export default class AlertingService {
   searchMonitors = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<any>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       const requestBody = {
         size: MAX_MONITORS,
@@ -88,27 +88,31 @@ export default class AlertingService {
         {}
       );
 
-      return {
-        ok: true,
-        response: {
-          totalMonitors,
-          monitors: Object.values(allMonitors),
-        },
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: {
+            totalMonitors,
+            monitors: Object.values(allMonitors),
+          },
+        }
+      });
     } catch (err) {
       console.log('Unable to get monitor on top of detector', err);
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
 
   searchAlerts = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<any>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       const { monitorId, startTime, endTime } = request.url.query as {
         monitorId?: string;
@@ -123,16 +127,20 @@ export default class AlertingService {
           endTime: endTime,
         }
       );
-      return {
-        ok: true,
-        response,
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response,
+        }
+      });
     } catch (err) {
       console.log('Unable to search alerts', err);
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
 }

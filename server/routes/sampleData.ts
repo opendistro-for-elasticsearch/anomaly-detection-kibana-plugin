@@ -42,8 +42,8 @@ export default class SampleDataService {
   createSampleData = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<any>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     const type = request.body as SAMPLE_TYPE;
     try {
       let filePath = '';
@@ -78,11 +78,10 @@ export default class SampleDataService {
 
       await loadSampleData(filePath, indexName, this.client, request);
 
-      //@ts-ignore
-      return { ok: true };
+      return kibanaResponse.ok({body: { ok: true } });
     } catch (err) {
       console.log('Anomaly detector - Unable to load the sample data', err);
-      return { ok: false, error: err.message };
+      return kibanaResponse.ok({ body: { ok: false, error: err.message } });
     }
   };
 

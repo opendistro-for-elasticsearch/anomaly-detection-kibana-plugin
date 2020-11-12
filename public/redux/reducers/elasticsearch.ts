@@ -88,7 +88,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          indices: action.result.data.response.indices,
+          indices: action.result.response.indices,
         };
       },
       FAILURE: (
@@ -113,7 +113,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          aliases: action.result.data.response.aliases,
+          aliases: action.result.response.aliases,
         };
       },
       FAILURE: (
@@ -138,7 +138,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          searchResult: { ...action.result.data.response },
+          searchResult: { ...action.result.response },
         };
       },
       FAILURE: (
@@ -163,7 +163,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          dataTypes: getPathsPerDataType(action.result.data.response.mappings),
+          dataTypes: getPathsPerDataType(action.result.response.mappings),
         };
       },
       FAILURE: (
@@ -187,7 +187,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          indices: action.result.data.response.indices,
+          indices: action.result.response.indices,
         };
       },
       FAILURE: (
@@ -232,7 +232,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          indices: action.result.data.response.indices,
+          indices: action.result.response.indices,
         };
       },
       FAILURE: (

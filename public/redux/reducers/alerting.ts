@@ -57,7 +57,7 @@ const reducer = handleActions<Monitors>(
         let totalAdMonitors = 0;
         const monitors = get(
           action,
-          'result.data.response.monitors',
+          'result.response.monitors',
           []
           // @ts-ignore
         ).reduce((map, obj) => {
@@ -74,7 +74,7 @@ const reducer = handleActions<Monitors>(
         return {
           ...state,
           requesting: false,
-          totalMonitors: get(action, 'result.data.response.totalMonitors', 0),
+          totalMonitors: get(action, 'result.response.totalMonitors', 0),
           totalAdMonitors: totalAdMonitors,
           monitors: monitors,
         };

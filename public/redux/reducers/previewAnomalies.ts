@@ -52,7 +52,7 @@ const reducer = handleActions<PreviewAnomalies>(
       ): PreviewAnomalies => ({
         ...state,
         requesting: false,
-        anomaliesResult: action.result.data.response,
+        anomaliesResult: action.result.response,
       }),
       FAILURE: (
         state: PreviewAnomalies,
