@@ -13,7 +13,6 @@
  * permissions and limitations under the License.
  */
 
-//import { IHttpService, IHttpPromise, IHttpResponse } from 'angular';
 import { HttpSetup, HttpResponse } from '../../../../../src/core/public';
 import { Action, Dispatch } from 'redux';
 import { AppState } from '../reducers';

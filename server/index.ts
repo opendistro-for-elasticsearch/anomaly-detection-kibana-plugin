@@ -38,20 +38,5 @@ export interface AnomalyDetectionKibanaPluginSetup {}
 export interface AnomalyDetectionKibanaPluginStart {}
 
 export function plugin(initializerContext: PluginInitializerContext) {
-  // Core server has logging framework we can utilize that once moved to new kibana platform version.
-  // https://github.com/elastic/kibana/blob/master/src/core/server/logging/README.md
-  // const loggingInitializerContext = {
-  //   ...initializerContext,
-  //   logger: {
-  //     ...initializerContext.logger,
-  //     get() {
-  //       return {
-  //         info: (log: any) => console.log(log),
-  //         error: (log: any) => console.error(log),
-  //         warn: (log: any) => console.warn(log),
-  //       };
-  //     },
-  //   },
-  // };
   return new AnomalyDetectionKibanaPlugin(initializerContext);
 }

@@ -16,7 +16,7 @@
 import {
   APIAction,
   APIResponseAction,
-  IHttpService,
+  HttpSetup,
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { ALERTING_NODE_API } from '../../../utils/constants';
@@ -104,7 +104,7 @@ const reducer = handleActions<Monitors>(
 
 export const searchMonitors = (): APIAction => ({
   type: SEARCH_MONITORS,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.post(`..${ALERTING_NODE_API._SEARCH}`, {}),
 });
 
@@ -114,7 +114,7 @@ export const searchAlerts = (
   endTime: number
 ): APIAction => ({
   type: SEARCH_ALERTS,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.get(`..${ALERTING_NODE_API.ALERTS}`, {
       params: {
         monitorId: monitorId,

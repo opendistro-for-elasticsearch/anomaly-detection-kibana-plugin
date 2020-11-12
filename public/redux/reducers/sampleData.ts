@@ -16,7 +16,7 @@
 import {
   APIAction,
   APIResponseAction,
-  IHttpService,
+  HttpSetup
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
@@ -63,7 +63,7 @@ const reducer = handleActions<SampleDataState>(
 
 export const createSampleData = (sampleDataType: SAMPLE_TYPE): APIAction => ({
   type: CREATE_SAMPLE_DATA,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API.CREATE_SAMPLE_DATA}`, {
       type: sampleDataType,
     }),

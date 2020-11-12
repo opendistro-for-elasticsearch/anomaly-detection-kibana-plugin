@@ -16,7 +16,7 @@
 import {
   APIAction,
   APIResponseAction,
-  IHttpService,
+  HttpSetup,
   APIErrorAction,
   ThunkAction,
 } from '../middleware/types';
@@ -250,46 +250,46 @@ const reducer = handleActions<ElasticsearchState>(
 
 export const getIndices = (searchKey: string = ''): APIAction => ({
   type: GET_INDICES,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API._INDICES}?index=${searchKey}`),
   searchKey,
 });
 
 export const getAliases = (searchKey: string = ''): APIAction => ({
   type: GET_ALIASES,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API._ALIASES}?alias=${searchKey}`),
   searchKey,
 });
 
 export const getMappings = (searchKey: string = ''): APIAction => ({
   type: GET_MAPPINGS,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API._MAPPINGS}?index=${searchKey}`),
   searchKey,
 });
 
 export const searchES = (requestData: any): APIAction => ({
   type: SEARCH_ES,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API._SEARCH}`, requestData),
 });
 
 export const createIndex = (indexConfig: any): APIAction => ({
   type: CREATE_INDEX,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.put(`..${AD_NODE_API.CREATE_INDEX}`, { indexConfig }),
 });
 
 export const bulk = (body: any): APIAction => ({
   type: BULK,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API.BULK}`, { body }),
 });
 
 export const deleteIndex = (index: string): APIAction => ({
   type: DELETE_INDEX,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API.DELETE_INDEX}`, { index }),
 });
 

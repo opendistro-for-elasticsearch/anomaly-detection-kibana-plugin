@@ -29,6 +29,9 @@ import {
   PluginInitializerContext,
   Logger,
 } from '../../../src/core/server';
+// import { IClusterClient } from '../../../src/core/server/elasticsearch';
+// import adPlugin from './cluster/ad/adPlugin'
+// import alertingPlugin from './cluster/ad/alertingPlugin'
 
 export class AnomalyDetectionKibanaPlugin
   implements
@@ -41,6 +44,13 @@ export class AnomalyDetectionKibanaPlugin
     this.logger = initializerContext.logger.get();
   }
   public async setup(core: CoreSetup) {
+
+
+    // TODO: create a client here, register w/ all backend services (like routes/ad.ts)
+    // const client: IClusterClient = core.elasticsearch.legacy.createClient('anomaly_detection', {
+    //   plugins: [adPlugin, alertingPlugin]
+    // })
+
     // Create router
     const apiRouter: Router = createRouter(
       core.http.createRouter(),

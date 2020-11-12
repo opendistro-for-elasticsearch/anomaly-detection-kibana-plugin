@@ -16,7 +16,7 @@
 import {
   APIAction,
   APIResponseAction,
-  IHttpService,
+  HttpSetup,
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
@@ -83,7 +83,7 @@ export const getDetectorResults = (
   queryParams: any
 ): APIAction => ({
   type: DETECTOR_RESULTS,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/results`, {
       params: queryParams,
     }),
@@ -91,7 +91,7 @@ export const getDetectorResults = (
 
 export const searchResults = (requestBody: any): APIAction => ({
   type: SEARCH_ANOMALY_RESULTS,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API.DETECTOR}/results/_search`, requestBody),
 });
 

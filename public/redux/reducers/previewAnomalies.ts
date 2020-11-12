@@ -16,7 +16,7 @@
 import {
   APIAction,
   APIResponseAction,
-  IHttpService,
+  HttpSetup
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
@@ -72,7 +72,7 @@ export const previewDetector = (
   requestBody: any
 ): APIAction => ({
   type: PREVIEW_DETECTOR,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/preview`, requestBody),
 });
 
