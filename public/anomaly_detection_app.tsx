@@ -37,7 +37,6 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters) {
   ReactDOM.render(
     <Provider store={store}>
       <Router>
-        {/* TODO: confirm this works when angular has been removed */}
         <Route render={(props) => 
           <CoreServicesContext.Provider value={coreStart}>
             <Main httpClient={http} {...props} /> 

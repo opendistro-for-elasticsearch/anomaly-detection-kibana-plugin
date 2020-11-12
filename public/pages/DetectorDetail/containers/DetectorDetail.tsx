@@ -499,9 +499,9 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
         <Route
           exact
           path="/detectors/:detectorId/results"
-          render={(props) => (
+          render={(resultsProps) => (
             <AnomalyResults
-              {...props}
+              {...resultsProps}
               detectorId={detectorId}
               onStartDetector={() => handleStartAdJob(detectorId)}
               onSwitchToConfiguration={handleSwitchToConfigurationTab}
@@ -512,9 +512,9 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
         <Route
           exact
           path="/detectors/:detectorId/configurations"
-          render={(props) => (
+          render={(configProps) => (
             <DetectorConfig
-              {...props}
+              {...configProps}
               detectorId={detectorId}
               onEditFeatures={handleEditFeature}
               onEditDetector={handleEditDetector}

@@ -314,8 +314,7 @@ export const createDetector = (requestBody: Detector): APIAction => ({
 export const getDetector = (detectorId: string): APIAction => ({
   type: GET_DETECTOR,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}`),
-  detectorId,
+    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}`, {query: {detectorId: detectorId} })
 });
 
 export const getDetectorList = (
@@ -351,36 +350,31 @@ export const updateDetector = (
 export const deleteDetector = (detectorId: string): APIAction => ({
   type: DELETE_DETECTOR,
   request: (client: HttpSetup) =>
-    client.delete(`..${AD_NODE_API.DETECTOR}/${detectorId}`),
-  detectorId,
+    client.delete(`..${AD_NODE_API.DETECTOR}/${detectorId}`, {query: {detectorId: detectorId} })
 });
 
 export const startDetector = (detectorId: string): APIAction => ({
   type: START_DETECTOR,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/start`),
-  detectorId,
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/start`, {query: {detectorId: detectorId} })
 });
 
 export const stopDetector = (detectorId: string): APIAction => ({
   type: STOP_DETECTOR,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/stop`),
-  detectorId,
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/stop`, {query: {detectorId: detectorId} }),
 });
 
 export const getDetectorProfile = (detectorId: string): APIAction => ({
   type: GET_DETECTOR_PROFILE,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/_profile`),
-  detectorId,
+    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/_profile`, {query: {detectorId: detectorId} }),
 });
 
 export const matchDetector = (detectorName: string): APIAction => ({
   type: MATCH_DETECTOR,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API.DETECTOR}/${detectorName}/_match`),
-  detectorName,
+    client.get(`..${AD_NODE_API.DETECTOR}/${detectorName}/_match`, {query: {detectorName: detectorName} }),
 });
 
 export const getDetectorCount = (): APIAction => ({

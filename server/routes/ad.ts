@@ -91,8 +91,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      //@ts-ignore
-      const { detectorId } = request.params;
+      const { detectorId } = request.url.query as { detectorId: string };
       const response = await this.client.asScoped(request).callAsCurrentUser(
         'ad.deleteDetector',
         {
@@ -122,8 +121,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      //@ts-ignore
-      const { detectorId } = request.params;
+      const { detectorId } = request.url.query as { detectorId: string };
       const requestBody = JSON.stringify(
         convertPreviewInputKeysToSnakeCase(request.body)
       );
@@ -159,8 +157,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      //@ts-ignore
-      const { detectorId } = request.params;
+      const { detectorId } = request.url.query as { detectorId: string };
       const { ifSeqNo, ifPrimaryTerm } = request.url.query as {
         ifSeqNo?: string;
         ifPrimaryTerm?: string;
@@ -217,8 +214,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      //@ts-ignore
-      const { detectorId } = request.params;
+      const { detectorId } = request.url.query as { detectorId: string };
       const response = await this.client.asScoped(request).callAsCurrentUser(
         'ad.getDetector',
         {
@@ -278,8 +274,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      //@ts-ignore
-      const { detectorId } = request.params;
+      const { detectorId } = request.url.query as { detectorId: string };
       const response = await this.client.asScoped(request).callAsCurrentUser(
         'ad.startDetector',
         {
@@ -309,8 +304,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      //@ts-ignore
-      const { detectorId } = request.params;
+      const { detectorId } = request.url.query as { detectorId: string };
       const response = await this.client.asScoped(request).callAsCurrentUser(
         'ad.stopDetector',
         {
@@ -340,8 +334,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      //@ts-ignore
-      const { detectorId } = request.params;
+      const { detectorId } = request.url.query as { detectorId: string };
       const response = await this.client.asScoped(request).callAsCurrentUser(
         'ad.detectorProfile',
         {
@@ -845,8 +838,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      //@ts-ignore
-      const { detectorName } = request.params;
+      const { detectorName } = request.url.query as { detectorName: string };
       const response = await this.client.asScoped(request).callAsCurrentUser(
         'ad.matchDetector',
         {
