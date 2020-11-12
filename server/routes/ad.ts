@@ -146,7 +146,7 @@ const putDetector = async (
   try {
     //@ts-ignore
     const { detectorId } = request.params;
-    const { ifSeqNo, ifPrimaryTerm } = request.query as {
+    const { ifSeqNo, ifPrimaryTerm } = request.url.query as {
       ifSeqNo?: string;
       ifPrimaryTerm?: string;
     };
@@ -409,7 +409,7 @@ const getDetectors = async (
       indices = '',
       sortDirection = SORT_DIRECTION.DESC,
       sortField = 'name',
-    } = request.query as GetDetectorsQueryParams;
+    } = request.url.query as GetDetectorsQueryParams;
     const mustQueries = [];
     if (search.trim()) {
       mustQueries.push({

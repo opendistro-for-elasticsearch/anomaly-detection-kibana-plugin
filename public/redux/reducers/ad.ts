@@ -307,7 +307,7 @@ const reducer = handleActions<Detectors>(
 export const createDetector = (requestBody: Detector): APIAction => ({
   type: CREATE_DETECTOR,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DETECTOR}`, requestBody),
+    client.post(`..${AD_NODE_API.DETECTOR}`, {body: requestBody}),
 });
 
 export const getDetector = (detectorId: string): APIAction => ({
@@ -322,7 +322,7 @@ export const getDetectorList = (
 ): APIAction => ({
   type: GET_DETECTOR_LIST,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API.DETECTOR}`, { params: queryParams }),
+    client.get(`..${AD_NODE_API.DETECTOR}`, { query: queryParams }),
 });
 
 export const searchDetector = (requestBody: any): APIAction => ({
@@ -337,8 +337,9 @@ export const updateDetector = (
 ): APIAction => ({
   type: UPDATE_DETECTOR,
   request: (client: HttpSetup) =>
-    client.put(`..${AD_NODE_API.DETECTOR}/${detectorId}`, requestBody, {
-      params: {
+    client.put(`..${AD_NODE_API.DETECTOR}/${detectorId}`, {
+      body: requestBody,
+      query: {
         ifPrimaryTerm: requestBody.primaryTerm,
         ifSeqNo: requestBody.seqNo,
       },
