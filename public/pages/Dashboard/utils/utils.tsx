@@ -451,8 +451,7 @@ export const getLatestAnomalyResultsByTimeRange = async (
       )
     );
 
-    // TODO: changed from response.data -> response.body bc of new HttpResponse middleware type
-    const searchAnomalyResponse = searchResponse.body.response;
+    const searchAnomalyResponse = searchResponse.response;
 
     const numHits = get(searchAnomalyResponse, 'hits.total.value', 0);
     if (numHits === 0) {
@@ -503,8 +502,7 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
         )
       )
     );
-    // TODO: changed from response.data -> response.body bc of new HttpResponse middleware type
-    const searchAnomalyResponse = searchResponse.body.response;
+    const searchAnomalyResponse = searchResponse.response;
 
     const numHits = get(searchAnomalyResponse, 'hits.total.value', 0);
     if (numHits === 0) {
