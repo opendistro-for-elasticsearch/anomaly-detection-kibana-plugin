@@ -14,10 +14,6 @@
  */
 import { BASE_NODE_API_PATH } from '../utils/constants';
 import { default as createRouter, Router } from './router';
-import registerADRoutes from './routes/ad';
-import registerAlertingRoutes from './routes/alerting';
-import registerElasticsearchRoute from './routes/elasticsearch';
-import registerSampleDataRoutes from './routes/sampleData';
 import {
   AnomalyDetectionKibanaPluginSetup,
   AnomalyDetectionKibanaPluginStart,
@@ -29,9 +25,13 @@ import {
   PluginInitializerContext,
   Logger,
 } from '../../../src/core/server';
-// import { IClusterClient } from '../../../src/core/server/elasticsearch';
-// import adPlugin from './cluster/ad/adPlugin'
-// import alertingPlugin from './cluster/ad/alertingPlugin'
+import { ILegacyClusterClient } from '../../../src/core/server/';
+import adPlugin from './cluster/ad/adPlugin'
+import alertingPlugin from './cluster/ad/alertingPlugin'
+import AdService, {registerADRoutes} from './routes/ad';
+import AlertingService, {registerAlertingRoutes} from './routes/alerting';
+import ESService, {registerESRoutes} from './routes/elasticsearch';
+import SampleDataService, { registerSampleDataRoutes } from './routes/sampleData';
 
 export class AnomalyDetectionKibanaPlugin
   implements
@@ -45,22 +45,29 @@ export class AnomalyDetectionKibanaPlugin
   }
   public async setup(core: CoreSetup) {
 
-
-    // TODO: create a client here, register w/ all backend services (like routes/ad.ts)
-    // const client: IClusterClient = core.elasticsearch.legacy.createClient('anomaly_detection', {
-    //   plugins: [adPlugin, alertingPlugin]
-    // })
+    // Create ES client
+    const client: ILegacyClusterClient = core.elasticsearch.legacy.createClient('anomaly_detection', {
+      plugins: [adPlugin, alertingPlugin]
+    })
 
     // Create router
     const apiRouter: Router = createRouter(
       core.http.createRouter(),
       BASE_NODE_API_PATH
     );
-    // Add server routes
-    registerElasticsearchRoute(apiRouter);
-    registerADRoutes(apiRouter);
-    registerAlertingRoutes(apiRouter);
-    registerSampleDataRoutes(apiRouter);
+
+    // Create services & register with ES client
+    const adService = new AdService(client);
+    const alertingService = new AlertingService(client);
+    const esService = new ESService(client);
+    const sampleDataService = new SampleDataService(client);
+
+    // Register server routes with the service
+    registerADRoutes(apiRouter, adService);
+    registerAlertingRoutes(apiRouter, alertingService);
+    registerESRoutes(apiRouter, esService);
+    registerSampleDataRoutes(apiRouter, sampleDataService);
+
     return {};
   }
 

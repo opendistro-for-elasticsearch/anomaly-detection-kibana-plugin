@@ -16,7 +16,7 @@
 //@ts-ignore
 import moment from 'moment';
 import readline from 'readline';
-import { RequestHandlerContext } from '../../../../../src/core/server';
+import { RequestHandlerContext, KibanaRequest } from '../../../../../src/core/server';
 import fs from 'fs';
 import { createUnzip } from 'zlib';
 import { isEmpty } from 'lodash';
@@ -27,7 +27,8 @@ const BULK_INSERT_SIZE = 500;
 export const loadSampleData = (
   filePath: string,
   indexName: string,
-  context: RequestHandlerContext
+  client: any,
+  request: KibanaRequest,
 ) => {
   return new Promise((resolve, reject) => {
     let count: number = 0;
@@ -98,7 +99,7 @@ export const loadSampleData = (
     const bulkInsert = async (docs: any[]) => {
       try {
         const bulkBody = prepareBody(docs, offset);
-        const resp = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+        const resp = await client.asScoped(request).callAsCurrentUser(
           'bulk',
           {
             body: bulkBody,

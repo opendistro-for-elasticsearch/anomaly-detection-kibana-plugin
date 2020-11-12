@@ -27,54 +27,63 @@ import {
   IKibanaResponse,
 } from '../../../../src/core/server';
 
-export default function (apiRouter: Router) {
-  apiRouter.post('/create_sample_data', createSampleData);
+export function registerSampleDataRoutes (apiRouter: Router, sampleDataService: SampleDataService) {
+  apiRouter.post('/create_sample_data', sampleDataService.createSampleData);
 }
 
-// Get the zip file stored in server, unzip it, and bulk insert it
-const createSampleData = async (
-  context: RequestHandlerContext,
-  request: KibanaRequest,
-  response: KibanaResponseFactory
-): Promise<ServerResponse<any>> => {
-  const type = request.body as SAMPLE_TYPE;
-  try {
-    let filePath = '';
-    let indexName = '';
+export default class SampleDataService {
+  private client: any;
 
-    switch (type) {
-      case SAMPLE_TYPE.HTTP_RESPONSES: {
-        filePath = path.resolve(
-          __dirname,
-          '../sampleData/rawData/httpResponses.json.gz'
-        );
-        indexName = 'opendistro-sample-http-responses';
-        break;
-      }
-      case SAMPLE_TYPE.ECOMMERCE: {
-        filePath = path.resolve(
-          __dirname,
-          '../sampleData/rawData/ecommerce.json.gz'
-        );
-        indexName = 'opendistro-sample-ecommerce';
-        break;
-      }
-      case SAMPLE_TYPE.HOST_HEALTH: {
-        filePath = path.resolve(
-          __dirname,
-          '../sampleData/rawData/hostHealth.json.gz'
-        );
-        indexName = 'opendistro-sample-host-health';
-        break;
-      }
-    }
-
-    await loadSampleData(filePath, indexName, context);
-
-    //@ts-ignore
-    return { ok: true };
-  } catch (err) {
-    console.log('Anomaly detector - Unable to load the sample data', err);
-    return { ok: false, error: err.message };
+  constructor(client: any) {
+    this.client = client;
   }
-};
+
+  // Get the zip file stored in server, unzip it, and bulk insert it
+  createSampleData = async (
+    context: RequestHandlerContext,
+    request: KibanaRequest,
+    response: KibanaResponseFactory
+  ): Promise<ServerResponse<any>> => {
+    const type = request.body as SAMPLE_TYPE;
+    try {
+      let filePath = '';
+      let indexName = '';
+
+      switch (type) {
+        case SAMPLE_TYPE.HTTP_RESPONSES: {
+          filePath = path.resolve(
+            __dirname,
+            '../sampleData/rawData/httpResponses.json.gz'
+          );
+          indexName = 'opendistro-sample-http-responses';
+          break;
+        }
+        case SAMPLE_TYPE.ECOMMERCE: {
+          filePath = path.resolve(
+            __dirname,
+            '../sampleData/rawData/ecommerce.json.gz'
+          );
+          indexName = 'opendistro-sample-ecommerce';
+          break;
+        }
+        case SAMPLE_TYPE.HOST_HEALTH: {
+          filePath = path.resolve(
+            __dirname,
+            '../sampleData/rawData/hostHealth.json.gz'
+          );
+          indexName = 'opendistro-sample-host-health';
+          break;
+        }
+      }
+
+      await loadSampleData(filePath, indexName, this.client, request);
+
+      //@ts-ignore
+      return { ok: true };
+    } catch (err) {
+      console.log('Anomaly detector - Unable to load the sample data', err);
+      return { ok: false, error: err.message };
+    }
+  };
+
+}
