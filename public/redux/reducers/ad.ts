@@ -68,7 +68,7 @@ const reducer = handleActions<Detectors>(
         requesting: false,
         detectors: {
           ...state.detectors,
-          [action.result.data.response.id]: action.result.data.response,
+          [action.result.response.id]: action.result.response,
         },
       }),
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
@@ -89,7 +89,7 @@ const reducer = handleActions<Detectors>(
         detectors: {
           ...state.detectors,
           [action.detectorId]: {
-            ...cloneDeep(action.result.data.response),
+            ...cloneDeep(action.result.response),
           },
         },
       }),
@@ -162,7 +162,7 @@ const reducer = handleActions<Detectors>(
         requesting: false,
         detectors: {
           ...state.detectors,
-          ...action.result.data.response.detectors.reduce(
+          ...action.result.response.detectors.reduce(
             (acc: any, detector: Detector) => ({
               ...acc,
               [detector.id]: detector,
@@ -171,9 +171,10 @@ const reducer = handleActions<Detectors>(
           ),
         },
       }),
-      FAILURE: (state: Detectors): Detectors => ({
+      FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
+        errorMessage: action.error,
       }),
     },
     [GET_DETECTOR_LIST]: {
@@ -185,14 +186,14 @@ const reducer = handleActions<Detectors>(
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
         requesting: false,
-        detectorList: action.result.data.response.detectorList.reduce(
+        detectorList: action.result.response.detectorList.reduce(
           (acc: any, detector: DetectorListItem) => ({
             ...acc,
             [detector.id]: detector,
           }),
           {}
         ),
-        totalDetectors: action.result.data.response.totalDetectors,
+        totalDetectors: action.result.response.totalDetectors,
       }),
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
@@ -212,7 +213,7 @@ const reducer = handleActions<Detectors>(
           ...state.detectors,
           [action.detectorId]: {
             ...state.detectors[action.detectorId],
-            ...action.result.data.response,
+            ...action.result.response,
             lastUpdateTime: moment().valueOf(),
           },
         },
@@ -256,7 +257,7 @@ const reducer = handleActions<Detectors>(
           ...state.detectorList,
           [action.detectorId]: {
             ...state.detectorList[action.detectorId],
-            curState: action.result.data.response.state,
+            curState: action.result.response.state,
           },
         },
       }),

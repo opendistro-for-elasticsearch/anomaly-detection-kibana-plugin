@@ -251,21 +251,21 @@ const reducer = handleActions<ElasticsearchState>(
 export const getIndices = (searchKey: string = ''): APIAction => ({
   type: GET_INDICES,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API._INDICES}?index=${searchKey}`),
+    client.get(`..${AD_NODE_API._INDICES}`),
   searchKey,
 });
 
 export const getAliases = (searchKey: string = ''): APIAction => ({
   type: GET_ALIASES,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API._ALIASES}?alias=${searchKey}`),
+    client.get(`..${AD_NODE_API._ALIASES}`),
   searchKey,
 });
 
 export const getMappings = (searchKey: string = ''): APIAction => ({
   type: GET_MAPPINGS,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API._MAPPINGS}?index=${searchKey}`),
+    client.get(`..${AD_NODE_API._MAPPINGS}`),
   searchKey,
 });
 

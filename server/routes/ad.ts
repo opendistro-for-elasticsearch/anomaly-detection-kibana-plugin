@@ -88,8 +88,8 @@ export default class AdService {
   deleteDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<AnomalyResults>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       //@ts-ignore
       const { detectorId } = request.params;
@@ -99,24 +99,28 @@ export default class AdService {
           detectorId,
         }
       );
-      return {
-        ok: true,
-        response: response,
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: response,
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - deleteDetector', err);
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   previewDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<AnomalyResults>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       //@ts-ignore
       const { detectorId } = request.params;
@@ -131,25 +135,29 @@ export default class AdService {
         }
       );
       const transformedKeys = mapKeysDeep(response, toCamel);
-      return {
-        ok: true,
-        //@ts-ignore
-        response: anomalyResultMapper(transformedKeys.anomalyResult),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          //@ts-ignore
+          response: anomalyResultMapper(transformedKeys.anomalyResult)
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - previewDetector', err);
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   putDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<Detector>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       //@ts-ignore
       const { detectorId } = request.params;
@@ -186,24 +194,28 @@ export default class AdService {
         primaryTerm: response._primary_term,
         seqNo: response._seq_no,
       };
-      return {
-        ok: true,
-        response: convertDetectorKeysToCamelCase(resp) as Detector,
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: convertDetectorKeysToCamelCase(resp) as Detector,
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - PutDetector', err);
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   getDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<Detector>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       //@ts-ignore
       const { detectorId } = request.params;
@@ -243,24 +255,28 @@ export default class AdService {
             }
           : {}),
       };
-      return {
-        ok: true,
-        response: convertDetectorKeysToCamelCase(resp) as Detector,
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: convertDetectorKeysToCamelCase(resp) as Detector,
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - Unable to get detector', err);
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   startDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<AnomalyResults>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       //@ts-ignore
       const { detectorId } = request.params;
@@ -270,24 +286,28 @@ export default class AdService {
           detectorId,
         }
       );
-      return {
-        ok: true,
-        response: response,
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: response,
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - startDetector', err);
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   stopDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<AnomalyResults>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       //@ts-ignore
       const { detectorId } = request.params;
@@ -297,24 +317,28 @@ export default class AdService {
           detectorId,
         }
       );
-      return {
-        ok: true,
-        response: response,
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: response,
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - stopDetector', err);
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   getDetectorProfile = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<any>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       //@ts-ignore
       const { detectorId } = request.params;
@@ -324,24 +348,28 @@ export default class AdService {
           detectorId,
         }
       );
-      return {
-        ok: true,
-        response,
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - detectorProfile', err);
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   searchDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<any>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       const requestBody = JSON.stringify(request.body);
       const response: SearchResponse<Detector> = await this.client.asScoped(request).callAsCurrentUser(
@@ -355,30 +383,34 @@ export default class AdService {
         seqNo: detector._seq_no,
         primaryTerm: detector._primary_term,
       }));
-      return {
-        ok: true,
-        response: {
-          totalDetectors,
-          detectors,
-        },
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: {
+            totalDetectors,
+            detectors,
+          },
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - Unable to search detectors', err);
       if (isIndexNotFoundError(err)) {
-        return { ok: true, response: { totalDetectors: 0, detectors: [] } };
+        return kibanaResponse.ok({ body: { ok: true, response: { totalDetectors: 0, detectors: [] } } });
       }
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   searchResults = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<any>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       const requestBody = JSON.stringify(request.body);
       const response = await this.client.asScoped(request).callAsCurrentUser(
@@ -387,27 +419,31 @@ export default class AdService {
           body: requestBody,
         }
       );
-      return {
-        ok: true,
-        response,
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response,
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - Unable to search anomaly result', err);
       if (isIndexNotFoundError(err)) {
-        return { ok: true, response: { totalDetectors: 0, detectors: [] } };
+        return kibanaResponse.ok({ body: { ok: true, response: { totalDetectors: 0, detectors: [] } } });
       }
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   getDetectors = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<any>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       const {
         from = 0,
@@ -459,7 +495,7 @@ export default class AdService {
           },
         },
       };
-      const response: SearchResponse<Detector> = await this.client.asScoped(request).callAsCurrentUser(
+      const response: any = await this.client.asScoped(request).callAsCurrentUser(
         'ad.searchDetector',
         { body: requestBody }
       );
@@ -604,34 +640,35 @@ export default class AdService {
       finalDetectors.forEach((detector, i) => {
         detector.enabledTime = finalDetectorsWithJob[i].enabledTime;
       });
-
-      console.log('response (total detectors): ', totalDetectors)
-      console.log('response (detectorList): ', Object.values(finalDetectors))
   
-      return {
-        ok: true,
-        response: {
-          totalDetectors,
-          detectorList: Object.values(finalDetectors),
-        },
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: {
+            totalDetectors,
+            detectorList: Object.values(finalDetectors),
+          },
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - Unable to search detectors', err);
       if (isIndexNotFoundError(err)) {
-        return { ok: true, response: { totalDetectors: 0, detectorList: [] } };
+        return kibanaResponse.ok({ body: { ok: true, response: { totalDetectors: 0, detectorList: [] } } });
       }
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   getAnomalyResults = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<AnomalyResultsResponse>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       const {
         from = 0,
@@ -781,28 +818,32 @@ export default class AdService {
           });
         });
       });
-      return {
-        ok: true,
-        response: {
-          totalAnomalies: totalResults,
-          results: detectorResult,
-          featureResults: featureResult,
-        },
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: {
+            totalAnomalies: totalResults,
+            results: detectorResult,
+            featureResults: featureResult,
+          },
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - Unable to get results', err);
-      return {
-        ok: false,
-        error: getErrorMessage(err),
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        }
+      });
     }
   };
   
   matchDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<AnomalyResults>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       //@ts-ignore
       const { detectorName } = request.params;
@@ -812,32 +853,36 @@ export default class AdService {
           detectorName,
         }
       );
-      return {
-        ok: true,
-        response: response,
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: response,
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - matchDetector', err);
-      return { ok: false, error: getErrorMessage(err) };
+      return kibanaResponse.ok({ body: { ok: false, error: getErrorMessage(err) } });
     }
   };
   
   getDetectorCount = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<ServerResponse<AnomalyResults>> => {
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
     try {
       const response = await this.client.asScoped(request).callAsCurrentUser(
         'ad.detectorCount'
       );
-      return {
-        ok: true,
-        response: response,
-      };
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: response,
+        }
+      });
     } catch (err) {
       console.log('Anomaly detector - getDetectorCount', err);
-      return { ok: false, error: getErrorMessage(err) };
+      return kibanaResponse.ok({ body: { ok: false, error: getErrorMessage(err) } });
     }
   };
   
