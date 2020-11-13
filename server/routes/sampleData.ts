@@ -31,7 +31,10 @@ export function registerSampleDataRoutes(
   apiRouter: Router,
   sampleDataService: SampleDataService
 ) {
-  apiRouter.post('/create_sample_data', sampleDataService.createSampleData);
+  apiRouter.post(
+    '/create_sample_data/{type}',
+    sampleDataService.createSampleData
+  );
 }
 
 export default class SampleDataService {
@@ -48,7 +51,7 @@ export default class SampleDataService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     //@ts-ignore
-    const type = request.query.type as SAMPLE_TYPE;
+    const type = request.params.type as SAMPLE_TYPE;
     try {
       let filePath = '';
       let indexName = '';

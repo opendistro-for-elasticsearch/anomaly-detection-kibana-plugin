@@ -94,7 +94,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      const { detectorId } = request.url.query as { detectorId: string };
+      const { detectorId } = request.params as { detectorId: string };
       const response = await this.client
         .asScoped(request)
         .callAsCurrentUser('ad.deleteDetector', {
@@ -123,7 +123,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      const { detectorId } = request.url.query as { detectorId: string };
+      const { detectorId } = request.params as { detectorId: string };
       const requestBody = JSON.stringify(
         convertPreviewInputKeysToSnakeCase(request.body)
       );
@@ -158,11 +158,12 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      const { detectorId } = request.url.query as { detectorId: string };
-      const { ifSeqNo, ifPrimaryTerm } = request.url.query as {
-        ifSeqNo?: string;
-        ifPrimaryTerm?: string;
-      };
+      const { detectorId } = request.params as { detectorId: string };
+      //@ts-ignore
+      const ifSeqNo = request.body.seqNo;
+      //@ts-ignore
+      const ifPrimaryTerm = request.body.primaryTerm;
+
       const requestBody = JSON.stringify(
         convertDetectorKeysToSnakeCase(request.body)
       );
@@ -213,7 +214,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      const { detectorId } = request.url.query as { detectorId: string };
+      const { detectorId } = request.params as { detectorId: string };
       const response = await this.client
         .asScoped(request)
         .callAsCurrentUser('ad.getDetector', {
@@ -274,7 +275,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      const { detectorId } = request.url.query as { detectorId: string };
+      const { detectorId } = request.params as { detectorId: string };
       const response = await this.client
         .asScoped(request)
         .callAsCurrentUser('ad.startDetector', {
@@ -303,7 +304,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      const { detectorId } = request.url.query as { detectorId: string };
+      const { detectorId } = request.params as { detectorId: string };
       const response = await this.client
         .asScoped(request)
         .callAsCurrentUser('ad.stopDetector', {
@@ -332,7 +333,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      const { detectorId } = request.url.query as { detectorId: string };
+      const { detectorId } = request.params as { detectorId: string };
       const response = await this.client
         .asScoped(request)
         .callAsCurrentUser('ad.detectorProfile', {
@@ -444,8 +445,7 @@ export default class AdService {
         indices = '',
         sortDirection = SORT_DIRECTION.DESC,
         sortField = 'name',
-        //@ts-ignore
-      } = request.url.query as GetDetectorsQueryParams;
+      } = request.query as GetDetectorsQueryParams;
       const mustQueries = [];
       if (search.trim()) {
         mustQueries.push({
@@ -659,6 +659,7 @@ export default class AdService {
     request: KibanaRequest,
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
+    const { detectorId } = request.params as { detectorId: string };
     try {
       const {
         from = 0,
@@ -667,8 +668,7 @@ export default class AdService {
         sortField = AD_DOC_FIELDS.DATA_START_TIME,
         dateRangeFilter = undefined,
         anomalyThreshold = -1,
-        //@ts-ignore
-      } = request.url.query as {
+      } = request.query as {
         from: number;
         size: number;
         sortDirection: SORT_DIRECTION;
@@ -676,8 +676,6 @@ export default class AdService {
         dateRangeFilter?: string;
         anomalyThreshold: number;
       };
-      //@ts-ignore
-      const { detectorId } = request.params;
 
       //Allowed sorting columns
       const sortQueryMap = {
@@ -834,7 +832,7 @@ export default class AdService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      const { detectorName } = request.url.query as { detectorName: string };
+      const { detectorName } = request.params as { detectorName: string };
       const response = await this.client
         .asScoped(request)
         .callAsCurrentUser('ad.matchDetector', {

@@ -81,14 +81,16 @@ export const getDetectorResults = (
   type: DETECTOR_RESULTS,
   request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/results`, {
-      query: queryParams,
+      body: JSON.stringify(queryParams),
     }),
 });
 
 export const searchResults = (requestBody: any): APIAction => ({
   type: SEARCH_ANOMALY_RESULTS,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/results/_search`, requestBody),
+    client.post(`..${AD_NODE_API.DETECTOR}/results/_search`, {
+      body: JSON.stringify(requestBody),
+    }),
 });
 
 export default reducer;

@@ -116,7 +116,7 @@ export default class AlertingService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      const { monitorId, startTime, endTime } = request.url.query as {
+      const { monitorId, startTime, endTime } = request.query as {
         monitorId?: string;
         startTime?: number;
         endTime?: number;

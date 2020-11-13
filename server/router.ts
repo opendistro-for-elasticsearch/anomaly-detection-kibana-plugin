@@ -60,7 +60,11 @@ export default (iRouter: IRouter, basePath: String): Router => {
             iRouter.get(
               {
                 path: `${basePath}${path}`,
-                validate: false,
+                validate: {
+                  params: schema.any(),
+                  query: schema.any(),
+                  body: schema.any(),
+                },
               },
               requestHandler(handler)
             );
@@ -71,6 +75,8 @@ export default (iRouter: IRouter, basePath: String): Router => {
               {
                 path: `${basePath}${path}`,
                 validate: {
+                  params: schema.any(),
+                  query: schema.any(),
                   body: schema.any(),
                 },
               },
@@ -83,6 +89,7 @@ export default (iRouter: IRouter, basePath: String): Router => {
               {
                 path: `${basePath}${path}`,
                 validate: {
+                  params: schema.any(),
                   query: schema.any(),
                   body: schema.any(),
                 },
@@ -95,7 +102,11 @@ export default (iRouter: IRouter, basePath: String): Router => {
             iRouter.delete(
               {
                 path: `${basePath}${path}`,
-                validate: false,
+                validate: {
+                  params: schema.any(),
+                  query: schema.any(),
+                  body: schema.any(),
+                },
               },
               requestHandler(handler)
             );

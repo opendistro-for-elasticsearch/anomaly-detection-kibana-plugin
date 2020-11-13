@@ -100,8 +100,7 @@ const reducer = handleActions<Monitors>(
 
 export const searchMonitors = (): APIAction => ({
   type: SEARCH_MONITORS,
-  request: (client: HttpSetup) =>
-    client.post(`..${ALERTING_NODE_API._SEARCH}`, {}),
+  request: (client: HttpSetup) => client.post(`..${ALERTING_NODE_API._SEARCH}`),
 });
 
 export const searchAlerts = (

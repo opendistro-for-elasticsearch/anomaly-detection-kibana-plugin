@@ -250,26 +250,28 @@ const reducer = handleActions<ElasticsearchState>(
 
 export const getIndices = (searchKey: string = ''): APIAction => ({
   type: GET_INDICES,
-  request: (client: HttpSetup) => client.get(`..${AD_NODE_API._INDICES}`),
-  searchKey,
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API._INDICES}`, { query: searchKey }),
 });
 
 export const getAliases = (searchKey: string = ''): APIAction => ({
   type: GET_ALIASES,
-  request: (client: HttpSetup) => client.get(`..${AD_NODE_API._ALIASES}`),
-  searchKey,
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API._ALIASES}`, { query: searchKey }),
 });
 
 export const getMappings = (searchKey: string = ''): APIAction => ({
   type: GET_MAPPINGS,
-  request: (client: HttpSetup) => client.get(`..${AD_NODE_API._MAPPINGS}`),
-  searchKey,
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API._MAPPINGS}`, { query: searchKey }),
 });
 
 export const searchES = (requestData: any): APIAction => ({
   type: SEARCH_ES,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API._SEARCH}`, { body: requestData }),
+    client.post(`..${AD_NODE_API._SEARCH}`, {
+      body: JSON.stringify(requestData),
+    }),
 });
 
 export const createIndex = (indexConfig: any): APIAction => ({

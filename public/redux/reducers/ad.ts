@@ -308,15 +308,15 @@ const reducer = handleActions<Detectors>(
 export const createDetector = (requestBody: Detector): APIAction => ({
   type: CREATE_DETECTOR,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DETECTOR}`, { body: requestBody }),
+    client.post(`..${AD_NODE_API.DETECTOR}`, {
+      body: JSON.stringify(requestBody),
+    }),
 });
 
 export const getDetector = (detectorId: string): APIAction => ({
   type: GET_DETECTOR,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}`, {
-      query: { detectorId: detectorId },
-    }),
+    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}`),
 });
 
 export const getDetectorList = (
@@ -330,7 +330,9 @@ export const getDetectorList = (
 export const searchDetector = (requestBody: any): APIAction => ({
   type: SEARCH_DETECTOR,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/_search`, requestBody),
+    client.post(`..${AD_NODE_API.DETECTOR}/_search`, {
+      body: JSON.stringify(requestBody),
+    }),
 });
 
 export const updateDetector = (
@@ -340,53 +342,38 @@ export const updateDetector = (
   type: UPDATE_DETECTOR,
   request: (client: HttpSetup) =>
     client.put(`..${AD_NODE_API.DETECTOR}/${detectorId}`, {
-      body: requestBody,
-      query: {
-        ifPrimaryTerm: requestBody.primaryTerm,
-        ifSeqNo: requestBody.seqNo,
-      },
+      body: JSON.stringify(requestBody),
     }),
-  detectorId,
 });
 
 export const deleteDetector = (detectorId: string): APIAction => ({
   type: DELETE_DETECTOR,
   request: (client: HttpSetup) =>
-    client.delete(`..${AD_NODE_API.DETECTOR}/${detectorId}`, {
-      query: { detectorId: detectorId },
-    }),
+    client.delete(`..${AD_NODE_API.DETECTOR}/${detectorId}`),
 });
 
 export const startDetector = (detectorId: string): APIAction => ({
   type: START_DETECTOR,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/start`, {
-      query: { detectorId: detectorId },
-    }),
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/start`),
 });
 
 export const stopDetector = (detectorId: string): APIAction => ({
   type: STOP_DETECTOR,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/stop`, {
-      query: { detectorId: detectorId },
-    }),
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/stop`),
 });
 
 export const getDetectorProfile = (detectorId: string): APIAction => ({
   type: GET_DETECTOR_PROFILE,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/_profile`, {
-      query: { detectorId: detectorId },
-    }),
+    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/_profile`),
 });
 
 export const matchDetector = (detectorName: string): APIAction => ({
   type: MATCH_DETECTOR,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API.DETECTOR}/${detectorName}/_match`, {
-      query: { detectorName: detectorName },
-    }),
+    client.get(`..${AD_NODE_API.DETECTOR}/${detectorName}/_match`),
 });
 
 export const getDetectorCount = (): APIAction => ({

@@ -222,7 +222,6 @@ export default class ESService {
   ): Promise<IKibanaResponse<any>> => {
     //@ts-ignore
     const body = request.params;
-    console.log('request: ', request);
     try {
       const response: any = await this.client
         .asScoped(request)
