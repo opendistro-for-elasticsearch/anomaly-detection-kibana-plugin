@@ -61,7 +61,7 @@ type PutDetectorParams = {
   body: string;
 };
 
-export function registerADRoutes (apiRouter: Router, adService: AdService) {
+export function registerADRoutes(apiRouter: Router, adService: AdService) {
   apiRouter.post('/detectors', adService.putDetector);
   apiRouter.put('/detectors/{detectorId}', adService.putDetector);
   apiRouter.post('/detectors/_search', adService.searchDetector);
@@ -73,7 +73,10 @@ export function registerADRoutes (apiRouter: Router, adService: AdService) {
   apiRouter.delete('/detectors/{detectorId}', adService.deleteDetector);
   apiRouter.post('/detectors/{detectorId}/start', adService.startDetector);
   apiRouter.post('/detectors/{detectorId}/stop', adService.stopDetector);
-  apiRouter.get('/detectors/{detectorId}/_profile', adService.getDetectorProfile);
+  apiRouter.get(
+    '/detectors/{detectorId}/_profile',
+    adService.getDetectorProfile
+  );
   apiRouter.get('/detectors/{detectorName}/_match', adService.matchDetector);
   apiRouter.get('/detectors/_count', adService.getDetectorCount);
 }
@@ -92,17 +95,16 @@ export default class AdService {
   ): Promise<IKibanaResponse<any>> => {
     try {
       const { detectorId } = request.url.query as { detectorId: string };
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.deleteDetector',
-        {
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.deleteDetector', {
           detectorId,
-        }
-      );
+        });
       return kibanaResponse.ok({
         body: {
           ok: true,
           response: response,
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - deleteDetector', err);
@@ -110,11 +112,11 @@ export default class AdService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   previewDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -125,20 +127,19 @@ export default class AdService {
       const requestBody = JSON.stringify(
         convertPreviewInputKeysToSnakeCase(request.body)
       );
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.previewDetector',
-        {
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.previewDetector', {
           detectorId,
           body: requestBody,
-        }
-      );
+        });
       const transformedKeys = mapKeysDeep(response, toCamel);
       return kibanaResponse.ok({
         body: {
           ok: true,
           //@ts-ignore
-          response: anomalyResultMapper(transformedKeys.anomalyResult)
-        }
+          response: anomalyResultMapper(transformedKeys.anomalyResult),
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - previewDetector', err);
@@ -146,11 +147,11 @@ export default class AdService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   putDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -173,17 +174,15 @@ export default class AdService {
       };
       let response;
       if (ifSeqNo && ifPrimaryTerm) {
-        response = await this.client.asScoped(request).callAsCurrentUser(
-          'ad.updateDetector',
-          params
-        );
+        response = await this.client
+          .asScoped(request)
+          .callAsCurrentUser('ad.updateDetector', params);
       } else {
-        response = await this.client.asScoped(request).callAsCurrentUser(
-          'ad.createDetector',
-          {
+        response = await this.client
+          .asScoped(request)
+          .callAsCurrentUser('ad.createDetector', {
             body: params.body,
-          }
-        );
+          });
       }
       const resp = {
         ...response.anomaly_detector,
@@ -195,7 +194,7 @@ export default class AdService {
         body: {
           ok: true,
           response: convertDetectorKeysToCamelCase(resp) as Detector,
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - PutDetector', err);
@@ -203,11 +202,11 @@ export default class AdService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   getDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -215,27 +214,28 @@ export default class AdService {
   ): Promise<IKibanaResponse<any>> => {
     try {
       const { detectorId } = request.url.query as { detectorId: string };
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.getDetector',
-        {
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.getDetector', {
           detectorId,
-        }
-      );
+        });
       let detectorState;
       try {
-        const detectorStateResp = await this.client.asScoped(request).callAsCurrentUser(
-          'ad.detectorProfile',
-          {
+        const detectorStateResp = await this.client
+          .asScoped(request)
+          .callAsCurrentUser('ad.detectorProfile', {
             detectorId: detectorId,
-          }
-        );
+          });
         const detectorStates = getFinalDetectorStates(
           [detectorStateResp],
           [convertDetectorKeysToCamelCase(response.anomaly_detector)]
         );
         detectorState = detectorStates[0];
       } catch (err) {
-        console.log('Anomaly detector - Unable to retrieve detector state', err);
+        console.log(
+          'Anomaly detector - Unable to retrieve detector state',
+          err
+        );
       }
       const resp = {
         ...response.anomaly_detector,
@@ -255,7 +255,7 @@ export default class AdService {
         body: {
           ok: true,
           response: convertDetectorKeysToCamelCase(resp) as Detector,
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to get detector', err);
@@ -263,11 +263,11 @@ export default class AdService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   startDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -275,17 +275,16 @@ export default class AdService {
   ): Promise<IKibanaResponse<any>> => {
     try {
       const { detectorId } = request.url.query as { detectorId: string };
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.startDetector',
-        {
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.startDetector', {
           detectorId,
-        }
-      );
+        });
       return kibanaResponse.ok({
         body: {
           ok: true,
           response: response,
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - startDetector', err);
@@ -293,11 +292,11 @@ export default class AdService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   stopDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -305,17 +304,16 @@ export default class AdService {
   ): Promise<IKibanaResponse<any>> => {
     try {
       const { detectorId } = request.url.query as { detectorId: string };
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.stopDetector',
-        {
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.stopDetector', {
           detectorId,
-        }
-      );
+        });
       return kibanaResponse.ok({
         body: {
           ok: true,
           response: response,
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - stopDetector', err);
@@ -323,11 +321,11 @@ export default class AdService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   getDetectorProfile = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -335,17 +333,16 @@ export default class AdService {
   ): Promise<IKibanaResponse<any>> => {
     try {
       const { detectorId } = request.url.query as { detectorId: string };
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.detectorProfile',
-        {
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.detectorProfile', {
           detectorId,
-        }
-      );
+        });
       return kibanaResponse.ok({
         body: {
           ok: true,
-          response
-        }
+          response,
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - detectorProfile', err);
@@ -353,11 +350,11 @@ export default class AdService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   searchDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -365,10 +362,9 @@ export default class AdService {
   ): Promise<IKibanaResponse<any>> => {
     try {
       const requestBody = JSON.stringify(request.body);
-      const response: SearchResponse<Detector> = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.searchDetector',
-        { body: requestBody }
-      );
+      const response: SearchResponse<Detector> = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.searchDetector', { body: requestBody });
       const totalDetectors = get(response, 'hits.total.value', 0);
       const detectors = get(response, 'hits.hits', []).map((detector: any) => ({
         ...convertDetectorKeysToCamelCase(detector._source),
@@ -383,22 +379,24 @@ export default class AdService {
             totalDetectors,
             detectors,
           },
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to search detectors', err);
       if (isIndexNotFoundError(err)) {
-        return kibanaResponse.ok({ body: { ok: true, response: { totalDetectors: 0, detectors: [] } } });
+        return kibanaResponse.ok({
+          body: { ok: true, response: { totalDetectors: 0, detectors: [] } },
+        });
       }
       return kibanaResponse.ok({
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   searchResults = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -406,32 +404,33 @@ export default class AdService {
   ): Promise<IKibanaResponse<any>> => {
     try {
       const requestBody = JSON.stringify(request.body);
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.searchResults',
-        {
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.searchResults', {
           body: requestBody,
-        }
-      );
+        });
       return kibanaResponse.ok({
         body: {
           ok: true,
           response,
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to search anomaly result', err);
       if (isIndexNotFoundError(err)) {
-        return kibanaResponse.ok({ body: { ok: true, response: { totalDetectors: 0, detectors: [] } } });
+        return kibanaResponse.ok({
+          body: { ok: true, response: { totalDetectors: 0, detectors: [] } },
+        });
       }
       return kibanaResponse.ok({
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   getDetectors = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -488,11 +487,10 @@ export default class AdService {
           },
         },
       };
-      const response: any = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.searchDetector',
-        { body: requestBody }
-      );
-      
+      const response: any = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.searchDetector', { body: requestBody });
+
       const totalDetectors = get(response, 'hits.total.value', 0);
       //Get all detectors from search detector API
       const allDetectors = get(response, 'hits.hits', []).reduce(
@@ -510,9 +508,9 @@ export default class AdService {
       );
       //Given each detector from previous result, get aggregation to power list
       const allDetectorIds = Object.keys(allDetectors);
-      const aggregationResult = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.searchResults',
-        {
+      const aggregationResult = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.searchResults', {
           body: getResultAggregationQuery(allDetectorIds, {
             from,
             size,
@@ -521,8 +519,7 @@ export default class AdService {
             search,
             indices,
           }),
-        }
-      );
+        });
       const aggsDetectors = get(
         aggregationResult,
         'aggregations.unique_detectors.buckets',
@@ -537,7 +534,7 @@ export default class AdService {
           },
         };
       }, {});
-  
+
       // Aggregation will not return values where anomalies for detectors are not generated, loop through it and fill values with 0
       const unUsedDetectors = pullAll(
         allDetectorIds,
@@ -552,7 +549,7 @@ export default class AdService {
           },
         };
       }, {});
-  
+
       // If sorting criteria is from the aggregation manage pagination in memory.
       let finalDetectors = orderBy<any>(
         { ...aggsDetectors, ...unUsedDetectors },
@@ -567,18 +564,17 @@ export default class AdService {
             {}
           );
       }
-  
+
       // Get detector state as well: loop through the ids to get each detector's state using profile api
       const allIds = finalDetectors.map((detector) => detector.id);
-  
+
       const detectorStatePromises = allIds.map(async (id: string) => {
         try {
-          const detectorStateResp = await this.client.asScoped(request).callAsCurrentUser(
-            'ad.detectorProfile',
-            {
+          const detectorStateResp = await this.client
+            .asScoped(request)
+            .callAsCurrentUser('ad.detectorProfile', {
               detectorId: id,
-            }
-          );
+            });
           return detectorStateResp;
         } catch (err) {
           console.log('Error getting detector profile ', err);
@@ -602,16 +598,15 @@ export default class AdService {
       finalDetectors.forEach((detector, i) => {
         detector.curState = finalDetectorStates[i].state;
       });
-  
+
       // get ad job
       const detectorsWithJobPromises = allIds.map(async (id: string) => {
         try {
-          const detectorResp = await this.client.asScoped(request).callAsCurrentUser(
-            'ad.getDetector',
-            {
+          const detectorResp = await this.client
+            .asScoped(request)
+            .callAsCurrentUser('ad.getDetector', {
               detectorId: id,
-            }
-          );
+            });
           return detectorResp;
         } catch (err) {
           console.log('Error getting detector ', err);
@@ -628,12 +623,12 @@ export default class AdService {
       const finalDetectorsWithJob = getDetectorsWithJob(
         detectorsWithJobResponses
       );
-  
+
       // update the final detectors to include the detector enabledTime
       finalDetectors.forEach((detector, i) => {
         detector.enabledTime = finalDetectorsWithJob[i].enabledTime;
       });
-  
+
       return kibanaResponse.ok({
         body: {
           ok: true,
@@ -641,22 +636,24 @@ export default class AdService {
             totalDetectors,
             detectorList: Object.values(finalDetectors),
           },
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to search detectors', err);
       if (isIndexNotFoundError(err)) {
-        return kibanaResponse.ok({ body: { ok: true, response: { totalDetectors: 0, detectorList: [] } } });
+        return kibanaResponse.ok({
+          body: { ok: true, response: { totalDetectors: 0, detectorList: [] } },
+        });
       }
       return kibanaResponse.ok({
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   getAnomalyResults = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -681,7 +678,7 @@ export default class AdService {
       };
       //@ts-ignore
       const { detectorId } = request.params;
-  
+
       //Allowed sorting columns
       const sortQueryMap = {
         anomalyGrade: { anomaly_grade: sortDirection },
@@ -698,7 +695,7 @@ export default class AdService {
       if (sortQuery) {
         sort = sortQuery;
       }
-  
+
       //Preparing search request
       const requestBody = {
         sort,
@@ -712,7 +709,7 @@ export default class AdService {
                   detector_id: detectorId,
                 },
               },
-  
+
               {
                 range: {
                   anomaly_grade: {
@@ -724,7 +721,7 @@ export default class AdService {
           },
         },
       };
-  
+
       try {
         const dateRangeFilterObj = (dateRangeFilter
           ? JSON.parse(dateRangeFilter)
@@ -737,14 +734,14 @@ export default class AdService {
               `${filterSize}.range.${dateRangeFilterObj.fieldName}.format`,
               'epoch_millis'
             );
-  
+
           dateRangeFilterObj.startTime &&
             set(
               requestBody.query.bool.filter,
               `${filterSize}.range.${dateRangeFilterObj.fieldName}.gte`,
               dateRangeFilterObj.startTime
             );
-  
+
           dateRangeFilterObj.endTime &&
             set(
               requestBody.query.bool.filter,
@@ -755,16 +752,15 @@ export default class AdService {
       } catch (error) {
         console.log('wrong date range filter', error);
       }
-  
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.searchResults',
-        {
+
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.searchResults', {
           body: requestBody,
-        }
-      );
-  
+        });
+
       const totalResults: number = get(response, 'hits.total.value', 0);
-  
+
       const detectorResult: AnomalyResult[] = [];
       const featureResult: { [key: string]: FeatureResult[] } = {};
       get(response, 'hits.hits', []).forEach((result: any) => {
@@ -819,7 +815,7 @@ export default class AdService {
             results: detectorResult,
             featureResults: featureResult,
           },
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to get results', err);
@@ -827,11 +823,11 @@ export default class AdService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
-  
+
   matchDetector = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
@@ -839,45 +835,48 @@ export default class AdService {
   ): Promise<IKibanaResponse<any>> => {
     try {
       const { detectorName } = request.url.query as { detectorName: string };
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.matchDetector',
-        {
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.matchDetector', {
           detectorName,
-        }
-      );
+        });
       return kibanaResponse.ok({
         body: {
           ok: true,
           response: response,
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - matchDetector', err);
-      return kibanaResponse.ok({ body: { ok: false, error: getErrorMessage(err) } });
+      return kibanaResponse.ok({
+        body: { ok: false, error: getErrorMessage(err) },
+      });
     }
   };
-  
+
   getDetectorCount = async (
     context: RequestHandlerContext,
     request: KibanaRequest,
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     try {
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'ad.detectorCount'
-      );
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.detectorCount');
       return kibanaResponse.ok({
         body: {
           ok: true,
           response: response,
-        }
+        },
       });
     } catch (err) {
       console.log('Anomaly detector - getDetectorCount', err);
-      return kibanaResponse.ok({ body: { ok: false, error: getErrorMessage(err) } });
+      return kibanaResponse.ok({
+        body: { ok: false, error: getErrorMessage(err) },
+      });
     }
   };
-  
+
   getFeatureData = (rawResult: any) => {
     const featureResult: { [key: string]: FeatureResult } = {};
     rawResult._source.feature_data.forEach((featureData: any) => {

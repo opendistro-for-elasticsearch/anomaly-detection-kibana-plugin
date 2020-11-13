@@ -156,7 +156,7 @@ export const SampleData = (props: SampleDataProps) => {
         })
         .catch((error: any) => {
           errorDuringAction = true;
-          errorMessage = prettifyErrorMessage(error);
+          errorMessage = prettifyErrorMessage(error.message);
           console.error('Error creating sample detector: ', errorMessage);
         });
     }

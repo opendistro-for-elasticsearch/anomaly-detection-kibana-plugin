@@ -15,11 +15,10 @@
 
 import { Action } from 'redux';
 
-
 export const SET_HIDE_SIDE_NAV_BAR_STATE = 'adApp/SET_HIDE_SIDE_NAV_BAR_STATE';
 
 const initialAdAppState = {
-  hideSideNavBar: false
+  hideSideNavBar: false,
 };
 
 export interface AdAppState {
@@ -39,6 +38,6 @@ const reducer = (state = initialAdAppState, action: Action) => {
     default:
       return state;
   }
-}
+};
 
 export default reducer;

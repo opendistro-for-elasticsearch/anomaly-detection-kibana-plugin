@@ -13,11 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import {
-  APIAction,
-  APIResponseAction,
-  HttpSetup
-} from '../middleware/types';
+import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
 import { SAMPLE_TYPE } from '../../utils/constants';
@@ -65,7 +61,7 @@ export const createSampleData = (sampleDataType: SAMPLE_TYPE): APIAction => ({
   type: CREATE_SAMPLE_DATA,
   request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API.CREATE_SAMPLE_DATA}`, {
-      body: sampleDataType
+      query: { type: sampleDataType },
     }),
 });
 

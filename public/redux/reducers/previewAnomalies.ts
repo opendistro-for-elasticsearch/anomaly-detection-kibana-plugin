@@ -13,11 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import {
-  APIAction,
-  APIResponseAction,
-  HttpSetup
-} from '../middleware/types';
+import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
 import { Anomalies } from '../../models/interfaces';
@@ -73,7 +69,9 @@ export const previewDetector = (
 ): APIAction => ({
   type: PREVIEW_DETECTOR,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/preview`, {body: requestBody}),
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/preview`, {
+      body: requestBody,
+    }),
 });
 
 export default reducer;

@@ -27,7 +27,10 @@ import {
   IKibanaResponse,
 } from '../../../../src/core/server';
 
-export function registerSampleDataRoutes (apiRouter: Router, sampleDataService: SampleDataService) {
+export function registerSampleDataRoutes(
+  apiRouter: Router,
+  sampleDataService: SampleDataService
+) {
   apiRouter.post('/create_sample_data', sampleDataService.createSampleData);
 }
 
@@ -44,7 +47,8 @@ export default class SampleDataService {
     request: KibanaRequest,
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
-    const type = request.body as SAMPLE_TYPE;
+    //@ts-ignore
+    const type = request.query.type as SAMPLE_TYPE;
     try {
       let filePath = '';
       let indexName = '';
@@ -78,11 +82,10 @@ export default class SampleDataService {
 
       await loadSampleData(filePath, indexName, this.client, request);
 
-      return kibanaResponse.ok({body: { ok: true } });
+      return kibanaResponse.ok({ body: { ok: true } });
     } catch (err) {
       console.log('Anomaly detector - Unable to load the sample data', err);
       return kibanaResponse.ok({ body: { ok: false, error: err.message } });
     }
   };
-
 }

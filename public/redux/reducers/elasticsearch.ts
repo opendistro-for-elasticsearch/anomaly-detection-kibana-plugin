@@ -250,41 +250,40 @@ const reducer = handleActions<ElasticsearchState>(
 
 export const getIndices = (searchKey: string = ''): APIAction => ({
   type: GET_INDICES,
-  request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API._INDICES}`),
+  request: (client: HttpSetup) => client.get(`..${AD_NODE_API._INDICES}`),
   searchKey,
 });
 
 export const getAliases = (searchKey: string = ''): APIAction => ({
   type: GET_ALIASES,
-  request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API._ALIASES}`),
+  request: (client: HttpSetup) => client.get(`..${AD_NODE_API._ALIASES}`),
   searchKey,
 });
 
 export const getMappings = (searchKey: string = ''): APIAction => ({
   type: GET_MAPPINGS,
-  request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API._MAPPINGS}`),
+  request: (client: HttpSetup) => client.get(`..${AD_NODE_API._MAPPINGS}`),
   searchKey,
 });
 
 export const searchES = (requestData: any): APIAction => ({
   type: SEARCH_ES,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API._SEARCH}`, {body: requestData}),
+    client.post(`..${AD_NODE_API._SEARCH}`, { body: requestData }),
 });
 
 export const createIndex = (indexConfig: any): APIAction => ({
   type: CREATE_INDEX,
-  request: (client: HttpSetup) => 
-  client.put(`..${AD_NODE_API.CREATE_INDEX}`, { body: JSON.stringify({indexConfig}) })
+  request: (client: HttpSetup) =>
+    client.put(`..${AD_NODE_API.CREATE_INDEX}`, {
+      body: JSON.stringify(indexConfig),
+    }),
 });
 
 export const bulk = (body: any): APIAction => ({
   type: BULK,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.BULK}`, { query: { body: body } }),
+    client.post(`..${AD_NODE_API.BULK}`, { body: body }),
 });
 
 export const deleteIndex = (index: string): APIAction => ({

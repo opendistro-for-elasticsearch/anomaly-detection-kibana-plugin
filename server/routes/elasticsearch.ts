@@ -38,7 +38,7 @@ type SearchParams = {
   body: object;
 };
 
-export function registerESRoutes (apiRouter: Router, esService: ESService) {
+export function registerESRoutes(apiRouter: Router, esService: ESService) {
   apiRouter.get('/_indices', esService.getIndices);
   apiRouter.get('/_aliases', esService.getAliases);
   apiRouter.get('/_mappings', esService.getMapping);
@@ -89,19 +89,18 @@ export default class ESService {
 
       const params: SearchParams = { index, size, body: requestBody };
 
-      const results: SearchResponse<any> = await this.client.asScoped(request).callAsCurrentUser(
-        'search',
-        params
-      );
+      const results: SearchResponse<any> = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('search', params);
 
-      return kibanaResponse.ok({ body: { ok: true, response: results } } );
+      return kibanaResponse.ok({ body: { ok: true, response: results } });
     } catch (err) {
       console.error('Anomaly detector - Unable to execute search', err);
       return kibanaResponse.ok({
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
@@ -113,29 +112,32 @@ export default class ESService {
   ): Promise<IKibanaResponse<any>> => {
     const { index } = request.query as { index: string };
     try {
-      const response: CatIndex[] = await this.client.asScoped(request).callAsCurrentUser(
-        'cat.indices',
-        {
+      const response: CatIndex[] = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('cat.indices', {
           index,
           format: 'json',
           h: 'health,index',
-        }
-      );
-      return kibanaResponse.ok({ body: { ok: true, response: { indices: response } } });
+        });
+      return kibanaResponse.ok({
+        body: { ok: true, response: { indices: response } },
+      });
     } catch (err) {
       // In case no matching indices is found it throws an error.
       if (
         err.statusCode === 404 &&
         get<string>(err, 'body.error.type', '') === 'index_not_found_exception'
       ) {
-        return kibanaResponse.ok({ body: { ok: true, response: { indices: [] } } });
+        return kibanaResponse.ok({
+          body: { ok: true, response: { indices: [] } },
+        });
       }
       console.log('Anomaly detector - Unable to get indices', err);
       return kibanaResponse.ok({
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
@@ -147,22 +149,23 @@ export default class ESService {
   ): Promise<IKibanaResponse<any>> => {
     const { alias } = request.query as { alias: string };
     try {
-      const response: IndexAlias[] = await this.client.asScoped(request).callAsCurrentUser(
-        'cat.aliases',
-        {
+      const response: IndexAlias[] = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('cat.aliases', {
           alias,
           format: 'json',
           h: 'alias,index',
-        }
-      );
-      return kibanaResponse.ok({ body: { ok: true, response: { aliases: response } } });
+        });
+      return kibanaResponse.ok({
+        body: { ok: true, response: { aliases: response } },
+      });
     } catch (err) {
       console.log('Anomaly detector - Unable to get aliases', err);
       return kibanaResponse.ok({
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
@@ -172,45 +175,42 @@ export default class ESService {
     request: KibanaRequest,
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
-    console.log('request: ', request);
     //@ts-ignore
     const index = request.body.index;
     //@ts-ignore
     const body = request.body.body;
     try {
-      await this.client.asScoped(request).callAsCurrentUser(
-        'indices.create',
-        {
-          index: index,
-          body: body,
-        }
-      );
+      await this.client.asScoped(request).callAsCurrentUser('indices.create', {
+        index: index,
+        body: body,
+      });
     } catch (err) {
       console.log('Anomaly detector - Unable to create index', err);
       return kibanaResponse.ok({
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
     try {
-      const response: CatIndex[] = await this.client.asScoped(request).callAsCurrentUser(
-        'cat.indices',
-        {
+      const response: CatIndex[] = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('cat.indices', {
           index,
           format: 'json',
           h: 'health,index',
-        }
-      );
-      return kibanaResponse.ok({ body: { ok: true, response: { indices: response } } });
+        });
+      return kibanaResponse.ok({
+        body: { ok: true, response: { indices: response } },
+      });
     } catch (err) {
       console.log('Anomaly detector - Unable to get indices', err);
       return kibanaResponse.ok({
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
@@ -221,14 +221,14 @@ export default class ESService {
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
     //@ts-ignore
-    const body = request.body.body;
+    const body = request.params;
+    console.log('request: ', request);
     try {
-      const response: any = await this.client.asScoped(request).callAsCurrentUser(
-        'bulk',
-        {
+      const response: any = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('bulk', {
           body: body,
-        }
-      );
+        });
       return kibanaResponse.ok({ body: { ok: true, response: { response } } });
     } catch (err) {
       console.log('Anomaly detector - Unable to perform bulk action', err);
@@ -236,7 +236,7 @@ export default class ESService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
@@ -249,12 +249,9 @@ export default class ESService {
     //@ts-ignore
     const index = request.body.index;
     try {
-      await this.client.asScoped(request).callAsCurrentUser(
-        'indices.delete',
-        {
-          index: index,
-        }
-      );
+      await this.client.asScoped(request).callAsCurrentUser('indices.delete', {
+        index: index,
+      });
     } catch (err) {
       console.log(
         'Anomaly detector - Unable to perform delete index action',
@@ -266,27 +263,28 @@ export default class ESService {
           body: {
             ok: false,
             error: getErrorMessage(err),
-          }
+          },
         });
       }
     }
     try {
-      const response: CatIndex[] = await this.client.asScoped(request).callAsCurrentUser(
-        'cat.indices',
-        {
+      const response: CatIndex[] = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('cat.indices', {
           index,
           format: 'json',
           h: 'health,index',
-        }
-      );
-      return kibanaResponse.ok({ body: { ok: true, response: { indices: response } } });
+        });
+      return kibanaResponse.ok({
+        body: { ok: true, response: { indices: response } },
+      });
     } catch (err) {
       console.log('Anomaly detector - Unable to get indices', err);
       return kibanaResponse.ok({
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
@@ -298,20 +296,21 @@ export default class ESService {
   ): Promise<IKibanaResponse<any>> => {
     const { index } = request.query as { index: string };
     try {
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'indices.getMapping',
-        {
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('indices.getMapping', {
           index,
-        }
-      );
-      return kibanaResponse.ok({ body: { ok: true, response: { mappings: response } } });
+        });
+      return kibanaResponse.ok({
+        body: { ok: true, response: { mappings: response } },
+      });
     } catch (err) {
       console.log('Anomaly detector - Unable to get mappings', err);
       return kibanaResponse.ok({
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };

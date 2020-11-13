@@ -13,11 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import {
-  APIAction,
-  APIResponseAction,
-  HttpSetup,
-} from '../middleware/types';
+import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
 import { DetectorResultsQueryParams } from '../../../server/models/types';

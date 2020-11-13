@@ -13,11 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import {
-  APIAction,
-  APIResponseAction,
-  HttpSetup,
-} from '../middleware/types';
+import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { ALERTING_NODE_API } from '../../../utils/constants';
 import { Monitor } from '../../../server/models/types';

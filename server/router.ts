@@ -20,6 +20,7 @@ import {
   KibanaResponseFactory,
   IKibanaResponse,
 } from '../../../src/core/server';
+import { schema } from '@kbn/config-schema';
 
 type RouteHandler = (
   context: RequestHandlerContext,
@@ -69,7 +70,9 @@ export default (iRouter: IRouter, basePath: String): Router => {
             iRouter.put(
               {
                 path: `${basePath}${path}`,
-                validate: false,
+                validate: {
+                  body: schema.any(),
+                },
               },
               requestHandler(handler)
             );
@@ -79,7 +82,10 @@ export default (iRouter: IRouter, basePath: String): Router => {
             iRouter.post(
               {
                 path: `${basePath}${path}`,
-                validate: false,
+                validate: {
+                  query: schema.any(),
+                  body: schema.any(),
+                },
               },
               requestHandler(handler)
             );

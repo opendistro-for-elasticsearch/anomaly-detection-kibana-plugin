@@ -27,7 +27,10 @@ import {
   IKibanaResponse,
 } from '../../../../src/core/server';
 
-export function registerAlertingRoutes (apiRouter: Router, alertingService: AlertingService) {
+export function registerAlertingRoutes(
+  apiRouter: Router,
+  alertingService: AlertingService
+) {
   apiRouter.post('/monitors/_search', alertingService.searchMonitors);
   apiRouter.get('/monitors/alerts', alertingService.searchAlerts);
 }
@@ -66,10 +69,9 @@ export default class AlertingService {
           },
         },
       };
-      const response: SearchResponse<Monitor> = await this.client.asScoped(request).callAsCurrentUser(
-        'alerting.searchMonitors',
-        { body: requestBody }
-      );
+      const response: SearchResponse<Monitor> = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('alerting.searchMonitors', { body: requestBody });
       const totalMonitors = get(response, 'hits.total.value', 0);
       const allMonitors = get(response, 'hits.hits', []).reduce(
         (acc: any, monitor: any) => ({
@@ -95,7 +97,7 @@ export default class AlertingService {
             totalMonitors,
             monitors: Object.values(allMonitors),
           },
-        }
+        },
       });
     } catch (err) {
       console.log('Unable to get monitor on top of detector', err);
@@ -103,7 +105,7 @@ export default class AlertingService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
@@ -119,19 +121,18 @@ export default class AlertingService {
         startTime?: number;
         endTime?: number;
       };
-      const response = await this.client.asScoped(request).callAsCurrentUser(
-        'alerting.searchAlerts',
-        {
+      const response = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('alerting.searchAlerts', {
           monitorId: monitorId,
           startTime: startTime,
           endTime: endTime,
-        }
-      );
+        });
       return kibanaResponse.ok({
         body: {
           ok: true,
           response,
-        }
+        },
       });
     } catch (err) {
       console.log('Unable to search alerts', err);
@@ -139,7 +140,7 @@ export default class AlertingService {
         body: {
           ok: false,
           error: getErrorMessage(err),
-        }
+        },
       });
     }
   };
