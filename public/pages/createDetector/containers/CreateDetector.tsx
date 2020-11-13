@@ -150,11 +150,11 @@ export function CreateDetector(props: CreateADProps) {
         `Detector created: ${detectorToBeCreated.name}`
       );
       props.history.push(
-        `/detectors/${detectorResp.data.response.id}/configurations/`
+        `/detectors/${detectorResp.response.id}/configurations/`
       );
     } catch (err) {
       const resp = await dispatch(getDetectorCount());
-      const totalDetectors = get(resp, 'data.response.count', 0);
+      const totalDetectors = get(resp, 'response.count', 0);
       if (totalDetectors === MAX_DETECTORS) {
         props.core.notifications.toasts.addDanger(
           'Cannot create detector - limit of ' +
@@ -201,7 +201,7 @@ export function CreateDetector(props: CreateADProps) {
       }
       //TODO::Avoid making call if value is same
       const resp = await dispatch(matchDetector(detectorName));
-      const match = get(resp, 'data.response.match', false);
+      const match = get(resp, 'response.match', false);
       if (!match) {
         return undefined;
       }

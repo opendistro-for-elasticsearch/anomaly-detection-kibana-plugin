@@ -187,7 +187,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
       const detectorResultResponse = await dispatch(
         getDetectorResults(props.detector.id, params)
       );
-      const rawAnomaliesData = get(detectorResultResponse, 'data.response', []);
+      const rawAnomaliesData = get(detectorResultResponse, 'response', []);
       const rawAnomaliesResult = {
         anomalies: get(rawAnomaliesData, 'results', []),
         featureData: get(rawAnomaliesData, 'featureResults', []),
@@ -399,6 +399,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                         monitor={props.monitor}
                         isHCDetector={isHCDetector}
                         selectedHeatmapCell={selectedHeatmapCell}
+                        core={props.core}
                       />,
                       <EuiSpacer size="m" />,
                     ]

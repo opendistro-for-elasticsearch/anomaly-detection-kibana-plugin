@@ -317,6 +317,7 @@ export const getDetector = (detectorId: string): APIAction => ({
   type: GET_DETECTOR,
   request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}`),
+  detectorId,
 });
 
 export const getDetectorList = (
@@ -344,30 +345,35 @@ export const updateDetector = (
     client.put(`..${AD_NODE_API.DETECTOR}/${detectorId}`, {
       body: JSON.stringify(requestBody),
     }),
+  detectorId,
 });
 
 export const deleteDetector = (detectorId: string): APIAction => ({
   type: DELETE_DETECTOR,
   request: (client: HttpSetup) =>
     client.delete(`..${AD_NODE_API.DETECTOR}/${detectorId}`),
+  detectorId,
 });
 
 export const startDetector = (detectorId: string): APIAction => ({
   type: START_DETECTOR,
   request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/start`),
+  detectorId,
 });
 
 export const stopDetector = (detectorId: string): APIAction => ({
   type: STOP_DETECTOR,
   request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/stop`),
+  detectorId,
 });
 
 export const getDetectorProfile = (detectorId: string): APIAction => ({
   type: GET_DETECTOR_PROFILE,
   request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/_profile`),
+  detectorId,
 });
 
 export const matchDetector = (detectorName: string): APIAction => ({

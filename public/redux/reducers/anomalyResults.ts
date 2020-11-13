@@ -54,7 +54,7 @@ const reducer = handleActions<Anomalies>(
       FAILURE: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessage: action.error,
       }),
     },
 
@@ -81,7 +81,7 @@ export const getDetectorResults = (
   type: DETECTOR_RESULTS,
   request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/results`, {
-      body: JSON.stringify(queryParams),
+      query: JSON.stringify(queryParams),
     }),
 });
 

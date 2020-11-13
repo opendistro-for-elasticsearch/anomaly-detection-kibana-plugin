@@ -619,7 +619,7 @@ export const getAnomalyDistributionForDetectorsByTimeRange = async (
 
   const detectorsAggResults = get(
     result,
-    `data.response.aggregations.${aggregationName}.buckets`,
+    `response.aggregations.${aggregationName}.buckets`,
     []
   );
 

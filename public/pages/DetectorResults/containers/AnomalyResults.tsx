@@ -228,7 +228,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       );
       const featuresData = get(
         detectorResultResponse,
-        'data.response.featureResults',
+        'response.featureResults',
         []
       );
       const featureDataPoints = getFeatureDataPointsForDetector(
