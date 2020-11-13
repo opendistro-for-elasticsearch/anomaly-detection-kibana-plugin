@@ -277,14 +277,14 @@ export const searchES = (requestData: any): APIAction => ({
 
 export const createIndex = (indexConfig: any): APIAction => ({
   type: CREATE_INDEX,
-  request: (client: HttpSetup) =>
-    client.put(`..${AD_NODE_API.CREATE_INDEX}`, { body: indexConfig }),
+  request: (client: HttpSetup) => 
+  client.put(`..${AD_NODE_API.CREATE_INDEX}`, { body: JSON.stringify({indexConfig}) })
 });
 
 export const bulk = (body: any): APIAction => ({
   type: BULK,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.BULK}`, { body }),
+    client.post(`..${AD_NODE_API.BULK}`, { query: { body: body } }),
 });
 
 export const deleteIndex = (index: string): APIAction => ({

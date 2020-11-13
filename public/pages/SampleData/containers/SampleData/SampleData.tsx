@@ -137,7 +137,7 @@ export const SampleData = (props: SampleDataProps) => {
     if (!errorDuringAction) {
       await dispatch(createSampleData(sampleType)).catch((error: any) => {
         errorDuringAction = true;
-        errorMessage = prettifyErrorMessage(error);
+        errorMessage = prettifyErrorMessage(error.message);
         console.error('Error bulk inserting data: ', errorMessage);
       });
     }
@@ -150,7 +150,7 @@ export const SampleData = (props: SampleDataProps) => {
           // Start the detector
           dispatch(startDetector(detectorId)).catch((error: any) => {
             errorDuringAction = true;
-            errorMessage = prettifyErrorMessage(error.data.message);
+            errorMessage = prettifyErrorMessage(error.message);
             console.error('Error starting sample detector: ', errorMessage);
           });
         })

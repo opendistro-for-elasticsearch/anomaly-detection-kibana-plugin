@@ -39,7 +39,7 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters) {
       <Router>
         <Route render={(props) => 
           <CoreServicesContext.Provider value={coreStart}>
-            <Main httpClient={http} {...props} /> 
+            <Main {...props} /> 
           </CoreServicesContext.Provider>}
         />
       </Router>

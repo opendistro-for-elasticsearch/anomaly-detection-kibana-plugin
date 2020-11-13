@@ -172,10 +172,11 @@ export default class ESService {
     request: KibanaRequest,
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
+    console.log('request: ', request);
     //@ts-ignore
-    const index = request.body.indexConfig.index;
+    const index = request.body.index;
     //@ts-ignore
-    const body = request.body.indexConfig.body;
+    const body = request.body.body;
     try {
       await this.client.asScoped(request).callAsCurrentUser(
         'indices.create',
