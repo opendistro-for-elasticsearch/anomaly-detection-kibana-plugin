@@ -220,8 +220,7 @@ export default class ESService {
     request: KibanaRequest,
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
-    //@ts-ignore
-    const body = request.params;
+    const body = request.body;
     try {
       const response: any = await this.client
         .asScoped(request)
@@ -245,8 +244,7 @@ export default class ESService {
     request: KibanaRequest,
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
-    //@ts-ignore
-    const index = request.body.index;
+    const index = request.query as { index: string };
     try {
       await this.client.asScoped(request).callAsCurrentUser('indices.delete', {
         index: index,

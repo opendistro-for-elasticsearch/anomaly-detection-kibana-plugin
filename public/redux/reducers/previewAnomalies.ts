@@ -70,7 +70,7 @@ export const previewDetector = (
   type: PREVIEW_DETECTOR,
   request: (client: HttpSetup) =>
     client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/preview`, {
-      body: requestBody,
+      body: JSON.stringify(requestBody),
     }),
 });
 

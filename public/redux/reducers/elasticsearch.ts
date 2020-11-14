@@ -287,13 +287,13 @@ export const createIndex = (indexConfig: any): APIAction => ({
 export const bulk = (body: any): APIAction => ({
   type: BULK,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.BULK}`, { body: body }),
+    client.post(`..${AD_NODE_API.BULK}`, { body: JSON.stringify(body) }),
 });
 
 export const deleteIndex = (index: string): APIAction => ({
   type: DELETE_INDEX,
   request: (client: HttpSetup) =>
-    client.post(`..${AD_NODE_API.DELETE_INDEX}`, { body: index }),
+    client.post(`..${AD_NODE_API.DELETE_INDEX}`, { query: { index: index } }),
 });
 
 export const getPrioritizedIndices = (searchKey: string): ThunkAction => async (
