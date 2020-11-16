@@ -15,6 +15,7 @@
 
 import { PluginInitializerContext } from '../../../src/core/public';
 import { AnomalyDetectionKibanaPlugin } from './plugin';
+import './app.scss';
 
 export interface AnomalyDetectionKibanaPluginSetup {}
 export interface AnomalyDetectionKibanaPluginStart {}
