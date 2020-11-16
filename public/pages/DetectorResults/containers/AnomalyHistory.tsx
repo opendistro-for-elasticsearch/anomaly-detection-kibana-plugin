@@ -60,6 +60,7 @@ import { AnomalyOccurrenceChart } from '../../AnomalyCharts/containers/AnomalyOc
 import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 import { getAnomalyHistoryWording } from '../../AnomalyCharts/utils/anomalyChartUtils';
 import { CoreStart } from '../../../../../../src/core/public';
+import { darkModeEnabled } from '../../../utils/kibanaUtils';
 
 interface AnomalyHistoryProps {
   detector: Detector;
@@ -102,6 +103,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
 
   const detectorCategoryField = get(props.detector, 'categoryField', []);
   const isHCDetector = !isEmpty(detectorCategoryField);
+  const backgroundColor = darkModeEnabled(props.core) ? '#29017' : '#F7F7F7';
 
   useEffect(() => {
     // We load at most 10k AD result data points for one call. If user choose
@@ -351,7 +353,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
             </EuiFlexItem>
           </EuiFlexGroup>
         ) : (
-          <div style={{ padding: '20px', backgroundColor: '#F7F7F7' }}>
+          <div style={{ padding: '20px', backgroundColor: backgroundColor }}>
             {selectedTabId === ANOMALY_HISTORY_TABS.FEATURE_BREAKDOWN ? (
               <FeatureBreakDown
                 detector={props.detector}
