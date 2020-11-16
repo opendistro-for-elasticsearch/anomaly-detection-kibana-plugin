@@ -370,6 +370,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                 isFeatureDataMissing={props.isFeatureDataMissing}
                 isHCDetector={isHCDetector}
                 selectedHeatmapCell={selectedHeatmapCell}
+                core={props.core}
               />
             ) : (
               [
