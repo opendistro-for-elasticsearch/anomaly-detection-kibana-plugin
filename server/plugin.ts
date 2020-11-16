@@ -13,6 +13,7 @@
  * permissions and limitations under the License.
  */
 import { BASE_NODE_API_PATH } from '../utils/constants';
+import { first } from 'rxjs/operators';
 import { default as createRouter, Router } from './router';
 import {
   AnomalyDetectionKibanaPluginSetup,
@@ -26,12 +27,15 @@ import {
   Logger,
 } from '../../../src/core/server';
 import { ILegacyClusterClient } from '../../../src/core/server/';
-import adPlugin from './cluster/ad/adPlugin'
-import alertingPlugin from './cluster/ad/alertingPlugin'
-import AdService, {registerADRoutes} from './routes/ad';
-import AlertingService, {registerAlertingRoutes} from './routes/alerting';
-import ESService, {registerESRoutes} from './routes/elasticsearch';
-import SampleDataService, { registerSampleDataRoutes } from './routes/sampleData';
+import adPlugin from './cluster/ad/adPlugin';
+import alertingPlugin from './cluster/ad/alertingPlugin';
+import AdService, { registerADRoutes } from './routes/ad';
+import AlertingService, { registerAlertingRoutes } from './routes/alerting';
+import ESService, { registerESRoutes } from './routes/elasticsearch';
+import SampleDataService, {
+  registerSampleDataRoutes,
+} from './routes/sampleData';
+import { DEFAULT_HEADERS } from './utils/constants';
 
 export class AnomalyDetectionKibanaPlugin
   implements
@@ -40,15 +44,26 @@ export class AnomalyDetectionKibanaPlugin
       AnomalyDetectionKibanaPluginStart
     > {
   private readonly logger: Logger;
+  private readonly globalConfig$: any;
+
   constructor(private readonly initializerContext: PluginInitializerContext) {
     this.logger = initializerContext.logger.get();
+    this.globalConfig$ = initializerContext.config.legacy.globalConfig$;
   }
   public async setup(core: CoreSetup) {
+    // Get any custom/overridden headers
+    const globalConfig = await this.globalConfig$.pipe(first()).toPromise();
+    const { customHeaders, ...rest } = globalConfig.elasticsearch;
 
-    // Create ES client
-    const client: ILegacyClusterClient = core.elasticsearch.legacy.createClient('anomaly_detection', {
-      plugins: [adPlugin, alertingPlugin]
-    })
+    // Create ES client w/ relevant plugins and headers
+    const client: ILegacyClusterClient = core.elasticsearch.legacy.createClient(
+      'anomaly_detection',
+      {
+        plugins: [adPlugin, alertingPlugin],
+        customHeaders: { ...customHeaders, ...DEFAULT_HEADERS },
+        ...rest,
+      }
+    );
 
     // Create router
     const apiRouter: Router = createRouter(
