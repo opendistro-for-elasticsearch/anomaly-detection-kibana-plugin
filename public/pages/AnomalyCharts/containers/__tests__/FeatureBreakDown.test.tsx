@@ -18,6 +18,8 @@ import { render } from '@testing-library/react';
 import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
 import { FeatureBreakDown } from '../FeatureBreakDown';
 import { FeatureAggregationData } from 'public/models/interfaces';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
+import { coreServicesMock } from '../../../../../test/mocks';
 
 describe('<FeatureBreakDown /> spec', () => {
   const dateRange = {
@@ -53,15 +55,17 @@ describe('<FeatureBreakDown /> spec', () => {
   test('renders the component', () => {
     console.error = jest.fn();
     const { container } = render(
-      <FeatureBreakDown
-        title="test"
-        detector={detector}
-        anomaliesResult={anomaliesResult}
-        annotations={[]}
-        isLoading={false}
-        dateRange={dateRange}
-        featureDataSeriesName="feature data"
-      />
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <FeatureBreakDown
+          title="test"
+          detector={detector}
+          anomaliesResult={anomaliesResult}
+          annotations={[]}
+          isLoading={false}
+          dateRange={dateRange}
+          featureDataSeriesName="feature data"
+        />
+      </CoreServicesContext.Provider>
     );
     expect(container.firstChild).toMatchSnapshot();
   });
