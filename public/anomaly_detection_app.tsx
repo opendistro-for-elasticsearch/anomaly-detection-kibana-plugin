@@ -24,7 +24,6 @@ import { CoreServicesContext } from './components/CoreServices/CoreServices';
 
 export function renderApp(coreStart: CoreStart, params: AppMountParameters) {
   const http = coreStart.http;
-  // TODO: confirm this works when angular has been removed
   const store = configureStore(http);
 
   // Load Chart's dark mode CSS (if applicable)

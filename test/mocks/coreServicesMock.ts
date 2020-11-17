@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -13,8 +13,19 @@
  * permissions and limitations under the License.
  */
 
-import httpClientMock from './httpClientMock';
-import styleMock from './styleMock';
-import coreServicesMock from './coreServicesMock';
+const coreServicesMock = {
+  uiSettings: {
+    get: jest.fn(),
+  },
+  chrome: {
+    setBreadcrumbs: jest.fn(),
+  },
+  notifications: {
+    toasts: {
+      addDanger: jest.fn().mockName('addDanger'),
+      addSuccess: jest.fn().mockName('addSuccess'),
+    },
+  },
+};
 
-export { httpClientMock, styleMock, coreServicesMock };
+export default coreServicesMock;

@@ -1327,11 +1327,6 @@
   dependencies:
     "@turf/helpers" "6.x"
 
-"@types/angular@^1.6.55":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@types/angular/-/angular-1.8.0.tgz#6bce6f21d69f9dfa45e3e3dd76f723496b12c32c"
-  integrity sha512-tF4Ulq9GC54wKboxfvt91tkfJNGcFWEfkuptX5HCNVt4emwJQqWloCpUzepyKLjpKSIEOZaxupb/GX2ESwz3wQ==
-
 "@types/babel__core@^7.1.0":
   version "7.1.12"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.12.tgz#4d8e9e51eb265552a7e4f1ff2219ab6133bdfb2d"
