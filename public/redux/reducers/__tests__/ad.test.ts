@@ -24,7 +24,7 @@ describe('detector reducer actions', () => {
       const detectorId = 'randomDetectorID';
       httpMockedClient.get = jest
         .fn()
-        .mockResolvedValue({ data: { ok: true, response: expectedDetector } });
+        .mockResolvedValue({ ok: true, response: expectedDetector });
       await store.dispatch(getDetector(detectorId));
       const actions = store.getActions();
       expect(actions[0].type).toBe('ad/GET_DETECTOR_REQUEST');
@@ -76,7 +76,7 @@ describe('detector reducer actions', () => {
       const expectedDetector = getRandomDetector(false);
       httpMockedClient.get = jest
         .fn()
-        .mockResolvedValue({ data: { ok: true, response: {} } });
+        .mockResolvedValue({ ok: true, response: {} });
       await store.dispatch(deleteDetector(expectedDetector.id));
       const actions = store.getActions();
       expect(actions[0].type).toBe('ad/DELETE_DETECTOR_REQUEST');
@@ -99,7 +99,8 @@ describe('detector reducer actions', () => {
     test('should invoke [REQUEST, FAILURE]', async () => {
       const expectedDetector = getRandomDetector(false);
       httpMockedClient.get = jest.fn().mockRejectedValue({
-        data: { ok: false, error: 'Detector is consumed by Monitor' },
+        ok: false,
+        error: 'Detector is consumed by Monitor',
       });
       try {
         await store.dispatch(deleteDetector(expectedDetector.id));
@@ -128,7 +129,8 @@ describe('detector reducer actions', () => {
       const expectedDetector = getRandomDetector();
       const detectorId = 'randomDetectorID';
       httpMockedClient.post = jest.fn().mockResolvedValue({
-        data: { ok: true, response: { ...expectedDetector, id: detectorId } },
+        ok: true,
+        response: { ...expectedDetector, id: detectorId },
       });
       await store.dispatch(createDetector(expectedDetector));
       const actions = store.getActions();
@@ -148,10 +150,11 @@ describe('detector reducer actions', () => {
           },
         },
       });
-      expect(httpMockedClient.post).toHaveBeenCalledWith(
-        `..${BASE_NODE_API_PATH}/detectors`,
-        expectedDetector
-      );
+      expect(
+        httpMockedClient.post
+      ).toHaveBeenCalledWith(`..${BASE_NODE_API_PATH}/detectors`, {
+        body: JSON.stringify(expectedDetector),
+      });
     });
 
     test('should invoke [REQUEST, FAILURE]', async () => {
@@ -176,7 +179,9 @@ describe('detector reducer actions', () => {
         });
         expect(httpMockedClient.post).toHaveBeenCalledWith(
           `..${BASE_NODE_API_PATH}/detectors`,
-          expectedDetector
+          {
+            body: JSON.stringify(expectedDetector),
+          }
         );
       }
     });
@@ -186,7 +191,8 @@ describe('detector reducer actions', () => {
       const randomDetector = getRandomDetector(false);
       const detectorId = randomDetector.id;
       httpMockedClient.put = jest.fn().mockResolvedValue({
-        data: { ok: true, response: { ...randomDetector, id: detectorId } },
+        ok: true,
+        response: { ...randomDetector, id: detectorId },
       });
       await store.dispatch(updateDetector(detectorId, randomDetector));
       const actions = store.getActions();
@@ -211,15 +217,11 @@ describe('detector reducer actions', () => {
           },
         },
       });
-      expect(httpMockedClient.put).toHaveBeenCalledWith(
+      expect(
+        httpMockedClient.put
+      ).toHaveBeenCalledWith(
         `..${BASE_NODE_API_PATH}/detectors/${detectorId}`,
-        randomDetector,
-        {
-          params: {
-            ifPrimaryTerm: randomDetector.primaryTerm,
-            ifSeqNo: randomDetector.seqNo,
-          },
-        }
+        { body: JSON.stringify(randomDetector) }
       );
     });
 
@@ -227,7 +229,8 @@ describe('detector reducer actions', () => {
       const randomDetector = getRandomDetector(true);
       const detectorId = randomDetector.id;
       httpMockedClient.post = jest.fn().mockRejectedValue({
-        data: { ok: false, error: 'Invalid primary Term' },
+        ok: false,
+        error: 'Invalid primary Term',
       });
       try {
         await store.dispatch(updateDetector(detectorId, randomDetector));
@@ -262,12 +265,10 @@ describe('detector reducer actions', () => {
       const randomDetectors = [getRandomDetector(), getRandomDetector()];
       const query = { query: { match: { match_all: {} } } };
       httpMockedClient.post = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectors: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectors: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
       await store.dispatch(searchDetector(query));
@@ -288,7 +289,9 @@ describe('detector reducer actions', () => {
       });
       expect(httpMockedClient.post).toHaveBeenCalledWith(
         `..${BASE_NODE_API_PATH}/detectors/_search`,
-        query
+        {
+          body: JSON.stringify(query),
+        }
       );
     });
 
@@ -296,7 +299,8 @@ describe('detector reducer actions', () => {
       const randomDetector = getRandomDetector();
       const detectorId = randomDetector.id;
       httpMockedClient.post = jest.fn().mockRejectedValue({
-        data: { ok: false, error: 'Invalid primary Term' },
+        ok: false,
+        error: 'Invalid primary Term',
       });
       try {
         await store.dispatch(updateDetector(detectorId, randomDetector));

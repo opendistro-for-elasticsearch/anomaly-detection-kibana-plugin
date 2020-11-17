@@ -33,14 +33,13 @@ import {
   FeatureAttributes,
 } from '../../../../models/interfaces';
 import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
-import configureStore from '../../../../redux/configureStore';
-import { httpClientMock } from '../../../../../test/mocks';
-import userEvent from '@testing-library/user-event';
+import { coreServicesMock } from '../../../../../test/mocks';
 import { toString } from '../MetaData';
 import { DATA_TYPES } from '../../../../utils/constants';
 import { OPERATORS_MAP } from '../../../createDetector/components/DataFilters/utils/constant';
 import { displayText } from '../../../createDetector/components/DataFilters/utils/helpers';
 import { mockedStore, initialState } from '../../../../redux/utils/testUtils';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
 
 const renderWithRouter = (detector: Detector) => ({
   ...render(
@@ -59,12 +58,14 @@ const renderWithRouter = (detector: Detector) => ({
         <Switch>
           <Route
             render={(props: RouteComponentProps) => (
-              <DetectorConfig
-                detectorId={detector.id}
-                onEditDetector={jest.fn()}
-                onEditFeatures={jest.fn()}
-                {...props}
-              />
+              <CoreServicesContext.Provider value={coreServicesMock}>
+                <DetectorConfig
+                  detectorId={detector.id}
+                  onEditDetector={jest.fn()}
+                  onEditFeatures={jest.fn()}
+                  {...props}
+                />
+              </CoreServicesContext.Provider>
             )}
           />
         </Switch>

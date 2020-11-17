@@ -17,6 +17,7 @@ import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
 import { SAMPLE_TYPE } from '../../utils/constants';
+import { get } from 'lodash';
 
 const CREATE_SAMPLE_DATA = 'ad/CREATE_SAMPLE_DATA';
 
@@ -50,7 +51,7 @@ const reducer = handleActions<SampleDataState>(
       ): SampleDataState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
   },

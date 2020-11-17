@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { render, wait, getByTestId, getByRole } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import moment from 'moment';
 import React from 'react';
@@ -25,7 +25,7 @@ import {
   RouteComponentProps,
   Switch,
 } from 'react-router-dom';
-import { httpClientMock } from '../../../../../../test/mocks';
+import { httpClientMock, coreServicesMock } from '../../../../../../test/mocks';
 import configureStore from '../../../../../redux/configureStore';
 import {
   Detectors,
@@ -33,6 +33,7 @@ import {
 } from '../../../../../redux/reducers/ad';
 import { DetectorList, ListRouterParams } from '../List';
 import { DETECTOR_STATE } from '../../../../../utils/constants';
+import { CoreServicesContext } from '../../../../../components/CoreServices/CoreServices';
 
 const renderWithRouter = (
   initialAdState: Detectors = initialDetectorsState
@@ -45,7 +46,9 @@ const renderWithRouter = (
             exact
             path="/detectors"
             render={(props: RouteComponentProps<ListRouterParams>) => (
-              <DetectorList {...props} />
+              <CoreServicesContext.Provider value={coreServicesMock}>
+                <DetectorList {...props} />
+              </CoreServicesContext.Provider>
             )}
           />
           <Redirect from="/" to="/detectors" />

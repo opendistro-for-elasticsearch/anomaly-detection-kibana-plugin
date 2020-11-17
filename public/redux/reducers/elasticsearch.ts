@@ -97,7 +97,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.data.error', action.error),
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
     [GET_ALIASES]: {
@@ -122,7 +122,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.data.error', action.error),
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
     [SEARCH_ES]: {
@@ -147,7 +147,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.data.error', action.error),
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
     [GET_MAPPINGS]: {
@@ -172,7 +172,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.data.error', action.error),
+        errorMessage: get(action, 'error.error', action.error),
         dataTypes: {},
       }),
     },

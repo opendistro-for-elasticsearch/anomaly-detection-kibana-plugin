@@ -17,6 +17,7 @@ import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
 import { AnomalyData } from '../../models/interfaces';
+import { get } from 'lodash';
 
 const DETECTOR_RESULTS = 'ad/DETECTOR_RESULTS';
 const SEARCH_ANOMALY_RESULTS = 'ad/SEARCH_ANOMALY_RESULTS';
@@ -54,7 +55,7 @@ const reducer = handleActions<Anomalies>(
       FAILURE: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
 

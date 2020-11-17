@@ -23,13 +23,14 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { httpClientMock } from '../../../../../../test/mocks';
+import { httpClientMock, coreServicesMock } from '../../../../../../test/mocks';
 import configureStore from '../../../../../redux/configureStore';
 import {
   Detectors,
   initialDetectorsState,
 } from '../../../../../redux/reducers/ad';
 import { sampleHttpResponses } from '../../../utils/constants';
+import { CoreServicesContext } from '../../../../../components/CoreServices/CoreServices';
 
 const renderWithRouter = (
   initialAdState: Detectors = initialDetectorsState
@@ -38,7 +39,15 @@ const renderWithRouter = (
     <Provider store={configureStore(httpClientMock)}>
       <Router>
         <Switch>
-          <Route exact path="/sample-detectors" render={() => <SampleData />} />
+          <Route
+            exact
+            path="/sample-detectors"
+            render={() => (
+              <CoreServicesContext.Provider value={coreServicesMock}>
+                <SampleData />{' '}
+              </CoreServicesContext.Provider>
+            )}
+          />
           <Redirect from="/" to="/sample-detectors" />
         </Switch>
       </Router>
