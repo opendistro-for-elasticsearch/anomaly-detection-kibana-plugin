@@ -53,11 +53,9 @@ import {
   getOperators,
   isNullOperator,
 } from './utils/helpers';
-import { CoreStart } from '../../../../../../../src/core/public';
 
 interface DataFilterProps {
   formikProps: FormikProps<ADFormikValues>;
-  core: CoreStart;
 }
 
 export const SimpleFilter = (props: DataFilterProps) => {
@@ -72,7 +70,7 @@ export const SimpleFilter = (props: DataFilterProps) => {
     } | null)[]
   >();
 
-  const darkMode = darkModeEnabled(props.core);
+  const darkMode = darkModeEnabled();
   const selectedIndices = get(props, 'formikProps.values.index[0].label', '');
   //Reset, if selectedIndices change filter could become invalid
   useEffect(() => {

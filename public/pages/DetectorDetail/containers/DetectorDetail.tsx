@@ -29,6 +29,7 @@ import {
   EuiLoadingSpinner,
 } from '@elastic/eui';
 import { CoreStart } from '../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 import { get, isEmpty } from 'lodash';
 import { RouteComponentProps, Switch, Route, Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -59,9 +60,8 @@ import {
 export interface DetectorRouterProps {
   detectorId?: string;
 }
-interface DetectorDetailProps extends RouteComponentProps<DetectorRouterProps> {
-  core: CoreStart;
-}
+interface DetectorDetailProps
+  extends RouteComponentProps<DetectorRouterProps> {}
 
 const tabs = [
   {
@@ -91,6 +91,7 @@ interface DetectorDetailModel {
 }
 
 export const DetectorDetail = (props: DetectorDetailProps) => {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   const detectorId = get(props, 'match.params.detectorId', '') as string;
   const {
@@ -104,7 +105,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   );
 
   //TODO: test dark mode once detector configuration and AD result page merged
-  const isDark = darkModeEnabled(props.core);
+  const isDark = darkModeEnabled();
 
   const [detectorDetailModel, setDetectorDetailModel] = useState<
     DetectorDetailModel
@@ -122,7 +123,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   useEffect(() => {
     if (hasError) {
-      props.core.notifications.toasts.addDanger(
+      core.notifications.toasts.addDanger(
         errorMessage.includes(NO_PERMISSIONS_KEY_WORD)
           ? prettifyErrorMessage(errorMessage)
           : 'Unable to find detector'
@@ -133,7 +134,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   useEffect(() => {
     if (detector) {
-      props.core.chrome.setBreadcrumbs([
+      core.chrome.setBreadcrumbs([
         BREADCRUMBS.ANOMALY_DETECTOR,
         BREADCRUMBS.DETECTORS,
         { text: detector ? detector.name : '' },
@@ -196,11 +197,11 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const handleStartAdJob = async (detectorId: string) => {
     try {
       await dispatch(startDetector(detectorId));
-      props.core.notifications.toasts.addSuccess(
+      core.notifications.toasts.addSuccess(
         `Detector job has been started successfully`
       );
     } catch (err) {
-      props.core.notifications.toasts.addDanger(
+      core.notifications.toasts.addDanger(
         prettifyErrorMessage(
           getErrorMessage(err, 'There was a problem starting detector job')
         )
@@ -211,12 +212,12 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const handleStopAdJob = async (detectorId: string, listener?: Listener) => {
     try {
       await dispatch(stopDetector(detectorId));
-      props.core.notifications.toasts.addSuccess(
+      core.notifications.toasts.addSuccess(
         'Detector job has been stopped successfully'
       );
       if (listener) listener.onSuccess();
     } catch (err) {
-      props.core.notifications.toasts.addDanger(
+      core.notifications.toasts.addDanger(
         prettifyErrorMessage(
           getErrorMessage(err, 'There was a problem stopping detector job')
         )
@@ -228,13 +229,13 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const handleDelete = useCallback(async (detectorId: string) => {
     try {
       await dispatch(deleteDetector(detectorId));
-      props.core.notifications.toasts.addSuccess(
+      core.notifications.toasts.addSuccess(
         `Detector has been deleted successfully`
       );
       hideDeleteDetectorModal();
       props.history.push('/detectors');
     } catch (err) {
-      props.core.notifications.toasts.addDanger(
+      core.notifications.toasts.addDanger(
         prettifyErrorMessage(
           getErrorMessage(err, 'There was a problem deleting detector')
         )
@@ -265,11 +266,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     backgroundColor: '#FFF',
   };
   const monitorCallout = monitor ? (
-    <MonitorCallout
-      monitorId={monitor.id}
-      monitorName={monitor.name}
-      core={props.core}
-    />
+    <MonitorCallout monitorId={monitor.id} monitorName={monitor.name} />
   ) : null;
 
   const deleteDetectorCallout = detector.enabled ? (
@@ -505,7 +502,6 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
               detectorId={detectorId}
               onStartDetector={() => handleStartAdJob(detectorId)}
               onSwitchToConfiguration={handleSwitchToConfigurationTab}
-              core={props.core}
             />
           )}
         />
@@ -518,7 +514,6 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
               detectorId={detectorId}
               onEditFeatures={handleEditFeature}
               onEditDetector={handleEditDetector}
-              core={props.core}
             />
           )}
         />

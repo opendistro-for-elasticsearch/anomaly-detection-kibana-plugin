@@ -67,15 +67,16 @@ import {
 } from '../../SampleData/utils/helpers';
 import { SampleIndexDetailsCallout } from '../../SampleData/components/SampleIndexDetailsCallout/SampleIndexDetailsCallout';
 import { CoreStart } from '../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 
 interface AnomalyResultsProps extends RouteComponentProps {
   detectorId: string;
   onStartDetector(): void;
   onSwitchToConfiguration(): void;
-  core: CoreStart;
 }
 
 export function AnomalyResults(props: AnomalyResultsProps) {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   const detectorId = props.detectorId;
   const detector = useSelector(
@@ -83,7 +84,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   );
 
   useEffect(() => {
-    props.core.chrome.setBreadcrumbs([
+    core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.DETECTORS,
       { text: detector ? detector.name : '' },
@@ -485,10 +486,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       ) : null}
                     </EuiCallOut>
                   ) : null}
-                  <AnomalyResultsLiveChart
-                    detector={detector}
-                    core={props.core}
-                  />
+                  <AnomalyResultsLiveChart detector={detector} />
                   <EuiSpacer size="l" />
                   <AnomalyHistory
                     detector={detector}
@@ -497,7 +495,6 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                       props.history.push(`/detectors/${detectorId}/features`)
                     }
                     isFeatureDataMissing={isDetectorMissingData}
-                    core={props.core}
                   />
                 </Fragment>
               ) : detector ? (

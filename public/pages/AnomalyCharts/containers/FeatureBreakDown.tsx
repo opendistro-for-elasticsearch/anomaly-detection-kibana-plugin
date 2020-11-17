@@ -37,7 +37,6 @@ import moment from 'moment';
 import { HeatmapCell } from './AnomalyHeatmapChart';
 import { filterWithHeatmapFilter } from '../../utils/anomalyResultUtils';
 import { getDateRangeWithSelectedHeatmapCell } from '../utils/anomalyChartUtils';
-import { CoreStart } from '../../../../../../src/core/public';
 
 interface FeatureBreakDownProps {
   title?: string;
@@ -52,7 +51,6 @@ interface FeatureBreakDownProps {
   isFeatureDataMissing?: boolean;
   isHCDetector?: boolean;
   selectedHeatmapCell?: HeatmapCell;
-  core: CoreStart;
 }
 
 export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
@@ -141,7 +139,6 @@ export const FeatureBreakDown = React.memo((props: FeatureBreakDownProps) => {
                 //@ts-ignore
                 getFeatureDataForChart(props.anomaliesResult, feature.featureId)
               }
-              core={props.core}
               rawFeatureData={getFeatureDataForChart(
                 //@ts-ignore
                 props.rawAnomalyResults,

@@ -13,8 +13,11 @@
  * permissions and limitations under the License.
  */
 
+import React from 'react';
 import { CoreStart } from '../../../../src/core/public';
+import { CoreServicesContext } from '../components/CoreServices/CoreServices';
 
-export const darkModeEnabled = (core: CoreStart): boolean => {
+export const darkModeEnabled = (): boolean => {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   return core.uiSettings.get('theme:darkMode') || false;
 };

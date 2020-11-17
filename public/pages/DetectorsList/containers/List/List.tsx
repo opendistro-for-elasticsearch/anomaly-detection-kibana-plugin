@@ -22,7 +22,7 @@ import {
   EuiPageBody,
 } from '@elastic/eui';
 import { debounce, get, isEmpty } from 'lodash';
-import queryString from 'query-string';
+import queryString from 'querystring';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
@@ -87,6 +87,7 @@ import {
   prettifyErrorMessage,
 } from '../../../../../server/utils/helpers';
 import { CoreStart } from '../../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
 
 export interface ListRouterParams {
   from: string;
@@ -96,9 +97,7 @@ export interface ListRouterParams {
   sortDirection: SORT_DIRECTION;
   sortField: string;
 }
-interface ListProps extends RouteComponentProps<ListRouterParams> {
-  core: CoreStart;
-}
+interface ListProps extends RouteComponentProps<ListRouterParams> {}
 interface ListState {
   page: number;
   queryParams: GetDetectorsQueryParams;
@@ -120,6 +119,7 @@ interface ListActionsState {
 }
 
 export const DetectorList = (props: ListProps) => {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   const allDetectors = useSelector((state: AppState) => state.ad.detectorList);
   const allMonitors = useSelector((state: AppState) => state.alerting.monitors);
@@ -186,8 +186,9 @@ export const DetectorList = (props: ListProps) => {
       errorGettingDetectors !== SINGLE_DETECTOR_ERROR_MSG
     ) {
       console.error(errorGettingDetectors);
-      props.core.notifications.toasts.addDanger(
-        typeof errorGettingDetectors === 'string' && errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
+      core.notifications.toasts.addDanger(
+        typeof errorGettingDetectors === 'string' &&
+          errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
           ? prettifyErrorMessage(errorGettingDetectors)
           : 'Unable to get all detectors'
       );
@@ -209,7 +210,7 @@ export const DetectorList = (props: ListProps) => {
 
   // Set breadcrumbs on page initialization
   useEffect(() => {
-    props.core.chrome.setBreadcrumbs([
+    core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.DETECTORS,
     ]);
@@ -403,7 +404,7 @@ export const DetectorList = (props: ListProps) => {
         affectedMonitors: {},
       });
     } else {
-      props.core.notifications.toasts.addWarning(
+      core.notifications.toasts.addWarning(
         'All selected detectors are unable to start. Make sure selected \
           detectors have features and are not already running'
       );
@@ -426,7 +427,7 @@ export const DetectorList = (props: ListProps) => {
         affectedMonitors: validMonitors,
       });
     } else {
-      props.core.notifications.toasts.addWarning(
+      core.notifications.toasts.addWarning(
         'All selected detectors are unable to stop. Make sure selected \
           detectors are already running'
       );
@@ -449,7 +450,7 @@ export const DetectorList = (props: ListProps) => {
         affectedMonitors: validMonitors,
       });
     } else {
-      props.core.notifications.toasts.addWarning(
+      core.notifications.toasts.addWarning(
         'No detectors selected. Please select detectors to delete'
       );
     }
@@ -466,12 +467,12 @@ export const DetectorList = (props: ListProps) => {
     });
     await Promise.all(promises)
       .then(() => {
-        props.core.notifications.toasts.addSuccess(
+        core.notifications.toasts.addSuccess(
           'All selected detectors have been started successfully'
         );
       })
       .catch((error) => {
-        props.core.notifications.toasts.addDanger(
+        core.notifications.toasts.addDanger(
           prettifyErrorMessage(
             `Error starting all selected detectors: ${error}`
           )
@@ -493,13 +494,13 @@ export const DetectorList = (props: ListProps) => {
     });
     await Promise.all(promises)
       .then(() => {
-        props.core.notifications.toasts.addSuccess(
+        core.notifications.toasts.addSuccess(
           'All selected detectors have been stopped successfully'
         );
         if (listener) listener.onSuccess();
       })
       .catch((error) => {
-        props.core.notifications.toasts.addDanger(
+        core.notifications.toasts.addDanger(
           prettifyErrorMessage(
             `Error stopping all selected detectors: ${error}`
           )
@@ -525,12 +526,12 @@ export const DetectorList = (props: ListProps) => {
     });
     await Promise.all(promises)
       .then(() => {
-        props.core.notifications.toasts.addSuccess(
+        core.notifications.toasts.addSuccess(
           'All selected detectors have been deleted successfully'
         );
       })
       .catch((error) => {
-        props.core.notifications.toasts.addDanger(
+        core.notifications.toasts.addDanger(
           prettifyErrorMessage(
             `Error deleting all selected detectors: ${error}`
           )
@@ -583,7 +584,6 @@ export const DetectorList = (props: ListProps) => {
               onHide={handleHideModal}
               onConfirm={handleConfirmModal}
               isListLoading={isLoading}
-              core={props.core}
             />
           );
         }
@@ -597,7 +597,6 @@ export const DetectorList = (props: ListProps) => {
               onHide={handleHideModal}
               onConfirm={handleConfirmModal}
               isListLoading={isLoading}
-              core={props.core}
             />
           );
         }
@@ -641,12 +640,8 @@ export const DetectorList = (props: ListProps) => {
         <ContentPanel
           title={
             isLoading
-              ? getTitleWithCount('Detectors', '...', props.core)
-              : getTitleWithCount(
-                  'Detectors',
-                  selectedDetectors.length,
-                  props.core
-                )
+              ? getTitleWithCount('Detectors', '...')
+              : getTitleWithCount('Detectors', selectedDetectors.length)
           }
           actions={[
             <ListActions

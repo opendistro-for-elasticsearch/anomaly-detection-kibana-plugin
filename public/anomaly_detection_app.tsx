@@ -37,10 +37,12 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters) {
   ReactDOM.render(
     <Provider store={store}>
       <Router>
-        <Route render={(props) => 
-          <CoreServicesContext.Provider value={coreStart}>
-            <Main {...props} /> 
-          </CoreServicesContext.Provider>}
+        <Route
+          render={(props) => (
+            <CoreServicesContext.Provider value={coreStart}>
+              <Main {...props} />
+            </CoreServicesContext.Provider>
+          )}
         />
       </Router>
     </Provider>,

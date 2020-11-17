@@ -72,7 +72,6 @@ import {
   INITIAL_ANOMALY_SUMMARY,
 } from '../utils/constants';
 import { HeatmapCell } from './AnomalyHeatmapChart';
-import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomalyDetailsChartProps {
   onDateRangeChange(
@@ -94,7 +93,6 @@ interface AnomalyDetailsChartProps {
   isHCDetector?: boolean;
   selectedHeatmapCell?: HeatmapCell;
   onDatePickerRangeChange?(startDate: number, endDate: number): void;
-  core: CoreStart;
 }
 
 export const AnomalyDetailsChart = React.memo(
@@ -238,7 +236,6 @@ export const AnomalyDetailsChart = React.memo(
                 showAlertsFlyout={() => setShowAlertsFlyout(true)}
                 totalAlerts={totalAlerts}
                 isLoading={isLoading}
-                core={props.core}
               />
             </EuiFlexItem>
           ) : null}
@@ -301,10 +298,10 @@ export const AnomalyDetailsChart = React.memo(
                       )}
                       id="anomalyAnnotations"
                       style={{
-                        stroke: darkModeEnabled(props.core) ? 'red' : '#D5DBDB',
+                        stroke: darkModeEnabled() ? 'red' : '#D5DBDB',
                         strokeWidth: 1,
                         opacity: 0.8,
-                        fill: darkModeEnabled(props.core) ? 'red' : '#D5DBDB',
+                        fill: darkModeEnabled() ? 'red' : '#D5DBDB',
                       }}
                     />
                   )}
@@ -369,7 +366,6 @@ export const AnomalyDetailsChart = React.memo(
             )}
             monitor={props.monitor}
             onClose={() => setShowAlertsFlyout(false)}
-            core={props.core}
           />
         ) : null}
       </React.Fragment>

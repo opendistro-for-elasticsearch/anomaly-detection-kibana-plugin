@@ -20,6 +20,7 @@ import { darkModeEnabled } from '../utils/kibanaUtils';
 import { ALERTING_PLUGIN_NAME, NAME_REGEX } from './constants';
 import { MAX_FEATURE_NAME_SIZE } from './constants';
 import { CoreStart } from '../../../../src/core/public';
+import { CoreServicesContext } from '../components/CoreServices/CoreServices';
 
 export const validateFeatureName = (
   featureName: string
@@ -110,10 +111,10 @@ export const getAlertingCreateMonitorLink = (
   detectorId: string,
   detectorName: string,
   detectorInterval: number,
-  unit: string,
-  core: CoreStart
+  unit: string
 ): string => {
   try {
+    const core = React.useContext(CoreServicesContext) as CoreStart;
     const navLinks = get(core, 'chrome.navLinks', undefined);
     const url = `${navLinks.get(ALERTING_PLUGIN_NAME).url}`;
     const alertingRootUrl = getPluginRootPath(url, ALERTING_PLUGIN_NAME);
@@ -126,8 +127,9 @@ export const getAlertingCreateMonitorLink = (
   }
 };
 
-export const getAlertingMonitorListLink = (core: CoreStart): string => {
+export const getAlertingMonitorListLink = (): string => {
   try {
+    const core = React.useContext(CoreServicesContext) as CoreStart;
     const navLinks = get(core, 'chrome.navLinks', undefined);
     const url = `${navLinks.get(ALERTING_PLUGIN_NAME).url}`;
     const alertingRootUrl = getPluginRootPath(url, ALERTING_PLUGIN_NAME);
@@ -143,14 +145,10 @@ export interface Listener {
   onException(): void;
 }
 
-const detectorCountFontColor = (core: CoreStart) =>
-  darkModeEnabled(core) ? '#98A2B3' : '#535966';
+const detectorCountFontColor = () =>
+  darkModeEnabled() ? '#98A2B3' : '#535966';
 
-export const getTitleWithCount = (
-  title: string,
-  count: number | string,
-  core: CoreStart
-) => {
+export const getTitleWithCount = (title: string, count: number | string) => {
   return (
     <EuiTitle size={'s'} className={''}>
       <h3
@@ -160,7 +158,7 @@ export const getTitleWithCount = (
         }}
       >
         <p>{title}&nbsp;</p>
-        <p style={{ color: detectorCountFontColor(core) }}>{`(${count})`}</p>
+        <p style={{ color: detectorCountFontColor() }}>{`(${count})`}</p>
       </h3>
     </EuiTitle>
   );

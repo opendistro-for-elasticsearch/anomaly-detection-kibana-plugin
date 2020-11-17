@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { EuiFormRow, EuiHorizontalRule, EuiSelect } from '@elastic/eui';
+import { EuiHorizontalRule, EuiSelect } from '@elastic/eui';
 import { Field, FieldProps, FormikProps } from 'formik';
 import React, { Fragment } from 'react';
 import { getError, isInvalid, required } from '../../../../utils/utils';
@@ -23,11 +23,9 @@ import { SimpleFilter } from './SimpleFilter';
 import { QueryDataFilter } from './QueryDataFilter';
 import { FILTER_TYPES } from '../../../../models/interfaces';
 import { FormattedFormRow } from '../FormattedFormRow/FormattedFormRow';
-import { CoreStart } from '../../../../../../../src/core/public';
 
 interface DataFilterProps {
   formikProps: FormikProps<ADFormikValues>;
-  core: CoreStart;
 }
 
 function DataFilter(props: DataFilterProps) {
@@ -58,7 +56,7 @@ function DataFilter(props: DataFilterProps) {
           </FormattedFormRow>
           <EuiHorizontalRule margin="none" />
           {field.value === FILTER_TYPES.SIMPLE ? (
-            <SimpleFilter formikProps={props.formikProps} core={props.core} />
+            <SimpleFilter formikProps={props.formikProps} />
           ) : (
             <QueryDataFilter />
           )}

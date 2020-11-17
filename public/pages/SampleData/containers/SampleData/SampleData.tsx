@@ -51,12 +51,10 @@ import { SampleDataBox } from '../../components/SampleDataBox/SampleDataBox';
 import { SampleDetailsFlyout } from '../../components/SampleDetailsFlyout/SampleDetailsFlyout';
 import { prettifyErrorMessage } from '../../../../../server/utils/helpers';
 import { CoreStart } from '../../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
 
-interface SampleDataProps {
-  core: CoreStart;
-}
-
-export const SampleData = (props: SampleDataProps) => {
+export const SampleData = () => {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   const visibleIndices = useSelector(
     (state: AppState) => state.elasticsearch.indices
@@ -100,7 +98,7 @@ export const SampleData = (props: SampleDataProps) => {
 
   // Set breadcrumbs on page initialization
   useEffect(() => {
-    props.core.chrome.setBreadcrumbs([
+    core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.SAMPLE_DETECTORS,
     ]);
@@ -165,11 +163,11 @@ export const SampleData = (props: SampleDataProps) => {
     getAllSampleIndices();
     setLoadingState(false);
     if (!errorDuringAction) {
-      props.core.notifications.toasts.addSuccess(
+      core.notifications.toasts.addSuccess(
         'Successfully loaded sample detector'
       );
     } else {
-      props.core.notifications.toasts.addDanger(
+      core.notifications.toasts.addDanger(
         `Unable to load all sample data, please try again. ${errorMessage}`
       );
     }

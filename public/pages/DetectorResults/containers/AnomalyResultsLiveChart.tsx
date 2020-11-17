@@ -61,11 +61,9 @@ import { darkModeEnabled } from '../../../utils/kibanaUtils';
 import { EuiIcon } from '@elastic/eui';
 import { formatAnomalyNumber } from '../../../../server/utils/helpers';
 import { getDetectorLiveResults } from '../../../redux/reducers/liveAnomalyResults';
-import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomalyResultsLiveChartProps {
   detector: Detector;
-  core: CoreStart;
 }
 
 export const AnomalyResultsLiveChart = (
@@ -308,11 +306,11 @@ export const AnomalyResultsLiveChart = (
                     dataValues={annotations || []}
                     id="annotations"
                     style={{
-                      stroke: darkModeEnabled(props.core)
+                      stroke: darkModeEnabled()
                         ? 'red'
                         : CHART_COLORS.ANOMALY_GRADE_COLOR,
                       opacity: 0.8,
-                      fill: darkModeEnabled(props.core)
+                      fill: darkModeEnabled()
                         ? 'red'
                         : CHART_COLORS.ANOMALY_GRADE_COLOR,
                     }}

@@ -15,7 +15,6 @@
 
 import React from 'react';
 import { EuiBadge } from '@elastic/eui';
-import { get } from 'lodash';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { Monitor, Detector, DateRange } from '../../../models/interfaces';
 import { AnomalyDetailsChart } from './AnomalyDetailsChart';
@@ -25,7 +24,6 @@ import {
   getAnomalySummary,
   getDateRangeWithSelectedHeatmapCell,
 } from '../utils/anomalyChartUtils';
-import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomalyOccurrenceChartProps {
   onDateRangeChange(
@@ -47,7 +45,6 @@ interface AnomalyOccurrenceChartProps {
   monitor?: Monitor;
   isHCDetector?: boolean;
   selectedHeatmapCell?: HeatmapCell;
-  core: CoreStart;
 }
 
 export const AnomalyOccurrenceChart = React.memo(
@@ -101,7 +98,6 @@ export const AnomalyOccurrenceChart = React.memo(
           monitor={props.monitor}
           isHCDetector={props.isHCDetector}
           selectedHeatmapCell={props.selectedHeatmapCell}
-          core={props.core}
         />
         {props.isHCDetector && props.selectedHeatmapCell === undefined ? (
           <EuiBadge className={'anomaly-detail-chart-center'} color={'default'}>

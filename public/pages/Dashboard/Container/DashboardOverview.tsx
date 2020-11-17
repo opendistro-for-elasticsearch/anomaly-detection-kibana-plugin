@@ -30,7 +30,6 @@ import {
   EuiLoadingSpinner,
   EuiSpacer,
 } from '@elastic/eui';
-import { CoreStart } from '../../../../../../src/core/public';
 import { AnomalousDetectorsList } from '../Components/AnomalousDetectorsList';
 import {
   GET_ALL_DETECTORS_QUERY_PARAMS,
@@ -49,12 +48,12 @@ import {
   prettifyErrorMessage,
   NO_PERMISSIONS_KEY_WORD,
 } from '../../../../server/utils/helpers';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
+import { CoreStart } from '../../../../../../src/core/public';
 
-interface DashboardOverviewProps {
-  core: CoreStart;
-}
+export function DashboardOverview() {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
 
-export function DashboardOverview(props: DashboardOverviewProps) {
   const dispatch = useDispatch();
 
   const adState = useSelector((state: AppState) => state.ad);
@@ -182,8 +181,9 @@ export function DashboardOverview(props: DashboardOverviewProps) {
   useEffect(() => {
     if (errorGettingDetectors) {
       console.error(errorGettingDetectors);
-      props.core.notifications.toasts.addDanger(
-        (typeof errorGettingDetectors === 'string' && errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD))
+      core.notifications.toasts.addDanger(
+        typeof errorGettingDetectors === 'string' &&
+          errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
           ? prettifyErrorMessage(errorGettingDetectors)
           : 'Unable to get all detectors.'
       );
@@ -192,7 +192,7 @@ export function DashboardOverview(props: DashboardOverviewProps) {
   }, [errorGettingDetectors]);
 
   useEffect(() => {
-    props.core.chrome.setBreadcrumbs([
+    core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.DASHBOARD,
     ]);

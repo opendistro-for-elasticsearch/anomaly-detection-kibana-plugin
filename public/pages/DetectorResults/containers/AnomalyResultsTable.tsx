@@ -32,12 +32,10 @@ import { ListControls } from '../components/ListControls/ListControls';
 import { DetectorResultsQueryParams } from 'server/models/types';
 import { AnomalyData } from '../../../models/interfaces';
 import { getTitleWithCount } from '../../../utils/utils';
-import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomalyResultsTableProps {
   anomalies: AnomalyData[];
   isHCDetector?: boolean;
-  core: CoreStart;
 }
 
 interface ListState {
@@ -134,11 +132,7 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
   };
   return (
     <ContentPanel
-      title={getTitleWithCount(
-        'Anomaly occurrences',
-        totalAnomalies.length,
-        props.core
-      )}
+      title={getTitleWithCount('Anomaly occurrences', totalAnomalies.length)}
       titleSize="xs"
       titleClassName="preview-title"
     >

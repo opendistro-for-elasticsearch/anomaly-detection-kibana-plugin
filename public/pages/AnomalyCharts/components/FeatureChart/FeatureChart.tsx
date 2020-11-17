@@ -45,7 +45,6 @@ import {
 import { CodeModal } from '../../../DetectorConfig/components/CodeModal/CodeModal';
 import { CHART_FIELDS, FEATURE_CHART_THEME } from '../../utils/constants';
 import { isEmpty } from 'lodash';
-import { CoreStart } from '../../../../../../../src/core/public';
 
 interface FeatureChartProps {
   feature: FeatureAttributes;
@@ -65,12 +64,11 @@ interface FeatureChartProps {
   detectorEnabledTime?: number;
   rawFeatureData: FeatureAggregationData[];
   titlePrefix?: string;
-  core: CoreStart;
 }
 
 export const FeatureChart = (props: FeatureChartProps) => {
   const getDisabledChartBackground = () =>
-    darkModeEnabled(props.core) ? '#25262E' : '#F0F0F0';
+    darkModeEnabled() ? '#25262E' : '#F0F0F0';
 
   const [showCustomExpression, setShowCustomExpression] = useState<boolean>(
     false
@@ -192,10 +190,10 @@ export const FeatureChart = (props: FeatureChartProps) => {
               dataValues={getFeatureAnnotations()}
               id="annotations"
               style={{
-                stroke: darkModeEnabled(props.core) ? 'red' : '#D5DBDB',
+                stroke: darkModeEnabled() ? 'red' : '#D5DBDB',
                 strokeWidth: 1,
                 opacity: 0.8,
-                fill: darkModeEnabled(props.core) ? 'red' : '#D5DBDB',
+                fill: darkModeEnabled() ? 'red' : '#D5DBDB',
               }}
             />
           ) : null}

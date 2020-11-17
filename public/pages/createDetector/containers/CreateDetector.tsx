@@ -57,6 +57,7 @@ import { SampleDataCallout } from '../../SampleData/components/SampleDataCallout
 import { containsDetectorsIndex } from '../../SampleData/utils/helpers';
 import { clearModelConfiguration } from './utils/helpers';
 import { prettifyErrorMessage } from '../../../../server/utils/helpers';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 
 interface CreateRouterProps {
   detectorId?: string;
@@ -64,10 +65,10 @@ interface CreateRouterProps {
 
 interface CreateADProps extends RouteComponentProps<CreateRouterProps> {
   isEdit: boolean;
-  core: CoreStart;
 }
 
 export function CreateDetector(props: CreateADProps) {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   useHideSideNavBar(true, false);
   const dispatch = useDispatch<Dispatch<APIAction>>();
   const detectorId: string = get(props, 'match.params.detectorId', '');
@@ -112,14 +113,12 @@ export function CreateDetector(props: CreateADProps) {
         href: `#/detectors/${detectorId}`,
       });
     }
-    props.core.chrome.setBreadcrumbs(breadCrumbs);
+    core.chrome.setBreadcrumbs(breadCrumbs);
   });
   // If no detector found with ID, redirect it to list
   useEffect(() => {
     if (props.isEdit && hasError) {
-      props.core.notifications.toasts.addDanger(
-        'Unable to find detector for edit'
-      );
+      core.notifications.toasts.addDanger('Unable to find detector for edit');
       props.history.push(`/detectors`);
     }
   }, [props.isEdit]);
@@ -131,12 +130,12 @@ export function CreateDetector(props: CreateADProps) {
         ? clearModelConfiguration(detectorToBeUpdated)
         : detectorToBeUpdated;
       await dispatch(updateDetector(detectorId, preparedDetector));
-      props.core.notifications.toasts.addSuccess(
+      core.notifications.toasts.addSuccess(
         `Detector updated: ${preparedDetector.name}`
       );
       props.history.push(`/detectors/${detectorId}/configurations/`);
     } catch (err) {
-      props.core.notifications.toasts.addDanger(
+      core.notifications.toasts.addDanger(
         prettifyErrorMessage(
           getErrorMessage(err, 'There was a problem updating detector')
         )
@@ -146,7 +145,7 @@ export function CreateDetector(props: CreateADProps) {
   const handleCreate = async (detectorToBeCreated: Detector) => {
     try {
       const detectorResp = await dispatch(createDetector(detectorToBeCreated));
-      props.core.notifications.toasts.addSuccess(
+      core.notifications.toasts.addSuccess(
         `Detector created: ${detectorToBeCreated.name}`
       );
       props.history.push(
@@ -156,13 +155,13 @@ export function CreateDetector(props: CreateADProps) {
       const resp = await dispatch(getDetectorCount());
       const totalDetectors = get(resp, 'response.count', 0);
       if (totalDetectors === MAX_DETECTORS) {
-        props.core.notifications.toasts.addDanger(
+        core.notifications.toasts.addDanger(
           'Cannot create detector - limit of ' +
             MAX_DETECTORS +
             ' detectors reached'
         );
       } else {
-        props.core.notifications.toasts.addDanger(
+        core.notifications.toasts.addDanger(
           prettifyErrorMessage(
             getErrorMessage(err, 'There was a problem creating detector')
           )
@@ -254,7 +253,6 @@ export function CreateDetector(props: CreateADProps) {
                 origIndex={props.isEdit ? get(detector, 'indices.0', '') : null}
                 setNewIndexSelected={setNewIndexSelected}
                 isEdit={props.isEdit}
-                core={props.core}
               />
               <EuiSpacer />
               <Settings />

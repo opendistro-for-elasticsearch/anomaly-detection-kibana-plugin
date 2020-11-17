@@ -51,7 +51,6 @@ import {
 } from '../utils/constants';
 import { AnomalyOccurrenceChart } from './AnomalyOccurrenceChart';
 import { FeatureBreakDown } from './FeatureBreakDown';
-import { CoreStart } from '../../../../../../src/core/public';
 
 interface AnomaliesChartProps {
   onDateRangeChange(
@@ -76,7 +75,6 @@ interface AnomaliesChartProps {
   newDetector?: Detector;
   zoomRange?: DateRange;
   anomaliesResult: Anomalies | undefined;
-  core: CoreStart;
 }
 
 export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
@@ -159,7 +157,6 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
         1
       )}
       unit={get(props.detector, 'detectionInterval.period.unit', 'Minutes')}
-      core={props.core}
     />
   );
 
@@ -225,7 +222,6 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                           'detectionInterval.period.unit'
                         )}
                         onHeatmapCellSelected={props.onHeatmapCellSelected}
-                        core={props.core}
                       />,
                       props.showAlerts !== true
                         ? [
@@ -253,7 +249,6 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                               detector={props.detector}
                               isHCDetector={props.isHCDetector}
                               selectedHeatmapCell={props.selectedHeatmapCell}
-                              core={props.core}
                             />,
                             <EuiSpacer size="m" />,
                             <FeatureBreakDown
@@ -275,7 +270,6 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                               )}
                               isHCDetector={props.isHCDetector}
                               selectedHeatmapCell={props.selectedHeatmapCell}
-                              core={props.core}
                             />,
                           ]
                         : null,
@@ -300,7 +294,6 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
               monitor={props.monitor}
               isHCDetector={props.isHCDetector}
               onDatePickerRangeChange={handleDatePickerRangeChange}
-              core={props.core}
             />
           )}
         </EuiFlexGroup>

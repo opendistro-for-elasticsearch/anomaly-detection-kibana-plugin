@@ -18,7 +18,6 @@ import { EuiIcon, EuiLink, EuiToolTip, EuiTitle } from '@elastic/eui';
 import { Monitor } from '../../../../models/interfaces';
 import { getAlertingMonitorListLink } from '../../../../utils/utils';
 import { formatNumber } from '../../../utils/helpers';
-import { CoreStart } from '../../../../../../../src/core/public';
 
 interface AnomalyStatProps {
   title: any;
@@ -75,7 +74,6 @@ export const AlertsStat = (props: {
   showAlertsFlyout(): void;
   totalAlerts: number | undefined;
   isLoading: boolean;
-  core: CoreStart;
 }) => {
   const title = () => {
     return (
@@ -90,7 +88,7 @@ export const AlertsStat = (props: {
         </p>
         {props.monitor ? (
           <EuiLink
-            href={`${getAlertingMonitorListLink(props.core)}/${
+            href={`${getAlertingMonitorListLink()}/${
               // @ts-ignore
               props.monitor.id
             }`}

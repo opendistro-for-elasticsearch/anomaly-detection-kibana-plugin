@@ -59,7 +59,6 @@ import { searchResults } from '../../../redux/reducers/anomalyResults';
 import { AnomalyOccurrenceChart } from '../../AnomalyCharts/containers/AnomalyOccurrenceChart';
 import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 import { getAnomalyHistoryWording } from '../../AnomalyCharts/utils/anomalyChartUtils';
-import { CoreStart } from '../../../../../../src/core/public';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
 
 interface AnomalyHistoryProps {
@@ -67,7 +66,6 @@ interface AnomalyHistoryProps {
   monitor: Monitor | undefined;
   createFeature(): void;
   isFeatureDataMissing?: boolean;
-  core: CoreStart;
 }
 
 export const AnomalyHistory = (props: AnomalyHistoryProps) => {
@@ -103,7 +101,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
 
   const detectorCategoryField = get(props.detector, 'categoryField', []);
   const isHCDetector = !isEmpty(detectorCategoryField);
-  const backgroundColor = darkModeEnabled(props.core) ? '#29017' : '#F7F7F7';
+  const backgroundColor = darkModeEnabled() ? '#29017' : '#F7F7F7';
 
   useEffect(() => {
     // We load at most 10k AD result data points for one call. If user choose
@@ -339,7 +337,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         onHeatmapCellSelected={handleHeatmapCellSelected}
         selectedHeatmapCell={selectedHeatmapCell}
         anomaliesResult={anomalyResults}
-        core={props.core}
       >
         <EuiTabs>{renderTabs()}</EuiTabs>
 
@@ -372,7 +369,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                 isFeatureDataMissing={props.isFeatureDataMissing}
                 isHCDetector={isHCDetector}
                 selectedHeatmapCell={selectedHeatmapCell}
-                core={props.core}
               />
             ) : (
               [
@@ -402,7 +398,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                         monitor={props.monitor}
                         isHCDetector={isHCDetector}
                         selectedHeatmapCell={selectedHeatmapCell}
-                        core={props.core}
                       />,
                       <EuiSpacer size="m" />,
                     ]
@@ -423,7 +418,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                     'plotTime'
                   )}
                   isHCDetector={isHCDetector}
-                  core={props.core}
                 />,
               ]
             )}
