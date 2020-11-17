@@ -65,7 +65,8 @@ describe('<DetectorList /> spec', () => {
   describe('Empty results', () => {
     test('renders in loading state if detectors are being fetched', async () => {
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: { ok: true, response: { detectorList: [], totalDetectors: 0 } },
+        ok: true,
+        response: { detectorList: [], totalDetectors: 0 },
       });
       const { getByText } = renderWithRouter({
         ...initialDetectorsState,
@@ -75,7 +76,8 @@ describe('<DetectorList /> spec', () => {
     });
     test('should display empty message when list is empty', async () => {
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: { ok: true, response: { detectorList: [], totalDetectors: 0 } },
+        ok: true,
+        response: { detectorList: [], totalDetectors: 0 },
       });
       const { getByText } = renderWithRouter({
         ...initialDetectorsState,
@@ -100,12 +102,10 @@ describe('<DetectorList /> spec', () => {
         };
       });
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectorList: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
 
@@ -155,12 +155,10 @@ describe('<DetectorList /> spec', () => {
       randomDetectors[0].curState = DETECTOR_STATE.RUNNING;
 
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectorList: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
 
@@ -245,12 +243,10 @@ describe('<DetectorList /> spec', () => {
         };
       });
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectorList: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
 
@@ -288,12 +284,10 @@ describe('<DetectorList /> spec', () => {
         };
       });
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectorList: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
 
@@ -353,12 +347,10 @@ describe('<DetectorList /> spec', () => {
         },
       ];
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectorList: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
       const { getByText } = renderWithRouter({
@@ -395,12 +387,10 @@ describe('<DetectorList /> spec', () => {
         },
       ];
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectorList: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
       const {
@@ -430,12 +420,10 @@ describe('<DetectorList /> spec', () => {
         },
       ];
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectorList: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
       const { getByText, getByTestId, getAllByRole } = renderWithRouter();
@@ -459,12 +447,10 @@ describe('<DetectorList /> spec', () => {
         },
       ];
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectorList: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
       const {
@@ -494,12 +480,10 @@ describe('<DetectorList /> spec', () => {
         },
       ];
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectorList: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
       const { getByText, getByTestId, getAllByRole } = renderWithRouter();
@@ -569,12 +553,10 @@ describe('<DetectorList /> spec', () => {
         },
       ];
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: randomDetectors,
-            totalDetectors: randomDetectors.length,
-          },
+        ok: true,
+        response: {
+          detectorList: randomDetectors,
+          totalDetectors: randomDetectors.length,
         },
       });
       const { getByText, getByTestId, getAllByRole } = renderWithRouter();

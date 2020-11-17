@@ -845,9 +845,19 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
         style="height: auto;"
       >
         <div
-          class="euiPanel euiPanel--paddingMedium"
+          class="euiPanel euiPanel--paddingMedium euiPanel--hasBetaBadge"
           style="padding: 20px;"
         >
+          <span
+            class="euiPanel__betaBadgeWrapper"
+          >
+            <span
+              class="euiBetaBadge euiPanel__betaBadge"
+              title="INSTALLED"
+            >
+              INSTALLED
+            </span>
+          </span>
           <div
             class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
             style="padding: 0px;"
@@ -943,6 +953,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                   <button
                     class="euiButton euiButton--primary"
                     data-test-subj="loadDataButton"
+                    disabled=""
                     style="width: 300px;"
                     type="button"
                   >
@@ -952,14 +963,22 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                       <span
                         class="euiButton__text"
                       >
-                        Create HTTP response detector
+                        Detector created
                       </span>
                     </span>
                   </button>
                 </div>
                 <div
                   class="euiFlexItem euiFlexItem--flexGrowZero"
-                />
+                >
+                  <a
+                    class="euiLink euiLink--primary"
+                    href="opendistro-anomaly-detection-kibana#/detectors/sample-detector-id"
+                    rel="noreferrer"
+                  >
+                    View detector and sample data
+                  </a>
+                </div>
               </div>
             </div>
           </div>

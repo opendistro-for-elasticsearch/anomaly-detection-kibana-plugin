@@ -59,9 +59,12 @@ describe('<SampleData /> spec', () => {
   jest.clearAllMocks();
   describe('No sample detectors created', () => {
     test('renders component', async () => {
-      httpClientMock.get = jest.fn().mockResolvedValue({
-        data: { ok: true, response: { detectorList: [], totalDetectors: 0 } },
-      });
+      httpClientMock.get = jest
+        .fn()
+        .mockResolvedValue({
+          ok: true,
+          response: { detectorList: [], totalDetectors: 0 },
+        });
       const { container, getByText, queryByText } = renderWithRouter();
       expect(container).toMatchSnapshot();
       getByText('Sample detectors');
@@ -78,20 +81,18 @@ describe('<SampleData /> spec', () => {
     jest.clearAllMocks();
     test('renders component with sample detector', async () => {
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: [
-              {
-                id: 'sample-detector-id',
-                name: sampleHttpResponses.detectorName,
-                indices: sampleHttpResponses.indexName,
-                totalAnomalies: 0,
-                lastActiveAnomaly: 0,
-              },
-            ],
-            totalDetectors: 1,
-          },
+        ok: true,
+        response: {
+          detectorList: [
+            {
+              id: 'sample-detector-id',
+              name: sampleHttpResponses.detectorName,
+              indices: sampleHttpResponses.indexName,
+              totalAnomalies: 0,
+              lastActiveAnomaly: 0,
+            },
+          ],
+          totalDetectors: 1,
         },
       });
       const { container, getByText, getAllByText } = renderWithRouter();
@@ -107,20 +108,18 @@ describe('<SampleData /> spec', () => {
     });
     test('renders component with non-sample detector', async () => {
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: [
-              {
-                id: 'non-sample-detector-id',
-                name: 'non-sample-detector',
-                indices: 'non-sample-index',
-                totalAnomalies: 0,
-                lastActiveAnomaly: 0,
-              },
-            ],
-            totalDetectors: 1,
-          },
+        ok: true,
+        response: {
+          detectorList: [
+            {
+              id: 'non-sample-detector-id',
+              name: 'non-sample-detector',
+              indices: 'non-sample-index',
+              totalAnomalies: 0,
+              lastActiveAnomaly: 0,
+            },
+          ],
+          totalDetectors: 1,
         },
       });
       const { container, getByText, queryByText } = renderWithRouter();
