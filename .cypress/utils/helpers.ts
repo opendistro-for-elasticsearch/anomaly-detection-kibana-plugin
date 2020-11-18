@@ -26,7 +26,9 @@ export const buildAdApiUrl = (apiPath: string): string => {
 };
 
 export const buildServerApiUrl = (appPath: string, apiPath: string): string => {
-  return [API_URL_PREFIX, appPath, apiPath].join(SLASH);
+  return [Cypress.config('baseUrl'), API_URL_PREFIX, appPath, apiPath].join(
+    SLASH
+  );
 };
 
 export const buildAdAppUrl = (pagePath: string): string => {

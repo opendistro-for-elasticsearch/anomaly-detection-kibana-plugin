@@ -59,7 +59,7 @@
     "babel-jest": "^24.8.0",
     "babel-polyfill": "^6.26.0",
     "chance": "^1.1.0",
-    "cypress": "^4.11.0",
+    "cypress": "^5.6.0",
     "eslint": "^5.6.0",
     "eslint-plugin-babel": "^5.2.0",
     "eslint-plugin-import": "^2.14.0",
