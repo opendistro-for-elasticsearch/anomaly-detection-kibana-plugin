@@ -15,7 +15,7 @@ exports[`<ListFilters /> spec Empty results renders component with empty message
         class="euiFormControlLayout__childrenWrapper"
       >
         <input
-          class="euiFieldSearch euiFieldSearch--fullWidth"
+          class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
           data-test-subj="detectorListSearch"
           placeholder="Search"
           type="search"
@@ -216,7 +216,7 @@ exports[`<ListFilters /> spec Empty results renders component with empty message
             type="button"
           >
             <span
-              class="euiButtonEmpty__content"
+              class="euiButtonContent euiButtonEmpty__content"
             >
               <span
                 class="euiButtonEmpty__text"
@@ -232,13 +232,13 @@ exports[`<ListFilters /> spec Empty results renders component with empty message
           <button
             aria-current="true"
             aria-label="Page 2 of 10"
-            class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--xSmall euiPaginationButton euiPaginationButton-isActive euiPaginationButton--hideOnMobile"
+            class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--xSmall euiButtonEmpty-isDisabled euiPaginationButton euiPaginationButton-isActive euiPaginationButton--hideOnMobile"
             data-test-subj="pagination-button-1"
             disabled=""
             type="button"
           >
             <span
-              class="euiButtonEmpty__content"
+              class="euiButtonContent euiButtonEmpty__content"
             >
               <span
                 class="euiButtonEmpty__text"
@@ -258,7 +258,7 @@ exports[`<ListFilters /> spec Empty results renders component with empty message
             type="button"
           >
             <span
-              class="euiButtonEmpty__content"
+              class="euiButtonContent euiButtonEmpty__content"
             >
               <span
                 class="euiButtonEmpty__text"
@@ -278,7 +278,7 @@ exports[`<ListFilters /> spec Empty results renders component with empty message
             type="button"
           >
             <span
-              class="euiButtonEmpty__content"
+              class="euiButtonContent euiButtonEmpty__content"
             >
               <span
                 class="euiButtonEmpty__text"
@@ -298,7 +298,7 @@ exports[`<ListFilters /> spec Empty results renders component with empty message
             type="button"
           >
             <span
-              class="euiButtonEmpty__content"
+              class="euiButtonContent euiButtonEmpty__content"
             >
               <span
                 class="euiButtonEmpty__text"
@@ -324,7 +324,7 @@ exports[`<ListFilters /> spec Empty results renders component with empty message
             type="button"
           >
             <span
-              class="euiButtonEmpty__content"
+              class="euiButtonContent euiButtonEmpty__content"
             >
               <span
                 class="euiButtonEmpty__text"

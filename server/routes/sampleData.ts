@@ -18,7 +18,7 @@ import moment from 'moment';
 import path from 'path';
 import { ServerResponse } from '../models/types';
 import { Router } from '../router';
-import { SAMPLE_TYPE } from '../../public/utils/constants';
+import { SAMPLE_TYPE } from '../utils/constants';
 import { loadSampleData } from '../sampleData/utils/helpers';
 import {
   RequestHandlerContext,

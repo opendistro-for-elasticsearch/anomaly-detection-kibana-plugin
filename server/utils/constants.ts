@@ -58,3 +58,18 @@ export enum AD_DOC_FIELDS {
 export const MAX_MONITORS = 1000;
 
 export const MAX_ALERTS = 1000;
+
+export enum DETECTOR_STATE {
+  DISABLED = 'Stopped',
+  INIT = 'Initializing',
+  RUNNING = 'Running',
+  FEATURE_REQUIRED = 'Feature required',
+  INIT_FAILURE = 'Initialization failure',
+  UNEXPECTED_FAILURE = 'Unexpected failure',
+}
+
+export enum SAMPLE_TYPE {
+  HTTP_RESPONSES = 'http-responses',
+  HOST_HEALTH = 'host-health',
+  ECOMMERCE = 'ecommerce',
+}

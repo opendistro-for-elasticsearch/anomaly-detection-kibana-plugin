@@ -7,13 +7,13 @@ exports[`<AlertsButton /> spec Alerts Button renders component with monitor 1`] 
     detectorid="test-detector-id"
     detectorinterval="1"
     detectorname="test-detector-name"
-    href="/f899c56c-6299-5d0d-8"
+    href="/899c56c6-99d0-539b-8"
     monitor="[object Object]"
     rel="noreferrer"
     unit="Minutes"
   >
     <span
-      class="euiButton__content"
+      class="euiButtonContent euiButton__content"
     >
       <span
         class="euiButton__text"
@@ -36,7 +36,7 @@ exports[`<AlertsButton /> spec Alerts Button renders component without monitor 1
     unit="Minutes"
   >
     <span
-      class="euiButton__content"
+      class="euiButtonContent euiButton__content"
     >
       <span
         class="euiButton__text"

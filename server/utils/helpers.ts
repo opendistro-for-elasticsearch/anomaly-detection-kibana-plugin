@@ -24,7 +24,8 @@ import {
 } from 'lodash';
 
 import { MIN_IN_MILLI_SECS } from './constants';
-import { SHOW_DECIMAL_NUMBER_THRESHOLD } from '../../public/pages/Dashboard/utils/constants';
+
+export const SHOW_DECIMAL_NUMBER_THRESHOLD = 0.01;
 
 export function mapKeysDeep(obj: object, fn: any): object | any[] {
   if (Array.isArray(obj)) {

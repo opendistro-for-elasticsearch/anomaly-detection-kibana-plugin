@@ -17,16 +17,16 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
           class="euiPopover__anchor"
         >
           <button
-            class="euiButton euiButton--primary euiButton--iconRight"
+            class="euiButton euiButton--primary"
             data-test-subj="actionsButton"
             type="button"
           >
             <span
-              class="euiButton__content"
+              class="euiButtonContent euiButtonContent--iconRight euiButton__content"
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
+                class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonContent__icon"
                 focusable="false"
                 height="16"
                 role="img"
@@ -49,17 +49,17 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
       style="margin-left: 0px;"
     >
       <button
-        class="euiButton euiButton--primary"
+        class="euiButton euiButton--primary euiButton-isDisabled"
         data-test-subj="stopDetectorButton"
         disabled=""
         type="button"
       >
         <span
-          class="euiButton__content"
+          class="euiButtonContent euiButton__content"
         >
           <svg
             aria-hidden="true"
-            class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
+            class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonContent__icon"
             focusable="false"
             height="16"
             role="img"
@@ -96,16 +96,16 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
           class="euiPopover__anchor"
         >
           <button
-            class="euiButton euiButton--primary euiButton--iconRight"
+            class="euiButton euiButton--primary"
             data-test-subj="actionsButton"
             type="button"
           >
             <span
-              class="euiButton__content"
+              class="euiButtonContent euiButtonContent--iconRight euiButton__content"
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiButton__icon"
+                class="euiIcon euiIcon--medium euiButtonContent__icon"
                 focusable="false"
                 height="16"
                 role="img"
@@ -138,11 +138,11 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
         type="button"
       >
         <span
-          class="euiButton__content"
+          class="euiButtonContent euiButton__content"
         >
           <svg
             aria-hidden="true"
-            class="euiIcon euiIcon--medium euiButton__icon"
+            class="euiIcon euiIcon--medium euiButtonContent__icon"
             focusable="false"
             height="16"
             role="img"
@@ -183,16 +183,16 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
           class="euiPopover__anchor"
         >
           <button
-            class="euiButton euiButton--primary euiButton--iconRight"
+            class="euiButton euiButton--primary"
             data-test-subj="actionsButton"
             type="button"
           >
             <span
-              class="euiButton__content"
+              class="euiButtonContent euiButtonContent--iconRight euiButton__content"
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiButton__icon"
+                class="euiIcon euiIcon--medium euiButtonContent__icon"
                 focusable="false"
                 height="16"
                 role="img"
@@ -220,17 +220,17 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
       style="margin-left: 0px;"
     >
       <button
-        class="euiButton euiButton--primary"
+        class="euiButton euiButton--primary euiButton-isDisabled"
         data-test-subj="stopDetectorButton"
         disabled=""
         type="button"
       >
         <span
-          class="euiButton__content"
+          class="euiButtonContent euiButton__content"
         >
           <svg
             aria-hidden="true"
-            class="euiIcon euiIcon--medium euiIcon-isLoading euiButton__icon"
+            class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonContent__icon"
             focusable="false"
             height="16"
             role="img"
@@ -267,16 +267,16 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
           class="euiPopover__anchor"
         >
           <button
-            class="euiButton euiButton--primary euiButton--iconRight"
+            class="euiButton euiButton--primary"
             data-test-subj="actionsButton"
             type="button"
           >
             <span
-              class="euiButton__content"
+              class="euiButtonContent euiButtonContent--iconRight euiButton__content"
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiButton__icon"
+                class="euiIcon euiIcon--medium euiButtonContent__icon"
                 focusable="false"
                 height="16"
                 role="img"
@@ -309,11 +309,11 @@ exports[`<DetectorControls /> spec Detector Controls renders detector controls w
         type="button"
       >
         <span
-          class="euiButton__content"
+          class="euiButtonContent euiButton__content"
         >
           <svg
             aria-hidden="true"
-            class="euiIcon euiIcon--medium euiButton__icon"
+            class="euiIcon euiIcon--medium euiButtonContent__icon"
             focusable="false"
             height="16"
             role="img"
