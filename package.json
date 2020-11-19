@@ -17,7 +17,6 @@
     "test:jest": "../../node_modules/.bin/jest --config ./test/jest.config.js",
     "build": "plugin-helpers build",
     "release": "./tasks/release.sh",
-    "start-cy-server": "yarn start --no-base-path --oss",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:run-with-security": "cypress run --env SECURITY_ENABLED=true",
