@@ -50,7 +50,7 @@ describe('elasticsearch reducer actions', () => {
         httpMockedClient.get
       ).toHaveBeenCalledWith(
         `..${AD_NODE_API.DETECTOR}/${tempDetectorId}/results`,
-        { query: JSON.stringify(queryParams) }
+        { query: queryParams }
       );
     });
     test('should invoke [REQUEST, FAILURE]', async () => {
@@ -84,7 +84,7 @@ describe('elasticsearch reducer actions', () => {
           httpMockedClient.get
         ).toHaveBeenCalledWith(
           `..${AD_NODE_API.DETECTOR}/${tempDetectorId}/results`,
-          { query: JSON.stringify(queryParams) }
+          { query: queryParams }
         );
       }
     });
