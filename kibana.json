@@ -4,7 +4,7 @@
   "kibanaVersion": "7.9.1",
   "configPath": ["opendistro_anomaly_detection_kibana"],
   "requiredPlugins": ["navigation"],
-  "optionalPlugins": ["opendistro-alerting", "opendistro_alerting"],
+  "optionalPlugins": [],
   "server": true,
   "ui": true
 }
