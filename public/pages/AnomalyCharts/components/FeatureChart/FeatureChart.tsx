@@ -65,10 +65,11 @@ interface FeatureChartProps {
   rawFeatureData: FeatureAggregationData[];
   titlePrefix?: string;
 }
-const getDisabledChartBackground = () =>
-  darkModeEnabled() ? '#25262E' : '#F0F0F0';
 
 export const FeatureChart = (props: FeatureChartProps) => {
+  const getDisabledChartBackground = () =>
+    darkModeEnabled() ? '#25262E' : '#F0F0F0';
+
   const [showCustomExpression, setShowCustomExpression] = useState<boolean>(
     false
   );

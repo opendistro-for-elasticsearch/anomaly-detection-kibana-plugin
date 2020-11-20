@@ -29,35 +29,6 @@ jest.mock('@elastic/eui/lib/services/accessibility/html_id_generator', () => ({
   },
 }));
 
-jest.mock('ui/notify', () => ({
-  toastNotifications: {
-    addDanger: jest.fn().mockName('addDanger'),
-    addSuccess: jest.fn().mockName('addSuccess'),
-  },
-}));
-
-jest.mock('ui/notify/lib/format_angular_http_error', () => ({
-  isAngularHttpError: jest.fn().mockName('isAngularHttpError'),
-}));
-
-jest.mock('ui/chrome', () => {
-  return {
-    breadcrumbs: (() => {
-      const breadcrumbs = () => {};
-      // @ts-ignore
-      breadcrumbs.set = jest.fn();
-      // @ts-ignore
-      breadcrumbs.push = jest.fn();
-      return breadcrumbs;
-    })(),
-    getUiSettingsClient: () => {
-      return {
-        get: jest.fn(),
-      };
-    },
-  };
-});
-
 // for Plotly
 //@ts-ignore
 window.URL.createObjectURL = function () {};

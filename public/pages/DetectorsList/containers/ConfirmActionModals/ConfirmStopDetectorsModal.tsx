@@ -27,10 +27,6 @@ import {
   EuiModalHeaderTitle,
   EuiLoadingSpinner,
 } from '@elastic/eui';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { Monitor } from '../../../../models/interfaces';
 import { DetectorListItem } from '../../../../models/interfaces';
 import { Listener } from '../../../../utils/utils';
@@ -52,7 +48,7 @@ export const ConfirmStopDetectorsModal = (
 ) => {
   const containsMonitors = !isEmpty(props.monitors);
   const detectorsToDisplay = containsMonitors
-    ? props.detectors.sort(detector =>
+    ? props.detectors.sort((detector) =>
         get(props.monitors, `${detector.id}`) ? -1 : 1
       )
     : props.detectors;

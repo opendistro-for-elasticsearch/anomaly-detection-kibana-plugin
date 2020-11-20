@@ -13,11 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import {
-  APIAction,
-  APIResponseAction,
-  IHttpService,
-} from '../middleware/types';
+import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { ALERTING_NODE_API } from '../../../utils/constants';
 import { Monitor } from '../../../server/models/types';
@@ -57,7 +53,7 @@ const reducer = handleActions<Monitors>(
         let totalAdMonitors = 0;
         const monitors = get(
           action,
-          'result.data.response.monitors',
+          'result.response.monitors',
           []
           // @ts-ignore
         ).reduce((map, obj) => {
@@ -74,7 +70,7 @@ const reducer = handleActions<Monitors>(
         return {
           ...state,
           requesting: false,
-          totalMonitors: get(action, 'result.data.response.totalMonitors', 0),
+          totalMonitors: get(action, 'result.response.totalMonitors', 0),
           totalAdMonitors: totalAdMonitors,
           monitors: monitors,
         };
@@ -104,8 +100,7 @@ const reducer = handleActions<Monitors>(
 
 export const searchMonitors = (): APIAction => ({
   type: SEARCH_MONITORS,
-  request: (client: IHttpService) =>
-    client.post(`..${ALERTING_NODE_API._SEARCH}`, {}),
+  request: (client: HttpSetup) => client.post(`..${ALERTING_NODE_API._SEARCH}`),
 });
 
 export const searchAlerts = (
@@ -114,9 +109,9 @@ export const searchAlerts = (
   endTime: number
 ): APIAction => ({
   type: SEARCH_ALERTS,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.get(`..${ALERTING_NODE_API.ALERTS}`, {
-      params: {
+      query: {
         monitorId: monitorId,
         startTime: startTime,
         endTime: endTime,

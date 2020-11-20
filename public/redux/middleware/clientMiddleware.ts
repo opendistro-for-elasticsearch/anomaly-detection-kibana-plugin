@@ -14,7 +14,7 @@
  */
 
 import { Dispatch, MiddlewareAPI, AnyAction } from 'redux';
-import { IHttpService, APIAction, ThunkAction } from './types';
+import { HttpSetup, APIAction, ThunkAction } from './types';
 import { get } from 'lodash';
 /*
   This a middleware for Redux. To understand this read : http://redux.js.org/docs/advanced/Middleware.html
@@ -26,7 +26,7 @@ const isAPIAction = (
 
 //TODO: Find better way to define return type and avoid ANY.
 
-export default function clientMiddleware<State>(client: IHttpService) {
+export default function clientMiddleware<State>(client: HttpSetup) {
   return ({ dispatch, getState }: MiddlewareAPI<Dispatch, State>) => (
     next: Dispatch
   ) => async (action: APIAction | ThunkAction | AnyAction): Promise<any> => {

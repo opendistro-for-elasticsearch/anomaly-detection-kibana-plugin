@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -13,8 +13,13 @@
  * permissions and limitations under the License.
  */
 
-import httpClientMock from './httpClientMock';
-import styleMock from './styleMock';
-import coreServicesMock from './coreServicesMock';
+import { PluginInitializerContext } from '../../../src/core/public';
+import { AnomalyDetectionKibanaPlugin } from './plugin';
+import './app.scss';
 
-export { httpClientMock, styleMock, coreServicesMock };
+export interface AnomalyDetectionKibanaPluginSetup {}
+export interface AnomalyDetectionKibanaPluginStart {}
+
+export function plugin(initializerContext: PluginInitializerContext) {
+  return new AnomalyDetectionKibanaPlugin(initializerContext);
+}

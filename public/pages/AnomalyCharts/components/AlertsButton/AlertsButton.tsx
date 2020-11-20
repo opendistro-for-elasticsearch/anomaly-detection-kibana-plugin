@@ -15,8 +15,6 @@
 
 import { EuiButton, EuiButtonProps } from '@elastic/eui';
 import React, { Fragment } from 'react';
-//@ts-ignore
-import { toastNotifications } from 'ui/notify';
 import {
   getAlertingCreateMonitorLink,
   getAlertingMonitorListLink,
@@ -31,27 +29,29 @@ export interface AlertsButtonProps extends EuiButtonProps {
   unit: string;
 }
 
-export const AlertsButton = (props: AlertsButtonProps) => (
-  <Fragment>
-    {props.monitor ? (
-      <EuiButton
-        href={`${getAlertingMonitorListLink()}/${props.monitor.id}`}
-        {...props}
-      >
-        Edit alert settings
-      </EuiButton>
-    ) : (
-      <EuiButton
-        href={`${getAlertingCreateMonitorLink(
-          props.detectorId,
-          props.detectorName,
-          props.detectorInterval,
-          props.unit.toUpperCase(),
-        )}`}
-        {...props}
-      >
-        Set up alerts
-      </EuiButton>
-    )}
-  </Fragment>
-);
+export const AlertsButton = (props: AlertsButtonProps) => {
+  return (
+    <Fragment>
+      {props.monitor ? (
+        <EuiButton
+          href={`${getAlertingMonitorListLink()}/${props.monitor.id}`}
+          {...props}
+        >
+          Edit alert settings
+        </EuiButton>
+      ) : (
+        <EuiButton
+          href={`${getAlertingCreateMonitorLink(
+            props.detectorId,
+            props.detectorName,
+            props.detectorInterval,
+            props.unit.toUpperCase()
+          )}`}
+          {...props}
+        >
+          Set up alerts
+        </EuiButton>
+      )}
+    </Fragment>
+  );
+};

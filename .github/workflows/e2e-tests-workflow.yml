@@ -88,7 +88,7 @@ jobs:
           sleep 180
 
       - name: Run e2e tests
-        uses: cypress-io/github-action@v1
+        uses: cypress-io/github-action@v2.5.0
         with:
           working-directory: kibana/plugins/anomaly-detection-kibana-plugin
           command: yarn cy:run --env SECURITY_ENABLED=true
@@ -149,7 +149,7 @@ jobs:
           cd kibana/plugins/anomaly-detection-kibana-plugin
           yarn kbn bootstrap
       - name: Run e2e tests
-        uses: cypress-io/github-action@v1
+        uses: cypress-io/github-action@v2.5.0
         with:
           working-directory: kibana/plugins/anomaly-detection-kibana-plugin
           command: yarn test:e2e

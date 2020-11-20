@@ -15,7 +15,6 @@
 
 import React from 'react';
 import { EuiBadge } from '@elastic/eui';
-import { get } from 'lodash';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { Monitor, Detector, DateRange } from '../../../models/interfaces';
 import { AnomalyDetailsChart } from './AnomalyDetailsChart';

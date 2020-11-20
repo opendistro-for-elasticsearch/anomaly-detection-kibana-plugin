@@ -35,8 +35,6 @@ import {
 } from '../../AnomalyCharts/utils/anomalyChartUtils';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { DateRange, Detector } from '../../../models/interfaces';
 import { AppState } from '../../../redux/reducers';
@@ -52,6 +50,8 @@ import {
   prepareDetector,
 } from './utils/formikToFeatures';
 import { prettifyErrorMessage } from '../../../../server/utils/helpers';
+import { CoreStart } from '../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 
 interface SampleAnomaliesProps {
   detector: Detector;
@@ -63,6 +63,7 @@ interface SampleAnomaliesProps {
 }
 
 export function SampleAnomalies(props: SampleAnomaliesProps) {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   useHideSideNavBar(true, false);
 
@@ -144,7 +145,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
     } catch (err) {
       console.error(`Fail to preview detector ${detector.id}`, err);
       setIsLoading(false);
-      toastNotifications.addDanger(
+      core.notifications.toasts.addDanger(
         prettifyErrorMessage(
           getPreviewErrorMessage(err, 'There was a problem previewing detector')
         )

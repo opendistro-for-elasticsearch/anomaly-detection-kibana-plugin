@@ -22,14 +22,10 @@ import {
   EuiPageBody,
 } from '@elastic/eui';
 import { debounce, get, isEmpty } from 'lodash';
-import queryString from 'query-string';
+import queryString from 'querystring';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-//@ts-ignore
-import chrome from 'ui/chrome';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
 import {
   CatIndex,
   GetDetectorsQueryParams,
@@ -90,6 +86,8 @@ import {
   NO_PERMISSIONS_KEY_WORD,
   prettifyErrorMessage,
 } from '../../../../../server/utils/helpers';
+import { CoreStart } from '../../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
 
 export interface ListRouterParams {
   from: string;
@@ -121,6 +119,7 @@ interface ListActionsState {
 }
 
 export const DetectorList = (props: ListProps) => {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   const allDetectors = useSelector((state: AppState) => state.ad.detectorList);
   const allMonitors = useSelector((state: AppState) => state.alerting.monitors);
@@ -187,8 +186,9 @@ export const DetectorList = (props: ListProps) => {
       errorGettingDetectors !== SINGLE_DETECTOR_ERROR_MSG
     ) {
       console.error(errorGettingDetectors);
-      toastNotifications.addDanger(
-        errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
+      core.notifications.toasts.addDanger(
+        typeof errorGettingDetectors === 'string' &&
+          errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
           ? prettifyErrorMessage(errorGettingDetectors)
           : 'Unable to get all detectors'
       );
@@ -210,7 +210,7 @@ export const DetectorList = (props: ListProps) => {
 
   // Set breadcrumbs on page initialization
   useEffect(() => {
-    chrome.breadcrumbs.set([
+    core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.DETECTORS,
     ]);
@@ -404,7 +404,7 @@ export const DetectorList = (props: ListProps) => {
         affectedMonitors: {},
       });
     } else {
-      toastNotifications.addWarning(
+      core.notifications.toasts.addWarning(
         'All selected detectors are unable to start. Make sure selected \
           detectors have features and are not already running'
       );
@@ -427,7 +427,7 @@ export const DetectorList = (props: ListProps) => {
         affectedMonitors: validMonitors,
       });
     } else {
-      toastNotifications.addWarning(
+      core.notifications.toasts.addWarning(
         'All selected detectors are unable to stop. Make sure selected \
           detectors are already running'
       );
@@ -450,7 +450,7 @@ export const DetectorList = (props: ListProps) => {
         affectedMonitors: validMonitors,
       });
     } else {
-      toastNotifications.addWarning(
+      core.notifications.toasts.addWarning(
         'No detectors selected. Please select detectors to delete'
       );
     }
@@ -467,12 +467,12 @@ export const DetectorList = (props: ListProps) => {
     });
     await Promise.all(promises)
       .then(() => {
-        toastNotifications.addSuccess(
+        core.notifications.toasts.addSuccess(
           'All selected detectors have been started successfully'
         );
       })
       .catch((error) => {
-        toastNotifications.addDanger(
+        core.notifications.toasts.addDanger(
           prettifyErrorMessage(
             `Error starting all selected detectors: ${error}`
           )
@@ -494,13 +494,13 @@ export const DetectorList = (props: ListProps) => {
     });
     await Promise.all(promises)
       .then(() => {
-        toastNotifications.addSuccess(
+        core.notifications.toasts.addSuccess(
           'All selected detectors have been stopped successfully'
         );
         if (listener) listener.onSuccess();
       })
       .catch((error) => {
-        toastNotifications.addDanger(
+        core.notifications.toasts.addDanger(
           prettifyErrorMessage(
             `Error stopping all selected detectors: ${error}`
           )
@@ -526,12 +526,12 @@ export const DetectorList = (props: ListProps) => {
     });
     await Promise.all(promises)
       .then(() => {
-        toastNotifications.addSuccess(
+        core.notifications.toasts.addSuccess(
           'All selected detectors have been deleted successfully'
         );
       })
       .catch((error) => {
-        toastNotifications.addDanger(
+        core.notifications.toasts.addDanger(
           prettifyErrorMessage(
             `Error deleting all selected detectors: ${error}`
           )

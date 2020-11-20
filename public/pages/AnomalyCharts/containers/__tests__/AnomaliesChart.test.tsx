@@ -21,6 +21,8 @@ import { initialState, mockedStore } from '../../../../redux/utils/testUtils';
 import { Provider } from 'react-redux';
 import { INITIAL_ANOMALY_SUMMARY } from '../../utils/constants';
 import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
+import { coreServicesMock } from '../../../../../test/mocks';
 
 const initialStartTime = moment('2019-10-10T09:00:00');
 const initialEndTime = initialStartTime.clone().add(2, 'd');
@@ -66,17 +68,19 @@ const renderDataFilter = () => ({
         },
       })}
     >
-      <AnomaliesChart
-        onDateRangeChange={jest.fn()}
-        onZoomRangeChange={jest.fn()}
-        title="test"
-        bucketizedAnomalies={true}
-        anomalySummary={INITIAL_ANOMALY_SUMMARY}
-        dateRange={dateRange}
-        isLoading={false}
-        anomaliesResult={anomaliesResult}
-        detector={getRandomDetector(true)}
-      />
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <AnomaliesChart
+          onDateRangeChange={jest.fn()}
+          onZoomRangeChange={jest.fn()}
+          title="test"
+          bucketizedAnomalies={true}
+          anomalySummary={INITIAL_ANOMALY_SUMMARY}
+          dateRange={dateRange}
+          isLoading={false}
+          anomaliesResult={anomaliesResult}
+          detector={getRandomDetector(true)}
+        />
+      </CoreServicesContext.Provider>
     </Provider>
   ),
 });

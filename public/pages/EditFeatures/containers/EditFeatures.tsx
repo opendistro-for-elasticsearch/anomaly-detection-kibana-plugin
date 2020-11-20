@@ -45,8 +45,6 @@ import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
 import { AppState } from '../../../redux/reducers';
 import { updateDetector, startDetector } from '../../../redux/reducers/ad';
 import { getMappings } from '../../../redux/reducers/elasticsearch';
@@ -59,8 +57,6 @@ import {
 } from '../../../utils/utils';
 import { prepareDetector } from './utils/formikToFeatures';
 import { useFetchDetectorInfo } from '../../createDetector/hooks/useFetchDetectorInfo';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { BREADCRUMBS, MAX_FEATURE_NUM } from '../../../utils/constants';
 import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
 import { FeatureAccordion } from '../components/FeatureAccordion/FeatureAccordion';
@@ -78,6 +74,8 @@ import {
 import { SampleAnomalies } from './SampleAnomalies';
 import { CategoryField } from '../components/CategoryField/CategoryField';
 import { prettifyErrorMessage } from '../../../../server/utils/helpers';
+import { CoreStart } from '../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 
 interface FeaturesRouterProps {
   detectorId?: string;
@@ -86,6 +84,7 @@ interface FeaturesRouterProps {
 interface EditFeaturesProps extends RouteComponentProps<FeaturesRouterProps> {}
 
 export function EditFeatures(props: EditFeaturesProps) {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   useHideSideNavBar(true, false);
   const detectorId = get(props, 'match.params.detectorId', '');
@@ -121,7 +120,7 @@ export function EditFeatures(props: EditFeaturesProps) {
   }, [detector]);
 
   useEffect(() => {
-    chrome.breadcrumbs.set([
+    core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.DETECTORS,
       {
@@ -220,11 +219,11 @@ export function EditFeatures(props: EditFeaturesProps) {
   const handleStartAdJob = async (detectorId: string) => {
     try {
       await dispatch(startDetector(detectorId));
-      toastNotifications.addSuccess(
+      core.notifications.toasts.addSuccess(
         `Detector job has been started successfully`
       );
     } catch (err) {
-      toastNotifications.addDanger(
+      core.notifications.toasts.addDanger(
         prettifyErrorMessage(
           getErrorMessage(err, 'There was a problem starting detector job')
         )
@@ -246,14 +245,14 @@ export function EditFeatures(props: EditFeaturesProps) {
         detector
       );
       await dispatch(updateDetector(detector.id, requestBody));
-      toastNotifications.addSuccess('Feature updated');
+      core.notifications.toasts.addSuccess('Feature updated');
       if (saveFeatureOption === 'start_ad_job') {
         handleStartAdJob(detector.id);
       }
       setSubmitting(false);
       props.history.push(`/detectors/${detectorId}/configurations`);
     } catch (err) {
-      toastNotifications.addDanger(
+      core.notifications.toasts.addDanger(
         prettifyErrorMessage(
           getErrorMessage(err, 'There was a problem updating feature')
         )
@@ -269,7 +268,7 @@ export function EditFeatures(props: EditFeaturesProps) {
     setSubmitting: any
   ) => {
     if (detector.enabled) {
-      toastNotifications.addDanger(
+      core.notifications.toasts.addDanger(
         "Can't edit feature as the detector is running"
       );
       return;

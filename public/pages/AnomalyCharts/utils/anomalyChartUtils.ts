@@ -30,7 +30,7 @@ import { calculateTimeWindowsWithMaxDataPoints } from '../../utils/anomalyResult
 import { HeatmapCell } from '../containers/AnomalyHeatmapChart';
 
 export const convertAlerts = (response: any): MonitorAlert[] => {
-  const alerts = get(response, 'data.response.alerts', []);
+  const alerts = get(response, 'response.alerts', []);
   return alerts.map((alert: any) => {
     return {
       monitorName: get(alert, 'monitor_name'),

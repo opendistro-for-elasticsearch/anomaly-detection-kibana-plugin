@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { EuiFormRow, EuiHorizontalRule, EuiSelect } from '@elastic/eui';
+import { EuiHorizontalRule, EuiSelect } from '@elastic/eui';
 import { Field, FieldProps, FormikProps } from 'formik';
 import React, { Fragment } from 'react';
 import { getError, isInvalid, required } from '../../../../utils/utils';
@@ -23,6 +23,7 @@ import { SimpleFilter } from './SimpleFilter';
 import { QueryDataFilter } from './QueryDataFilter';
 import { FILTER_TYPES } from '../../../../models/interfaces';
 import { FormattedFormRow } from '../FormattedFormRow/FormattedFormRow';
+
 interface DataFilterProps {
   formikProps: FormikProps<ADFormikValues>;
 }

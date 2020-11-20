@@ -31,10 +31,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
-//@ts-ignore
-import chrome from 'ui/chrome';
-//@ts-ignore
-import { toastNotifications } from 'ui/notify';
+import { CoreStart } from '../../../../../../src/core/public';
 import { APIAction } from '../../../redux/middleware/types';
 import {
   createDetector,
@@ -60,6 +57,7 @@ import { SampleDataCallout } from '../../SampleData/components/SampleDataCallout
 import { containsDetectorsIndex } from '../../SampleData/utils/helpers';
 import { clearModelConfiguration } from './utils/helpers';
 import { prettifyErrorMessage } from '../../../../server/utils/helpers';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 
 interface CreateRouterProps {
   detectorId?: string;
@@ -70,6 +68,7 @@ interface CreateADProps extends RouteComponentProps<CreateRouterProps> {
 }
 
 export function CreateDetector(props: CreateADProps) {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   useHideSideNavBar(true, false);
   const dispatch = useDispatch<Dispatch<APIAction>>();
   const detectorId: string = get(props, 'match.params.detectorId', '');
@@ -114,12 +113,12 @@ export function CreateDetector(props: CreateADProps) {
         href: `#/detectors/${detectorId}`,
       });
     }
-    chrome.breadcrumbs.set(breadCrumbs);
+    core.chrome.setBreadcrumbs(breadCrumbs);
   });
   // If no detector found with ID, redirect it to list
   useEffect(() => {
     if (props.isEdit && hasError) {
-      toastNotifications.addDanger('Unable to find detector for edit');
+      core.notifications.toasts.addDanger('Unable to find detector for edit');
       props.history.push(`/detectors`);
     }
   }, [props.isEdit]);
@@ -131,12 +130,12 @@ export function CreateDetector(props: CreateADProps) {
         ? clearModelConfiguration(detectorToBeUpdated)
         : detectorToBeUpdated;
       await dispatch(updateDetector(detectorId, preparedDetector));
-      toastNotifications.addSuccess(
+      core.notifications.toasts.addSuccess(
         `Detector updated: ${preparedDetector.name}`
       );
       props.history.push(`/detectors/${detectorId}/configurations/`);
     } catch (err) {
-      toastNotifications.addDanger(
+      core.notifications.toasts.addDanger(
         prettifyErrorMessage(
           getErrorMessage(err, 'There was a problem updating detector')
         )
@@ -146,23 +145,23 @@ export function CreateDetector(props: CreateADProps) {
   const handleCreate = async (detectorToBeCreated: Detector) => {
     try {
       const detectorResp = await dispatch(createDetector(detectorToBeCreated));
-      toastNotifications.addSuccess(
+      core.notifications.toasts.addSuccess(
         `Detector created: ${detectorToBeCreated.name}`
       );
       props.history.push(
-        `/detectors/${detectorResp.data.response.id}/configurations/`
+        `/detectors/${detectorResp.response.id}/configurations/`
       );
     } catch (err) {
       const resp = await dispatch(getDetectorCount());
-      const totalDetectors = get(resp, 'data.response.count', 0);
+      const totalDetectors = get(resp, 'response.count', 0);
       if (totalDetectors === MAX_DETECTORS) {
-        toastNotifications.addDanger(
+        core.notifications.toasts.addDanger(
           'Cannot create detector - limit of ' +
             MAX_DETECTORS +
             ' detectors reached'
         );
       } else {
-        toastNotifications.addDanger(
+        core.notifications.toasts.addDanger(
           prettifyErrorMessage(
             getErrorMessage(err, 'There was a problem creating detector')
           )
@@ -201,7 +200,7 @@ export function CreateDetector(props: CreateADProps) {
       }
       //TODO::Avoid making call if value is same
       const resp = await dispatch(matchDetector(detectorName));
-      const match = get(resp, 'data.response.match', false);
+      const match = get(resp, 'response.match', false);
       if (!match) {
         return undefined;
       }

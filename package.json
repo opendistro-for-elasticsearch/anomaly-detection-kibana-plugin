@@ -17,11 +17,10 @@
     "test:jest": "../../node_modules/.bin/jest --config ./test/jest.config.js",
     "build": "plugin-helpers build",
     "release": "./tasks/release.sh",
-    "start-cy-server": "yarn start --no-base-path --oss",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:run-with-security": "cypress run --env SECURITY_ENABLED=true",
-    "test:e2e": "CHOKIDAR_USEPOLLING=1 CYPRESS_responseTimeout=180000 WAIT_ON_TIMEOUT=900000 start-server-and-test 'yarn start-cy-server' http-get://localhost:5601/app/opendistro-anomaly-detection-kibana 'echo sleeping to wait for server to get ready && sleep 180 && yarn cy:run'"
+    "test:e2e": "CHOKIDAR_USEPOLLING=1 CYPRESS_responseTimeout=180000 WAIT_ON_TIMEOUT=900000 start-server-and-test 'cd ../../ && yarn start --no-base-path --oss && cd plugins/anomaly-detection-kibana-plugin' http-get://localhost:5601/app/opendistro-anomaly-detection-kibana 'echo sleeping to wait for server to get ready && sleep 180 && yarn cy:run'"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,md}": [
@@ -42,7 +41,6 @@
     "@testing-library/jest-dom": "^4.0.0",
     "@testing-library/react": "^8.0.6",
     "@testing-library/user-event": "^4.2.3",
-    "@types/angular": "^1.6.55",
     "@types/chance": "^1.0.6",
     "@types/elasticsearch": "^5.0.34",
     "@types/hapi": "^18.0.2",
@@ -60,7 +58,7 @@
     "babel-jest": "^24.8.0",
     "babel-polyfill": "^6.26.0",
     "chance": "^1.1.0",
-    "cypress": "^4.11.0",
+    "cypress": "^5.6.0",
     "eslint": "^5.6.0",
     "eslint-plugin-babel": "^5.2.0",
     "eslint-plugin-import": "^2.14.0",
@@ -85,7 +83,6 @@
     "formik": "^1.5.8",
     "lodash": "^4.17.19",
     "plotly.js": "^1.55.2",
-    "query-string": "^6.8.2",
     "react-plotly.js": "^2.4.0",
     "react-redux": "^7.1.0",
     "react-vis": "^1.11.7",

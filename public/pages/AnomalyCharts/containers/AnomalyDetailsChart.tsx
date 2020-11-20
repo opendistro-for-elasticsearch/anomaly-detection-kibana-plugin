@@ -157,7 +157,7 @@ export const AnomalyDetailsChart = React.memo(
             searchAlerts(monitorId, startDateTime, endDateTime)
           );
           setIsLoadingAlerts(false);
-          setTotalAlerts(get(result, 'data.response.totalAlerts'));
+          setTotalAlerts(get(result, 'response.totalAlerts'));
           const monitorAlerts = convertAlerts(result);
           setAlerts(monitorAlerts);
           const annotations = generateAlertAnnotations(monitorAlerts);

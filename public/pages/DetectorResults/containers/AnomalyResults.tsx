@@ -31,8 +31,6 @@ import { get, isEmpty } from 'lodash';
 import React, { useEffect, Fragment, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { AppState } from '../../../redux/reducers';
 import {
   BREADCRUMBS,
@@ -68,6 +66,8 @@ import {
   getAssociatedIndex,
 } from '../../SampleData/utils/helpers';
 import { SampleIndexDetailsCallout } from '../../SampleData/components/SampleIndexDetailsCallout/SampleIndexDetailsCallout';
+import { CoreStart } from '../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 
 interface AnomalyResultsProps extends RouteComponentProps {
   detectorId: string;
@@ -76,6 +76,7 @@ interface AnomalyResultsProps extends RouteComponentProps {
 }
 
 export function AnomalyResults(props: AnomalyResultsProps) {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   const detectorId = props.detectorId;
   const detector = useSelector(
@@ -83,7 +84,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   );
 
   useEffect(() => {
-    chrome.breadcrumbs.set([
+    core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.DETECTORS,
       { text: detector ? detector.name : '' },
@@ -228,7 +229,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       );
       const featuresData = get(
         detectorResultResponse,
-        'data.response.featureResults',
+        'response.featureResults',
         []
       );
       const featureDataPoints = getFeatureDataPointsForDetector(

@@ -197,12 +197,12 @@ export const AnomalyResultsLiveChart = (
   };
 
   const latestAnomalyGrade = get(liveAnomalyResults, 'liveAnomalies', []).find(
-    anomaly => anomaly.anomalyGrade > 0
+    (anomaly) => anomaly.anomalyGrade > 0
   );
 
   const fullScreenButton = () => (
     <EuiButton
-      onClick={() => setIsFullScreen(isFullScreen => !isFullScreen)}
+      onClick={() => setIsFullScreen((isFullScreen) => !isFullScreen)}
       iconType={isFullScreen ? 'exit' : 'fullScreen'}
       aria-label="View full screen"
     >
@@ -283,9 +283,10 @@ export const AnomalyResultsLiveChart = (
                     size="s"
                     title={`No anomalies found during the last ${
                       LIVE_CHART_CONFIG.MONITORING_INTERVALS
-                    } intervals (${LIVE_CHART_CONFIG.MONITORING_INTERVALS *
-                      props.detector.detectionInterval.period
-                        .interval} minutes).`}
+                    } intervals (${
+                      LIVE_CHART_CONFIG.MONITORING_INTERVALS *
+                      props.detector.detectionInterval.period.interval
+                    } minutes).`}
                     style={{
                       width: '97%', // ensure width reaches NOW line
                     }}

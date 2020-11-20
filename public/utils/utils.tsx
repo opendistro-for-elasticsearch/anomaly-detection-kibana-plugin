@@ -16,13 +16,11 @@
 import { get, isEmpty } from 'lodash';
 import React from 'react';
 import { EuiTitle } from '@elastic/eui';
-//@ts-ignore
-import { isAngularHttpError } from 'ui/notify';
-//@ts-ignore
-import { npStart } from 'ui/new_platform';
 import { darkModeEnabled } from '../utils/kibanaUtils';
 import { ALERTING_PLUGIN_NAME, NAME_REGEX } from './constants';
 import { MAX_FEATURE_NAME_SIZE } from './constants';
+import { CoreStart } from '../../../../src/core/public';
+import { CoreServicesContext } from '../components/CoreServices/CoreServices';
 
 export const validateFeatureName = (
   featureName: string
@@ -102,16 +100,7 @@ export const validateNonNegativeInteger = (value: any) => {
 export const getErrorMessage = (err: any, defaultMessage: string) => {
   if (typeof err === 'string') return err;
   if (err && err.message) return err.message;
-  if (isAngularHttpError && isAngularHttpError(err)) return err.data.message;
   return defaultMessage;
-};
-
-export const isAlertingInstalled = (): boolean => {
-  const navLinks = get(npStart, 'core.chrome.navLinks', undefined);
-  if (navLinks) {
-    return navLinks.has(ALERTING_PLUGIN_NAME);
-  }
-  return false;
 };
 
 const getPluginRootPath = (url: string, pluginName: string) => {
@@ -125,7 +114,8 @@ export const getAlertingCreateMonitorLink = (
   unit: string
 ): string => {
   try {
-    const navLinks = get(npStart, 'core.chrome.navLinks', undefined);
+    const core = React.useContext(CoreServicesContext) as CoreStart;
+    const navLinks = get(core, 'chrome.navLinks', undefined);
     const url = `${navLinks.get(ALERTING_PLUGIN_NAME).url}`;
     const alertingRootUrl = getPluginRootPath(url, ALERTING_PLUGIN_NAME);
     return `${alertingRootUrl}#/create-monitor?searchType=ad&adId=${detectorId}&name=${detectorName}&interval=${
@@ -139,7 +129,8 @@ export const getAlertingCreateMonitorLink = (
 
 export const getAlertingMonitorListLink = (): string => {
   try {
-    const navLinks = get(npStart, 'core.chrome.navLinks', undefined);
+    const core = React.useContext(CoreServicesContext) as CoreStart;
+    const navLinks = get(core, 'chrome.navLinks', undefined);
     const url = `${navLinks.get(ALERTING_PLUGIN_NAME).url}`;
     const alertingRootUrl = getPluginRootPath(url, ALERTING_PLUGIN_NAME);
     return `${alertingRootUrl}#/monitors`;
@@ -154,7 +145,8 @@ export interface Listener {
   onException(): void;
 }
 
-const detectorCountFontColor = darkModeEnabled() ? '#98A2B3' : '#535966';
+const detectorCountFontColor = () =>
+  darkModeEnabled() ? '#98A2B3' : '#535966';
 
 export const getTitleWithCount = (title: string, count: number | string) => {
   return (
@@ -166,7 +158,7 @@ export const getTitleWithCount = (title: string, count: number | string) => {
         }}
       >
         <p>{title}&nbsp;</p>
-        <p style={{ color: detectorCountFontColor }}>{`(${count})`}</p>
+        <p style={{ color: detectorCountFontColor() }}>{`(${count})`}</p>
       </h3>
     </EuiTitle>
   );

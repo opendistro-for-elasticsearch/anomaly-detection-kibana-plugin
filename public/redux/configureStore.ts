@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -15,13 +15,16 @@
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import clientMiddleware from './middleware/clientMiddleware';
-import { IHttpService } from './middleware/types';
+import { HttpSetup } from './middleware/types';
 import reducers, { AppState } from './reducers';
 
-function configureStore(httpClient: IHttpService) {
+function configureStore(httpClient: HttpSetup) {
   const middleWares = [clientMiddleware<AppState>(httpClient)];
-  const composeWithReduxDevTools = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  const store = composeWithReduxDevTools(applyMiddleware(...middleWares))(createStore);
+  const composeWithReduxDevTools =
+    (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const store = composeWithReduxDevTools(applyMiddleware(...middleWares))(
+    createStore
+  );
   //@ts-ignore
   return store(reducers);
 }

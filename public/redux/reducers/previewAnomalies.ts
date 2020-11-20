@@ -13,11 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import {
-  APIAction,
-  APIResponseAction,
-  IHttpService,
-} from '../middleware/types';
+import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
 import { Anomalies } from '../../models/interfaces';
@@ -52,7 +48,7 @@ const reducer = handleActions<PreviewAnomalies>(
       ): PreviewAnomalies => ({
         ...state,
         requesting: false,
-        anomaliesResult: action.result.data.response,
+        anomaliesResult: action.result.response,
       }),
       FAILURE: (
         state: PreviewAnomalies,
@@ -72,8 +68,10 @@ export const previewDetector = (
   requestBody: any
 ): APIAction => ({
   type: PREVIEW_DETECTOR,
-  request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/preview`, requestBody),
+  request: (client: HttpSetup) =>
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/preview`, {
+      body: JSON.stringify(requestBody),
+    }),
 });
 
 export default reducer;

@@ -23,13 +23,14 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { httpClientMock } from '../../../../../../test/mocks';
+import { httpClientMock, coreServicesMock } from '../../../../../../test/mocks';
 import configureStore from '../../../../../redux/configureStore';
 import {
   Detectors,
   initialDetectorsState,
 } from '../../../../../redux/reducers/ad';
 import { sampleHttpResponses } from '../../../utils/constants';
+import { CoreServicesContext } from '../../../../../components/CoreServices/CoreServices';
 
 const renderWithRouter = (
   initialAdState: Detectors = initialDetectorsState
@@ -38,7 +39,15 @@ const renderWithRouter = (
     <Provider store={configureStore(httpClientMock)}>
       <Router>
         <Switch>
-          <Route exact path="/sample-detectors" render={() => <SampleData />} />
+          <Route
+            exact
+            path="/sample-detectors"
+            render={() => (
+              <CoreServicesContext.Provider value={coreServicesMock}>
+                <SampleData />{' '}
+              </CoreServicesContext.Provider>
+            )}
+          />
           <Redirect from="/" to="/sample-detectors" />
         </Switch>
       </Router>
@@ -50,9 +59,12 @@ describe('<SampleData /> spec', () => {
   jest.clearAllMocks();
   describe('No sample detectors created', () => {
     test('renders component', async () => {
-      httpClientMock.get = jest.fn().mockResolvedValue({
-        data: { ok: true, response: { detectorList: [], totalDetectors: 0 } },
-      });
+      httpClientMock.get = jest
+        .fn()
+        .mockResolvedValue({
+          ok: true,
+          response: { detectorList: [], totalDetectors: 0 },
+        });
       const { container, getByText, queryByText } = renderWithRouter();
       expect(container).toMatchSnapshot();
       getByText('Sample detectors');
@@ -69,20 +81,18 @@ describe('<SampleData /> spec', () => {
     jest.clearAllMocks();
     test('renders component with sample detector', async () => {
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: [
-              {
-                id: 'sample-detector-id',
-                name: sampleHttpResponses.detectorName,
-                indices: sampleHttpResponses.indexName,
-                totalAnomalies: 0,
-                lastActiveAnomaly: 0,
-              },
-            ],
-            totalDetectors: 1,
-          },
+        ok: true,
+        response: {
+          detectorList: [
+            {
+              id: 'sample-detector-id',
+              name: sampleHttpResponses.detectorName,
+              indices: sampleHttpResponses.indexName,
+              totalAnomalies: 0,
+              lastActiveAnomaly: 0,
+            },
+          ],
+          totalDetectors: 1,
         },
       });
       const { container, getByText, getAllByText } = renderWithRouter();
@@ -98,20 +108,18 @@ describe('<SampleData /> spec', () => {
     });
     test('renders component with non-sample detector', async () => {
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            detectorList: [
-              {
-                id: 'non-sample-detector-id',
-                name: 'non-sample-detector',
-                indices: 'non-sample-index',
-                totalAnomalies: 0,
-                lastActiveAnomaly: 0,
-              },
-            ],
-            totalDetectors: 1,
-          },
+        ok: true,
+        response: {
+          detectorList: [
+            {
+              id: 'non-sample-detector-id',
+              name: 'non-sample-detector',
+              indices: 'non-sample-index',
+              totalAnomalies: 0,
+              lastActiveAnomaly: 0,
+            },
+          ],
+          totalDetectors: 1,
         },
       });
       const { container, getByText, queryByText } = renderWithRouter();

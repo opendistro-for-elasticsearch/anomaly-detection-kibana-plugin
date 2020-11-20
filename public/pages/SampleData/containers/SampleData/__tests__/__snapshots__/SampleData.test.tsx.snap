@@ -398,6 +398,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
       class="euiSpacer euiSpacer--m"
     />
   </div>
+   
 </div>
 `;
 
@@ -811,6 +812,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
       class="euiSpacer euiSpacer--m"
     />
   </div>
+   
 </div>
 `;
 
@@ -1243,5 +1245,6 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
       class="euiSpacer euiSpacer--m"
     />
   </div>
+   
 </div>
 `;

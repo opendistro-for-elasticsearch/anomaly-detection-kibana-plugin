@@ -413,7 +413,7 @@ export const getBucketizedAnomalyResultsQuery = (
 export const parseBucketizedAnomalyResults = (result: any): Anomalies => {
   const rawAnomalies = get(
     result,
-    'data.response.aggregations.bucketized_anomaly_grade.buckets',
+    'response.aggregations.bucketized_anomaly_grade.buckets',
     []
   ) as any[];
   let anomalies = [] as AnomalyData[];
@@ -460,7 +460,7 @@ export const parseAnomalySummary = (
 ): AnomalySummary => {
   const anomalyCount = get(
     anomalySummaryResult,
-    'data.response.aggregations.count_anomalies.value',
+    'response.aggregations.count_anomalies.value',
     0
   );
   return {
@@ -469,7 +469,7 @@ export const parseAnomalySummary = (
       ? toFixedNumberForAnomaly(
           get(
             anomalySummaryResult,
-            'data.response.aggregations.min_anomaly_grade.value'
+            'response.aggregations.min_anomaly_grade.value'
           )
         )
       : 0,
@@ -477,7 +477,7 @@ export const parseAnomalySummary = (
       ? toFixedNumberForAnomaly(
           get(
             anomalySummaryResult,
-            'data.response.aggregations.max_anomaly_grade.value'
+            'response.aggregations.max_anomaly_grade.value'
           )
         )
       : 0,
@@ -485,7 +485,7 @@ export const parseAnomalySummary = (
       ? toFixedNumberForAnomaly(
           get(
             anomalySummaryResult,
-            'data.response.aggregations.min_confidence.value'
+            'response.aggregations.min_confidence.value'
           )
         )
       : 0,
@@ -493,7 +493,7 @@ export const parseAnomalySummary = (
       ? toFixedNumberForAnomaly(
           get(
             anomalySummaryResult,
-            'data.response.aggregations.max_confidence.value'
+            'response.aggregations.max_confidence.value'
           )
         )
       : 0,
@@ -501,7 +501,7 @@ export const parseAnomalySummary = (
       ? minuteDateFormatter(
           get(
             anomalySummaryResult,
-            'data.response.aggregations.max_data_end_time.value'
+            'response.aggregations.max_data_end_time.value'
           )
         )
       : '',
@@ -511,11 +511,7 @@ export const parseAnomalySummary = (
 export const parsePureAnomalies = (
   anomalySummaryResult: any
 ): AnomalyData[] => {
-  const anomaliesHits = get(
-    anomalySummaryResult,
-    'data.response.hits.hits',
-    []
-  );
+  const anomaliesHits = get(anomalySummaryResult, 'response.hits.hits', []);
   const anomalies = [] as AnomalyData[];
   if (anomaliesHits.length > 0) {
     anomaliesHits.forEach((item: any) => {

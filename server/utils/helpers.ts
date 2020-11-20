@@ -69,8 +69,8 @@ const PERMISSIONS_ERROR_PATTERN = /no permissions for \[(.+)\] and User \[name=(
 export const NO_PERMISSIONS_KEY_WORD = 'no permissions';
 
 export const prettifyErrorMessage = (rawErrorMessage: string) => {
-  if (isEmpty(rawErrorMessage)) {
-    return 'Unknow error is returned.';
+  if (isEmpty(rawErrorMessage) || rawErrorMessage === 'undefined') {
+    return 'Unknown error is returned.';
   }
   const match = rawErrorMessage.match(PERMISSIONS_ERROR_PATTERN);
   if (isEmpty(match)) {

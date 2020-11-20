@@ -22,7 +22,7 @@ describe('elasticsearch reducer actions', () => {
       };
       httpMockedClient.get = jest
         .fn()
-        .mockResolvedValue({ data: { ok: true, response } });
+        .mockResolvedValue({ ok: true, response });
       const tempDetectorId = '123';
       let queryParams: DetectorResultsQueryParams = {
         from: 0,
@@ -44,16 +44,19 @@ describe('elasticsearch reducer actions', () => {
         requesting: false,
         total: response.totalAnomalies,
         anomalies: response.results,
-        "featureData": undefined,
+        featureData: undefined,
       });
-      expect(httpMockedClient.get).toHaveBeenCalledWith(
+      expect(
+        httpMockedClient.get
+      ).toHaveBeenCalledWith(
         `..${AD_NODE_API.DETECTOR}/${tempDetectorId}/results`,
-        { params: queryParams }
+        { query: queryParams }
       );
     });
     test('should invoke [REQUEST, FAILURE]', async () => {
       httpMockedClient.get = jest.fn().mockRejectedValue({
-        data: { ok: false, error: 'Something went wrong' },
+        ok: false,
+        error: 'Something went wrong',
       });
       const tempDetectorId = '123';
       let queryParams: DetectorResultsQueryParams = {
@@ -77,9 +80,11 @@ describe('elasticsearch reducer actions', () => {
           requesting: false,
           errorMessage: 'Something went wrong',
         });
-        expect(httpMockedClient.get).toHaveBeenCalledWith(
+        expect(
+          httpMockedClient.get
+        ).toHaveBeenCalledWith(
           `..${AD_NODE_API.DETECTOR}/${tempDetectorId}/results`,
-          { params: queryParams }
+          { query: queryParams }
         );
       }
     });

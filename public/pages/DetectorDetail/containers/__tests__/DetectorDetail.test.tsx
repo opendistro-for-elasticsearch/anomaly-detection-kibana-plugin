@@ -26,7 +26,9 @@ import {
 } from 'react-router-dom';
 // @ts-ignore
 import configureStore from '../../../../redux/configureStore';
-import { httpClientMock } from '../../../../../test/mocks';
+import { httpClientMock, coreServicesMock } from '../../../../../test/mocks';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
+
 jest.mock('../../hooks/useFetchMonitorInfo');
 jest.mock('../../../createDetector/hooks/useFetchDetectorInfo');
 
@@ -49,7 +51,11 @@ const renderWithRouter = (detectorId: string) => ({
                   url: '',
                 },
               };
-              return <DetectorDetail {...testProps} />;
+              return (
+                <CoreServicesContext.Provider value={coreServicesMock}>
+                  <DetectorDetail {...testProps} />
+                </CoreServicesContext.Provider>
+              );
             }}
           />
           <Redirect from="/" to={`/detectors/${detectorId}/results`} />

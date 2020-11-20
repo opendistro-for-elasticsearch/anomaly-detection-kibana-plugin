@@ -16,3 +16,4 @@ offline-module-cache/v2/*
 offline-module-cache/v1/*
 .cypress/screenshots
 .cypress/videos
+target

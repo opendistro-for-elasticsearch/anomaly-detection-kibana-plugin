@@ -21,8 +21,6 @@ import {
 } from '@elastic/eui';
 import { get } from 'lodash';
 import React, { useEffect, useState } from 'react';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import {

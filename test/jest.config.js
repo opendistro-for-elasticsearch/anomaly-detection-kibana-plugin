@@ -21,7 +21,6 @@ module.exports = {
   coverageDirectory: './coverage',
   moduleNameMapper: {
     '\\.(css|less|scss)$': '<rootDir>/test/mocks/styleMock.ts',
-    '^ui/(.*)': '<rootDir>',
   },
   coverageReporters: ['lcov', 'text', 'cobertura'],
   testMatch: ['**/*.test.js', '**/*.test.jsx', '**/*.test.ts', '**/*.test.tsx'],

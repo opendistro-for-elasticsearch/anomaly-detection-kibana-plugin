@@ -140,7 +140,9 @@ export const SimpleFilter = (props: DataFilterProps) => {
             {values.filters.map((filter: UIFilter, index: number) => {
               return (
                 <EuiPanel key={index} className="filter-container">
-                  {get(props, 'formikProps.values.index.0.label', '').includes(':') ? (
+                  {get(props, 'formikProps.values.index.0.label', '').includes(
+                    ':'
+                  ) ? (
                     <div>
                       <EuiCallOut
                         title="This detector is using a remote cluster index, so you need to manually input the filter field."

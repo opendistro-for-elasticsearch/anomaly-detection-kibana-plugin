@@ -10,6 +10,7 @@
   "requestTimeout": 90000,
   "responseTimeout": 90000,
   "defaultCommandTimeout": 90000,
+  "experimentalNetworkStubbing": true,
   "env": {
     "SECURITY_ENABLED": false
   }

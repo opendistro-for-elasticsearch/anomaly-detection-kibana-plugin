@@ -24,6 +24,8 @@ import {
 import { ADFormikValues } from '../../../containers/models/interfaces';
 import { INITIAL_VALUES } from '../../../containers/utils/constant';
 import { DataFilter } from '../DataFilter';
+import { CoreServicesContext } from '../../../../../components/CoreServices/CoreServices';
+import { coreServicesMock } from '../../../../../../test/mocks';
 
 const renderDataFilter = (initialValue: ADFormikValues) => ({
   ...render(
@@ -40,13 +42,15 @@ const renderDataFilter = (initialValue: ADFormikValues) => ({
         },
       })}
     >
-      <Formik initialValues={initialValue} onSubmit={jest.fn()}>
-        {formikProps => (
-          <div>
-            <DataFilter formikProps={formikProps} />
-          </div>
-        )}
-      </Formik>
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <Formik initialValues={initialValue} onSubmit={jest.fn()}>
+          {(formikProps) => (
+            <div>
+              <DataFilter formikProps={formikProps} />
+            </div>
+          )}
+        </Formik>
+      </CoreServicesContext.Provider>
     </Provider>
   ),
 });
