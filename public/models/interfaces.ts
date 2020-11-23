@@ -88,11 +88,6 @@ export type UiMetaData = {
   };
 };
 
-// export type InitProgress = {
-//   percentageStr: string;
-//   estimatedMinutesLeft: number;
-//   neededShingles: number;
-// };
 export type Detector = {
   primaryTerm: number;
   seqNo: number;
