@@ -14,7 +14,7 @@
  */
 
 import { DETECTORS, TEST_DETECTOR_ID } from '../../../utils/constants';
-import { DETECTOR_STATE } from '../../../../public/utils/constants';
+import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import { buildAdAppUrl } from '../../../utils/helpers';
 
 context('Detector list', () => {

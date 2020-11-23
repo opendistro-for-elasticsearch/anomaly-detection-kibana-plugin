@@ -59,6 +59,8 @@ export const MAX_MONITORS = 1000;
 
 export const MAX_ALERTS = 1000;
 
+// TODO: maybe move types/interfaces/constants/helpers shared between client and server
+// side as many as possible into single place
 export enum DETECTOR_STATE {
   DISABLED = 'Stopped',
   INIT = 'Initializing',

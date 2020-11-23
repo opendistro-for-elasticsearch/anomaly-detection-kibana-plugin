@@ -3,10 +3,6 @@
   "version": "1.12.0.0",
   "description": "Open Distro for Elasticsearch Anomaly Detection Kibana plugin",
   "main": "index.js",
-  "kibana": {
-    "version": "7.10.0",
-    "templateVersion": "1.0.0"
-  },
   "config": {
     "odfe_version": "1.12.0.0",
     "odfe_name": "opendistroAnomalyDetectionKibana"
@@ -17,7 +13,7 @@
     "lint": "eslint .",
     "plugin-helpers": "node ../../scripts/plugin_helpers",
     "test:jest": "../../node_modules/.bin/jest --config ./test/jest.config.js",
-    "build": "yarn plugin-helpers build && mv ./build/$npm_package_config_odfe_name*.zip ./build/$npm_package_config_odfe_name-$npm_package_config_odfe_version.zip",
+    "build": "yarn plugin-helpers build && echo Renaming artifact to $npm_package_config_odfe_name-$npm_package_config_odfe_version.zip && mv ./build/$npm_package_config_odfe_name*.zip ./build/$npm_package_config_odfe_name-$npm_package_config_odfe_version.zip",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:run-with-security": "cypress run --env SECURITY_ENABLED=true",

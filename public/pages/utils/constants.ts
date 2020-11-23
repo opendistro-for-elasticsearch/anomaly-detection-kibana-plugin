@@ -14,7 +14,7 @@
  */
 
 import { SORT_DIRECTION } from '../../../server/utils/constants';
-import { DETECTOR_STATE } from '../../utils/constants';
+import { DETECTOR_STATE } from '../../../server/utils/constants';
 
 export const customSubduedColor = '#98A2B3';
 export const customSuccessColor = '#7DE2D1';

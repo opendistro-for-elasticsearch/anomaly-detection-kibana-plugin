@@ -48,8 +48,8 @@ import {
 import {
   APP_PATH,
   PLUGIN_NAME,
-  DETECTOR_STATE,
 } from '../../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../../server/utils/constants';
 import { getVisibleOptions, sanitizeSearchText } from '../../../utils/helpers';
 import { EmptyDetectorMessage } from '../../components/EmptyMessage/EmptyMessage';
 import { ListFilters } from '../../components/ListFilters/ListFilters';

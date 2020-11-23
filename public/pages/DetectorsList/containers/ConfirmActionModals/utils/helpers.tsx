@@ -20,7 +20,7 @@ import { Monitor } from '../../../../../models/interfaces';
 import { DetectorListItem } from '../../../../../models/interfaces';
 import { PLUGIN_NAME } from '../../../../../utils/constants';
 import { get, isEmpty } from 'lodash';
-import { DETECTOR_STATE } from '../../../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../../../server/utils/constants';
 
 const getNames = (detectors: DetectorListItem[]) => {
   let data = [];

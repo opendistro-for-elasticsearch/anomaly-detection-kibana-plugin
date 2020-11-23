@@ -34,7 +34,7 @@ import { Monitor } from '../../../../models/interfaces';
 import { DetectorListItem } from '../../../../models/interfaces';
 import { Listener } from '../../../../utils/utils';
 import { EuiSpacer } from '@elastic/eui';
-import { DETECTOR_STATE } from '../../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../../server/utils/constants';
 import {
   getNamesAndMonitorsAndStatesGrid,
   containsEnabledDetectors,

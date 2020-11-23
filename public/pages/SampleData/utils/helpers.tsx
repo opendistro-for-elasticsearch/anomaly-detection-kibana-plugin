@@ -18,7 +18,8 @@ import { isEmpty } from 'lodash';
 import { EuiDataGrid } from '@elastic/eui';
 import { CatIndex } from '../../../../server/models/types';
 import { Detector, DetectorListItem } from '../../../models/interfaces';
-import { SAMPLE_TYPE, ANOMALY_DETECTORS_INDEX } from '../../../utils/constants';
+import { ANOMALY_DETECTORS_INDEX } from '../../../utils/constants';
+import { SAMPLE_TYPE } from '../../../../server/utils/constants';
 import {
   sampleHttpResponses,
   sampleEcommerce,

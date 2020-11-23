@@ -34,10 +34,10 @@ import { RouteComponentProps } from 'react-router';
 import { AppState } from '../../../redux/reducers';
 import {
   BREADCRUMBS,
-  DETECTOR_STATE,
   FEATURE_DATA_POINTS_WINDOW,
   MISSING_FEATURE_DATA_SEVERITY,
 } from '../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import { AnomalyResultsLiveChart } from './AnomalyResultsLiveChart';
 import { AnomalyHistory } from './AnomalyHistory';
 import { DetectorStateDetails } from './DetectorStateDetails';

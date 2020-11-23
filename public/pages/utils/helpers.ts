@@ -18,7 +18,7 @@ import sortBy from 'lodash/sortBy';
 import { DetectorListItem } from '../../models/interfaces';
 import { SORT_DIRECTION } from '../../../server/utils/constants';
 import { ALL_INDICES, ALL_DETECTOR_STATES } from './constants';
-import { DETECTOR_STATE } from '../../utils/constants';
+import { DETECTOR_STATE } from '../../../server/utils/constants';
 import { timeFormatter } from '@elastic/charts';
 
 export function sanitizeSearchText(searchValue: string): string {
@@ -48,11 +48,11 @@ const isUserIndex = (index: string) => {
 
 export function getVisibleOptions(indices: CatIndex[], aliases: IndexAlias[]) {
   const visibleIndices = indices
-    .filter(value => isUserIndex(value.index))
-    .map(value => ({ label: value.index, health: value.health }));
+    .filter((value) => isUserIndex(value.index))
+    .map((value) => ({ label: value.index, health: value.health }));
   const visibleAliases = aliases
-    .filter(value => isUserIndex(value.alias))
-    .map(value => ({ label: value.alias }));
+    .filter((value) => isUserIndex(value.alias))
+    .map((value) => ({ label: value.alias }));
 
   return [
     {
@@ -77,17 +77,17 @@ export const filterAndSortDetectors = (
   let filteredBySearch =
     search == ''
       ? detectors
-      : detectors.filter(detector => detector.name.includes(search));
+      : detectors.filter((detector) => detector.name.includes(search));
   let filteredBySearchAndState =
     selectedDetectorStates == ALL_DETECTOR_STATES
       ? filteredBySearch
-      : filteredBySearch.filter(detector =>
+      : filteredBySearch.filter((detector) =>
           selectedDetectorStates.includes(detector.curState)
         );
   let filteredBySearchAndStateAndIndex =
     selectedIndices == ALL_INDICES
       ? filteredBySearchAndState
-      : filteredBySearchAndState.filter(detector =>
+      : filteredBySearchAndState.filter((detector) =>
           selectedIndices.includes(detector.indices[0])
         );
   let sorted = sortBy(filteredBySearchAndStateAndIndex, sortField);

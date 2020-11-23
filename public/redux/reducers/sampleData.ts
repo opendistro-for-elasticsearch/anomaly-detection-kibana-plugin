@@ -16,7 +16,7 @@
 import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
-import { SAMPLE_TYPE } from '../../utils/constants';
+import { SAMPLE_TYPE } from '../../../server/utils/constants';
 import { get } from 'lodash';
 
 const CREATE_SAMPLE_DATA = 'ad/CREATE_SAMPLE_DATA';

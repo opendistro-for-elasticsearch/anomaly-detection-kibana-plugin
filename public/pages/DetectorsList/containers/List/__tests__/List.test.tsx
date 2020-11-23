@@ -32,7 +32,7 @@ import {
   initialDetectorsState,
 } from '../../../../../redux/reducers/ad';
 import { DetectorList, ListRouterParams } from '../List';
-import { DETECTOR_STATE } from '../../../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../../../server/utils/constants';
 import { CoreServicesContext } from '../../../../../components/CoreServices/CoreServices';
 
 const renderWithRouter = (
