@@ -170,67 +170,65 @@ export const AnomaliesDistributionChart = (
         <EuiFlexGroup justifyContent="center">
           <EuiFlexItem grow={false}>
             {isEmpty(anomalyDistribution) ? null : (
-              <Chart className="anomalies-distribution-sunburst">
-                <Partition
-                  id="Anomalies by index and detector"
-                  data={anomalyDistribution}
-                  valueAccessor={(d: Datum) => d.count as number}
-                  valueFormatter={(d: number) => d.toString()}
-                  layers={[
-                    {
-                      groupByRollup: (d: Datum) => d.indices,
-                      nodeLabel: (d: Datum) => {
-                        return d;
+              <div className="anomalies-distribution-sunburst">
+                <Chart>
+                  <Partition
+                    id="Anomalies by index and detector"
+                    data={anomalyDistribution}
+                    valueAccessor={(d: Datum) => d.count as number}
+                    valueFormatter={(d: number) => d.toString()}
+                    layers={[
+                      {
+                        groupByRollup: (d: Datum) => d.indices,
+                        nodeLabel: (d: Datum) => {
+                          return d;
+                        },
+                        fillLabel: {
+                          textInvertible: true,
+                        },
+                        shape: {
+                          fillColor: (d) => {
+                            return fillOutColors(
+                              d,
+                              (d.x0 + d.x1) / 2 / (2 * Math.PI),
+                              []
+                            );
+                          },
+                        },
                       },
+                      {
+                        groupByRollup: (d: Datum) => d.name,
+                        nodeLabel: (d: Datum) => {
+                          return d;
+                        },
+                        fillLabel: {
+                          textInvertible: true,
+                        },
+                        shape: {
+                          fillColor: (d) => {
+                            return fillOutColors(
+                              d,
+                              (d.x0 + d.x1) / 2 / (2 * Math.PI),
+                              []
+                            );
+                          },
+                        },
+                      },
+                    ]}
+                    config={{
+                      partitionLayout: PartitionLayout.sunburst,
+                      fontFamily: 'Arial',
+                      outerSizeRatio: 1,
                       fillLabel: {
                         textInvertible: true,
                       },
-                      shape: {
-                        fillColor: (d) => {
-                          return fillOutColors(
-                            d,
-                            (d.x0 + d.x1) / 2 / (2 * Math.PI),
-                            []
-                          );
-                        },
+                      linkLabel: {
+                        maxCount: 0,
                       },
-                    },
-                    {
-                      groupByRollup: (d: Datum) => d.name,
-                      nodeLabel: (d: Datum) => {
-                        return d;
-                      },
-                      fillLabel: {
-                        textInvertible: true,
-                      },
-                      shape: {
-                        fillColor: (d) => {
-                          return fillOutColors(
-                            d,
-                            (d.x0 + d.x1) / 2 / (2 * Math.PI),
-                            []
-                          );
-                        },
-                      },
-                    },
-                  ]}
-                  config={{
-                    partitionLayout: PartitionLayout.sunburst,
-                    fontFamily: 'Arial',
-                    outerSizeRatio: 1,
-                    fillLabel: {
-                      textInvertible: true,
-                    },
-                    linkLabel: {
-                      maxCount: 0,
-                    },
-                    // TODO: Given only 1 detector exists, the inside Index circle will have issue in following scenarios:
-                    // 1: if Linked Label is configured for identifying index, label of Index circle will be invisible;
-                    // 2: if Fill Label is configured for identifying index, label of it will be overlapped with outer Detector circle
-                    // Issue link: https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/issues/24
-                  }}
-                />
-              </Chart>
+                    }}
+                  />
+                </Chart>
+              </div>
             )}
           </EuiFlexItem>
         </EuiFlexGroup>
