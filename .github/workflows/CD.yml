@@ -4,7 +4,7 @@ on:
     tags:
       - v*
 env:
-  KIBANA_VERSION: 7.9.1
+  KIBANA_VERSION: 7.10.0
 jobs:
   Build-and-upload:
     name: Build and upload artifacts
