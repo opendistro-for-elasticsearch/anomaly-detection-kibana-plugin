@@ -34,7 +34,7 @@ import { get, orderBy, isEmpty } from 'lodash';
 import { APIAction } from 'public/redux/middleware/types';
 import { Dispatch } from 'redux';
 import { EuiBasicTableColumn } from '@elastic/eui';
-import { SHOW_DECIMAL_NUMBER_THRESHOLD } from './constants';
+import { SHOW_DECIMAL_NUMBER_THRESHOLD } from '../../../../server/utils/helpers';
 import { MAX_DETECTORS } from '../../../pages/utils/constants';
 
 /**

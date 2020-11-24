@@ -267,6 +267,7 @@ export function CreateDetector(props: CreateADProps) {
                   <EuiButton
                     fill
                     type="submit"
+                    data-test-subj="createOrSaveDetectorButton"
                     isLoading={formikProps.isSubmitting}
                     //@ts-ignore
                     onClick={formikProps.handleSubmit}

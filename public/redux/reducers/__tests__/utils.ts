@@ -10,7 +10,7 @@ import {
   Monitor,
 } from '../../../models/interfaces';
 import moment from 'moment';
-import { DETECTOR_STATE } from '../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../server/utils/constants';
 
 const detectorFaker = new chance('seed');
 
@@ -101,9 +101,7 @@ export const getRandomDetector = (isCreate: boolean = true): Detector => {
     lastUpdateTime: 1586823218000,
     enabled: true,
     enabledTime: 1586823218000,
-    disabledTime: moment(1586823218000)
-      .subtract(1, 'days')
-      .valueOf(),
+    disabledTime: moment(1586823218000).subtract(1, 'days').valueOf(),
     curState: DETECTOR_STATE.INIT,
     stateError: '',
   };
@@ -117,9 +115,7 @@ export const getRandomMonitor = (
     id: detectorFaker.guid().slice(0, 20),
     name: detectorFaker.word({ length: 10 }),
     enabled: enabled,
-    enabledTime: moment(1586823218000)
-      .subtract(1, 'days')
-      .valueOf(),
+    enabledTime: moment(1586823218000).subtract(1, 'days').valueOf(),
     schedule: {
       period: {
         interval: detectorFaker.integer({ min: 1, max: 10 }),
@@ -183,8 +179,6 @@ export const getRandomMonitor = (
       },
     ],
     triggers: [], //We don't need triggger for AD testing
-    lastUpdateTime: moment(1586823218000)
-      .subtract(1, 'days')
-      .valueOf(),
+    lastUpdateTime: moment(1586823218000).subtract(1, 'days').valueOf(),
   };
 };

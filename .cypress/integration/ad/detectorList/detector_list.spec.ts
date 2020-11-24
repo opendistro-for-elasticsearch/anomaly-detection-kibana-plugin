@@ -14,7 +14,7 @@
  */
 
 import { DETECTORS, TEST_DETECTOR_ID } from '../../../utils/constants';
-import { DETECTOR_STATE } from '../../../../public/utils/constants';
+import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import { buildAdAppUrl } from '../../../utils/helpers';
 
 context('Detector list', () => {
@@ -28,7 +28,10 @@ context('Detector list', () => {
       'p',
       'Anomaly detectors take an input of information and discover patterns of anomalies. Create an anomaly detector to get started.'
     );
-    cy.get('.euiButton--primary.euiButton--fill').should('have.length', 2);
+    cy.get('.euiButton--primary.euiButton--fill').should(
+      'have.length.at.least',
+      2
+    );
   });
 
   it('Empty detectors - empty detector index', () => {
@@ -41,7 +44,10 @@ context('Detector list', () => {
       'p',
       'Anomaly detectors take an input of information and discover patterns of anomalies. Create an anomaly detector to get started.'
     );
-    cy.get('.euiButton--primary.euiButton--fill').should('have.length', 2);
+    cy.get('.euiButton--primary.euiButton--fill').should(
+      'have.length.at.least',
+      2
+    );
   });
 
   it('One detector - single stopped detector index', () => {
@@ -53,7 +59,10 @@ context('Detector list', () => {
     cy.contains('stopped-detector');
     cy.contains('Stopped');
     cy.contains('test-index');
-    cy.get('.euiButton--primary.euiButton--fill').should('have.length', 1);
+    cy.get('.euiButton--primary.euiButton--fill').should(
+      'have.length.at.least',
+      1
+    );
   });
 
   it('Multiple detectors - multiple detectors index', () => {
@@ -74,7 +83,10 @@ context('Detector list', () => {
     cy.contains(DETECTOR_STATE.INIT);
     cy.contains(DETECTOR_STATE.RUNNING);
     cy.contains(DETECTOR_STATE.FEATURE_REQUIRED);
-    cy.get('.euiButton--primary.euiButton--fill').should('have.length', 1);
+    cy.get('.euiButton--primary.euiButton--fill').should(
+      'have.length.at.least',
+      1
+    );
   });
 
   it('Redirect to create detector', () => {
@@ -89,7 +101,9 @@ context('Detector list', () => {
     cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
       cy.visit(buildAdAppUrl(DETECTORS));
     });
-    cy.get('.euiCheckbox__input').last().click({ force: true });
+    cy.get('.euiTableRowCellCheckbox').within(() =>
+      cy.get('.euiCheckbox__input').click({ force: true })
+    );
     cy.get('[data-test-subj=listActionsButton]').click({ force: true });
     cy.get('[data-test-subj=startDetectors]').click({ force: true });
     cy.contains('The following detectors will begin initializing.');
@@ -108,7 +122,9 @@ context('Detector list', () => {
     cy.mockGetDetectorOnAction('single_running_detector_response.json', () => {
       cy.visit(buildAdAppUrl(DETECTORS));
     });
-    cy.get('.euiCheckbox__input').last().click({ force: true });
+    cy.get('.euiTableRowCellCheckbox').within(() =>
+      cy.get('.euiCheckbox__input').click({ force: true })
+    );
     cy.get('[data-test-subj=listActionsButton]').click({ force: true });
     cy.get('[data-test-subj=stopDetectors]').click({ force: true });
     cy.contains('The following detectors will be stopped.');
@@ -127,7 +143,9 @@ context('Detector list', () => {
     cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
       cy.visit(buildAdAppUrl(DETECTORS));
     });
-    cy.get('.euiCheckbox__input').last().click({ force: true });
+    cy.get('.euiTableRowCellCheckbox').within(() =>
+      cy.get('.euiCheckbox__input').click({ force: true })
+    );
     cy.get('[data-test-subj=listActionsButton]').click({ force: true });
     cy.get('[data-test-subj=deleteDetectors]').click({ force: true });
     cy.contains(

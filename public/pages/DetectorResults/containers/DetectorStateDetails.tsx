@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 import React, { useEffect } from 'react';
-import { DETECTOR_STATE } from '../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import { DetectorStopped } from '../components/DetectorState/DetectorStopped';
 import { DetectorFeatureRequired } from '../components/DetectorState/DetectorFeatureRequired';
 import { DetectorUnknownState } from '../components/DetectorState/DetectorUnknownState';

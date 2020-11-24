@@ -317,7 +317,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap"
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >
@@ -346,6 +346,9 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                   <div
                     class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                   >
+                    <span
+                      class="euiLoadingSpinner euiLoadingSpinner--medium"
+                    />
                     <button
                       aria-label="Open list of options"
                       class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
@@ -572,7 +575,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
               type="button"
             >
               <span
-                class="euiButton__content"
+                class="euiButtonContent euiButton__content"
               >
                 <span
                   class="euiButton__text"
@@ -622,7 +625,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
               type="button"
             >
               <span
-                class="euiButton__content"
+                class="euiButtonContent euiButton__content"
               >
                 <span
                   class="euiButton__text"
@@ -852,7 +855,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           type="button"
         >
           <span
-            class="euiButtonEmpty__content"
+            class="euiButtonContent euiButtonEmpty__content"
           >
             <span
               class="euiButtonEmpty__text"
@@ -867,10 +870,11 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
       >
         <button
           class="euiButton euiButton--primary euiButton--fill"
+          data-test-subj="createOrSaveDetectorButton"
           type="submit"
         >
           <span
-            class="euiButton__content"
+            class="euiButtonContent euiButton__content"
           >
             <span
               class="euiButton__text"

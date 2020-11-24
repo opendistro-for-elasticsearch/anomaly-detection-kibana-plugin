@@ -47,9 +47,9 @@ import {
 import { EuiText, EuiTitle } from '@elastic/eui';
 import React from 'react';
 import {
-  TIME_NOW_LINE_STYLE,
-  SHOW_DECIMAL_NUMBER_THRESHOLD,
+  TIME_NOW_LINE_STYLE
 } from '../utils/constants';
+import { SHOW_DECIMAL_NUMBER_THRESHOLD } from '../../../../server/utils/helpers';
 import {
   visualizeAnomalyResultForXYChart,
   getFloorPlotTime,

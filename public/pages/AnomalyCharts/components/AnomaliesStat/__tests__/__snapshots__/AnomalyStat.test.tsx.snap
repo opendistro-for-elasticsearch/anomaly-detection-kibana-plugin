@@ -33,7 +33,7 @@ exports[`<AlertsStat /> spec Alert Stat renders component with monitor and loadi
       </p>
       <a
         class="euiLink euiLink--primary"
-        href="/187218e9-1d42-5b75-a"
+        href="/1d42b75b-3f59-550a-a"
         rel="noopener noreferrer"
         style="font-size: 14px;"
         target="_blank"
@@ -92,7 +92,7 @@ exports[`<AlertsStat /> spec Alert Stat renders component with monitor and not l
       </p>
       <a
         class="euiLink euiLink--primary"
-        href="/f899c56c-6299-5d0d-8"
+        href="/899c56c6-99d0-539b-8"
         rel="noopener noreferrer"
         style="font-size: 14px;"
         target="_blank"

@@ -18,7 +18,7 @@ import { get, cloneDeep } from 'lodash';
 import { GetDetectorsQueryParams } from '../../../../server/models/types';
 import { SORT_DIRECTION } from '../../../../server/utils/constants';
 import { DEFAULT_QUERY_PARAMS } from '../../utils/constants';
-import { DETECTOR_STATE } from '../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import { Monitor } from '../../../models/interfaces';
 import { DetectorListItem } from '../../../models/interfaces';
 import { DETECTOR_ACTION } from '../utils/constants';
@@ -54,7 +54,7 @@ export const getURLQueryParams = (location: {
 };
 
 export const getDetectorStateOptions = () => {
-  return Object.values(DETECTOR_STATE).map(detectorState => ({
+  return Object.values(DETECTOR_STATE).map((detectorState) => ({
     label: detectorState,
     text: detectorState,
   }));
@@ -67,7 +67,7 @@ export const getDetectorsForAction = (
   switch (action) {
     case DETECTOR_ACTION.START: {
       const detectorsForAction = detectors.filter(
-        detector =>
+        (detector) =>
           detector.curState === DETECTOR_STATE.DISABLED ||
           detector.curState === DETECTOR_STATE.INIT_FAILURE ||
           detector.curState === DETECTOR_STATE.UNEXPECTED_FAILURE
@@ -76,7 +76,7 @@ export const getDetectorsForAction = (
     }
     case DETECTOR_ACTION.STOP: {
       const detectorsForAction = detectors.filter(
-        detector =>
+        (detector) =>
           detector.curState === DETECTOR_STATE.RUNNING ||
           detector.curState === DETECTOR_STATE.INIT
       );
@@ -95,7 +95,7 @@ export const getMonitorsForAction = (
   monitors: { [key: string]: Monitor }
 ) => {
   let monitorsForAction = {} as { [key: string]: Monitor };
-  detectorsForAction.forEach(detector => {
+  detectorsForAction.forEach((detector) => {
     const relatedMonitor = get(monitors, `${detector.id}.0`);
     if (relatedMonitor) {
       monitorsForAction[`${detector.id}`] = relatedMonitor;

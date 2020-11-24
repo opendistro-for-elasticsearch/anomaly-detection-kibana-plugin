@@ -18,7 +18,7 @@ import { render, fireEvent, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ConfirmDeleteDetectorsModal } from '../ConfirmDeleteDetectorsModal';
 import { DetectorListItem, Monitor } from '../../../../../models/interfaces';
-import { DETECTOR_STATE } from '../../../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../../../server/utils/constants';
 
 const testDetectors = [
   {

@@ -40,7 +40,7 @@ exports[`<EmptyDetectorMessage /> spec Empty results renders component with empt
         style="width: 200px;"
       >
         <span
-          class="euiButton__content"
+          class="euiButtonContent euiButton__content"
         >
           <span
             class="euiButton__text"
@@ -61,7 +61,7 @@ exports[`<EmptyDetectorMessage /> spec Empty results renders component with empt
         style="width: 200px;"
       >
         <span
-          class="euiButton__content"
+          class="euiButtonContent euiButton__content"
         >
           <span
             class="euiButton__text"
@@ -107,7 +107,7 @@ exports[`<EmptyDetectorMessage /> spec Filters results message renders component
     type="button"
   >
     <span
-      class="euiButton__content"
+      class="euiButtonContent euiButton__content"
     >
       <span
         class="euiButton__text"

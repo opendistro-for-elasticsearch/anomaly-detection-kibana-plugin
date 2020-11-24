@@ -13,7 +13,9 @@
  * permissions and limitations under the License.
  */
 
-import { DATA_TYPES, DETECTOR_STATE } from '../utils/constants';
+import { InitProgress } from '../../server/models/interfaces';
+import { DATA_TYPES } from '../utils/constants';
+import { DETECTOR_STATE } from '../../server/utils/constants';
 
 export type FieldInfo = {
   label: string;
@@ -86,11 +88,6 @@ export type UiMetaData = {
   };
 };
 
-export type InitProgress = {
-  percentageStr: string;
-  estimatedMinutesLeft: number;
-  neededShingles: number;
-};
 export type Detector = {
   primaryTerm: number;
   seqNo: number;

@@ -23,7 +23,8 @@ import {
 } from '@elastic/eui';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BREADCRUMBS, SAMPLE_TYPE } from '../../../../utils/constants';
+import { BREADCRUMBS } from '../../../../utils/constants';
+import { SAMPLE_TYPE } from '../../../../../server/utils/constants';
 import {
   GET_SAMPLE_DETECTORS_QUERY_PARAMS,
   GET_SAMPLE_INDICES_QUERY,

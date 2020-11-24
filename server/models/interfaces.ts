@@ -66,3 +66,9 @@ export interface AnomalyResults {
   anomalies: Anomaly[];
   featureData: { [key: string]: FeatureData[] };
 }
+
+export type InitProgress = {
+  percentageStr: string;
+  estimatedMinutesLeft: number;
+  neededShingles: number;
+};

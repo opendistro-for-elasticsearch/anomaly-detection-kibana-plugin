@@ -50,7 +50,7 @@ Cypress.Commands.add('mockGetDetectorOnAction', function (
   funcMockedOn: VoidFunction
 ) {
   cy.server();
-  cy.route2(buildAdApiUrl(DETECTORS + '*'), `fixture:${fixtureFileName}`).as(
+  cy.route2(buildAdApiUrl(DETECTORS + '*'), {fixture: fixtureFileName}).as(
     'getDetectors'
   );
 
@@ -64,7 +64,7 @@ Cypress.Commands.add('mockCreateDetectorOnAction', function (
   funcMockedOn: VoidFunction
 ) {
   cy.server();
-  cy.route2(buildAdApiUrl(DETECTORS + '*'), `fixture:${fixtureFileName}`).as(
+  cy.route2(buildAdApiUrl(DETECTORS + '*'), {fixture: fixtureFileName}).as(
     'createDetector'
   );
 
@@ -78,7 +78,7 @@ Cypress.Commands.add('mockSearchIndexOnAction', function (
   funcMockedOn: VoidFunction
 ) {
   cy.server();
-  cy.route2(buildAdApiUrl(INDICES_PATH + '*'), `fixture:${fixtureFileName}`).as(
+  cy.route2(buildAdApiUrl(INDICES_PATH + '*'), {fixture: fixtureFileName}).as(
     'getIndices'
   );
 
@@ -92,7 +92,7 @@ Cypress.Commands.add('mockSearchOnAction', function (
   funcMockedOn: VoidFunction
 ) {
   cy.server();
-  cy.route2(buildAdApiUrl(SEARCH_PATH), `fixture:${fixtureFileName}`).as(
+  cy.route2(buildAdApiUrl(SEARCH_PATH), {fixture: fixtureFileName}).as(
     'searchES'
   );
 
@@ -108,7 +108,7 @@ Cypress.Commands.add('mockGetIndexMappingsOnAction', function (
   cy.server();
   cy.route2(
     buildAdApiUrl(MAPPINGS_PATH + '*'),
-    `fixture:${fixtureFileName}`
+    {fixture: fixtureFileName}
   ).as('getMappings');
 
   funcMockedOn();
@@ -124,7 +124,7 @@ Cypress.Commands.add('mockStartDetectorOnAction', function (
   cy.server();
   cy.route2(
     buildAdApiUrl([DETECTORS, detectorId, START_PATH].join(SLASH)),
-    `fixture:${fixtureFileName}`
+    {fixture: fixtureFileName}
   ).as('startDetector');
 
   funcMockedOn();
@@ -140,7 +140,7 @@ Cypress.Commands.add('mockStopDetectorOnAction', function (
   cy.server();
   cy.route2(
     buildAdApiUrl([DETECTORS, detectorId, STOP_PATH].join(SLASH)),
-    `fixture:${fixtureFileName}`
+    {fixture: fixtureFileName}
   ).as('stopDetector');
 
   funcMockedOn();
@@ -156,7 +156,7 @@ Cypress.Commands.add('mockDeleteDetectorOnAction', function (
   cy.server();
   cy.route2(
     buildAdApiUrl([DETECTORS, detectorId].join(SLASH)),
-    `fixture:${fixtureFileName}`
+    {fixture: fixtureFileName}
   ).as('deleteDetector');
 
   funcMockedOn();

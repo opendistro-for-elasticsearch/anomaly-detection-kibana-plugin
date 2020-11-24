@@ -17,8 +17,8 @@ import { get, omit, cloneDeep, isEmpty } from 'lodash';
 import { AnomalyResults } from 'server/models/interfaces';
 import { GetDetectorsQueryParams } from '../../models/types';
 import { mapKeysDeep, toCamel, toSnake } from '../../utils/helpers';
-import { DETECTOR_STATE } from '../../../public/utils/constants';
-import { InitProgress } from 'public/models/interfaces';
+import { DETECTOR_STATE } from '../../utils/constants';
+import { InitProgress } from '../../models/interfaces';
 
 export const convertDetectorKeysToSnakeCase = (payload: any) => {
   return {

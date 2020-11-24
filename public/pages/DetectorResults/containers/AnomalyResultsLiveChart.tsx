@@ -55,7 +55,7 @@ import {
   CHART_COLORS,
 } from '../../AnomalyCharts/utils/constants';
 import { LIVE_ANOMALY_CHART_THEME } from '../utils/constants';
-import { DETECTOR_STATE } from '../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import { dateFormatter } from '../../utils/helpers';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
 import { EuiIcon } from '@elastic/eui';
