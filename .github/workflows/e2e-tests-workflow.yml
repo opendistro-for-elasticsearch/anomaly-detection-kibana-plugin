@@ -72,7 +72,7 @@ jobs:
             echo "FROM opendistroforelasticsearch/opendistroforelasticsearch-kibana:$odfe_version" >> Dockerfile-AD-Kibana
             echo "COPY build/$AD_KIBANA_PLUGIN_NAME-$plugin_version.zip ." >> Dockerfile-AD-Kibana
             ## Uninstall existing AD artifact and install new one
-            echo "RUN if [ -d /usr/share/kibana/plugins/opendistro-anomaly-detection-kibana ]; then /usr/share/kibana/bin/kibana-plugin remove $AD_KIBANA_PLUGIN_NAME; fi" >> Dockerfile-AD-Kibana
+            echo "RUN if [ -d /usr/share/kibana/plugins/$AD_KIBANA_PLUGIN_NAME ]; then /usr/share/kibana/bin/kibana-plugin remove $AD_KIBANA_PLUGIN_NAME; fi" >> Dockerfile-AD-Kibana
             echo "RUN bin/kibana-plugin install file:///usr/share/kibana/$AD_KIBANA_PLUGIN_NAME-$plugin_version.zip;" >> Dockerfile-AD-Kibana
 
             ## Create the tagged images
