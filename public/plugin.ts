@@ -19,7 +19,6 @@ import {
   CoreStart,
   Plugin,
   PluginInitializerContext,
-  DEFAULT_APP_CATEGORIES,
 } from '../../../src/core/public';
 import {
   AnomalyDetectionKibanaPluginSetup,
