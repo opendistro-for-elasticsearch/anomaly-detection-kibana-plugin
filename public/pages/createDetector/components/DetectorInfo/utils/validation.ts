@@ -18,9 +18,9 @@ import { isEmpty } from 'lodash';
 //TODO:: Check Length, allowed characters.
 export const validateDetectorDesc = (
   description: string
-): Error | undefined => {
+): String | undefined => {
   if (description.length > 400) {
-    throw 'Description Should not exceed 400 characters';
+    return 'Description Should not exceed 400 characters';
   }
   return undefined;
 };

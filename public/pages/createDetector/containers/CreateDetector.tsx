@@ -192,11 +192,11 @@ export function CreateDetector(props: CreateADProps) {
 
   const handleValidateName = async (detectorName: string) => {
     if (isEmpty(detectorName)) {
-      throw 'Detector name cannot be empty';
+      return 'Detector name cannot be empty';
     } else {
       const error = validateDetectorName(detectorName);
       if (error) {
-        throw error;
+        return error;
       }
       //TODO::Avoid making call if value is same
       const resp = await dispatch(matchDetector(detectorName));
@@ -206,11 +206,11 @@ export function CreateDetector(props: CreateADProps) {
       }
       //If more than one detectors found, duplicate exists.
       if (!props.isEdit && match) {
-        throw 'Duplicate detector name';
+        return 'Duplicate detector name';
       }
       // if it is in edit mode
       if (props.isEdit && detectorName !== detector?.name) {
-        throw 'Duplicate detector name';
+        return 'Duplicate detector name';
       }
     }
   };
