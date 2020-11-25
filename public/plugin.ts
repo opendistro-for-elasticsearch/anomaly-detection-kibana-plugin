@@ -19,7 +19,6 @@ import {
   CoreStart,
   Plugin,
   PluginInitializerContext,
-  DEFAULT_APP_CATEGORIES,
 } from '../../../src/core/public';
 import {
   AnomalyDetectionKibanaPluginSetup,
@@ -40,8 +39,13 @@ export class AnomalyDetectionKibanaPlugin
     core.application.register({
       id: 'opendistro-anomaly-detection-kibana',
       title: 'Anomaly Detection',
-      category: DEFAULT_APP_CATEGORIES.kibana,
-      order: 8030,
+      category: {
+        id: 'odfe',
+        label: 'Open Distro for Elasticsearch',
+        euiIconType: 'logoKibana',
+        order: 2000,
+      },
+      order: 5000,
       mount: async (params: AppMountParameters) => {
         const { renderApp } = await import('./anomaly_detection_app');
         const [coreStart, depsStart] = await core.getStartServices();
