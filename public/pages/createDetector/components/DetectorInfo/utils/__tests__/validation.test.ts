@@ -5,9 +5,9 @@ describe('validations', () => {
   describe('validateDetectorDesc', () => {
     const descriptionGenerator = new chance('seed');
     test('should throw size limit if exceed  400', () => {
-      expect(() =>
+      expect(
         validateDetectorDesc(descriptionGenerator.paragraph({ length: 500 }))
-      ).toThrowError('Should not exceed 400 characters');
+      ).toEqual('Description Should not exceed 400 characters');
     });
     test('should return undefined if not empty', () => {
       expect(validateDetectorDesc('This is description')).toBeUndefined();

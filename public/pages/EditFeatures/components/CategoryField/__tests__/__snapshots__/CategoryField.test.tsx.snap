@@ -2,7 +2,9 @@
 
 exports[`<CategoryField /> spec hides callout if component is loading 1`] = `
 <div>
-  <form>
+  <form
+    action="#"
+  >
     <div
       class="euiPage"
     >
@@ -129,7 +131,9 @@ exports[`<CategoryField /> spec hides callout if component is loading 1`] = `
 
 exports[`<CategoryField /> spec renders the component when disabled 1`] = `
 <div>
-  <form>
+  <form
+    action="#"
+  >
     <div
       class="euiPage"
     >
@@ -247,7 +251,9 @@ exports[`<CategoryField /> spec renders the component when disabled 1`] = `
 
 exports[`<CategoryField /> spec renders the component when enabled 1`] = `
 <div>
-  <form>
+  <form
+    action="#"
+  >
     <div
       class="euiPage"
     >
@@ -465,7 +471,9 @@ exports[`<CategoryField /> spec renders the component when enabled 1`] = `
 
 exports[`<CategoryField /> spec shows callout when there are no available category fields 1`] = `
 <div>
-  <form>
+  <form
+    action="#"
+  >
     <div
       class="euiPage"
     >
