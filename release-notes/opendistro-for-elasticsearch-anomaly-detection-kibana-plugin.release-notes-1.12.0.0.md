@@ -15,6 +15,7 @@ Compatible with Kibana 7.10.0
 ### Documentation
 
 * Update release notes ([#326](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/326))
+* Update release notes ([#336](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/336))
 
 ### Maintenance
 
