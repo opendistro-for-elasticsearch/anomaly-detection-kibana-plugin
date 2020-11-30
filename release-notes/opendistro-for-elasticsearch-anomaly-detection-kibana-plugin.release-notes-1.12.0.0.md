@@ -2,6 +2,8 @@
 
 Compatible with Kibana 7.10.0
 
+### Enhancements
+
 * Fix vulnerability caused by old version formik. Issue: #333 ([#333 (#334](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/333 (#334))
 * change side bar position for anomly detection plugin ([#335](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/335))
 
