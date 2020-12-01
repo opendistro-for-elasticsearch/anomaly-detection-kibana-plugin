@@ -42,7 +42,6 @@ export class AnomalyDetectionKibanaPlugin
       category: {
         id: 'odfe',
         label: 'Open Distro for Elasticsearch',
-        euiIconType: 'logoKibana',
         order: 2000,
       },
       order: 5000,
