@@ -19,6 +19,7 @@ import { GetDetectorsQueryParams } from '../../models/types';
 import { mapKeysDeep, toCamel, toSnake } from '../../utils/helpers';
 import { DETECTOR_STATE } from '../../utils/constants';
 import { InitProgress } from '../../models/interfaces';
+import { kibanaResponseFactory } from '../../../../../src/core/server/http/router';
 
 export const convertDetectorKeysToSnakeCase = (payload: any) => {
   return {
@@ -252,4 +253,56 @@ export const getErrorMessage = (err: any) => {
   return !isEmpty(get(err, 'body.error.reason'))
     ? get(err, 'body.error.reason')
     : get(err, 'message');
+};
+
+export const getKibanaErrorResponseByStatusCode = (
+  statusCode: number,
+  message: string
+) => {
+  switch (statusCode) {
+    case 400:
+      return kibanaResponseFactory.badRequest({
+        body: {
+          message: message,
+        },
+      });
+    case 401:
+      return kibanaResponseFactory.unauthorized({
+        body: {
+          message: message,
+        },
+      });
+    case 403:
+      return kibanaResponseFactory.forbidden({
+        body: {
+          message: message,
+        },
+      });
+    case 404:
+      return kibanaResponseFactory.notFound({
+        body: {
+          message: message,
+        },
+      });
+    case 409:
+      return kibanaResponseFactory.conflict({
+        body: {
+          message: message,
+        },
+      });
+    case 500:
+      return kibanaResponseFactory.internalError({
+        body: {
+          message: message,
+        },
+      });
+    default:
+      return kibanaResponseFactory.customError({
+        // unknow status code: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Cloudflare
+        statusCode: 520,
+        body: {
+          message: `Unknown error is found: ${message}`,
+        },
+      });
+  }
 };

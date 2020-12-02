@@ -38,16 +38,18 @@ describe('elasticsearch reducer actions', () => {
         requesting: false,
         indices,
       });
-      expect(
-        httpMockedClient.get
-      ).toHaveBeenCalledWith(`..${BASE_NODE_API_PATH}/_indices`, {
-        query: { index: '' },
-      });
+      expect(httpMockedClient.get).toHaveBeenCalledWith(
+        `..${BASE_NODE_API_PATH}/_indices`,
+        {
+          query: { index: '' },
+        }
+      );
     });
     test('should invoke [REQUEST, FAILURE]', async () => {
       httpMockedClient.get = jest.fn().mockRejectedValue({
-        ok: false,
-        error: 'Something went wrong',
+        body: {
+          message: 'Something went wrong',
+        },
       });
       try {
         await store.dispatch(getIndices());
@@ -102,8 +104,9 @@ describe('elasticsearch reducer actions', () => {
     });
     test('should invoke [REQUEST, FAILURE]', async () => {
       httpMockedClient.get = jest.fn().mockRejectedValue({
-        ok: false,
-        error: 'Something went wrong',
+        body: {
+          message: 'Something went wrong',
+        },
       });
       try {
         await store.dispatch(getAliases());
@@ -169,8 +172,9 @@ describe('elasticsearch reducer actions', () => {
     });
     test('should invoke [REQUEST, FAILURE]', async () => {
       httpMockedClient.get = jest.fn().mockRejectedValue({
-        ok: false,
-        error: 'Something went wrong',
+        body: {
+          message: 'Something went wrong',
+        },
       });
       try {
         await store.dispatch(getMappings());
@@ -239,8 +243,9 @@ describe('elasticsearch reducer actions', () => {
         index: 'test-index',
       };
       httpMockedClient.post = jest.fn().mockRejectedValue({
-        ok: false,
-        error: 'Something went wrong',
+        body: {
+          message: 'Something went wrong',
+        },
       });
       try {
         await store.dispatch(searchES(requestData));

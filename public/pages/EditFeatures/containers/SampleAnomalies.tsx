@@ -147,7 +147,10 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
       setIsLoading(false);
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getPreviewErrorMessage(err, 'There was a problem previewing detector')
+          getPreviewErrorMessage(
+            get(err, 'body.message'),
+            'There was a problem previewing detector'
+          )
         )
       );
     }

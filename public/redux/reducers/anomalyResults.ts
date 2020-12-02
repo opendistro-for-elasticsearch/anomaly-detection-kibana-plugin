@@ -55,7 +55,7 @@ const reducer = handleActions<Anomalies>(
       FAILURE: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.error', action.error),
+        errorMessage: get(action, 'error.body.message', action.error),
       }),
     },
 

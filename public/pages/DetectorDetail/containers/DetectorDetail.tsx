@@ -204,7 +204,10 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem starting detector job')
+          getErrorMessage(
+            get(err, 'body.message'),
+            'There was a problem starting detector job'
+          )
         )
       );
     }
@@ -220,7 +223,10 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem stopping detector job')
+          getErrorMessage(
+            get(err, 'body.message'),
+            'There was a problem stopping detector job'
+          )
         )
       );
       if (listener) listener.onException();
@@ -238,7 +244,10 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem deleting detector')
+          getErrorMessage(
+            get(err, 'body.message'),
+            'There was a problem deleting detector'
+          )
         )
       );
       hideDeleteDetectorModal();

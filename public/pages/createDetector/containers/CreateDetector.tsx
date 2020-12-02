@@ -137,7 +137,10 @@ export function CreateDetector(props: CreateADProps) {
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem updating detector')
+          getErrorMessage(
+            get(err, 'body.message'),
+            'There was a problem updating detector'
+          )
         )
       );
     }
@@ -163,7 +166,10 @@ export function CreateDetector(props: CreateADProps) {
       } else {
         core.notifications.toasts.addDanger(
           prettifyErrorMessage(
-            getErrorMessage(err, 'There was a problem creating detector')
+            getErrorMessage(
+              get(err, 'body.message'),
+              'There was a problem creating detector'
+            )
           )
         );
       }

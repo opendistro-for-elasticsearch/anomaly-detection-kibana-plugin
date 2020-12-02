@@ -97,7 +97,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.error', action.error),
+        errorMessage: get(action, 'error.body.message', action.error),
       }),
     },
     [GET_ALIASES]: {
@@ -122,7 +122,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.error', action.error),
+        errorMessage: get(action, 'error.body.message', action.error),
       }),
     },
     [SEARCH_ES]: {
@@ -147,7 +147,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.error', action.error),
+        errorMessage: get(action, 'error.body.message', action.error),
       }),
     },
     [GET_MAPPINGS]: {
@@ -172,7 +172,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.error', action.error),
+        errorMessage: get(action, 'error.body.message', action.error),
         dataTypes: {},
       }),
     },
@@ -196,7 +196,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessage: get(action, 'error.body.message', action.error),
       }),
     },
     [BULK]: {
@@ -218,7 +218,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessage: get(action, 'error.body.message', action.error),
       }),
     },
     [DELETE_INDEX]: {
@@ -241,7 +241,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessage: get(action, 'error.body.message', action.error),
       }),
     },
   },

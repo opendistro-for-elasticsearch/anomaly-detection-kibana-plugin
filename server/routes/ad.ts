@@ -45,6 +45,7 @@ import {
   getDetectorInitProgress,
   isIndexNotFoundError,
   getErrorMessage,
+  getKibanaErrorResponseByStatusCode,
 } from './utils/adHelpers';
 import { set } from 'lodash';
 import {
@@ -108,12 +109,10 @@ export default class AdService {
       });
     } catch (err) {
       console.log('Anomaly detector - deleteDetector', err);
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -143,12 +142,10 @@ export default class AdService {
       });
     } catch (err) {
       console.log('Anomaly detector - previewDetector', err);
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -199,12 +196,10 @@ export default class AdService {
       });
     } catch (err) {
       console.log('Anomaly detector - PutDetector', err);
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -260,12 +255,10 @@ export default class AdService {
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to get detector', err);
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -289,12 +282,10 @@ export default class AdService {
       });
     } catch (err) {
       console.log('Anomaly detector - startDetector', err);
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -318,12 +309,10 @@ export default class AdService {
       });
     } catch (err) {
       console.log('Anomaly detector - stopDetector', err);
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -347,12 +336,10 @@ export default class AdService {
       });
     } catch (err) {
       console.log('Anomaly detector - detectorProfile', err);
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -389,12 +376,10 @@ export default class AdService {
           body: { ok: true, response: { totalDetectors: 0, detectors: [] } },
         });
       }
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -423,12 +408,10 @@ export default class AdService {
           body: { ok: true, response: { totalDetectors: 0, detectors: [] } },
         });
       }
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -645,12 +628,10 @@ export default class AdService {
           body: { ok: true, response: { totalDetectors: 0, detectorList: [] } },
         });
       }
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -817,12 +798,10 @@ export default class AdService {
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to get results', err);
-      return kibanaResponse.ok({
-        body: {
-          ok: false,
-          error: getErrorMessage(err),
-        },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -846,9 +825,10 @@ export default class AdService {
       });
     } catch (err) {
       console.log('Anomaly detector - matchDetector', err);
-      return kibanaResponse.ok({
-        body: { ok: false, error: getErrorMessage(err) },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 
@@ -869,9 +849,10 @@ export default class AdService {
       });
     } catch (err) {
       console.log('Anomaly detector - getDetectorCount', err);
-      return kibanaResponse.ok({
-        body: { ok: false, error: getErrorMessage(err) },
-      });
+      return getKibanaErrorResponseByStatusCode(
+        get(err, 'statusCode', 0),
+        getErrorMessage(err)
+      );
     }
   };
 

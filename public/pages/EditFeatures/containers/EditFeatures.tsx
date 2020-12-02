@@ -225,7 +225,10 @@ export function EditFeatures(props: EditFeaturesProps) {
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem starting detector job')
+          getErrorMessage(
+            get(err, 'body.message'),
+            'There was a problem starting detector job'
+          )
         )
       );
     }
@@ -254,7 +257,10 @@ export function EditFeatures(props: EditFeaturesProps) {
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem updating feature')
+          getErrorMessage(
+            get(err, 'body.message'),
+            'There was a problem updating feature'
+          )
         )
       );
       setSubmitting(false);
@@ -376,6 +382,7 @@ export function EditFeatures(props: EditFeaturesProps) {
           handleSubmit(values, actions.setSubmitting)
         }
         validate={validateFeatures}
+        validateOnChange={false}
       >
         {({
           values,

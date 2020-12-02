@@ -78,7 +78,7 @@ const reducer = handleActions<Monitors>(
       FAILURE: (state: Monitors, action: APIResponseAction): Monitors => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessage: get(action, 'error.body.message', action.error),
       }),
     },
 

@@ -51,7 +51,7 @@ const reducer = handleActions<SampleDataState>(
       ): SampleDataState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.error', action.error),
+        errorMessage: get(action, 'error.body.message', action.error),
       }),
     },
   },
