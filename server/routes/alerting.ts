@@ -19,10 +19,7 @@ import { SearchResponse } from '../models/interfaces';
 import { Monitor } from '../models/types';
 import { Router } from '../router';
 import { MAX_MONITORS } from '../utils/constants';
-import {
-  getErrorMessage,
-  getKibanaErrorResponseByStatusCode,
-} from './utils/adHelpers';
+import { getErrorMessage } from './utils/adHelpers';
 import {
   RequestHandlerContext,
   KibanaRequest,
@@ -104,10 +101,12 @@ export default class AlertingService {
       });
     } catch (err) {
       console.log('Unable to get monitor on top of detector', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        getErrorMessage(err)
-      );
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
     }
   };
 
@@ -137,10 +136,12 @@ export default class AlertingService {
       });
     } catch (err) {
       console.log('Unable to search alerts', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        getErrorMessage(err)
-      );
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
     }
   };
 }

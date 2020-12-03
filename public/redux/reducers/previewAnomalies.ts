@@ -17,7 +17,6 @@ import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
 import { Anomalies } from '../../models/interfaces';
-import { get } from 'lodash';
 
 const PREVIEW_DETECTOR = 'ad/PREVIEW_DETECTOR';
 
@@ -57,7 +56,7 @@ const reducer = handleActions<PreviewAnomalies>(
       ): PreviewAnomalies => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
   },

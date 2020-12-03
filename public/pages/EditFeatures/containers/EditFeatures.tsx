@@ -225,10 +225,7 @@ export function EditFeatures(props: EditFeaturesProps) {
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(
-            get(err, 'body.message'),
-            'There was a problem starting detector job'
-          )
+          getErrorMessage(err, 'There was a problem starting detector job')
         )
       );
     }
@@ -257,10 +254,7 @@ export function EditFeatures(props: EditFeaturesProps) {
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(
-            get(err, 'body.message'),
-            'There was a problem updating feature'
-          )
+          getErrorMessage(err, 'There was a problem updating feature')
         )
       );
       setSubmitting(false);
@@ -295,7 +289,7 @@ export function EditFeatures(props: EditFeaturesProps) {
       } else {
         setSaveFeatureOption(SAVE_FEATURE_OPTIONS.START_AD_JOB);
       }
-      if (errors.categoryField) {
+      if (isHCDetector && errors.categoryField) {
         focusOnCategoryField();
         return;
       }
@@ -382,7 +376,6 @@ export function EditFeatures(props: EditFeaturesProps) {
           handleSubmit(values, actions.setSubmitting)
         }
         validate={validateFeatures}
-        validateOnChange={false}
       >
         {({
           values,

@@ -23,7 +23,7 @@ import handleActions from '../utils/handleActions';
 import { Detector, DetectorListItem } from '../../models/interfaces';
 import { AD_NODE_API } from '../../../utils/constants';
 import { GetDetectorsQueryParams } from '../../../server/models/types';
-import { cloneDeep, get } from 'lodash';
+import { cloneDeep } from 'lodash';
 import moment from 'moment';
 import { DETECTOR_STATE } from '../../../server/utils/constants';
 
@@ -74,7 +74,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
     [GET_DETECTOR]: {
@@ -96,7 +96,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
     [START_DETECTOR]: {
@@ -121,7 +121,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
 
@@ -148,7 +148,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
     [SEARCH_DETECTOR]: {
@@ -174,7 +174,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
     [GET_DETECTOR_LIST]: {
@@ -198,7 +198,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
     [UPDATE_DETECTOR]: {
@@ -221,7 +221,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
 
@@ -241,7 +241,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
 
@@ -264,7 +264,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
     [MATCH_DETECTOR]: {
@@ -281,7 +281,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
     [GET_DETECTOR_COUNT]: {
@@ -298,7 +298,7 @@ const reducer = handleActions<Detectors>(
       FAILURE: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.body.message', action.error),
+        errorMessage: action.error,
       }),
     },
   },

@@ -26,8 +26,6 @@ import {
   KibanaResponseFactory,
   IKibanaResponse,
 } from '../../../../src/core/server';
-import { getKibanaErrorResponseByStatusCode } from './utils/adHelpers';
-import { get } from 'lodash';
 
 export function registerSampleDataRoutes(
   apiRouter: Router,
@@ -90,10 +88,7 @@ export default class SampleDataService {
       return kibanaResponse.ok({ body: { ok: true } });
     } catch (err) {
       console.log('Anomaly detector - Unable to load the sample data', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        err.message
-      );
+      return kibanaResponse.ok({ body: { ok: false, error: err.message } });
     }
   };
 }

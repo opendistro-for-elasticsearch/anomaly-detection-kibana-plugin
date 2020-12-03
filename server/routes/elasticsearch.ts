@@ -24,11 +24,7 @@ import {
   ServerResponse,
 } from '../models/types';
 import { Router } from '../router';
-import {
-  getErrorMessage,
-  getKibanaErrorResponseByStatusCode,
-  isIndexNotFoundError,
-} from './utils/adHelpers';
+import { getErrorMessage, isIndexNotFoundError } from './utils/adHelpers';
 import {
   RequestHandlerContext,
   KibanaRequest,
@@ -100,10 +96,12 @@ export default class ESService {
       return kibanaResponse.ok({ body: { ok: true, response: results } });
     } catch (err) {
       console.error('Anomaly detector - Unable to execute search', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        getErrorMessage(err)
-      );
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
     }
   };
 
@@ -126,16 +124,21 @@ export default class ESService {
       });
     } catch (err) {
       // In case no matching indices is found it throws an error.
-      if (isIndexNotFoundError(err)) {
+      if (
+        err.statusCode === 404 &&
+        get<string>(err, 'body.error.type', '') === 'index_not_found_exception'
+      ) {
         return kibanaResponse.ok({
           body: { ok: true, response: { indices: [] } },
         });
       }
       console.log('Anomaly detector - Unable to get indices', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        getErrorMessage(err)
-      );
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
     }
   };
 
@@ -158,10 +161,12 @@ export default class ESService {
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to get aliases', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        getErrorMessage(err)
-      );
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
     }
   };
 
@@ -181,10 +186,12 @@ export default class ESService {
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to create index', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        getErrorMessage(err)
-      );
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
     }
     try {
       const response: CatIndex[] = await this.client
@@ -199,10 +206,12 @@ export default class ESService {
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to get indices', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        getErrorMessage(err)
-      );
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
     }
   };
 
@@ -221,10 +230,12 @@ export default class ESService {
       return kibanaResponse.ok({ body: { ok: true, response: { response } } });
     } catch (err) {
       console.log('Anomaly detector - Unable to perform bulk action', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        getErrorMessage(err)
-      );
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
     }
   };
 
@@ -245,10 +256,12 @@ export default class ESService {
       );
       // Ignore the error if it's an index_not_found_exception
       if (!isIndexNotFoundError(err)) {
-        return getKibanaErrorResponseByStatusCode(
-          get(err, 'statusCode', 0),
-          getErrorMessage(err)
-        );
+        return kibanaResponse.ok({
+          body: {
+            ok: false,
+            error: getErrorMessage(err),
+          },
+        });
       }
     }
     try {
@@ -264,10 +277,12 @@ export default class ESService {
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to get indices', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        getErrorMessage(err)
-      );
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
     }
   };
 
@@ -288,10 +303,12 @@ export default class ESService {
       });
     } catch (err) {
       console.log('Anomaly detector - Unable to get mappings', err);
-      return getKibanaErrorResponseByStatusCode(
-        get(err, 'statusCode', 0),
-        getErrorMessage(err)
-      );
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
     }
   };
 }

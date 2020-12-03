@@ -45,7 +45,10 @@ import {
   getIndices,
   getPrioritizedIndices,
 } from '../../../../redux/reducers/elasticsearch';
-import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
+import {
+  APP_PATH,
+  PLUGIN_NAME,
+} from '../../../../utils/constants';
 import { DETECTOR_STATE } from '../../../../../server/utils/constants';
 import { getVisibleOptions, sanitizeSearchText } from '../../../utils/helpers';
 import { EmptyDetectorMessage } from '../../components/EmptyMessage/EmptyMessage';

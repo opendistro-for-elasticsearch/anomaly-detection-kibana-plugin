@@ -55,9 +55,8 @@ describe('elasticsearch reducer actions', () => {
     });
     test('should invoke [REQUEST, FAILURE]', async () => {
       httpMockedClient.get = jest.fn().mockRejectedValue({
-        body: {
-          message: 'Something went wrong',
-        },
+        ok: false,
+        error: 'Something went wrong',
       });
       const tempDetectorId = '123';
       let queryParams: DetectorResultsQueryParams = {

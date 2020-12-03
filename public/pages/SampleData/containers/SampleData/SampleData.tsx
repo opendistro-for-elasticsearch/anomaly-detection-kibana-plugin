@@ -53,7 +53,6 @@ import { SampleDetailsFlyout } from '../../components/SampleDetailsFlyout/Sample
 import { prettifyErrorMessage } from '../../../../../server/utils/helpers';
 import { CoreStart } from '../../../../../../../src/core/public';
 import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
-import { get } from 'lodash';
 
 export const SampleData = () => {
   const core = React.useContext(CoreServicesContext) as CoreStart;
@@ -128,8 +127,7 @@ export const SampleData = () => {
       await dispatch(createIndex(indexConfig)).catch((error: any) => {
         errorDuringAction = true;
         errorMessage =
-          'Error creating sample index. ' +
-          prettifyErrorMessage(get(error, 'body.message'));
+          'Error creating sample index. ' + prettifyErrorMessage(error);
         console.error(errorMessage);
       });
     }
@@ -138,7 +136,7 @@ export const SampleData = () => {
     if (!errorDuringAction) {
       await dispatch(createSampleData(sampleType)).catch((error: any) => {
         errorDuringAction = true;
-        errorMessage = prettifyErrorMessage(get(error, 'body.message'));
+        errorMessage = prettifyErrorMessage(error.message);
         console.error('Error bulk inserting data: ', errorMessage);
       });
     }
@@ -151,13 +149,13 @@ export const SampleData = () => {
           // Start the detector
           dispatch(startDetector(detectorId)).catch((error: any) => {
             errorDuringAction = true;
-            errorMessage = prettifyErrorMessage(get(error, 'body.message'));
+            errorMessage = prettifyErrorMessage(error.message);
             console.error('Error starting sample detector: ', errorMessage);
           });
         })
         .catch((error: any) => {
           errorDuringAction = true;
-          errorMessage = prettifyErrorMessage(get(error, 'body.message'));
+          errorMessage = prettifyErrorMessage(error.message);
           console.error('Error creating sample detector: ', errorMessage);
         });
     }
