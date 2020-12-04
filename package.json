@@ -46,7 +46,7 @@
     "brace": "0.11.1",
     "formik": "^2.2.5",
     "lodash": "^4.17.20",
-    "plotly.js": "^1.55.2",
+    "plotly.js-dist": "^1.57.1",
     "react-plotly.js": "^2.4.0",
     "react-redux": "^7.2.0",
     "reselect": "^4.0.0"

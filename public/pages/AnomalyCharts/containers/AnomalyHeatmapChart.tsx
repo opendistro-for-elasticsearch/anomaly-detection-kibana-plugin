@@ -16,8 +16,8 @@
 import React, { useState } from 'react';
 
 import moment from 'moment';
-import { PlotData } from 'plotly.js';
-import Plot from 'react-plotly.js';
+import Plotly, { PlotData } from 'plotly.js-dist';
+import plotComponentFactory from 'react-plotly.js/factory';
 import { get, isEmpty } from 'lodash';
 import {
   EuiFlexItem,
@@ -88,6 +88,8 @@ export const AnomalyHeatmapChart = React.memo(
         { label: 'Top 30', value: 30 },
       ],
     };
+
+    const PlotComponent = plotComponentFactory(Plotly);
 
     const getViewEntityOptions = (inputHeatmapData: PlotData[]) => {
       let individualEntities = [];
@@ -439,7 +441,7 @@ export const AnomalyHeatmapChart = React.memo(
                   </EuiFlexItem>
                 </EuiFlexGroup>
               ) : (
-                <Plot
+                <PlotComponent
                   data={heatmapData}
                   style={{
                     position: 'relative',
