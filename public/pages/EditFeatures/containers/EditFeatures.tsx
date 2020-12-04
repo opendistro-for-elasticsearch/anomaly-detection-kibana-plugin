@@ -289,7 +289,7 @@ export function EditFeatures(props: EditFeaturesProps) {
       } else {
         setSaveFeatureOption(SAVE_FEATURE_OPTIONS.START_AD_JOB);
       }
-      if (errors.categoryField) {
+      if (isHCDetector && errors.categoryField) {
         focusOnCategoryField();
         return;
       }

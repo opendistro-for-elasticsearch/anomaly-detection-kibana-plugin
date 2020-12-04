@@ -41,12 +41,12 @@ export default function clientMiddleware<State>(client: HttpSetup) {
         next({ ...rest, type: `${type}_REQUEST` });
         const result = await request(client);
         //@ts-ignore
-        if (get(result, 'data.ok', true)) {
+        if (get(result, 'ok', true)) {
           next({ ...rest, result, type: `${type}_SUCCESS` });
           return result;
         } else {
           //@ts-ignore
-          throw get(result, 'data.error', '');
+          throw get(result, 'error', '');
         }
       } catch (error) {
         next({ ...rest, error, type: `${type}_FAILURE` });

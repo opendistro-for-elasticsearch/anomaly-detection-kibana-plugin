@@ -92,12 +92,12 @@ describe('client MiddleWare', () => {
     const { next, invoke } = create();
     const actionCall = jest
       .fn()
-      .mockReturnValue(fooPromise(true, { ok: false }));
+      .mockReturnValue(fooPromise(true, { body: { ok: false } }));
     const action = { type: 'TEST', request: actionCall };
     return invoke(action).then(() => {
       expect(next.mock.calls.length).toBe(2);
       expect(next.mock.calls[1][0]).toEqual({
-        result: { ok: false },
+        result: { body: { ok: false } },
         type: 'TEST_SUCCESS',
       });
     });
