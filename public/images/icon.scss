@@ -1,9 +1,0 @@
-/*
-Fixes the custom plugin icon scaling issue
-*/
-figure {
-  max-width: 16px !important;
-  margin-right: 12px;
-  flex-grow: 0;
-  flex-shrink: 0;
-}
