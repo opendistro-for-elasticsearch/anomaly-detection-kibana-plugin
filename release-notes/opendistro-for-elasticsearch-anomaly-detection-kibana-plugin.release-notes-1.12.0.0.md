@@ -13,6 +13,7 @@ Compatible with Kibana 7.10.0
 * Show second for heatmap cell hover timestamp ([#327](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/327))
 * Fix sunburst chart height is 0 ([#332](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/332))
 * Fix 2 issues during recent upgrade ([#339](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/339))
+* Fix tiny odfe login icon ([#343](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/343))
 
 ### Documentation
 
