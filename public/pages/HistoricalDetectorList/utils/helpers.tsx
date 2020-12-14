@@ -40,7 +40,7 @@ export const getURLQueryParams = (location: { search: string }): any => {
   };
 };
 
-// For historical detectors: can only be stopped/running/completed/failed
+// For historical detectors: can't have feature required state or init failure
 export const getHistoricalDetectorStateOptions = () => {
   return Object.values(DETECTOR_STATE)
     .map((detectorState) => ({
@@ -49,7 +49,6 @@ export const getHistoricalDetectorStateOptions = () => {
     }))
     .filter(
       (option) =>
-        option.label !== DETECTOR_STATE.INIT &&
         option.label !== DETECTOR_STATE.FEATURE_REQUIRED &&
         option.label !== DETECTOR_STATE.INIT_FAILURE
     );
