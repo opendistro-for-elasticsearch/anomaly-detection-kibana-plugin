@@ -17,10 +17,10 @@ import { EuiButton, EuiEmptyPrompt, EuiText } from '@elastic/eui';
 import React from 'react';
 import { APP_PATH, PLUGIN_NAME } from '../../../../utils/constants';
 
-const filterText =
+const FILTER_TEXT =
   'There are no historical detectors matching your applied filters. Reset your filters to view all historical detectors.';
-const emptyText =
-  'Historical detectors allow you to detect anomalies on your historical data. You may also use them to pre-train or tune your model by using your index history to train an anomaly detector.';
+const EMPTY_TEXT =
+  'Use historical detectors to detect anomalies on a selected time range of your historic data.';
 
 interface EmptyHistoricalDetectorMessageProps {
   isFilterApplied: boolean;
@@ -34,7 +34,7 @@ export const EmptyHistoricalDetectorMessage = (
     style={{ maxWidth: '45em' }}
     body={
       <EuiText>
-        <p>{props.isFilterApplied ? filterText : emptyText}</p>
+        <p>{props.isFilterApplied ? FILTER_TEXT : EMPTY_TEXT}</p>
       </EuiText>
     }
     actions={

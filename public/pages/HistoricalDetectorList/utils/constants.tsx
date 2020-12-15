@@ -13,42 +13,18 @@
  * permissions and limitations under the License.
  */
 
-import {
-  EuiLink,
-  EuiText,
-  EuiToolTip,
-  EuiHealth,
-  EuiBasicTableColumn,
-} from '@elastic/eui';
+import { EuiLink, EuiToolTip, EuiBasicTableColumn } from '@elastic/eui';
 //@ts-ignore
 import moment from 'moment';
 import React from 'react';
-import { get } from 'lodash';
 import { Detector } from '../../../models/interfaces';
 import { PLUGIN_NAME } from '../../../utils/constants';
-import { DETECTOR_STATE } from '../../../../server/utils/constants';
-import { stateToColorMap } from '../../utils/constants';
-
-const DEFAULT_EMPTY_DATA = '-';
-const columnStyle = {
-  overflow: 'visible',
-  whiteSpace: 'normal',
-  wordBreak: 'break-word',
-} as React.CSSProperties;
-
-const renderTime = (time: number) => {
-  const momentTime = moment(time);
-  if (time && momentTime.isValid())
-    return momentTime.format('MM/DD/YYYY h:mm A');
-  return DEFAULT_EMPTY_DATA;
-};
-
-const renderState = (state: DETECTOR_STATE) => {
-  return (
-    //@ts-ignore
-    <EuiHealth color={stateToColorMap.get(state)}>{state}</EuiHealth>
-  );
-};
+import {
+  columnStyle,
+  renderTime,
+  renderState,
+  renderIndices,
+} from '../../DetectorsList/utils/tableUtils';
 
 export const historicalDetectorListColumns = [
   {
@@ -94,7 +70,7 @@ export const historicalDetectorListColumns = [
     dataType: 'string',
     align: 'left',
     truncateText: false,
-    render: (indices: string[]) => get(indices, '0', '-'),
+    render: renderIndices,
   },
   {
     field: 'totalAnomalies',

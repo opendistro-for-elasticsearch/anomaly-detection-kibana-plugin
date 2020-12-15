@@ -304,7 +304,6 @@ export function HistoricalDetectorList(props: HistoricalDetectorListProps) {
             columns={historicalDetectorListColumns}
             onChange={handleTableChange}
             isSelectable={true}
-            //selection={selection}
             sorting={sorting}
             pagination={pagination}
             noItemsMessage={

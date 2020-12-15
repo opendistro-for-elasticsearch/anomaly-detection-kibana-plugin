@@ -89,7 +89,7 @@ describe('<HistoricalDetectorList /> spec', () => {
       });
       await wait();
       getByText(
-        'Historical detectors allow you to detect anomalies on your historical data. You may also use them to pre-train or tune your model by using your index history to train an anomaly detector.'
+        'Use historical detectors to detect anomalies on a selected time range of your historic data.'
       );
     });
   });
