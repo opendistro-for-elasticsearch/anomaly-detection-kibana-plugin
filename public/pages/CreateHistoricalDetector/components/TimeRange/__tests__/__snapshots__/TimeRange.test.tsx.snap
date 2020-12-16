@@ -1,0 +1,383 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimeRange /> spec renders the component (loading state) 1`] = `
+<div>
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding: 20px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small"
+        >
+          Time range
+        </h3>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 10px 0px;"
+    >
+      <div
+        class="euiFormRow"
+        hint="Choose a time range for your historical data analysis."
+        id="random_html_id-row"
+        title="Time range for historical analysis "
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="random_html_id"
+          >
+            <div
+              style="line-height: 8px;"
+            >
+              <p>
+                Time range for historical analysis 
+              </p>
+              <br />
+              <p
+                class="sublabel"
+              >
+                Choose a time range for your historical data analysis.
+              </p>
+            </div>
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--noUpdateButton"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
+              >
+                <div
+                  class="euiPopover euiPopover--anchorDownLeft"
+                  id="QuickSelectPopover"
+                >
+                  <div
+                    class="euiPopover__anchor euiQuickSelectPopover__anchor"
+                  >
+                    <button
+                      aria-label="Date quick select"
+                      class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
+                      data-test-subj="superDatePickerToggleQuickMenuButton"
+                      type="button"
+                    >
+                      <span
+                        class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonContent__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        />
+                        <span
+                          class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--medium euiIcon-isLoading"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          />
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <div
+                    class="euiDatePickerRange euiDatePickerRange--inGroup"
+                  >
+                    <div
+                      class="euiPopover euiPopover--anchorDownLeft euiPopover--displayBlock euiSuperDatePicker__startPopoverButton"
+                    >
+                      <div
+                        class="euiPopover__anchor"
+                      >
+                        <button
+                          class="euiDatePopoverButton euiDatePopoverButton--start"
+                          data-test-subj="superDatePickerstartDatePopoverButton"
+                          title="1969-12-31T16:00:00-08:00"
+                        >
+                          ~ 51 years ago
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="euiText euiText--small euiDatePickerRange__delimeter"
+                    >
+                      <div
+                        class="euiTextColor euiTextColor--subdued"
+                      >
+                        →
+                      </div>
+                    </div>
+                    <div
+                      class="euiPopover euiPopover--anchorDownRight euiPopover--displayBlock"
+                    >
+                      <div
+                        class="euiPopover__anchor"
+                      >
+                        <button
+                          class="euiDatePopoverButton euiDatePopoverButton--end"
+                          data-test-subj="superDatePickerendDatePopoverButton"
+                          title="1969-12-31T16:00:00-08:00"
+                        >
+                          ~ 51 years ago
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TimeRange /> spec renders the component 1`] = `
+<div>
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding: 20px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small"
+        >
+          Time range
+        </h3>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 10px 0px;"
+    >
+      <div
+        class="euiFormRow"
+        hint="Choose a time range for your historical data analysis."
+        id="random_html_id-row"
+        title="Time range for historical analysis "
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="random_html_id"
+          >
+            <div
+              style="line-height: 8px;"
+            >
+              <p>
+                Time range for historical analysis 
+              </p>
+              <br />
+              <p
+                class="sublabel"
+              >
+                Choose a time range for your historical data analysis.
+              </p>
+            </div>
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--noUpdateButton"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
+              >
+                <div
+                  class="euiPopover euiPopover--anchorDownLeft"
+                  id="QuickSelectPopover"
+                >
+                  <div
+                    class="euiPopover__anchor euiQuickSelectPopover__anchor"
+                  >
+                    <button
+                      aria-label="Date quick select"
+                      class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
+                      data-test-subj="superDatePickerToggleQuickMenuButton"
+                      type="button"
+                    >
+                      <span
+                        class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiButtonContent__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                            fill-rule="non-zero"
+                          />
+                        </svg>
+                        <span
+                          class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--medium"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M14 4v-.994C14 2.45 13.55 2 12.994 2H11v1h-1V2H6v1H5V2H3.006C2.45 2 2 2.45 2 3.006v9.988C2 13.55 2.45 14 3.006 14h9.988C13.55 14 14 13.55 14 12.994V5H2V4h12zm-3-3h1.994C14.102 1 15 1.897 15 3.006v9.988A2.005 2.005 0 0112.994 15H3.006A2.005 2.005 0 011 12.994V3.006C1 1.898 1.897 1 3.006 1H5V0h1v1h4V0h1v1zM4 7h2v1H4V7zm3 0h2v1H7V7zm3 0h2v1h-2V7zM4 9h2v1H4V9zm3 0h2v1H7V9zm3 0h2v1h-2V9zm-6 2h2v1H4v-1zm3 0h2v1H7v-1zm3 0h2v1h-2v-1z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <div
+                    class="euiDatePickerRange euiDatePickerRange--inGroup"
+                  >
+                    <div
+                      class="euiPopover euiPopover--anchorDownLeft euiPopover--displayBlock euiSuperDatePicker__startPopoverButton"
+                    >
+                      <div
+                        class="euiPopover__anchor"
+                      >
+                        <button
+                          class="euiDatePopoverButton euiDatePopoverButton--start"
+                          data-test-subj="superDatePickerstartDatePopoverButton"
+                          title="1969-12-31T16:00:00-08:00"
+                        >
+                          ~ 51 years ago
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="euiText euiText--small euiDatePickerRange__delimeter"
+                    >
+                      <div
+                        class="euiTextColor euiTextColor--subdued"
+                      >
+                        →
+                      </div>
+                    </div>
+                    <div
+                      class="euiPopover euiPopover--anchorDownRight euiPopover--displayBlock"
+                    >
+                      <div
+                        class="euiPopover__anchor"
+                      >
+                        <button
+                          class="euiDatePopoverButton euiDatePopoverButton--end"
+                          data-test-subj="superDatePickerendDatePopoverButton"
+                          title="1969-12-31T16:00:00-08:00"
+                        >
+                          ~ 51 years ago
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

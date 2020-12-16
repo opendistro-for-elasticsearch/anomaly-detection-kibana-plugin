@@ -1,0 +1,2504 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateHistoricalDetector /> spec create historical detector renders the component 1`] = `
+<div
+  class="euiPage"
+>
+  <main
+    class="euiPageBody"
+  >
+    <div
+      class="euiPageHeader euiPageHeader--responsive"
+    >
+      <div
+        class="euiPageHeaderSection"
+      >
+        <h1
+          class="euiTitle euiTitle--large"
+        >
+          Create historical detector
+           
+        </h1>
+      </div>
+    </div>
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding: 20px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Name and description
+          </h3>
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 10px 0px;"
+      >
+        <div
+          class="euiFormRow"
+          hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
+          id="random_html_id-row"
+          title="Name"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Name
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormControlLayout"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText"
+                  id="random_html_id"
+                  name="name"
+                  placeholder="Enter detector name"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFormRow"
+          hint="Describe the purpose of the detector."
+          id="random_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Description 
+                  <span
+                    class="optional"
+                  >
+                    - optional
+                  </span>
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Describe the purpose of the detector.
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <textarea
+              class="euiTextArea euiTextArea--resizeVertical"
+              id="random_html_id"
+              name="description"
+              placeholder="Enter detector description"
+              rows="3"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding: 20px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Data source
+          </h3>
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 10px 0px;"
+      >
+        <div
+          class="euiFormRow"
+          hint="Choose an index or index pattern as the data source."
+          id="random_html_id-row"
+          title="Index"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Index
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Choose an index or index pattern as the data source.
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              aria-describedby="random_html_id-help"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              class="euiComboBox"
+              role="combobox"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <div
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                    data-test-subj="comboBoxInput"
+                    tabindex="-1"
+                  >
+                    <p
+                      class="euiComboBoxPlaceholder"
+                    >
+                      Find indices
+                    </p>
+                    <div
+                      class="euiComboBox__input"
+                      style="font-size: 14px; display: inline-block;"
+                    >
+                      <input
+                        aria-controls=""
+                        data-test-subj="comboBoxSearchInput"
+                        id="random_html_id"
+                        role="textbox"
+                        style="box-sizing: content-box; width: 2px;"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                  >
+                    <span
+                      class="euiLoadingSpinner euiLoadingSpinner--medium"
+                    />
+                    <button
+                      aria-label="Open list of options"
+                      class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                      data-test-subj="comboBoxToggleListButton"
+                      type="button"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              id="random_html_id-help"
+            >
+              You can use a wildcard (*) in your index pattern
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding: 20px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Time range
+          </h3>
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 10px 0px;"
+      >
+        <div
+          class="euiFormRow"
+          hint="Choose a time range for your historical data analysis."
+          id="random_html_id-row"
+          title="Time range for historical analysis "
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Time range for historical analysis 
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Choose a time range for your historical data analysis.
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--noUpdateButton"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <div
+                  class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
+                >
+                  <div
+                    class="euiPopover euiPopover--anchorDownLeft"
+                    id="QuickSelectPopover"
+                  >
+                    <div
+                      class="euiPopover__anchor euiQuickSelectPopover__anchor"
+                    >
+                      <button
+                        aria-label="Date quick select"
+                        class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
+                        data-test-subj="superDatePickerToggleQuickMenuButton"
+                        type="button"
+                      >
+                        <span
+                          class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonContent__icon"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          />
+                          <span
+                            class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="euiIcon euiIcon--medium euiIcon-isLoading"
+                              focusable="false"
+                              height="16"
+                              role="img"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            />
+                          </span>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <div
+                      class="euiDatePickerRange euiDatePickerRange--inGroup"
+                    >
+                      <button
+                        class="euiSuperDatePicker__prettyFormat"
+                        data-test-subj="superDatePickerShowDatesButton"
+                      >
+                        last 30 days
+                        <span
+                          class="euiSuperDatePicker__prettyFormatLink"
+                        >
+                          Show dates
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding: 20px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Detector settings
+          </h3>
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 10px 0px;"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+          style="margin: 0px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="max-width: 400px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                hint="Choose if you would like to source an existing real-time or historical detector to use as a template for your configuration."
+                id="random_html_id-row"
+                title="Configure using an existing detector"
+              >
+                <div
+                  class="euiFormRow__labelWrapper"
+                >
+                  <label
+                    class="euiFormLabel euiFormRow__label"
+                    for="random_html_id"
+                  >
+                    <div
+                      style="line-height: 8px;"
+                    >
+                      <p>
+                        Configure using an existing detector
+                      </p>
+                      <br />
+                      <p
+                        class="sublabel"
+                      >
+                        Choose if you would like to source an existing real-time or historical detector to use as a template for your configuration.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    id="random_html_id"
+                  >
+                    <div
+                      class="euiRadio euiRadioGroup__item"
+                    >
+                      <input
+                        checked=""
+                        class="euiRadio__input"
+                        id="create_new_detector"
+                        name="use existing detectors radio group"
+                        type="radio"
+                        value=""
+                      />
+                      <div
+                        class="euiRadio__circle"
+                      />
+                      <label
+                        class="euiRadio__label"
+                        for="create_new_detector"
+                      >
+                        No
+                      </label>
+                    </div>
+                    <div
+                      class="euiRadio euiRadioGroup__item"
+                    >
+                      <input
+                        class="euiRadio__input"
+                        id="use_existing_detector"
+                        name="use existing detectors radio group"
+                        type="radio"
+                        value=""
+                      />
+                      <div
+                        class="euiRadio__circle"
+                      />
+                      <label
+                        class="euiRadio__label"
+                        for="use_existing_detector"
+                      >
+                        Yes
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiSpacer euiSpacer--l"
+          />
+        </div>
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="padding: 20px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="padding: 0px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <h3
+                class="euiTitle euiTitle--small"
+              >
+                Timestamp
+              </h3>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+          />
+          <div
+            style="padding: 10px 0px;"
+          >
+            <div
+              class="euiFormRow"
+              hint="Choose the time field you want to use for time filter."
+              id="random_html_id-row"
+              title="Timestamp field"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  aria-invalid="false"
+                  class="euiFormLabel euiFormRow__label"
+                  for="random_html_id"
+                >
+                  <div
+                    style="line-height: 8px;"
+                  >
+                    <p>
+                      Timestamp field
+                    </p>
+                    <br />
+                    <p
+                      class="sublabel"
+                    >
+                      Choose the time field you want to use for time filter.
+                    </p>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="euiComboBox"
+                  role="combobox"
+                >
+                  <div
+                    class="euiFormControlLayout"
+                  >
+                    <div
+                      class="euiFormControlLayout__childrenWrapper"
+                    >
+                      <div
+                        class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                        data-test-subj="comboBoxInput"
+                        tabindex="-1"
+                      >
+                        <p
+                          class="euiComboBoxPlaceholder"
+                        >
+                          Find timestamp
+                        </p>
+                        <div
+                          class="euiComboBox__input"
+                          style="font-size: 14px; display: inline-block;"
+                        >
+                          <input
+                            aria-controls=""
+                            data-test-subj="comboBoxSearchInput"
+                            id="random_html_id"
+                            role="textbox"
+                            style="box-sizing: content-box; width: 2px;"
+                            value=""
+                          />
+                          <div
+                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                      >
+                        <button
+                          aria-label="Open list of options"
+                          class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                          data-test-subj="comboBoxToggleListButton"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="padding: 20px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="padding: 0px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <h3
+                class="euiTitle euiTitle--small"
+              >
+                Features
+              </h3>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium content-panel-subTitle"
+                  >
+                    Specify an index field that you want to find anomalies for by defining features. You can add up to 5 features.
+                     
+                    <a
+                      class="euiLink euiLink--primary"
+                      href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more 
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--small euiIcon-isLoading"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+          />
+          <div
+            style="padding: 10px 0px;"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+              style="margin: 0px;"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                style="padding: 12px 24px;"
+              >
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <button
+                    class="euiButton euiButton--primary"
+                    data-test-subj="addFeature"
+                    type="button"
+                  >
+                    <span
+                      class="euiButtonContent euiButton__content"
+                    >
+                      <span
+                        class="euiButton__text"
+                      >
+                        Add feature
+                      </span>
+                    </span>
+                  </button>
+                  <div
+                    class="euiText euiText--medium content-panel-subTitle"
+                  >
+                    <p>
+                      You can add
+                       
+                      5
+                       
+                      more features.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="padding: 20px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="padding: 0px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <h3
+                class="euiTitle euiTitle--small"
+              >
+                Operation settings
+              </h3>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+          />
+          <div
+            style="padding: 10px 0px;"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+              style="margin: 0px;"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                  style="max-width: 70%;"
+                >
+                  <div
+                    class="euiFormRow euiFormRow--fullWidth"
+                    hint="Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need."
+                    id="random_html_id-row"
+                    title="Detection interval"
+                  >
+                    <div
+                      class="euiFormRow__labelWrapper"
+                    >
+                      <label
+                        aria-invalid="false"
+                        class="euiFormLabel euiFormRow__label"
+                        for="random_html_id"
+                      >
+                        <div
+                          style="line-height: 8px;"
+                        >
+                          <p>
+                            Detection interval
+                          </p>
+                          <br />
+                          <p
+                            class="sublabel"
+                          >
+                            Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need.
+                          </p>
+                        </div>
+                      </label>
+                    </div>
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                        id="random_html_id"
+                      >
+                        <div
+                          class="euiFlexItem euiFlexItem--flexGrowZero"
+                        >
+                          <div
+                            class="euiFormControlLayout"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <input
+                                class="euiFieldNumber"
+                                data-test-subj="detectionInterval"
+                                id="detectionInterval"
+                                name="detectionInterval"
+                                placeholder="Detector interval"
+                                type="number"
+                                value="10"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="euiFlexItem"
+                        >
+                          <div
+                            class="euiText euiText--medium"
+                          >
+                            <p
+                              class="minutes"
+                            >
+                              minutes
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiCheckbox"
+                  >
+                    <input
+                      class="euiCheckbox__input"
+                      id="runDetectorAutomaticallyCheckbox"
+                      type="checkbox"
+                    />
+                    <div
+                      class="euiCheckbox__square"
+                    />
+                    <label
+                      class="euiCheckbox__label"
+                      for="runDetectorAutomaticallyCheckbox"
+                    >
+                      Run detector automatically after creating
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <button
+          class="euiButtonEmpty euiButtonEmpty--primary"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButtonEmpty__content"
+          >
+            <span
+              class="euiButtonEmpty__text"
+            >
+              Cancel
+            </span>
+          </span>
+        </button>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <button
+          class="euiButton euiButton--primary euiButton--fill"
+          type="submit"
+        >
+          <span
+            class="euiButtonContent euiButton__content"
+          >
+            <span
+              class="euiButton__text"
+            >
+              Create
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+`;
+
+exports[`<CreateHistoricalDetector /> spec edit historical detector renders the component 1`] = `
+<div
+  class="euiPage"
+>
+  <main
+    class="euiPageBody"
+  >
+    <div
+      class="euiPageHeader euiPageHeader--responsive"
+    >
+      <div
+        class="euiPageHeaderSection"
+      >
+        <h1
+          class="euiTitle euiTitle--large"
+        >
+          Edit historical detector
+           
+        </h1>
+      </div>
+    </div>
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding: 20px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Name and description
+          </h3>
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 10px 0px;"
+      >
+        <div
+          class="euiFormRow"
+          hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
+          id="random_html_id-row"
+          title="Name"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Name
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormControlLayout"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText"
+                  id="random_html_id"
+                  name="name"
+                  placeholder="Enter detector name"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFormRow"
+          hint="Describe the purpose of the detector."
+          id="random_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Description 
+                  <span
+                    class="optional"
+                  >
+                    - optional
+                  </span>
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Describe the purpose of the detector.
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <textarea
+              class="euiTextArea euiTextArea--resizeVertical"
+              id="random_html_id"
+              name="description"
+              placeholder="Enter detector description"
+              rows="3"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding: 20px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Data source
+          </h3>
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 10px 0px;"
+      >
+        <div>
+          <div
+            class="euiCallOut euiCallOut--warning euiCallOut--small"
+          >
+            <div
+              class="euiCallOutHeader"
+            >
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--medium euiIcon-isLoading euiCallOutHeader__icon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
+              <span
+                class="euiCallOutHeader__title"
+              >
+                Modifying the index selected will reset your detector configuration settings.
+              </span>
+            </div>
+          </div>
+          <div
+            class="euiSpacer euiSpacer--l"
+          />
+        </div>
+        <div
+          class="euiFormRow"
+          hint="Choose an index or index pattern as the data source."
+          id="random_html_id-row"
+          title="Index"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Index
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Choose an index or index pattern as the data source.
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              aria-describedby="random_html_id-help"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              class="euiComboBox"
+              role="combobox"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <div
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                    data-test-subj="comboBoxInput"
+                    tabindex="-1"
+                  >
+                    <p
+                      class="euiComboBoxPlaceholder"
+                    >
+                      Find indices
+                    </p>
+                    <div
+                      class="euiComboBox__input"
+                      style="font-size: 14px; display: inline-block;"
+                    >
+                      <input
+                        aria-controls=""
+                        data-test-subj="comboBoxSearchInput"
+                        id="random_html_id"
+                        role="textbox"
+                        style="box-sizing: content-box; width: 2px;"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                  >
+                    <span
+                      class="euiLoadingSpinner euiLoadingSpinner--medium"
+                    />
+                    <button
+                      aria-label="Open list of options"
+                      class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                      data-test-subj="comboBoxToggleListButton"
+                      type="button"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                          fill-rule="non-zero"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              id="random_html_id-help"
+            >
+              You can use a wildcard (*) in your index pattern
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding: 20px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Time range
+          </h3>
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 10px 0px;"
+      >
+        <div
+          class="euiFormRow"
+          hint="Choose a time range for your historical data analysis."
+          id="random_html_id-row"
+          title="Time range for historical analysis "
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Time range for historical analysis 
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Choose a time range for your historical data analysis.
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--noUpdateButton"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <div
+                  class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
+                >
+                  <div
+                    class="euiPopover euiPopover--anchorDownLeft"
+                    id="QuickSelectPopover"
+                  >
+                    <div
+                      class="euiPopover__anchor euiQuickSelectPopover__anchor"
+                    >
+                      <button
+                        aria-label="Date quick select"
+                        class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
+                        data-test-subj="superDatePickerToggleQuickMenuButton"
+                        type="button"
+                      >
+                        <span
+                          class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--medium euiButtonContent__icon"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                              fill-rule="non-zero"
+                            />
+                          </svg>
+                          <span
+                            class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="euiIcon euiIcon--medium"
+                              focusable="false"
+                              height="16"
+                              role="img"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M14 4v-.994C14 2.45 13.55 2 12.994 2H11v1h-1V2H6v1H5V2H3.006C2.45 2 2 2.45 2 3.006v9.988C2 13.55 2.45 14 3.006 14h9.988C13.55 14 14 13.55 14 12.994V5H2V4h12zm-3-3h1.994C14.102 1 15 1.897 15 3.006v9.988A2.005 2.005 0 0112.994 15H3.006A2.005 2.005 0 011 12.994V3.006C1 1.898 1.897 1 3.006 1H5V0h1v1h4V0h1v1zM4 7h2v1H4V7zm3 0h2v1H7V7zm3 0h2v1h-2V7zM4 9h2v1H4V9zm3 0h2v1H7V9zm3 0h2v1h-2V9zm-6 2h2v1H4v-1zm3 0h2v1H7v-1zm3 0h2v1h-2v-1z"
+                                fill-rule="evenodd"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <div
+                      class="euiDatePickerRange euiDatePickerRange--inGroup"
+                    >
+                      <button
+                        class="euiSuperDatePicker__prettyFormat"
+                        data-test-subj="superDatePickerShowDatesButton"
+                      >
+                        last 30 days
+                        <span
+                          class="euiSuperDatePicker__prettyFormatLink"
+                        >
+                          Show dates
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium"
+      style="padding: 20px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Detector settings
+          </h3>
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 10px 0px;"
+      >
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="padding: 20px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="padding: 0px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <h3
+                class="euiTitle euiTitle--small"
+              >
+                Timestamp
+              </h3>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+          />
+          <div
+            style="padding: 10px 0px;"
+          >
+            <div
+              class="euiFormRow"
+              hint="Choose the time field you want to use for time filter."
+              id="random_html_id-row"
+              title="Timestamp field"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  aria-invalid="false"
+                  class="euiFormLabel euiFormRow__label"
+                  for="random_html_id"
+                >
+                  <div
+                    style="line-height: 8px;"
+                  >
+                    <p>
+                      Timestamp field
+                    </p>
+                    <br />
+                    <p
+                      class="sublabel"
+                    >
+                      Choose the time field you want to use for time filter.
+                    </p>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="euiComboBox"
+                  role="combobox"
+                >
+                  <div
+                    class="euiFormControlLayout"
+                  >
+                    <div
+                      class="euiFormControlLayout__childrenWrapper"
+                    >
+                      <div
+                        class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                        data-test-subj="comboBoxInput"
+                        tabindex="-1"
+                      >
+                        <p
+                          class="euiComboBoxPlaceholder"
+                        >
+                          Find timestamp
+                        </p>
+                        <div
+                          class="euiComboBox__input"
+                          style="font-size: 14px; display: inline-block;"
+                        >
+                          <input
+                            aria-controls=""
+                            data-test-subj="comboBoxSearchInput"
+                            id="random_html_id"
+                            role="textbox"
+                            style="box-sizing: content-box; width: 2px;"
+                            value=""
+                          />
+                          <div
+                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                      >
+                        <button
+                          aria-label="Open list of options"
+                          class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                          data-test-subj="comboBoxToggleListButton"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                              fill-rule="non-zero"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="padding: 20px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="padding: 0px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <h3
+                class="euiTitle euiTitle--small"
+              >
+                Features
+              </h3>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium content-panel-subTitle"
+                  >
+                    Specify an index field that you want to find anomalies for by defining features. You can add up to 5 features.
+                     
+                    <a
+                      class="euiLink euiLink--primary"
+                      href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more 
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--small"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13 8.5a.5.5 0 111 0V12a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2h3.5a.5.5 0 010 1H4a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8.5zm-5.12.339a.5.5 0 11-.706-.707L13.305 2H10.5a.5.5 0 110-1H14a1 1 0 011 1v3.5a.5.5 0 11-1 0V2.72L7.88 8.838z"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+          />
+          <div
+            style="padding: 10px 0px;"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+              style="margin: 0px;"
+            >
+              <div
+                class="euiAccordion euiAccordion-isOpen euiAccordion__noTopBorder"
+              >
+                <div
+                  class="euiAccordion__triggerWrapper"
+                >
+                  <button
+                    aria-controls="featureList.0"
+                    aria-expanded="true"
+                    class="euiAccordion__button euiAccordionForm__noTopPaddingButton"
+                    id="random_html_id"
+                    type="button"
+                  >
+                    <span
+                      class="euiAccordion__iconWrapper"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading euiAccordion__icon euiAccordion__icon-isOpen"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
+                    </span>
+                    <span
+                      class="euiIEFlexWrapFix"
+                    >
+                      <div
+                        id="featureAccordionHeaders.0"
+                      >
+                        <div
+                          class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow"
+                        >
+                          <div
+                            class="euiFlexItem"
+                          >
+                            <h5
+                              class="euiTitle euiTitle--xsmall euiAccordionForm__title"
+                            >
+                              Add feature
+                            </h5>
+                          </div>
+                        </div>
+                      </div>
+                    </span>
+                  </button>
+                  <div
+                    class="euiAccordion__optionalAction"
+                  >
+                    <button
+                      class="euiButton euiButton--danger euiButton--small"
+                      type="button"
+                    >
+                      <span
+                        class="euiButtonContent euiButton__content"
+                      >
+                        <span
+                          class="euiButton__text"
+                        >
+                          Delete
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="euiAccordion__childWrapper"
+                  id="featureList.0"
+                >
+                  <div>
+                    <div
+                      class="euiAccordion__padding--l"
+                    >
+                      <div
+                        class="euiFormRow"
+                        id="random_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__labelWrapper"
+                        >
+                          <label
+                            aria-invalid="false"
+                            class="euiFormLabel euiFormRow__label"
+                            for="random_html_id"
+                          >
+                            Feature name
+                          </label>
+                        </div>
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            class="euiFormControlLayout"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <input
+                                aria-describedby="random_html_id-help"
+                                class="euiFieldText"
+                                id="random_html_id"
+                                name="featureList.0.featureName"
+                                placeholder="Enter feature name"
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="euiFormHelpText euiFormRow__text"
+                            id="random_html_id-help"
+                          >
+                            Enter a descriptive name. The name must be unique within this detector. Feature name must contain 1-64 characters. Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore).
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormRow"
+                        id="random_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__labelWrapper"
+                        >
+                          <label
+                            aria-invalid="false"
+                            class="euiFormLabel euiFormRow__label"
+                            for="random_html_id"
+                          >
+                            Feature state
+                          </label>
+                        </div>
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            class="euiCheckbox"
+                          >
+                            <input
+                              checked=""
+                              class="euiCheckbox__input"
+                              id="random_html_id"
+                              name="featureList.0.featureEnabled"
+                              type="checkbox"
+                              value="true"
+                            />
+                            <div
+                              class="euiCheckbox__square"
+                            />
+                            <label
+                              class="euiCheckbox__label"
+                              for="random_html_id"
+                            >
+                              Enable feature
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormRow"
+                        id="random_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__labelWrapper"
+                        >
+                          <label
+                            aria-invalid="false"
+                            class="euiFormLabel euiFormRow__label"
+                            for="random_html_id"
+                          >
+                            Find anomalies based on
+                          </label>
+                        </div>
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            class="euiFormControlLayout"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <select
+                                class="euiSelect"
+                                id="random_html_id"
+                                name="featureList.0.featureType"
+                              >
+                                <option
+                                  value="simple_aggs"
+                                >
+                                  Field value
+                                </option>
+                                <option
+                                  value="custom_aggs"
+                                >
+                                  Custom expression
+                                </option>
+                              </select>
+                              <div
+                                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                              >
+                                <span
+                                  class="euiFormControlLayoutCustomIcon"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                                    focusable="false"
+                                    height="16"
+                                    role="img"
+                                    viewBox="0 0 16 16"
+                                    width="16"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                                      fill-rule="non-zero"
+                                    />
+                                  </svg>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormRow"
+                        id="random_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__labelWrapper"
+                        >
+                          <label
+                            aria-invalid="false"
+                            class="euiFormLabel euiFormRow__label"
+                            for="random_html_id"
+                          >
+                            Aggregation method
+                          </label>
+                        </div>
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            class="euiFormControlLayout"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <select
+                                aria-describedby="random_html_id-help"
+                                class="euiSelect"
+                                data-test-subj="aggregationType"
+                                id="random_html_id"
+                                name="featureList.0.aggregationBy"
+                              >
+                                <option
+                                  value="avg"
+                                >
+                                  average()
+                                </option>
+                                <option
+                                  value="value_count"
+                                >
+                                  count()
+                                </option>
+                                <option
+                                  value="sum"
+                                >
+                                  sum()
+                                </option>
+                                <option
+                                  value="min"
+                                >
+                                  min()
+                                </option>
+                                <option
+                                  value="max"
+                                >
+                                  max()
+                                </option>
+                              </select>
+                              <div
+                                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                              >
+                                <span
+                                  class="euiFormControlLayoutCustomIcon"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                                    focusable="false"
+                                    height="16"
+                                    role="img"
+                                    viewBox="0 0 16 16"
+                                    width="16"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                                      fill-rule="non-zero"
+                                    />
+                                  </svg>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="euiFormHelpText euiFormRow__text"
+                            id="random_html_id-help"
+                          >
+                            The aggregation method determines what constitutes an anomaly. For example, if you choose min(), the detector focuses on finding anomalies based on the minimum values of your feature.
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormRow"
+                        id="random_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__labelWrapper"
+                        >
+                          <label
+                            aria-invalid="false"
+                            class="euiFormLabel euiFormRow__label"
+                            for="random_html_id"
+                          >
+                            Field
+                          </label>
+                        </div>
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            aria-expanded="false"
+                            aria-haspopup="listbox"
+                            class="euiComboBox"
+                            name="featureList.0.aggregationOf"
+                            role="combobox"
+                          >
+                            <div
+                              class="euiFormControlLayout"
+                            >
+                              <div
+                                class="euiFormControlLayout__childrenWrapper"
+                              >
+                                <div
+                                  class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                                  data-test-subj="comboBoxInput"
+                                  tabindex="-1"
+                                >
+                                  <p
+                                    class="euiComboBoxPlaceholder"
+                                  >
+                                    Select field
+                                  </p>
+                                  <div
+                                    class="euiComboBox__input"
+                                    style="font-size: 14px; display: inline-block;"
+                                  >
+                                    <input
+                                      aria-controls=""
+                                      data-test-subj="comboBoxSearchInput"
+                                      id="random_html_id"
+                                      role="textbox"
+                                      style="box-sizing: content-box; width: 2px;"
+                                      value=""
+                                    />
+                                    <div
+                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                                >
+                                  <button
+                                    aria-label="Open list of options"
+                                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                                    data-test-subj="comboBoxToggleListButton"
+                                    type="button"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                                      focusable="false"
+                                      height="16"
+                                      role="img"
+                                      viewBox="0 0 16 16"
+                                      width="16"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                                        fill-rule="non-zero"
+                                      />
+                                    </svg>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                style="padding: 12px 24px;"
+              >
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <button
+                    class="euiButton euiButton--primary"
+                    data-test-subj="addFeature"
+                    type="button"
+                  >
+                    <span
+                      class="euiButtonContent euiButton__content"
+                    >
+                      <span
+                        class="euiButton__text"
+                      >
+                        Add another feature
+                      </span>
+                    </span>
+                  </button>
+                  <div
+                    class="euiText euiText--medium content-panel-subTitle"
+                  >
+                    <p>
+                      You can add
+                       
+                      4
+                       
+                      more features.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="padding: 20px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="padding: 0px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <h3
+                class="euiTitle euiTitle--small"
+              >
+                Operation settings
+              </h3>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+          />
+          <div
+            style="padding: 10px 0px;"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+              style="margin: 0px;"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                  style="max-width: 70%;"
+                >
+                  <div
+                    class="euiFormRow euiFormRow--fullWidth"
+                    hint="Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need."
+                    id="random_html_id-row"
+                    title="Detection interval"
+                  >
+                    <div
+                      class="euiFormRow__labelWrapper"
+                    >
+                      <label
+                        aria-invalid="false"
+                        class="euiFormLabel euiFormRow__label"
+                        for="random_html_id"
+                      >
+                        <div
+                          style="line-height: 8px;"
+                        >
+                          <p>
+                            Detection interval
+                          </p>
+                          <br />
+                          <p
+                            class="sublabel"
+                          >
+                            Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need.
+                          </p>
+                        </div>
+                      </label>
+                    </div>
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                        id="random_html_id"
+                      >
+                        <div
+                          class="euiFlexItem euiFlexItem--flexGrowZero"
+                        >
+                          <div
+                            class="euiFormControlLayout"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <input
+                                class="euiFieldNumber"
+                                data-test-subj="detectionInterval"
+                                id="detectionInterval"
+                                name="detectionInterval"
+                                placeholder="Detector interval"
+                                type="number"
+                                value="10"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="euiFlexItem"
+                        >
+                          <div
+                            class="euiText euiText--medium"
+                          >
+                            <p
+                              class="minutes"
+                            >
+                              minutes
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiCheckbox"
+                  >
+                    <input
+                      class="euiCheckbox__input"
+                      id="runDetectorAutomaticallyCheckbox"
+                      type="checkbox"
+                    />
+                    <div
+                      class="euiCheckbox__square"
+                    />
+                    <label
+                      class="euiCheckbox__label"
+                      for="runDetectorAutomaticallyCheckbox"
+                    >
+                      Run detector automatically after creating
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <button
+          class="euiButtonEmpty euiButtonEmpty--primary"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButtonEmpty__content"
+          >
+            <span
+              class="euiButtonEmpty__text"
+            >
+              Cancel
+            </span>
+          </span>
+        </button>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <button
+          class="euiButton euiButton--primary euiButton--fill"
+          type="submit"
+        >
+          <span
+            class="euiButtonContent euiButton__content"
+          >
+            <span
+              class="euiButton__text"
+            >
+              Save
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+`;
