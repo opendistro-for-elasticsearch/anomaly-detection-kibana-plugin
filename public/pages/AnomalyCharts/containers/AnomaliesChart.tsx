@@ -24,6 +24,7 @@ import {
 import { get } from 'lodash';
 import moment, { DurationInputArg2 } from 'moment';
 import React, { useState } from 'react';
+import { EntityAnomalySummaries } from '../../../../server/models/interfaces';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { useDelayedLoader } from '../../../hooks/useDelayedLoader';
 import {
@@ -38,6 +39,7 @@ import { AnomalyDetailsChart } from '../containers/AnomalyDetailsChart';
 import {
   AnomalyHeatmapChart,
   HeatmapCell,
+  HeatmapDisplayOption,
 } from '../containers/AnomalyHeatmapChart';
 import {
   getAnomalyGradeWording,
@@ -71,10 +73,13 @@ interface AnomaliesChartProps {
   isHCDetector?: boolean;
   detectorCategoryField?: string[];
   onHeatmapCellSelected?(heatmapCell: HeatmapCell): void;
+  onDisplayOptionChanged?(heatmapDisplayOption: HeatmapDisplayOption): void;
   selectedHeatmapCell?: HeatmapCell;
   newDetector?: Detector;
   zoomRange?: DateRange;
   anomaliesResult: Anomalies | undefined;
+  heatmapDisplayOption?: HeatmapDisplayOption;
+  entityAnomalySummaries?: EntityAnomalySummaries[];
 }
 
 export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
@@ -183,7 +188,9 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
         <EuiFlexGroup direction="column">
           {props.isHCDetector &&
           props.onHeatmapCellSelected &&
-          props.detectorCategoryField ? (
+          props.detectorCategoryField &&
+          props.onDisplayOptionChanged &&
+          props.entityAnomalySummaries ? (
             <EuiFlexGroup style={{ padding: '20px' }}>
               <EuiFlexItem style={{ margin: '0px' }}>
                 <div
@@ -222,6 +229,10 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                           'detectionInterval.period.unit'
                         )}
                         onHeatmapCellSelected={props.onHeatmapCellSelected}
+                        entityAnomalySummaries={props.entityAnomalySummaries}
+                        onDisplayOptionChanged={props.onDisplayOptionChanged}
+                        //@ts-ignore
+                        heatmapDisplayOption={props.heatmapDisplayOption}
                       />,
                       props.showAlerts !== true
                         ? [

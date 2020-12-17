@@ -45,6 +45,10 @@ import {
   buildParamsForGetAnomalyResultsWithDateRange,
   FEATURE_DATA_CHECK_WINDOW_OFFSET,
   filterWithHeatmapFilter,
+  getTopAnomalousEntitiesQuery,
+  parseTopEntityAnomalySummaryResults,
+  getEntityAnomalySummariesQuery,
+  parseEntityAnomalySummaryResults,
 } from '../../utils/anomalyResultUtils';
 import { AnomalyResultsTable } from './AnomalyResultsTable';
 import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
@@ -57,9 +61,24 @@ import { MAX_ANOMALIES } from '../../../utils/constants';
 import { getDetectorResults } from '../../../redux/reducers/anomalyResults';
 import { searchResults } from '../../../redux/reducers/anomalyResults';
 import { AnomalyOccurrenceChart } from '../../AnomalyCharts/containers/AnomalyOccurrenceChart';
-import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
-import { getAnomalyHistoryWording } from '../../AnomalyCharts/utils/anomalyChartUtils';
+import {
+  HeatmapCell,
+  HeatmapDisplayOption,
+  INITIAL_HEATMAP_DISPLAY_OPTION,
+  isCombinedViewEntityOption,
+} from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
+import {
+  getAnomalyHistoryWording,
+  NUM_CELLS,
+} from '../../AnomalyCharts/utils/anomalyChartUtils';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
+import {
+  EntityAnomalySummaries,
+  Entity,
+} from '../../../../server/models/interfaces';
+import { CoreStart } from '../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
+import { prettifyErrorMessage } from '../../../../server/utils/helpers';
 
 interface AnomalyHistoryProps {
   detector: Detector;
@@ -70,6 +89,7 @@ interface AnomalyHistoryProps {
 
 export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   const dispatch = useDispatch();
+  const core = React.useContext(CoreServicesContext) as CoreStart;
 
   const [isLoading, setIsLoading] = useState(false);
   const initialStartDate = moment().subtract(7, 'days');
@@ -98,6 +118,14 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   >(INITIAL_ANOMALY_SUMMARY);
 
   const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
+
+  const [entityAnomalySummaries, setEntityAnomalySummaries] = useState<
+    EntityAnomalySummaries[]
+  >();
+
+  const [heatmapDisplayOption, setHeatmapDisplayOption] = useState<
+    HeatmapDisplayOption
+  >(INITIAL_HEATMAP_DISPLAY_OPTION);
 
   const detectorCategoryField = get(props.detector, 'categoryField', []);
   const isHCDetector = !isEmpty(detectorCategoryField);
@@ -239,6 +267,72 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     } as Anomalies;
   };
 
+  useEffect(() => {
+    if (isHCDetector) {
+      fetchHCAnomalySummaries();
+    }
+  }, [dateRange, heatmapDisplayOption]);
+
+  const fetchHCAnomalySummaries = async () => {
+    // if (
+    //   // query backend only when combined option is selected
+    //   heatmapDisplayOption.entityOption.length == 1 &&
+    //   isCombinedViewEntityOption(heatmapDisplayOption.entityOption[0])
+    // ) {
+    console.log('heatmapDisplayOption is ', heatmapDisplayOption);
+    const query = getTopAnomalousEntitiesQuery(
+      dateRange.startDate,
+      dateRange.endDate,
+      props.detector.id,
+      heatmapDisplayOption.entityOption.value,
+      heatmapDisplayOption.sortType
+    );
+    const result = await dispatch(searchResults(query));
+    console.log('HC Anomaly Summary result', result);
+    const topEnityAnomalySummaries = parseTopEntityAnomalySummaryResults(
+      result
+    );
+    console.log('HC topEnityAnomaliSummaries', topEnityAnomalySummaries);
+    const entities = topEnityAnomalySummaries.map((summary) => summary.entity);
+    console.log('HC entities found', entities);
+
+    const promises = entities.map(async (entity: Entity) => {
+      const entityResultQuery = getEntityAnomalySummariesQuery(
+        dateRange.startDate,
+        dateRange.endDate,
+        props.detector.id,
+        NUM_CELLS,
+        get(props.detector, 'categoryField[0]', ''),
+        entity.value
+      );
+      console.log(`entityResultQuery for entity ${entity}`, entityResultQuery);
+      return dispatch(searchResults(entityResultQuery));
+    });
+
+    const allEntityAnomalySummaries = await Promise.all(promises).catch(
+      (error) => {
+        core.notifications.toasts.addDanger(
+          prettifyErrorMessage(
+            `Error getting anomaly summaries for all entities: ${error}`
+          )
+        );
+      }
+    );
+    console.log('allEntityAnomalySummaries', allEntityAnomalySummaries);
+    const entitiesAnomalySummaries = [] as EntityAnomalySummaries[];
+    //@ts-ignore
+    allEntityAnomalySummaries.forEach((entityResponse, i) => {
+      const entityAnomalySummariesResult = parseEntityAnomalySummaryResults(
+        entityResponse,
+        entities[i]
+      );
+      entitiesAnomalySummaries.push(entityAnomalySummariesResult);
+    });
+    console.log('entitiesAnomalySummaries', entitiesAnomalySummaries);
+    setEntityAnomalySummaries(entitiesAnomalySummaries);
+    // }
+  };
+
   const [atomicAnomalyResults, setAtomicAnomalyResults] = useState<Anomalies>();
   const [rawAnomalyResults, setRawAnomalyResults] = useState<Anomalies>();
   const [hcDetectorAnomalyResults, setHCDetectorAnomalyResults] = useState<
@@ -270,6 +364,13 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   const handleHeatmapCellSelected = useCallback((heatmapCell: HeatmapCell) => {
     setSelectedHeatmapCell(heatmapCell);
   }, []);
+
+  const handleHeatmapDisplayOptionChanged = useCallback(
+    (option: HeatmapDisplayOption) => {
+      setHeatmapDisplayOption(option);
+    },
+    []
+  );
 
   const annotations = anomalyResults
     ? get(anomalyResults, 'anomalies', [])
@@ -337,6 +438,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         onHeatmapCellSelected={handleHeatmapCellSelected}
         selectedHeatmapCell={selectedHeatmapCell}
         anomaliesResult={anomalyResults}
+        onDisplayOptionChanged={handleHeatmapDisplayOptionChanged}
+        heatmapDisplayOption={heatmapDisplayOption}
+        entityAnomalySummaries={entityAnomalySummaries}
       >
         <EuiTabs>{renderTabs()}</EuiTabs>
 
