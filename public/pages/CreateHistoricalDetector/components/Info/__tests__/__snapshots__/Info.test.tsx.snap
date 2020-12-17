@@ -45,98 +45,111 @@ exports[`<Info /> spec renders the component 1`] = `
       style="padding: 10px 0px;"
     >
       <div
-        class="euiFormRow"
-        hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
-        id="random_html_id-row"
-        title="Name"
+        class="euiFlexItem"
+        style="max-width: 70%;"
       >
         <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="random_html_id"
-          >
-            <div
-              style="line-height: 8px;"
-            >
-              <p>
-                Name
-              </p>
-              <br />
-              <p
-                class="sublabel"
-              >
-                Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
-              </p>
-            </div>
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
+          class="euiFormRow"
+          hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
+          id="random_html_id-row"
+          title="Name"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Name
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
           >
             <div
-              class="euiFormControlLayout__childrenWrapper"
+              class="euiFormControlLayout"
             >
-              <input
-                class="euiFieldText"
-                id="random_html_id"
-                name="name"
-                placeholder="Enter detector name"
-                type="text"
-                value=""
-              />
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText"
+                  id="random_html_id"
+                  name="name"
+                  placeholder="Enter detector name"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div
-        class="euiFormRow"
-        hint="Describe the purpose of the detector."
-        id="random_html_id-row"
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFlexItem"
+        style="max-width: 70%;"
       >
         <div
-          class="euiFormRow__labelWrapper"
+          class="euiFormRow"
+          hint="Describe the purpose of the detector."
+          id="random_html_id-row"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="random_html_id"
+          <div
+            class="euiFormRow__labelWrapper"
           >
-            <div
-              style="line-height: 8px;"
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
             >
-              <p>
-                Description 
-                <span
-                  class="optional"
-                >
-                  - optional
-                </span>
-              </p>
-              <br />
-              <p
-                class="sublabel"
+              <div
+                style="line-height: 8px;"
               >
-                Describe the purpose of the detector.
-              </p>
-            </div>
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <textarea
-            class="euiTextArea euiTextArea--resizeVertical"
-            id="random_html_id"
-            name="description"
-            placeholder="Enter detector description"
-            rows="3"
-          />
+                <p>
+                  Description 
+                  <span
+                    class="optional"
+                  >
+                    - optional
+                  </span>
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Describe the purpose of the detector.
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <textarea
+              class="euiTextArea euiTextArea--resizeVertical"
+              id="random_html_id"
+              name="description"
+              placeholder="Enter detector description"
+              rows="3"
+            />
+          </div>
         </div>
       </div>
     </div>

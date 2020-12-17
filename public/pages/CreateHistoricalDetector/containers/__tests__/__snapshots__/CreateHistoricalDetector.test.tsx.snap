@@ -64,98 +64,111 @@ exports[`<CreateHistoricalDetector /> spec create historical detector renders th
         style="padding: 10px 0px;"
       >
         <div
-          class="euiFormRow"
-          hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
-          id="random_html_id-row"
-          title="Name"
+          class="euiFlexItem"
+          style="max-width: 70%;"
         >
           <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              aria-invalid="false"
-              class="euiFormLabel euiFormRow__label"
-              for="random_html_id"
-            >
-              <div
-                style="line-height: 8px;"
-              >
-                <p>
-                  Name
-                </p>
-                <br />
-                <p
-                  class="sublabel"
-                >
-                  Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
-                </p>
-              </div>
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
+            class="euiFormRow"
+            hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
+            id="random_html_id-row"
+            title="Name"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormRow__labelWrapper"
+            >
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="random_html_id"
+              >
+                <div
+                  style="line-height: 8px;"
+                >
+                  <p>
+                    Name
+                  </p>
+                  <br />
+                  <p
+                    class="sublabel"
+                  >
+                    Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
+                  </p>
+                </div>
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
             >
               <div
-                class="euiFormControlLayout__childrenWrapper"
+                class="euiFormControlLayout"
               >
-                <input
-                  class="euiFieldText"
-                  id="random_html_id"
-                  name="name"
-                  placeholder="Enter detector name"
-                  type="text"
-                  value=""
-                />
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldText"
+                    id="random_html_id"
+                    name="name"
+                    placeholder="Enter detector name"
+                    type="text"
+                    value=""
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div
-          class="euiFormRow"
-          hint="Describe the purpose of the detector."
-          id="random_html_id-row"
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiFlexItem"
+          style="max-width: 70%;"
         >
           <div
-            class="euiFormRow__labelWrapper"
+            class="euiFormRow"
+            hint="Describe the purpose of the detector."
+            id="random_html_id-row"
           >
-            <label
-              aria-invalid="false"
-              class="euiFormLabel euiFormRow__label"
-              for="random_html_id"
+            <div
+              class="euiFormRow__labelWrapper"
             >
-              <div
-                style="line-height: 8px;"
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="random_html_id"
               >
-                <p>
-                  Description 
-                  <span
-                    class="optional"
-                  >
-                    - optional
-                  </span>
-                </p>
-                <br />
-                <p
-                  class="sublabel"
+                <div
+                  style="line-height: 8px;"
                 >
-                  Describe the purpose of the detector.
-                </p>
-              </div>
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
-          >
-            <textarea
-              class="euiTextArea euiTextArea--resizeVertical"
-              id="random_html_id"
-              name="description"
-              placeholder="Enter detector description"
-              rows="3"
-            />
+                  <p>
+                    Description 
+                    <span
+                      class="optional"
+                    >
+                      - optional
+                    </span>
+                  </p>
+                  <br />
+                  <p
+                    class="sublabel"
+                  >
+                    Describe the purpose of the detector.
+                  </p>
+                </div>
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <textarea
+                class="euiTextArea euiTextArea--resizeVertical"
+                id="random_html_id"
+                name="description"
+                placeholder="Enter detector description"
+                rows="3"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -206,109 +219,114 @@ exports[`<CreateHistoricalDetector /> spec create historical detector renders th
         style="padding: 10px 0px;"
       >
         <div
-          class="euiFormRow"
-          hint="Choose an index or index pattern as the data source."
-          id="random_html_id-row"
-          title="Index"
+          class="euiFlexItem"
+          style="max-width: 70%;"
         >
           <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              aria-invalid="false"
-              class="euiFormLabel euiFormRow__label"
-              for="random_html_id"
-            >
-              <div
-                style="line-height: 8px;"
-              >
-                <p>
-                  Index
-                </p>
-                <br />
-                <p
-                  class="sublabel"
-                >
-                  Choose an index or index pattern as the data source.
-                </p>
-              </div>
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
+            class="euiFormRow"
+            hint="Choose an index or index pattern as the data source."
+            id="random_html_id-row"
+            title="Index"
           >
             <div
-              aria-describedby="random_html_id-help"
-              aria-expanded="false"
-              aria-haspopup="listbox"
-              class="euiComboBox"
-              role="combobox"
+              class="euiFormRow__labelWrapper"
             >
-              <div
-                class="euiFormControlLayout"
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="random_html_id"
               >
                 <div
-                  class="euiFormControlLayout__childrenWrapper"
+                  style="line-height: 8px;"
+                >
+                  <p>
+                    Index
+                  </p>
+                  <br />
+                  <p
+                    class="sublabel"
+                  >
+                    Choose an index or index pattern as the data source.
+                  </p>
+                </div>
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                aria-describedby="random_html_id-help"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                class="euiComboBox"
+                role="combobox"
+              >
+                <div
+                  class="euiFormControlLayout"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
-                    data-test-subj="comboBoxInput"
-                    tabindex="-1"
+                    class="euiFormControlLayout__childrenWrapper"
                   >
-                    <p
-                      class="euiComboBoxPlaceholder"
-                    >
-                      Find indices
-                    </p>
                     <div
-                      class="euiComboBox__input"
-                      style="font-size: 14px; display: inline-block;"
+                      class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                      data-test-subj="comboBoxInput"
+                      tabindex="-1"
                     >
-                      <input
-                        aria-controls=""
-                        data-test-subj="comboBoxSearchInput"
-                        id="random_html_id"
-                        role="textbox"
-                        style="box-sizing: content-box; width: 2px;"
-                        value=""
-                      />
+                      <p
+                        class="euiComboBoxPlaceholder"
+                      >
+                        Find indices
+                      </p>
                       <div
-                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                      />
+                        class="euiComboBox__input"
+                        style="font-size: 14px; display: inline-block;"
+                      >
+                        <input
+                          aria-controls=""
+                          data-test-subj="comboBoxSearchInput"
+                          id="random_html_id"
+                          role="textbox"
+                          style="box-sizing: content-box; width: 2px;"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                  >
-                    <span
-                      class="euiLoadingSpinner euiLoadingSpinner--medium"
-                    />
-                    <button
-                      aria-label="Open list of options"
-                      class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                      data-test-subj="comboBoxToggleListButton"
-                      type="button"
+                    <div
+                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                     >
-                      <svg
-                        aria-hidden="true"
-                        class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
-                        focusable="false"
-                        height="16"
-                        role="img"
-                        viewBox="0 0 16 16"
-                        width="16"
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        class="euiLoadingSpinner euiLoadingSpinner--medium"
                       />
-                    </button>
+                      <button
+                        aria-label="Open list of options"
+                        class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                        data-test-subj="comboBoxToggleListButton"
+                        type="button"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="random_html_id-help"
-            >
-              You can use a wildcard (*) in your index pattern
+              <div
+                class="euiFormHelpText euiFormRow__text"
+                id="random_html_id-help"
+              >
+                You can use a wildcard (*) in your index pattern
+              </div>
             </div>
           </div>
         </div>
@@ -360,78 +378,69 @@ exports[`<CreateHistoricalDetector /> spec create historical detector renders th
         style="padding: 10px 0px;"
       >
         <div
-          class="euiFormRow"
-          hint="Choose a time range for your historical data analysis."
-          id="random_html_id-row"
-          title="Time range for historical analysis "
+          class="euiFlexItem"
+          style="max-width: 70%;"
         >
           <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              aria-invalid="false"
-              class="euiFormLabel euiFormRow__label"
-              for="random_html_id"
-            >
-              <div
-                style="line-height: 8px;"
-              >
-                <p>
-                  Time range for historical analysis 
-                </p>
-                <br />
-                <p
-                  class="sublabel"
-                >
-                  Choose a time range for your historical data analysis.
-                </p>
-              </div>
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
+            class="euiFormRow"
+            hint="Choose a time range for your historical data analysis."
+            id="random_html_id-row"
+            title="Time range for historical analysis "
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--noUpdateButton"
+              class="euiFormRow__labelWrapper"
             >
-              <div
-                class="euiFlexItem"
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="random_html_id"
               >
                 <div
-                  class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
+                  style="line-height: 8px;"
+                >
+                  <p>
+                    Time range for historical analysis 
+                  </p>
+                  <br />
+                  <p
+                    class="sublabel"
+                  >
+                    Choose a time range for your historical data analysis.
+                  </p>
+                </div>
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--noUpdateButton"
+              >
+                <div
+                  class="euiFlexItem"
                 >
                   <div
-                    class="euiPopover euiPopover--anchorDownLeft"
-                    id="QuickSelectPopover"
+                    class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
                   >
                     <div
-                      class="euiPopover__anchor euiQuickSelectPopover__anchor"
+                      class="euiPopover euiPopover--anchorDownLeft"
+                      id="QuickSelectPopover"
                     >
-                      <button
-                        aria-label="Date quick select"
-                        class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
-                        data-test-subj="superDatePickerToggleQuickMenuButton"
-                        type="button"
+                      <div
+                        class="euiPopover__anchor euiQuickSelectPopover__anchor"
                       >
-                        <span
-                          class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+                        <button
+                          aria-label="Date quick select"
+                          class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
+                          data-test-subj="superDatePickerToggleQuickMenuButton"
+                          type="button"
                         >
-                          <svg
-                            aria-hidden="true"
-                            class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonContent__icon"
-                            focusable="false"
-                            height="16"
-                            role="img"
-                            viewBox="0 0 16 16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          />
                           <span
-                            class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
+                            class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
                           >
                             <svg
                               aria-hidden="true"
-                              class="euiIcon euiIcon--medium euiIcon-isLoading"
+                              class="euiIcon euiIcon--medium euiIcon-isLoading euiButtonContent__icon"
                               focusable="false"
                               height="16"
                               role="img"
@@ -439,28 +448,42 @@ exports[`<CreateHistoricalDetector /> spec create historical detector renders th
                               width="16"
                               xmlns="http://www.w3.org/2000/svg"
                             />
+                            <span
+                              class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="euiIcon euiIcon--medium euiIcon-isLoading"
+                                focusable="false"
+                                height="16"
+                                role="img"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              />
+                            </span>
                           </span>
-                        </span>
-                      </button>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    class="euiFormControlLayout__childrenWrapper"
-                  >
                     <div
-                      class="euiDatePickerRange euiDatePickerRange--inGroup"
+                      class="euiFormControlLayout__childrenWrapper"
                     >
-                      <button
-                        class="euiSuperDatePicker__prettyFormat"
-                        data-test-subj="superDatePickerShowDatesButton"
+                      <div
+                        class="euiDatePickerRange euiDatePickerRange--inGroup"
                       >
-                        last 30 days
-                        <span
-                          class="euiSuperDatePicker__prettyFormatLink"
+                        <button
+                          class="euiSuperDatePicker__prettyFormat"
+                          data-test-subj="superDatePickerShowDatesButton"
                         >
-                          Show dates
-                        </span>
-                      </button>
+                          last 30 days
+                          <span
+                            class="euiSuperDatePicker__prettyFormatLink"
+                          >
+                            Show dates
+                          </span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -653,96 +676,101 @@ exports[`<CreateHistoricalDetector /> spec create historical detector renders th
             style="padding: 10px 0px;"
           >
             <div
-              class="euiFormRow"
-              hint="Choose the time field you want to use for time filter."
-              id="random_html_id-row"
-              title="Timestamp field"
+              class="euiFlexItem"
+              style="max-width: 70%;"
             >
               <div
-                class="euiFormRow__labelWrapper"
-              >
-                <label
-                  aria-invalid="false"
-                  class="euiFormLabel euiFormRow__label"
-                  for="random_html_id"
-                >
-                  <div
-                    style="line-height: 8px;"
-                  >
-                    <p>
-                      Timestamp field
-                    </p>
-                    <br />
-                    <p
-                      class="sublabel"
-                    >
-                      Choose the time field you want to use for time filter.
-                    </p>
-                  </div>
-                </label>
-              </div>
-              <div
-                class="euiFormRow__fieldWrapper"
+                class="euiFormRow"
+                hint="Choose the time field you want to use for time filter."
+                id="random_html_id-row"
+                title="Timestamp field"
               >
                 <div
-                  aria-expanded="false"
-                  aria-haspopup="listbox"
-                  class="euiComboBox"
-                  role="combobox"
+                  class="euiFormRow__labelWrapper"
                 >
-                  <div
-                    class="euiFormControlLayout"
+                  <label
+                    aria-invalid="false"
+                    class="euiFormLabel euiFormRow__label"
+                    for="random_html_id"
                   >
                     <div
-                      class="euiFormControlLayout__childrenWrapper"
+                      style="line-height: 8px;"
+                    >
+                      <p>
+                        Timestamp field
+                      </p>
+                      <br />
+                      <p
+                        class="sublabel"
+                      >
+                        Choose the time field you want to use for time filter.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    class="euiComboBox"
+                    role="combobox"
+                  >
+                    <div
+                      class="euiFormControlLayout"
                     >
                       <div
-                        class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
-                        data-test-subj="comboBoxInput"
-                        tabindex="-1"
+                        class="euiFormControlLayout__childrenWrapper"
                       >
-                        <p
-                          class="euiComboBoxPlaceholder"
-                        >
-                          Find timestamp
-                        </p>
                         <div
-                          class="euiComboBox__input"
-                          style="font-size: 14px; display: inline-block;"
+                          class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                          data-test-subj="comboBoxInput"
+                          tabindex="-1"
                         >
-                          <input
-                            aria-controls=""
-                            data-test-subj="comboBoxSearchInput"
-                            id="random_html_id"
-                            role="textbox"
-                            style="box-sizing: content-box; width: 2px;"
-                            value=""
-                          />
+                          <p
+                            class="euiComboBoxPlaceholder"
+                          >
+                            Find timestamp
+                          </p>
                           <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
+                            class="euiComboBox__input"
+                            style="font-size: 14px; display: inline-block;"
+                          >
+                            <input
+                              aria-controls=""
+                              data-test-subj="comboBoxSearchInput"
+                              id="random_html_id"
+                              role="textbox"
+                              style="box-sizing: content-box; width: 2px;"
+                              value=""
+                            />
+                            <div
+                              style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div
-                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                      >
-                        <button
-                          aria-label="Open list of options"
-                          class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                          data-test-subj="comboBoxToggleListButton"
-                          type="button"
+                        <div
+                          class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                         >
-                          <svg
-                            aria-hidden="true"
-                            class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
-                            focusable="false"
-                            height="16"
-                            role="img"
-                            viewBox="0 0 16 16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          />
-                        </button>
+                          <button
+                            aria-label="Open list of options"
+                            class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                            data-test-subj="comboBoxToggleListButton"
+                            type="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                              focusable="false"
+                              height="16"
+                              role="img"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1317,7 +1345,7 @@ exports[`<CreateHistoricalDetector /> spec create historical detector renders th
                 >
                   <div
                     class="euiFormRow euiFormRow--fullWidth"
-                    hint="Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need."
+                    hint="Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources."
                     id="random_html_id-row"
                     title="Detection interval"
                   >
@@ -1339,7 +1367,7 @@ exports[`<CreateHistoricalDetector /> spec create historical detector renders th
                           <p
                             class="sublabel"
                           >
-                            Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need.
+                            Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources.
                           </p>
                         </div>
                       </label>
@@ -1410,6 +1438,17 @@ exports[`<CreateHistoricalDetector /> spec create historical detector renders th
                       Run detector automatically after creating
                     </label>
                   </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                  style="margin-top: -8px;"
+                >
+                  <p
+                    class="sublabel"
+                  >
+                     
+                    We recommend running this detector during low traffic times.
+                  </p>
                 </div>
               </div>
             </div>
@@ -1528,98 +1567,111 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
         style="padding: 10px 0px;"
       >
         <div
-          class="euiFormRow"
-          hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
-          id="random_html_id-row"
-          title="Name"
+          class="euiFlexItem"
+          style="max-width: 70%;"
         >
           <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              aria-invalid="false"
-              class="euiFormLabel euiFormRow__label"
-              for="random_html_id"
-            >
-              <div
-                style="line-height: 8px;"
-              >
-                <p>
-                  Name
-                </p>
-                <br />
-                <p
-                  class="sublabel"
-                >
-                  Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
-                </p>
-              </div>
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
+            class="euiFormRow"
+            hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
+            id="random_html_id-row"
+            title="Name"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormRow__labelWrapper"
+            >
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="random_html_id"
+              >
+                <div
+                  style="line-height: 8px;"
+                >
+                  <p>
+                    Name
+                  </p>
+                  <br />
+                  <p
+                    class="sublabel"
+                  >
+                    Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
+                  </p>
+                </div>
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
             >
               <div
-                class="euiFormControlLayout__childrenWrapper"
+                class="euiFormControlLayout"
               >
-                <input
-                  class="euiFieldText"
-                  id="random_html_id"
-                  name="name"
-                  placeholder="Enter detector name"
-                  type="text"
-                  value=""
-                />
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldText"
+                    id="random_html_id"
+                    name="name"
+                    placeholder="Enter detector name"
+                    type="text"
+                    value=""
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div
-          class="euiFormRow"
-          hint="Describe the purpose of the detector."
-          id="random_html_id-row"
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiFlexItem"
+          style="max-width: 70%;"
         >
           <div
-            class="euiFormRow__labelWrapper"
+            class="euiFormRow"
+            hint="Describe the purpose of the detector."
+            id="random_html_id-row"
           >
-            <label
-              aria-invalid="false"
-              class="euiFormLabel euiFormRow__label"
-              for="random_html_id"
+            <div
+              class="euiFormRow__labelWrapper"
             >
-              <div
-                style="line-height: 8px;"
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="random_html_id"
               >
-                <p>
-                  Description 
-                  <span
-                    class="optional"
-                  >
-                    - optional
-                  </span>
-                </p>
-                <br />
-                <p
-                  class="sublabel"
+                <div
+                  style="line-height: 8px;"
                 >
-                  Describe the purpose of the detector.
-                </p>
-              </div>
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
-          >
-            <textarea
-              class="euiTextArea euiTextArea--resizeVertical"
-              id="random_html_id"
-              name="description"
-              placeholder="Enter detector description"
-              rows="3"
-            />
+                  <p>
+                    Description 
+                    <span
+                      class="optional"
+                    >
+                      - optional
+                    </span>
+                  </p>
+                  <br />
+                  <p
+                    class="sublabel"
+                  >
+                    Describe the purpose of the detector.
+                  </p>
+                </div>
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <textarea
+                class="euiTextArea euiTextArea--resizeVertical"
+                id="random_html_id"
+                name="description"
+                placeholder="Enter detector description"
+                rows="3"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1689,7 +1741,7 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
               <span
                 class="euiCallOutHeader__title"
               >
-                Modifying the index selected will reset your detector configuration settings.
+                Modifying the selected index resets your detector configuration.
               </span>
             </div>
           </div>
@@ -1698,114 +1750,119 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
           />
         </div>
         <div
-          class="euiFormRow"
-          hint="Choose an index or index pattern as the data source."
-          id="random_html_id-row"
-          title="Index"
+          class="euiFlexItem"
+          style="max-width: 70%;"
         >
           <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              aria-invalid="false"
-              class="euiFormLabel euiFormRow__label"
-              for="random_html_id"
-            >
-              <div
-                style="line-height: 8px;"
-              >
-                <p>
-                  Index
-                </p>
-                <br />
-                <p
-                  class="sublabel"
-                >
-                  Choose an index or index pattern as the data source.
-                </p>
-              </div>
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
+            class="euiFormRow"
+            hint="Choose an index or index pattern as the data source."
+            id="random_html_id-row"
+            title="Index"
           >
             <div
-              aria-describedby="random_html_id-help"
-              aria-expanded="false"
-              aria-haspopup="listbox"
-              class="euiComboBox"
-              role="combobox"
+              class="euiFormRow__labelWrapper"
             >
-              <div
-                class="euiFormControlLayout"
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="random_html_id"
               >
                 <div
-                  class="euiFormControlLayout__childrenWrapper"
+                  style="line-height: 8px;"
+                >
+                  <p>
+                    Index
+                  </p>
+                  <br />
+                  <p
+                    class="sublabel"
+                  >
+                    Choose an index or index pattern as the data source.
+                  </p>
+                </div>
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                aria-describedby="random_html_id-help"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                class="euiComboBox"
+                role="combobox"
+              >
+                <div
+                  class="euiFormControlLayout"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
-                    data-test-subj="comboBoxInput"
-                    tabindex="-1"
+                    class="euiFormControlLayout__childrenWrapper"
                   >
-                    <p
-                      class="euiComboBoxPlaceholder"
-                    >
-                      Find indices
-                    </p>
                     <div
-                      class="euiComboBox__input"
-                      style="font-size: 14px; display: inline-block;"
+                      class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                      data-test-subj="comboBoxInput"
+                      tabindex="-1"
                     >
-                      <input
-                        aria-controls=""
-                        data-test-subj="comboBoxSearchInput"
-                        id="random_html_id"
-                        role="textbox"
-                        style="box-sizing: content-box; width: 2px;"
-                        value=""
-                      />
-                      <div
-                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                  >
-                    <span
-                      class="euiLoadingSpinner euiLoadingSpinner--medium"
-                    />
-                    <button
-                      aria-label="Open list of options"
-                      class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                      data-test-subj="comboBoxToggleListButton"
-                      type="button"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
-                        focusable="false"
-                        height="16"
-                        role="img"
-                        viewBox="0 0 16 16"
-                        width="16"
-                        xmlns="http://www.w3.org/2000/svg"
+                      <p
+                        class="euiComboBoxPlaceholder"
                       >
-                        <path
-                          d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
-                          fill-rule="non-zero"
+                        Find indices
+                      </p>
+                      <div
+                        class="euiComboBox__input"
+                        style="font-size: 14px; display: inline-block;"
+                      >
+                        <input
+                          aria-controls=""
+                          data-test-subj="comboBoxSearchInput"
+                          id="random_html_id"
+                          role="textbox"
+                          style="box-sizing: content-box; width: 2px;"
+                          value=""
                         />
-                      </svg>
-                    </button>
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                    >
+                      <span
+                        class="euiLoadingSpinner euiLoadingSpinner--medium"
+                      />
+                      <button
+                        aria-label="Open list of options"
+                        class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                        data-test-subj="comboBoxToggleListButton"
+                        type="button"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                            fill-rule="non-zero"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="random_html_id-help"
-            >
-              You can use a wildcard (*) in your index pattern
+              <div
+                class="euiFormHelpText euiFormRow__text"
+                id="random_html_id-help"
+              >
+                You can use a wildcard (*) in your index pattern
+              </div>
             </div>
           </div>
         </div>
@@ -1857,83 +1914,69 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
         style="padding: 10px 0px;"
       >
         <div
-          class="euiFormRow"
-          hint="Choose a time range for your historical data analysis."
-          id="random_html_id-row"
-          title="Time range for historical analysis "
+          class="euiFlexItem"
+          style="max-width: 70%;"
         >
           <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              aria-invalid="false"
-              class="euiFormLabel euiFormRow__label"
-              for="random_html_id"
-            >
-              <div
-                style="line-height: 8px;"
-              >
-                <p>
-                  Time range for historical analysis 
-                </p>
-                <br />
-                <p
-                  class="sublabel"
-                >
-                  Choose a time range for your historical data analysis.
-                </p>
-              </div>
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
+            class="euiFormRow"
+            hint="Choose a time range for your historical data analysis."
+            id="random_html_id-row"
+            title="Time range for historical analysis "
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--noUpdateButton"
+              class="euiFormRow__labelWrapper"
             >
-              <div
-                class="euiFlexItem"
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="random_html_id"
               >
                 <div
-                  class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
+                  style="line-height: 8px;"
+                >
+                  <p>
+                    Time range for historical analysis 
+                  </p>
+                  <br />
+                  <p
+                    class="sublabel"
+                  >
+                    Choose a time range for your historical data analysis.
+                  </p>
+                </div>
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--noUpdateButton"
+              >
+                <div
+                  class="euiFlexItem"
                 >
                   <div
-                    class="euiPopover euiPopover--anchorDownLeft"
-                    id="QuickSelectPopover"
+                    class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
                   >
                     <div
-                      class="euiPopover__anchor euiQuickSelectPopover__anchor"
+                      class="euiPopover euiPopover--anchorDownLeft"
+                      id="QuickSelectPopover"
                     >
-                      <button
-                        aria-label="Date quick select"
-                        class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
-                        data-test-subj="superDatePickerToggleQuickMenuButton"
-                        type="button"
+                      <div
+                        class="euiPopover__anchor euiQuickSelectPopover__anchor"
                       >
-                        <span
-                          class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+                        <button
+                          aria-label="Date quick select"
+                          class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
+                          data-test-subj="superDatePickerToggleQuickMenuButton"
+                          type="button"
                         >
-                          <svg
-                            aria-hidden="true"
-                            class="euiIcon euiIcon--medium euiButtonContent__icon"
-                            focusable="false"
-                            height="16"
-                            role="img"
-                            viewBox="0 0 16 16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
-                              fill-rule="non-zero"
-                            />
-                          </svg>
                           <span
-                            class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
+                            class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
                           >
                             <svg
                               aria-hidden="true"
-                              class="euiIcon euiIcon--medium"
+                              class="euiIcon euiIcon--medium euiButtonContent__icon"
                               focusable="false"
                               height="16"
                               role="img"
@@ -1942,32 +1985,51 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
                               xmlns="http://www.w3.org/2000/svg"
                             >
                               <path
-                                d="M14 4v-.994C14 2.45 13.55 2 12.994 2H11v1h-1V2H6v1H5V2H3.006C2.45 2 2 2.45 2 3.006v9.988C2 13.55 2.45 14 3.006 14h9.988C13.55 14 14 13.55 14 12.994V5H2V4h12zm-3-3h1.994C14.102 1 15 1.897 15 3.006v9.988A2.005 2.005 0 0112.994 15H3.006A2.005 2.005 0 011 12.994V3.006C1 1.898 1.897 1 3.006 1H5V0h1v1h4V0h1v1zM4 7h2v1H4V7zm3 0h2v1H7V7zm3 0h2v1h-2V7zM4 9h2v1H4V9zm3 0h2v1H7V9zm3 0h2v1h-2V9zm-6 2h2v1H4v-1zm3 0h2v1H7v-1zm3 0h2v1h-2v-1z"
-                                fill-rule="evenodd"
+                                d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                                fill-rule="non-zero"
                               />
                             </svg>
+                            <span
+                              class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="euiIcon euiIcon--medium"
+                                focusable="false"
+                                height="16"
+                                role="img"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M14 4v-.994C14 2.45 13.55 2 12.994 2H11v1h-1V2H6v1H5V2H3.006C2.45 2 2 2.45 2 3.006v9.988C2 13.55 2.45 14 3.006 14h9.988C13.55 14 14 13.55 14 12.994V5H2V4h12zm-3-3h1.994C14.102 1 15 1.897 15 3.006v9.988A2.005 2.005 0 0112.994 15H3.006A2.005 2.005 0 011 12.994V3.006C1 1.898 1.897 1 3.006 1H5V0h1v1h4V0h1v1zM4 7h2v1H4V7zm3 0h2v1H7V7zm3 0h2v1h-2V7zM4 9h2v1H4V9zm3 0h2v1H7V9zm3 0h2v1h-2V9zm-6 2h2v1H4v-1zm3 0h2v1H7v-1zm3 0h2v1h-2v-1z"
+                                  fill-rule="evenodd"
+                                />
+                              </svg>
+                            </span>
                           </span>
-                        </span>
-                      </button>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    class="euiFormControlLayout__childrenWrapper"
-                  >
                     <div
-                      class="euiDatePickerRange euiDatePickerRange--inGroup"
+                      class="euiFormControlLayout__childrenWrapper"
                     >
-                      <button
-                        class="euiSuperDatePicker__prettyFormat"
-                        data-test-subj="superDatePickerShowDatesButton"
+                      <div
+                        class="euiDatePickerRange euiDatePickerRange--inGroup"
                       >
-                        last 30 days
-                        <span
-                          class="euiSuperDatePicker__prettyFormatLink"
+                        <button
+                          class="euiSuperDatePicker__prettyFormat"
+                          data-test-subj="superDatePickerShowDatesButton"
                         >
-                          Show dates
-                        </span>
-                      </button>
+                          last 30 days
+                          <span
+                            class="euiSuperDatePicker__prettyFormatLink"
+                          >
+                            Show dates
+                          </span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2065,101 +2127,106 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
             style="padding: 10px 0px;"
           >
             <div
-              class="euiFormRow"
-              hint="Choose the time field you want to use for time filter."
-              id="random_html_id-row"
-              title="Timestamp field"
+              class="euiFlexItem"
+              style="max-width: 70%;"
             >
               <div
-                class="euiFormRow__labelWrapper"
-              >
-                <label
-                  aria-invalid="false"
-                  class="euiFormLabel euiFormRow__label"
-                  for="random_html_id"
-                >
-                  <div
-                    style="line-height: 8px;"
-                  >
-                    <p>
-                      Timestamp field
-                    </p>
-                    <br />
-                    <p
-                      class="sublabel"
-                    >
-                      Choose the time field you want to use for time filter.
-                    </p>
-                  </div>
-                </label>
-              </div>
-              <div
-                class="euiFormRow__fieldWrapper"
+                class="euiFormRow"
+                hint="Choose the time field you want to use for time filter."
+                id="random_html_id-row"
+                title="Timestamp field"
               >
                 <div
-                  aria-expanded="false"
-                  aria-haspopup="listbox"
-                  class="euiComboBox"
-                  role="combobox"
+                  class="euiFormRow__labelWrapper"
                 >
-                  <div
-                    class="euiFormControlLayout"
+                  <label
+                    aria-invalid="false"
+                    class="euiFormLabel euiFormRow__label"
+                    for="random_html_id"
                   >
                     <div
-                      class="euiFormControlLayout__childrenWrapper"
+                      style="line-height: 8px;"
+                    >
+                      <p>
+                        Timestamp field
+                      </p>
+                      <br />
+                      <p
+                        class="sublabel"
+                      >
+                        Choose the time field you want to use for time filter.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    class="euiComboBox"
+                    role="combobox"
+                  >
+                    <div
+                      class="euiFormControlLayout"
                     >
                       <div
-                        class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
-                        data-test-subj="comboBoxInput"
-                        tabindex="-1"
+                        class="euiFormControlLayout__childrenWrapper"
                       >
-                        <p
-                          class="euiComboBoxPlaceholder"
-                        >
-                          Find timestamp
-                        </p>
                         <div
-                          class="euiComboBox__input"
-                          style="font-size: 14px; display: inline-block;"
+                          class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                          data-test-subj="comboBoxInput"
+                          tabindex="-1"
                         >
-                          <input
-                            aria-controls=""
-                            data-test-subj="comboBoxSearchInput"
-                            id="random_html_id"
-                            role="textbox"
-                            style="box-sizing: content-box; width: 2px;"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
-                      </div>
-                      <div
-                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                      >
-                        <button
-                          aria-label="Open list of options"
-                          class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                          data-test-subj="comboBoxToggleListButton"
-                          type="button"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
-                            focusable="false"
-                            height="16"
-                            role="img"
-                            viewBox="0 0 16 16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
+                          <p
+                            class="euiComboBoxPlaceholder"
                           >
-                            <path
-                              d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
-                              fill-rule="non-zero"
+                            Find timestamp
+                          </p>
+                          <div
+                            class="euiComboBox__input"
+                            style="font-size: 14px; display: inline-block;"
+                          >
+                            <input
+                              aria-controls=""
+                              data-test-subj="comboBoxSearchInput"
+                              id="random_html_id"
+                              role="textbox"
+                              style="box-sizing: content-box; width: 2px;"
+                              value=""
                             />
-                          </svg>
-                        </button>
+                            <div
+                              style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                            />
+                          </div>
+                        </div>
+                        <div
+                          class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                        >
+                          <button
+                            aria-label="Open list of options"
+                            class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                            data-test-subj="comboBoxToggleListButton"
+                            type="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                              focusable="false"
+                              height="16"
+                              role="img"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                                fill-rule="non-zero"
+                              />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2758,7 +2825,7 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
                 >
                   <div
                     class="euiFormRow euiFormRow--fullWidth"
-                    hint="Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need."
+                    hint="Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources."
                     id="random_html_id-row"
                     title="Detection interval"
                   >
@@ -2780,7 +2847,7 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
                           <p
                             class="sublabel"
                           >
-                            Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need.
+                            Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources.
                           </p>
                         </div>
                       </label>
@@ -2851,6 +2918,17 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
                       Run detector automatically after creating
                     </label>
                   </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                  style="margin-top: -8px;"
+                >
+                  <p
+                    class="sublabel"
+                  >
+                     
+                    We recommend running this detector during low traffic times.
+                  </p>
                 </div>
               </div>
             </div>

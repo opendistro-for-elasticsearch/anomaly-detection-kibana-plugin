@@ -112,7 +112,7 @@ export function CreateHistoricalDetector(props: CreateHistoricalDetectorProps) {
   useEffect(() => {
     if (props.isEdit && errorGettingDetector) {
       core.notifications.toasts.addDanger(
-        'Unable to find historical detector for editing'
+        'Unable to find the historical detector for editing'
       );
       props.history.push(`/historical-detectors`);
     }
@@ -181,7 +181,7 @@ export function CreateHistoricalDetector(props: CreateHistoricalDetectorProps) {
       if (option === SAVE_HISTORICAL_DETECTOR_OPTIONS.START) {
         await dispatch(startDetector(detectorId));
         core.notifications.toasts.addSuccess(
-          `Historical detector has been started successfully`
+          `Successfully started the historical detector`
         );
       }
       props.history.push(`/historical-detectors/${detectorId}/details/`);
@@ -211,7 +211,7 @@ export function CreateHistoricalDetector(props: CreateHistoricalDetectorProps) {
       if (option === SAVE_HISTORICAL_DETECTOR_OPTIONS.START) {
         await dispatch(startDetector(createdDetectorId));
         core.notifications.toasts.addSuccess(
-          `Historical detector has been started successfully`
+          `Successfully started the historical detector`
         );
       }
       props.history.push(`/historical-detectors/${createdDetectorId}/details/`);

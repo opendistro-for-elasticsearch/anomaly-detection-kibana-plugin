@@ -13,7 +13,12 @@
  * permissions and limitations under the License.
  */
 
-import { EuiFieldText, EuiTextArea } from '@elastic/eui';
+import {
+  EuiFieldText,
+  EuiTextArea,
+  EuiFlexItem,
+  EuiSpacer,
+} from '@elastic/eui';
 import { Field, FieldProps } from 'formik';
 import React from 'react';
 import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
@@ -29,51 +34,56 @@ export function Info(props: InfoProps) {
     <ContentPanel title="Name and description" titleSize="s">
       <Field name="name" validate={props.onValidateDetectorName}>
         {({ field, form }: FieldProps) => (
-          <FormattedFormRow
-            title="Name"
-            hint="Specify a unique and descriptive name that is easy to
+          <EuiFlexItem style={{ maxWidth: '70%' }}>
+            <FormattedFormRow
+              title="Name"
+              hint="Specify a unique and descriptive name that is easy to
           recognize. Detector name must contain 1-64 characters. 
           Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
-            isInvalid={isInvalid(field.name, form)}
-            error={getError(field.name, form)}
-          >
-            <EuiFieldText
-              name="name"
-              id="name"
-              placeholder="Enter detector name"
               isInvalid={isInvalid(field.name, form)}
-              onBlur={() => {
-                form.setFieldTouched('name', true);
-              }}
-              {...field}
-            />
-          </FormattedFormRow>
+              error={getError(field.name, form)}
+            >
+              <EuiFieldText
+                name="name"
+                id="name"
+                placeholder="Enter detector name"
+                isInvalid={isInvalid(field.name, form)}
+                onBlur={() => {
+                  form.setFieldTouched('name', true);
+                }}
+                {...field}
+              />
+            </FormattedFormRow>
+          </EuiFlexItem>
         )}
       </Field>
+      <EuiSpacer />
       <Field name="description" validate={props.onValidateDetectorDescription}>
         {({ field, form }: FieldProps) => (
-          <FormattedFormRow
-            formattedTitle={
-              <p>
-                Description <span className="optional">- optional</span>
-              </p>
-            }
-            hint="Describe the purpose of the detector."
-            isInvalid={isInvalid(field.name, form)}
-            error={getError(field.name, form)}
-          >
-            <EuiTextArea
-              name="description"
-              id="description"
-              rows={3}
-              placeholder="Enter detector description"
+          <EuiFlexItem style={{ maxWidth: '70%' }}>
+            <FormattedFormRow
+              formattedTitle={
+                <p>
+                  Description <span className="optional">- optional</span>
+                </p>
+              }
+              hint="Describe the purpose of the detector."
               isInvalid={isInvalid(field.name, form)}
-              onBlur={() => {
-                form.setFieldTouched('description', true);
-              }}
-              {...field}
-            />
-          </FormattedFormRow>
+              error={getError(field.name, form)}
+            >
+              <EuiTextArea
+                name="description"
+                id="description"
+                rows={3}
+                placeholder="Enter detector description"
+                isInvalid={isInvalid(field.name, form)}
+                onBlur={() => {
+                  form.setFieldTouched('description', true);
+                }}
+                {...field}
+              />
+            </FormattedFormRow>
+          </EuiFlexItem>
         )}
       </Field>
     </ContentPanel>

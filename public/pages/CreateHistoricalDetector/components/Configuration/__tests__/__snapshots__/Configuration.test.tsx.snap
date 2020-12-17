@@ -87,96 +87,101 @@ exports[`<Configuration /> spec renders the component in create mode with existi
           style="padding: 10px 0px;"
         >
           <div
-            class="euiFormRow"
-            hint="Choose the time field you want to use for time filter."
-            id="random_html_id-row"
-            title="Timestamp field"
+            class="euiFlexItem"
+            style="max-width: 70%;"
           >
             <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="random_html_id"
-              >
-                <div
-                  style="line-height: 8px;"
-                >
-                  <p>
-                    Timestamp field
-                  </p>
-                  <br />
-                  <p
-                    class="sublabel"
-                  >
-                    Choose the time field you want to use for time filter.
-                  </p>
-                </div>
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
+              class="euiFormRow"
+              hint="Choose the time field you want to use for time filter."
+              id="random_html_id-row"
+              title="Timestamp field"
             >
               <div
-                aria-expanded="false"
-                aria-haspopup="listbox"
-                class="euiComboBox"
-                role="combobox"
+                class="euiFormRow__labelWrapper"
               >
-                <div
-                  class="euiFormControlLayout"
+                <label
+                  aria-invalid="false"
+                  class="euiFormLabel euiFormRow__label"
+                  for="random_html_id"
                 >
                   <div
-                    class="euiFormControlLayout__childrenWrapper"
+                    style="line-height: 8px;"
+                  >
+                    <p>
+                      Timestamp field
+                    </p>
+                    <br />
+                    <p
+                      class="sublabel"
+                    >
+                      Choose the time field you want to use for time filter.
+                    </p>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="euiComboBox"
+                  role="combobox"
+                >
+                  <div
+                    class="euiFormControlLayout"
                   >
                     <div
-                      class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
-                      data-test-subj="comboBoxInput"
-                      tabindex="-1"
+                      class="euiFormControlLayout__childrenWrapper"
                     >
-                      <p
-                        class="euiComboBoxPlaceholder"
-                      >
-                        Find timestamp
-                      </p>
                       <div
-                        class="euiComboBox__input"
-                        style="font-size: 14px; display: inline-block;"
+                        class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                        data-test-subj="comboBoxInput"
+                        tabindex="-1"
                       >
-                        <input
-                          aria-controls=""
-                          data-test-subj="comboBoxSearchInput"
-                          id="random_html_id"
-                          role="textbox"
-                          style="box-sizing: content-box; width: 2px;"
-                          value=""
-                        />
+                        <p
+                          class="euiComboBoxPlaceholder"
+                        >
+                          Find timestamp
+                        </p>
                         <div
-                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                        />
+                          class="euiComboBox__input"
+                          style="font-size: 14px; display: inline-block;"
+                        >
+                          <input
+                            aria-controls=""
+                            data-test-subj="comboBoxSearchInput"
+                            id="random_html_id"
+                            role="textbox"
+                            style="box-sizing: content-box; width: 2px;"
+                            value=""
+                          />
+                          <div
+                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                    >
-                      <button
-                        aria-label="Open list of options"
-                        class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                        data-test-subj="comboBoxToggleListButton"
-                        type="button"
+                      <div
+                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
-                          focusable="false"
-                          height="16"
-                          role="img"
-                          viewBox="0 0 16 16"
-                          width="16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        />
-                      </button>
+                        <button
+                          aria-label="Open list of options"
+                          class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                          data-test-subj="comboBoxToggleListButton"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -355,7 +360,7 @@ exports[`<Configuration /> spec renders the component in create mode with existi
               >
                 <div
                   class="euiFormRow euiFormRow--fullWidth"
-                  hint="Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need."
+                  hint="Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources."
                   id="random_html_id-row"
                   title="Detection interval"
                 >
@@ -377,7 +382,7 @@ exports[`<Configuration /> spec renders the component in create mode with existi
                         <p
                           class="sublabel"
                         >
-                          Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need.
+                          Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources.
                         </p>
                       </div>
                     </label>
@@ -449,6 +454,17 @@ exports[`<Configuration /> spec renders the component in create mode with existi
                     Run detector automatically after creating
                   </label>
                 </div>
+              </div>
+              <div
+                class="euiFlexItem"
+                style="margin-top: -8px;"
+              >
+                <p
+                  class="sublabel"
+                >
+                   
+                  We recommend running this detector during low traffic times.
+                </p>
               </div>
             </div>
           </div>
@@ -546,101 +562,106 @@ exports[`<Configuration /> spec renders the component in edit mode without exist
           style="padding: 10px 0px;"
         >
           <div
-            class="euiFormRow"
-            hint="Choose the time field you want to use for time filter."
-            id="random_html_id-row"
-            title="Timestamp field"
+            class="euiFlexItem"
+            style="max-width: 70%;"
           >
             <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="random_html_id"
-              >
-                <div
-                  style="line-height: 8px;"
-                >
-                  <p>
-                    Timestamp field
-                  </p>
-                  <br />
-                  <p
-                    class="sublabel"
-                  >
-                    Choose the time field you want to use for time filter.
-                  </p>
-                </div>
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
+              class="euiFormRow"
+              hint="Choose the time field you want to use for time filter."
+              id="random_html_id-row"
+              title="Timestamp field"
             >
               <div
-                aria-expanded="false"
-                aria-haspopup="listbox"
-                class="euiComboBox"
-                role="combobox"
+                class="euiFormRow__labelWrapper"
               >
-                <div
-                  class="euiFormControlLayout"
+                <label
+                  aria-invalid="false"
+                  class="euiFormLabel euiFormRow__label"
+                  for="random_html_id"
                 >
                   <div
-                    class="euiFormControlLayout__childrenWrapper"
+                    style="line-height: 8px;"
+                  >
+                    <p>
+                      Timestamp field
+                    </p>
+                    <br />
+                    <p
+                      class="sublabel"
+                    >
+                      Choose the time field you want to use for time filter.
+                    </p>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="euiComboBox"
+                  role="combobox"
+                >
+                  <div
+                    class="euiFormControlLayout"
                   >
                     <div
-                      class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
-                      data-test-subj="comboBoxInput"
-                      tabindex="-1"
+                      class="euiFormControlLayout__childrenWrapper"
                     >
-                      <p
-                        class="euiComboBoxPlaceholder"
-                      >
-                        Find timestamp
-                      </p>
                       <div
-                        class="euiComboBox__input"
-                        style="font-size: 14px; display: inline-block;"
+                        class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                        data-test-subj="comboBoxInput"
+                        tabindex="-1"
                       >
-                        <input
-                          aria-controls=""
-                          data-test-subj="comboBoxSearchInput"
-                          id="random_html_id"
-                          role="textbox"
-                          style="box-sizing: content-box; width: 2px;"
-                          value=""
-                        />
-                        <div
-                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                    >
-                      <button
-                        aria-label="Open list of options"
-                        class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                        data-test-subj="comboBoxToggleListButton"
-                        type="button"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
-                          focusable="false"
-                          height="16"
-                          role="img"
-                          viewBox="0 0 16 16"
-                          width="16"
-                          xmlns="http://www.w3.org/2000/svg"
+                        <p
+                          class="euiComboBoxPlaceholder"
                         >
-                          <path
-                            d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
-                            fill-rule="non-zero"
+                          Find timestamp
+                        </p>
+                        <div
+                          class="euiComboBox__input"
+                          style="font-size: 14px; display: inline-block;"
+                        >
+                          <input
+                            aria-controls=""
+                            data-test-subj="comboBoxSearchInput"
+                            id="random_html_id"
+                            role="textbox"
+                            style="box-sizing: content-box; width: 2px;"
+                            value=""
                           />
-                        </svg>
-                      </button>
+                          <div
+                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                      >
+                        <button
+                          aria-label="Open list of options"
+                          class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                          data-test-subj="comboBoxToggleListButton"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                              fill-rule="non-zero"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -823,7 +844,7 @@ exports[`<Configuration /> spec renders the component in edit mode without exist
               >
                 <div
                   class="euiFormRow euiFormRow--fullWidth"
-                  hint="Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need."
+                  hint="Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources."
                   id="random_html_id-row"
                   title="Detection interval"
                 >
@@ -845,7 +866,7 @@ exports[`<Configuration /> spec renders the component in edit mode without exist
                         <p
                           class="sublabel"
                         >
-                          Define how often the detector collects data to generate anomalies. The shorter the interval is, the more detector results there will be, and the more computing resources the detector will need.
+                          Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources.
                         </p>
                       </div>
                     </label>
@@ -917,6 +938,17 @@ exports[`<Configuration /> spec renders the component in edit mode without exist
                     Run detector automatically after creating
                   </label>
                 </div>
+              </div>
+              <div
+                class="euiFlexItem"
+                style="margin-top: -8px;"
+              >
+                <p
+                  class="sublabel"
+                >
+                   
+                  We recommend running this detector during low traffic times.
+                </p>
               </div>
             </div>
           </div>

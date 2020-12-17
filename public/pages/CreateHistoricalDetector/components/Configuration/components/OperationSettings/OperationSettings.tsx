@@ -52,9 +52,8 @@ export function OperationSettings(props: OperationSettingsProps) {
                   fullWidth
                   title="Detection interval"
                   hint="Define how often the detector collects data to generate
-                    anomalies. The shorter the interval is, the more
-                    detector results there will be, and the more computing resources
-                    the detector will need."
+                    anomalies. Shorter intervals generate more detector results and 
+                    therefore require more computing resources."
                   isInvalid={isInvalid(field.name, form)}
                   error={getError(field.name, form)}
                 >
@@ -94,6 +93,12 @@ export function OperationSettings(props: OperationSettingsProps) {
                     props.onOptionChange(reverseOption);
                   }}
                 />
+              </EuiFlexItem>
+              <EuiFlexItem style={{ marginTop: '-8px' }}>
+                <p className="sublabel">
+                  {' '}
+                  We recommend running this detector during low traffic times.
+                </p>
               </EuiFlexItem>
             </EuiFlexGroup>
           )}

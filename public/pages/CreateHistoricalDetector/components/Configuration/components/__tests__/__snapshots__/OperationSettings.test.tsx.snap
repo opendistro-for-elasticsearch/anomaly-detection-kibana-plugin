@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OperationSettings /> spec renders the component 1`] = `
+<div>
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding: 20px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small"
+        >
+          Operation settings
+        </h3>
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          />
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 10px 0px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+        style="margin: 0px;"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+            style="max-width: 70%;"
+          >
+            <div
+              class="euiFormRow euiFormRow--fullWidth"
+              hint="Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources."
+              id="random_html_id-row"
+              title="Detection interval"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  aria-invalid="false"
+                  class="euiFormLabel euiFormRow__label"
+                  for="random_html_id"
+                >
+                  <div
+                    style="line-height: 8px;"
+                  >
+                    <p>
+                      Detection interval
+                    </p>
+                    <br />
+                    <p
+                      class="sublabel"
+                    >
+                      Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources.
+                    </p>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                  id="random_html_id"
+                >
+                  <div
+                    class="euiFlexItem euiFlexItem--flexGrowZero"
+                  >
+                    <div
+                      class="euiFormControlLayout"
+                    >
+                      <div
+                        class="euiFormControlLayout__childrenWrapper"
+                      >
+                        <input
+                          class="euiFieldNumber"
+                          data-test-subj="detectionInterval"
+                          id="detectionInterval"
+                          name="detectionInterval"
+                          placeholder="Detector interval"
+                          type="number"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="euiFlexItem"
+                  >
+                    <div
+                      class="euiText euiText--medium"
+                    >
+                      <p
+                        class="minutes"
+                      >
+                        minutes
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiCheckbox"
+            >
+              <input
+                class="euiCheckbox__input"
+                id="runDetectorAutomaticallyCheckbox"
+                type="checkbox"
+              />
+              <div
+                class="euiCheckbox__square"
+              />
+              <label
+                class="euiCheckbox__label"
+                for="runDetectorAutomaticallyCheckbox"
+              >
+                Run detector automatically after creating
+              </label>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem"
+            style="margin-top: -8px;"
+          >
+            <p
+              class="sublabel"
+            >
+               
+              We recommend running this detector during low traffic times.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

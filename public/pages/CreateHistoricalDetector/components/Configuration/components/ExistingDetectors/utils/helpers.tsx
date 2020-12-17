@@ -32,7 +32,6 @@ export function populateDetectorFieldsFromDetector(
     'featureList',
     makeAllFeaturesClosed(generateInitialFeatures(detector))
   );
-  console.log('feature list: ', formikProps.values.featureList);
   formikProps.setFieldValue(
     'detectionInterval',
     get(detector, 'detectionInterval.period.interval')

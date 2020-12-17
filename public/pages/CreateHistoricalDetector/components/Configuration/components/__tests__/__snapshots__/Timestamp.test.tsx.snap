@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<IndexChooser /> spec renders the component in create mode 1`] = `
+exports[`<Timestamp /> spec renders the component with regular index 1`] = `
 <div>
   <div
     class="euiPanel euiPanel--paddingMedium"
@@ -16,7 +16,7 @@ exports[`<IndexChooser /> spec renders the component in create mode 1`] = `
         <h3
           class="euiTitle euiTitle--small"
         >
-          Data source
+          Timestamp
         </h3>
         <div
           class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
@@ -50,9 +50,9 @@ exports[`<IndexChooser /> spec renders the component in create mode 1`] = `
       >
         <div
           class="euiFormRow"
-          hint="Choose an index or index pattern as the data source."
+          hint="Choose the time field you want to use for time filter."
           id="random_html_id-row"
-          title="Index"
+          title="Timestamp field"
         >
           <div
             class="euiFormRow__labelWrapper"
@@ -66,13 +66,13 @@ exports[`<IndexChooser /> spec renders the component in create mode 1`] = `
                 style="line-height: 8px;"
               >
                 <p>
-                  Index
+                  Timestamp field
                 </p>
                 <br />
                 <p
                   class="sublabel"
                 >
-                  Choose an index or index pattern as the data source.
+                  Choose the time field you want to use for time filter.
                 </p>
               </div>
             </label>
@@ -81,7 +81,6 @@ exports[`<IndexChooser /> spec renders the component in create mode 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
-              aria-describedby="random_html_id-help"
               aria-expanded="false"
               aria-haspopup="listbox"
               class="euiComboBox"
@@ -94,14 +93,14 @@ exports[`<IndexChooser /> spec renders the component in create mode 1`] = `
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >
                     <p
                       class="euiComboBoxPlaceholder"
                     >
-                      Find indices
+                      Find timestamp
                     </p>
                     <div
                       class="euiComboBox__input"
@@ -123,9 +122,6 @@ exports[`<IndexChooser /> spec renders the component in create mode 1`] = `
                   <div
                     class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                   >
-                    <span
-                      class="euiLoadingSpinner euiLoadingSpinner--medium"
-                    />
                     <button
                       aria-label="Open list of options"
                       class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
@@ -147,12 +143,6 @@ exports[`<IndexChooser /> spec renders the component in create mode 1`] = `
                 </div>
               </div>
             </div>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="random_html_id-help"
-            >
-              You can use a wildcard (*) in your index pattern
-            </div>
           </div>
         </div>
       </div>
@@ -161,7 +151,7 @@ exports[`<IndexChooser /> spec renders the component in create mode 1`] = `
 </div>
 `;
 
-exports[`<IndexChooser /> spec renders the component in edit mode with callout 1`] = `
+exports[`<Timestamp /> spec renders the component with remote index 1`] = `
 <div>
   <div
     class="euiPanel euiPanel--paddingMedium"
@@ -177,7 +167,7 @@ exports[`<IndexChooser /> spec renders the component in edit mode with callout 1
         <h3
           class="euiTitle euiTitle--small"
         >
-          Data source
+          Timestamp
         </h3>
         <div
           class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
@@ -207,7 +197,7 @@ exports[`<IndexChooser /> spec renders the component in edit mode with callout 1
     >
       <div>
         <div
-          class="euiCallOut euiCallOut--warning euiCallOut--small"
+          class="euiCallOut euiCallOut--warning"
         >
           <div
             class="euiCallOutHeader"
@@ -225,12 +215,12 @@ exports[`<IndexChooser /> spec renders the component in edit mode with callout 1
             <span
               class="euiCallOutHeader__title"
             >
-              Modifying the selected index resets your detector configuration.
+              A remote index is selected, so you need to manually input the time field.
             </span>
           </div>
         </div>
         <div
-          class="euiSpacer euiSpacer--l"
+          class="euiSpacer euiSpacer--m"
         />
       </div>
       <div
@@ -239,9 +229,9 @@ exports[`<IndexChooser /> spec renders the component in edit mode with callout 1
       >
         <div
           class="euiFormRow"
-          hint="Choose an index or index pattern as the data source."
+          hint="Choose the time field you want to use for time filter."
           id="random_html_id-row"
-          title="Index"
+          title="Timestamp field"
         >
           <div
             class="euiFormRow__labelWrapper"
@@ -255,13 +245,13 @@ exports[`<IndexChooser /> spec renders the component in edit mode with callout 1
                 style="line-height: 8px;"
               >
                 <p>
-                  Index
+                  Timestamp field
                 </p>
                 <br />
                 <p
                   class="sublabel"
                 >
-                  Choose an index or index pattern as the data source.
+                  Choose the time field you want to use for time filter.
                 </p>
               </div>
             </label>
@@ -270,7 +260,6 @@ exports[`<IndexChooser /> spec renders the component in edit mode with callout 1
             class="euiFormRow__fieldWrapper"
           >
             <div
-              aria-describedby="random_html_id-help"
               aria-expanded="false"
               aria-haspopup="listbox"
               class="euiComboBox"
@@ -283,14 +272,14 @@ exports[`<IndexChooser /> spec renders the component in edit mode with callout 1
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >
                     <p
                       class="euiComboBoxPlaceholder"
                     >
-                      Find indices
+                      Find timestamp
                     </p>
                     <div
                       class="euiComboBox__input"
@@ -312,9 +301,6 @@ exports[`<IndexChooser /> spec renders the component in edit mode with callout 1
                   <div
                     class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                   >
-                    <span
-                      class="euiLoadingSpinner euiLoadingSpinner--medium"
-                    />
                     <button
                       aria-label="Open list of options"
                       class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
@@ -340,12 +326,6 @@ exports[`<IndexChooser /> spec renders the component in edit mode with callout 1
                   </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="random_html_id-help"
-            >
-              You can use a wildcard (*) in your index pattern
             </div>
           </div>
         </div>

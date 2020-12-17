@@ -48,10 +48,11 @@ const renderWithRouter = (isEdit: boolean = false) => ({
 describe('<CreateHistoricalDetector /> spec', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    console.error = jest.fn();
+    console.warn = jest.fn();
   });
   describe('create historical detector', () => {
     test('renders the component', () => {
-      console.warn = jest.fn();
       const { container, getByText } = renderWithRouter(false);
       expect(container.firstChild).toMatchSnapshot();
       getByText('Create historical detector');
@@ -59,8 +60,6 @@ describe('<CreateHistoricalDetector /> spec', () => {
     });
 
     test('validate all required fields', async () => {
-      console.error = jest.fn();
-      console.warn = jest.fn();
       httpClientMock.get = jest.fn().mockResolvedValue({
         ok: true,
         response: {
@@ -80,7 +79,6 @@ describe('<CreateHistoricalDetector /> spec', () => {
   });
   describe('edit historical detector', () => {
     test('renders the component', () => {
-      console.warn = jest.fn();
       const { container, getByText } = renderWithRouter(true);
       expect(container.firstChild).toMatchSnapshot();
       getByText('Edit historical detector');

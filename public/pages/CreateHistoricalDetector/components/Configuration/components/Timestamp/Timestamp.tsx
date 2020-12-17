@@ -13,17 +13,14 @@
  * permissions and limitations under the License.
  */
 
-import { EuiComboBox, EuiCallOut, EuiSpacer } from '@elastic/eui';
+import { EuiComboBox, EuiCallOut, EuiSpacer, EuiFlexItem } from '@elastic/eui';
 import { Field, FieldProps, FormikProps } from 'formik';
 import { debounce, get, isEmpty } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ContentPanel from '../../../../../../components/ContentPanel/ContentPanel';
 import { AppState } from '../../../../../../redux/reducers';
-import {
-  getIndices,
-  getPrioritizedIndices,
-} from '../../../../../../redux/reducers/elasticsearch';
+import { getPrioritizedIndices } from '../../../../../../redux/reducers/elasticsearch';
 import { FormattedFormRow } from '../../../../../createDetector/components/FormattedFormRow/FormattedFormRow';
 import { sanitizeSearchText } from '../../../../../utils/helpers';
 import { getError, isInvalid, required } from '../../../../../../utils/utils';
@@ -74,33 +71,37 @@ export function Timestamp(props: TimestampProps) {
       ) : null}
       <Field name="timeField" validate={required}>
         {({ field, form }: FieldProps) => (
-          <FormattedFormRow
-            title="Timestamp field"
-            hint="Choose the time field you want to use for time filter."
-            isInvalid={isInvalid(field.name, form)}
-            error={getError(field.name, form)}
-          >
-            <EuiComboBox
-              id="timeField"
-              placeholder="Find timestamp"
-              options={isIndexSelected ? timeStampFieldOptions : []}
-              onSearchChange={handleSearchChange}
-              onCreateOption={(createdOption: string) => {
-                const normalizedOptions = createdOption.trim();
-                if (!normalizedOptions) return;
-                form.setFieldValue('timeField', normalizedOptions);
-              }}
-              onBlur={() => {
-                form.setFieldTouched('timeField', true);
-              }}
-              onChange={(options) => {
-                form.setFieldValue('timeField', get(options, '0.label'));
-              }}
-              selectedOptions={(field.value && [{ label: field.value }]) || []}
-              singleSelection={true}
-              isClearable={true}
-            />
-          </FormattedFormRow>
+          <EuiFlexItem style={{ maxWidth: '70%' }}>
+            <FormattedFormRow
+              title="Timestamp field"
+              hint="Choose the time field you want to use for time filter."
+              isInvalid={isInvalid(field.name, form)}
+              error={getError(field.name, form)}
+            >
+              <EuiComboBox
+                id="timeField"
+                placeholder="Find timestamp"
+                options={isIndexSelected ? timeStampFieldOptions : []}
+                onSearchChange={handleSearchChange}
+                onCreateOption={(createdOption: string) => {
+                  const normalizedOptions = createdOption.trim();
+                  if (!normalizedOptions) return;
+                  form.setFieldValue('timeField', normalizedOptions);
+                }}
+                onBlur={() => {
+                  form.setFieldTouched('timeField', true);
+                }}
+                onChange={(options) => {
+                  form.setFieldValue('timeField', get(options, '0.label'));
+                }}
+                selectedOptions={
+                  (field.value && [{ label: field.value }]) || []
+                }
+                singleSelection={true}
+                isClearable={true}
+              />
+            </FormattedFormRow>
+          </EuiFlexItem>
         )}
       </Field>
     </ContentPanel>

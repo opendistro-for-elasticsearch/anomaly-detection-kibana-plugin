@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { EuiSuperDatePicker } from '@elastic/eui';
+import { EuiSuperDatePicker, EuiFlexItem } from '@elastic/eui';
 import { Field, FieldProps } from 'formik';
 import React from 'react';
 import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
@@ -31,26 +31,30 @@ export function TimeRange(props: TimeRangeProps) {
     <ContentPanel title="Time range" titleSize="s">
       <Field name="dateRange">
         {({ field, form }: FieldProps) => (
-          <FormattedFormRow
-            title="Time range for historical analysis "
-            hint="Choose a time range for your historical data analysis."
-            isInvalid={isInvalid(field.name, form)}
-            error={getError(field.name, form)}
-          >
-            <EuiSuperDatePicker
-              isLoading={props.isLoading}
-              start={convertTimestampToString(form.values.startTime)}
-              end={convertTimestampToString(form.values.endTime)}
-              onTimeChange={({ start, end, isInvalid, isQuickSelection }) => {
-                form.setFieldValue('startTime', start);
-                form.setFieldValue('endTime', end);
-                form.setFieldValue('rangeValid', !isInvalid);
-              }}
-              isPaused={true}
-              showUpdateButton={false}
-              commonlyUsedRanges={HISTORICAL_DETCTOR_DATE_RANGE_COMMON_OPTIONS}
-            />
-          </FormattedFormRow>
+          <EuiFlexItem style={{ maxWidth: '70%' }}>
+            <FormattedFormRow
+              title="Time range for historical analysis "
+              hint="Choose a time range for your historical data analysis."
+              isInvalid={isInvalid(field.name, form)}
+              error={getError(field.name, form)}
+            >
+              <EuiSuperDatePicker
+                isLoading={props.isLoading}
+                start={convertTimestampToString(form.values.startTime)}
+                end={convertTimestampToString(form.values.endTime)}
+                onTimeChange={({ start, end, isInvalid, isQuickSelection }) => {
+                  form.setFieldValue('startTime', start);
+                  form.setFieldValue('endTime', end);
+                  form.setFieldValue('rangeValid', !isInvalid);
+                }}
+                isPaused={true}
+                showUpdateButton={false}
+                commonlyUsedRanges={
+                  HISTORICAL_DETCTOR_DATE_RANGE_COMMON_OPTIONS
+                }
+              />
+            </FormattedFormRow>
+          </EuiFlexItem>
         )}
       </Field>
     </ContentPanel>

@@ -29,7 +29,7 @@ import { CoreServicesContext } from '../../../../../components/CoreServices/Core
 import { Formik } from 'formik';
 
 const CALLOUT_TEXT =
-  'Modifying the index selected will reset your detector configuration settings.';
+  'Modifying the selected index resets your detector configuration.';
 const HELP_TEXT = 'Choose an index or index pattern as the data source.';
 const INVALID_TEXT = 'Must specify an index';
 const PLACEHOLDER_TEXT = 'Find indices';
