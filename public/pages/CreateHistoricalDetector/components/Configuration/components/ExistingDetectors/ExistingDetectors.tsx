@@ -32,7 +32,7 @@ import {
 } from '../../../../../../redux/reducers/ad';
 import { getMappings } from '../../../../../../redux/reducers/elasticsearch';
 import { GET_ALL_DETECTORS_QUERY_PARAMS } from '../../../../../utils/constants';
-import { searchDetector } from '../../../../../../redux/reducers/ad';
+import { getDetector } from '../../../../../../redux/reducers/ad';
 import { FormattedFormRow } from '../../../../../createDetector/components/FormattedFormRow/FormattedFormRow';
 import { HistoricalDetectorFormikValues } from '../../../../utils/constants';
 import { CREATE_HISTORICAL_DETECTOR_OPTIONS } from '../../../../utils/constants';
@@ -112,12 +112,8 @@ export function ExistingDetectors(props: ExistingDetectorsProps) {
   }, [selectedDetector]);
 
   const getDetectorInfo = (detectorId: string) => {
-    if (detectorId && allDetectors && allDetectors[detectorId]) {
-      dispatch(
-        searchDetector({
-          query: { term: { 'name.keyword': allDetectors[detectorId].name } },
-        })
-      );
+    if (detectorId) {
+      dispatch(getDetector(detectorId));
     }
   };
 

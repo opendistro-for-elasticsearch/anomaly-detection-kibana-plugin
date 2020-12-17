@@ -20,7 +20,7 @@ import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
 import { FormattedFormRow } from '../../../createDetector/components/FormattedFormRow/FormattedFormRow';
 import { getError, isInvalid } from '../../../../utils/utils';
 import { HISTORICAL_DETCTOR_DATE_RANGE_COMMON_OPTIONS } from '../../utils/constants';
-import { convertTimestampToString } from '../../utils/helpers';
+import { convertTimestampToString } from '../../../../utils/utils';
 
 interface TimeRangeProps {
   isLoading: boolean;

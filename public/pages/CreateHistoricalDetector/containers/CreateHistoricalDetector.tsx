@@ -230,7 +230,7 @@ export function CreateHistoricalDetector(props: CreateHistoricalDetectorProps) {
 
   const handleSubmit = async (
     values: HistoricalDetectorFormikValues,
-    formikBag: any
+    formikProps: any
   ) => {
     const apiRequest = formikToHistoricalDetector(values, detector);
     try {
@@ -239,9 +239,9 @@ export function CreateHistoricalDetector(props: CreateHistoricalDetectorProps) {
       } else {
         await handleCreate(apiRequest, saveDetectorOption);
       }
-      formikBag.setSubmitting(false);
+      formikProps.setSubmitting(false);
     } catch (e) {
-      formikBag.setSubmitting(false);
+      formikProps.setSubmitting(false);
     }
   };
 

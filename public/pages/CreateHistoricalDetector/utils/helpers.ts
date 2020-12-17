@@ -16,12 +16,11 @@
 import { get, cloneDeep, isEmpty } from 'lodash';
 import { Detector, UNITS, FEATURE_TYPE } from '../../../models/interfaces';
 import { SHINGLE_SIZE } from '../../../utils/constants';
+import { convertTimestampToNumber } from '../../../utils/utils';
 import {
   HistoricalDetectorFormikValues,
   INITIAL_HISTORICAL_DETECTOR_VALUES,
 } from './constants';
-import datemath from '@elastic/datemath';
-import moment from 'moment';
 import {
   FeaturesFormikValues,
   formikToFeatures,
@@ -107,20 +106,6 @@ function featuresToFormik(detector: Detector): FeaturesFormikValues[] {
         : FEATURE_TYPE.CUSTOM,
     };
   });
-}
-
-export function convertTimestampToString(timestamp: number | string) {
-  if (typeof timestamp === 'string') {
-    return timestamp;
-  }
-  return moment(timestamp).format();
-}
-
-export function convertTimestampToNumber(timestamp: number | string) {
-  if (typeof timestamp === 'string') {
-    return datemath.parse(timestamp)?.valueOf();
-  }
-  return timestamp;
 }
 
 export const getAllDetectorOptions = (allDetectors: any[]) => {

@@ -21,13 +21,18 @@ import {
 import { FormikProps } from 'formik';
 import { Detector } from '../../../../../../../models/interfaces';
 import { generateInitialFeatures } from '../../../../../../EditFeatures/utils/helpers';
+import { FeaturesFormikValues } from '../../../../../../EditFeatures/containers/utils/formikToFeatures';
 
 export function populateDetectorFieldsFromDetector(
   formikProps: FormikProps<HistoricalDetectorFormikValues>,
   detector: Detector
 ) {
   formikProps.setFieldValue('timeField', detector.timeField);
-  formikProps.setFieldValue('featureList', generateInitialFeatures(detector));
+  formikProps.setFieldValue(
+    'featureList',
+    makeAllFeaturesClosed(generateInitialFeatures(detector))
+  );
+  console.log('feature list: ', formikProps.values.featureList);
   formikProps.setFieldValue(
     'detectionInterval',
     get(detector, 'detectionInterval.period.interval')
@@ -57,4 +62,15 @@ export function untouchDetectorFields(
   formikProps.setFieldTouched('timeField', false);
   formikProps.setFieldTouched('featureList', false);
   formikProps.setFieldTouched('detectionInterval', false);
+}
+
+function makeAllFeaturesClosed(
+  features: FeaturesFormikValues[]
+): FeaturesFormikValues[] {
+  return features.map((feature: any) => {
+    return {
+      ...feature,
+      newFeature: false,
+    };
+  });
 }
