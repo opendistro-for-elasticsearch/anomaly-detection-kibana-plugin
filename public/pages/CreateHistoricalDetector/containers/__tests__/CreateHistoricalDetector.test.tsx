@@ -51,6 +51,7 @@ describe('<CreateHistoricalDetector /> spec', () => {
   });
   describe('create historical detector', () => {
     test('renders the component', () => {
+      console.warn = jest.fn();
       const { container, getByText } = renderWithRouter(false);
       expect(container.firstChild).toMatchSnapshot();
       getByText('Create historical detector');
@@ -79,6 +80,7 @@ describe('<CreateHistoricalDetector /> spec', () => {
   });
   describe('edit historical detector', () => {
     test('renders the component', () => {
+      console.warn = jest.fn();
       const { container, getByText } = renderWithRouter(true);
       expect(container.firstChild).toMatchSnapshot();
       getByText('Edit historical detector');

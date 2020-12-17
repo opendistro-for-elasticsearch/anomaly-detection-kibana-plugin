@@ -826,6 +826,402 @@ exports[`<CreateHistoricalDetector /> spec create historical detector renders th
               style="margin: 0px;"
             >
               <div
+                class="euiAccordion euiAccordion-isOpen euiAccordion__noTopBorder"
+              >
+                <div
+                  class="euiAccordion__triggerWrapper"
+                >
+                  <button
+                    aria-controls="featureList.0"
+                    aria-expanded="true"
+                    class="euiAccordion__button euiAccordionForm__noTopPaddingButton"
+                    id="random_html_id"
+                    type="button"
+                  >
+                    <span
+                      class="euiAccordion__iconWrapper"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading euiAccordion__icon euiAccordion__icon-isOpen"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
+                    </span>
+                    <span
+                      class="euiIEFlexWrapFix"
+                    >
+                      <div
+                        id="featureAccordionHeaders.0"
+                      >
+                        <div
+                          class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow"
+                        >
+                          <div
+                            class="euiFlexItem"
+                          >
+                            <h5
+                              class="euiTitle euiTitle--xsmall euiAccordionForm__title"
+                            >
+                              Add feature
+                            </h5>
+                          </div>
+                        </div>
+                      </div>
+                    </span>
+                  </button>
+                  <div
+                    class="euiAccordion__optionalAction"
+                  >
+                    <button
+                      class="euiButton euiButton--danger euiButton--small euiButton-isDisabled"
+                      disabled=""
+                      type="button"
+                    >
+                      <span
+                        class="euiButtonContent euiButton__content"
+                      >
+                        <span
+                          class="euiButton__text"
+                        >
+                          Delete
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="euiAccordion__childWrapper"
+                  id="featureList.0"
+                >
+                  <div>
+                    <div
+                      class="euiAccordion__padding--l"
+                    >
+                      <div
+                        class="euiFormRow"
+                        id="random_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__labelWrapper"
+                        >
+                          <label
+                            aria-invalid="false"
+                            class="euiFormLabel euiFormRow__label"
+                            for="random_html_id"
+                          >
+                            Feature name
+                          </label>
+                        </div>
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            class="euiFormControlLayout"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <input
+                                aria-describedby="random_html_id-help"
+                                class="euiFieldText"
+                                id="random_html_id"
+                                name="featureList.0.featureName"
+                                placeholder="Enter feature name"
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="euiFormHelpText euiFormRow__text"
+                            id="random_html_id-help"
+                          >
+                            Enter a descriptive name. The name must be unique within this detector. Feature name must contain 1-64 characters. Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore).
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormRow"
+                        id="random_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__labelWrapper"
+                        >
+                          <label
+                            aria-invalid="false"
+                            class="euiFormLabel euiFormRow__label"
+                            for="random_html_id"
+                          >
+                            Feature state
+                          </label>
+                        </div>
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            class="euiCheckbox"
+                          >
+                            <input
+                              checked=""
+                              class="euiCheckbox__input"
+                              id="random_html_id"
+                              name="featureList.0.featureEnabled"
+                              type="checkbox"
+                              value="true"
+                            />
+                            <div
+                              class="euiCheckbox__square"
+                            />
+                            <label
+                              class="euiCheckbox__label"
+                              for="random_html_id"
+                            >
+                              Enable feature
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormRow"
+                        id="random_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__labelWrapper"
+                        >
+                          <label
+                            aria-invalid="false"
+                            class="euiFormLabel euiFormRow__label"
+                            for="random_html_id"
+                          >
+                            Find anomalies based on
+                          </label>
+                        </div>
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            class="euiFormControlLayout"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <select
+                                class="euiSelect"
+                                id="random_html_id"
+                                name="featureList.0.featureType"
+                              >
+                                <option
+                                  value="simple_aggs"
+                                >
+                                  Field value
+                                </option>
+                                <option
+                                  value="custom_aggs"
+                                >
+                                  Custom expression
+                                </option>
+                              </select>
+                              <div
+                                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                              >
+                                <span
+                                  class="euiFormControlLayoutCustomIcon"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                                    focusable="false"
+                                    height="16"
+                                    role="img"
+                                    viewBox="0 0 16 16"
+                                    width="16"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormRow"
+                        id="random_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__labelWrapper"
+                        >
+                          <label
+                            aria-invalid="false"
+                            class="euiFormLabel euiFormRow__label"
+                            for="random_html_id"
+                          >
+                            Aggregation method
+                          </label>
+                        </div>
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            class="euiFormControlLayout"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <select
+                                aria-describedby="random_html_id-help"
+                                class="euiSelect"
+                                data-test-subj="aggregationType"
+                                id="random_html_id"
+                                name="featureList.0.aggregationBy"
+                              >
+                                <option
+                                  value="avg"
+                                >
+                                  average()
+                                </option>
+                                <option
+                                  value="value_count"
+                                >
+                                  count()
+                                </option>
+                                <option
+                                  value="sum"
+                                >
+                                  sum()
+                                </option>
+                                <option
+                                  value="min"
+                                >
+                                  min()
+                                </option>
+                                <option
+                                  value="max"
+                                >
+                                  max()
+                                </option>
+                              </select>
+                              <div
+                                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                              >
+                                <span
+                                  class="euiFormControlLayoutCustomIcon"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                                    focusable="false"
+                                    height="16"
+                                    role="img"
+                                    viewBox="0 0 16 16"
+                                    width="16"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="euiFormHelpText euiFormRow__text"
+                            id="random_html_id-help"
+                          >
+                            The aggregation method determines what constitutes an anomaly. For example, if you choose min(), the detector focuses on finding anomalies based on the minimum values of your feature.
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormRow"
+                        id="random_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__labelWrapper"
+                        >
+                          <label
+                            aria-invalid="false"
+                            class="euiFormLabel euiFormRow__label"
+                            for="random_html_id"
+                          >
+                            Field
+                          </label>
+                        </div>
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            aria-expanded="false"
+                            aria-haspopup="listbox"
+                            class="euiComboBox"
+                            name="featureList.0.aggregationOf"
+                            role="combobox"
+                          >
+                            <div
+                              class="euiFormControlLayout"
+                            >
+                              <div
+                                class="euiFormControlLayout__childrenWrapper"
+                              >
+                                <div
+                                  class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                                  data-test-subj="comboBoxInput"
+                                  tabindex="-1"
+                                >
+                                  <p
+                                    class="euiComboBoxPlaceholder"
+                                  >
+                                    Select field
+                                  </p>
+                                  <div
+                                    class="euiComboBox__input"
+                                    style="font-size: 14px; display: inline-block;"
+                                  >
+                                    <input
+                                      aria-controls=""
+                                      data-test-subj="comboBoxSearchInput"
+                                      id="random_html_id"
+                                      role="textbox"
+                                      style="box-sizing: content-box; width: 2px;"
+                                      value=""
+                                    />
+                                    <div
+                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                                >
+                                  <button
+                                    aria-label="Open list of options"
+                                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                                    data-test-subj="comboBoxToggleListButton"
+                                    type="button"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                                      focusable="false"
+                                      height="16"
+                                      role="img"
+                                      viewBox="0 0 16 16"
+                                      width="16"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
                 style="padding: 12px 24px;"
               >
@@ -851,9 +1247,9 @@ exports[`<CreateHistoricalDetector /> spec create historical detector renders th
                     class="euiText euiText--medium content-panel-subTitle"
                   >
                     <p>
-                      You can add
+                      You can add up to
                        
-                      5
+                      4
                        
                       more features.
                     </p>
@@ -1868,14 +2264,19 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
                     >
                       <svg
                         aria-hidden="true"
-                        class="euiIcon euiIcon--medium euiIcon-isLoading euiAccordion__icon euiAccordion__icon-isOpen"
+                        class="euiIcon euiIcon--medium euiAccordion__icon euiAccordion__icon-isOpen"
                         focusable="false"
                         height="16"
                         role="img"
                         viewBox="0 0 16 16"
                         width="16"
                         xmlns="http://www.w3.org/2000/svg"
-                      />
+                      >
+                        <path
+                          d="M5.157 13.069l4.611-4.685a.546.546 0 000-.768L5.158 2.93a.552.552 0 010-.771.53.53 0 01.759 0l4.61 4.684c.631.641.63 1.672 0 2.312l-4.61 4.684a.53.53 0 01-.76 0 .552.552 0 010-.771z"
+                          fill-rule="nonzero"
+                        />
+                      </svg>
                     </span>
                     <span
                       class="euiIEFlexWrapFix"
@@ -1903,7 +2304,8 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
                     class="euiAccordion__optionalAction"
                   >
                     <button
-                      class="euiButton euiButton--danger euiButton--small"
+                      class="euiButton euiButton--danger euiButton--small euiButton-isDisabled"
+                      disabled=""
                       type="button"
                     >
                       <span
@@ -2278,7 +2680,7 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
                       <span
                         class="euiButton__text"
                       >
-                        Add another feature
+                        Add feature
                       </span>
                     </span>
                   </button>
@@ -2286,7 +2688,7 @@ exports[`<CreateHistoricalDetector /> spec edit historical detector renders the 
                     class="euiText euiText--medium content-panel-subTitle"
                   >
                     <p>
-                      You can add
+                      You can add up to
                        
                       4
                        

@@ -26,7 +26,7 @@ import {
 import { FieldArray, FieldArrayRenderProps, FormikProps } from 'formik';
 
 import { get } from 'lodash';
-import React, { useState, Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import ContentPanel from '../../../../../../components/ContentPanel/ContentPanel';
 import { Detector } from '../../../../../../models/interfaces';
 import { initialFeatureValue } from '../../../../../EditFeatures/utils/helpers';
@@ -40,7 +40,13 @@ interface FeaturesProps {
 }
 
 export function Features(props: FeaturesProps) {
-  const [firstLoad, setFirstLoad] = useState<boolean>(true);
+  // If the features list is empty: push a default initial one
+  useEffect(() => {
+    if (get(props, 'formikProps.values.featureList', []).length === 0) {
+      props.formikProps.setFieldValue('featureList', [initialFeatureValue()]);
+      props.formikProps.setFieldTouched('featureList', false);
+    }
+  }, [props.formikProps.values.featureList]);
 
   return (
     <ContentPanel
@@ -62,14 +68,6 @@ export function Features(props: FeaturesProps) {
       <EuiFlexGroup direction="column" style={{ margin: '0px' }}>
         <FieldArray name="featureList" validateOnChange={true}>
           {({ push, remove, form: { values } }: FieldArrayRenderProps) => {
-            // @ts-ignore
-            if (
-              firstLoad &&
-              get(props.detector, 'featureAttributes', []).length === 0
-            ) {
-              push(initialFeatureValue());
-            }
-            setFirstLoad(false);
             return (
               <Fragment>
                 {get(props.detector, 'indices.0', '').includes(':') ? (
@@ -91,6 +89,7 @@ export function Features(props: FeaturesProps) {
                     index={index}
                     feature={feature}
                     handleChange={props.formikProps.handleChange}
+                    deleteDisabled={index === 0}
                   />
                 ))}
 
@@ -106,13 +105,11 @@ export function Features(props: FeaturesProps) {
                         push(initialFeatureValue());
                       }}
                     >
-                      {values.featureList.length === 0
-                        ? 'Add feature'
-                        : 'Add another feature'}
+                      Add feature
                     </EuiButton>
                     <EuiText className="content-panel-subTitle">
                       <p>
-                        You can add{' '}
+                        You can add up to{' '}
                         {Math.max(
                           MAX_FEATURE_NUM - values.featureList.length,
                           0

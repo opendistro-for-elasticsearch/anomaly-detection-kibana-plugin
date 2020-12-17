@@ -120,6 +120,7 @@ export function IndexChooser(props: IndexChooserProps) {
                     if (newOption !== prevOption) {
                       form.setFieldValue('index', options);
                       form.setFieldValue('timeField', undefined);
+                      form.setFieldTouched('timeField', false);
                       form.setFieldValue(
                         'featureList',
                         INITIAL_HISTORICAL_DETECTOR_VALUES.featureList

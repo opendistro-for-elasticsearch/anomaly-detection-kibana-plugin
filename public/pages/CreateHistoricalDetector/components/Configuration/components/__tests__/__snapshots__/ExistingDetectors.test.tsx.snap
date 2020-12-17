@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ExistingDetectors /> spec renders the component 1`] = `
+<div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+    style="margin: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="max-width: 400px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          hint="Choose if you would like to source an existing real-time or historical detector to use as a template for your configuration."
+          id="random_html_id-row"
+          title="Configure using an existing detector"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              <div
+                style="line-height: 8px;"
+              >
+                <p>
+                  Configure using an existing detector
+                </p>
+                <br />
+                <p
+                  class="sublabel"
+                >
+                  Choose if you would like to source an existing real-time or historical detector to use as a template for your configuration.
+                </p>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              id="random_html_id"
+            >
+              <div
+                class="euiRadio euiRadioGroup__item"
+              >
+                <input
+                  checked=""
+                  class="euiRadio__input"
+                  id="create_new_detector"
+                  name="use existing detectors radio group"
+                  type="radio"
+                  value=""
+                />
+                <div
+                  class="euiRadio__circle"
+                />
+                <label
+                  class="euiRadio__label"
+                  for="create_new_detector"
+                >
+                  No
+                </label>
+              </div>
+              <div
+                class="euiRadio euiRadioGroup__item"
+              >
+                <input
+                  class="euiRadio__input"
+                  id="use_existing_detector"
+                  name="use existing detectors radio group"
+                  type="radio"
+                  value=""
+                />
+                <div
+                  class="euiRadio__circle"
+                />
+                <label
+                  class="euiRadio__label"
+                  for="use_existing_detector"
+                >
+                  Yes
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+  </div>
+</div>
+`;

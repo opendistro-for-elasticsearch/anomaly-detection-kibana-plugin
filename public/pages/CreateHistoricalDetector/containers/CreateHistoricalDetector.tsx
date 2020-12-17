@@ -54,7 +54,10 @@ import {
   formikToHistoricalDetector,
   historicalDetectorToFormik,
 } from '../utils/helpers';
-import { focusOnFirstWrongFeature } from '../../EditFeatures/utils/helpers';
+import {
+  focusOnFirstWrongFeature,
+  validateFeatures,
+} from '../../EditFeatures/utils/helpers';
 import { validateDetectorName } from '../../../utils/utils';
 import { Detector } from '../../../models/interfaces';
 import { CoreStart } from '../../../../../../src/core/public';
@@ -143,7 +146,6 @@ export function CreateHistoricalDetector(props: CreateHistoricalDetectorProps) {
       if (error) {
         return error;
       }
-      //TODO::Avoid making call if value is same
       const resp = await dispatch(matchDetector(detectorName));
       const match = get(resp, 'response.match', false);
       if (!match) {
@@ -306,6 +308,7 @@ export function CreateHistoricalDetector(props: CreateHistoricalDetectorProps) {
           initialValues={historicalDetectorToFormik(detector)}
           onSubmit={handleSubmit}
           isInitialValid={props.isEdit ? true : false}
+          validate={validateFeatures}
         >
           {(formikProps) => (
             <Fragment>
