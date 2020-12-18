@@ -668,6 +668,8 @@ export default class AdService {
         sortField = AD_DOC_FIELDS.DATA_START_TIME,
         dateRangeFilter = undefined,
         anomalyThreshold = -1,
+        entityName = undefined,
+        entityValue = undefined,
       } = request.query as {
         from: number;
         size: number;
@@ -675,6 +677,8 @@ export default class AdService {
         sortField?: string;
         dateRangeFilter?: string;
         anomalyThreshold: number;
+        entityName: string;
+        entityValue: string;
       };
 
       //Allowed sorting columns
@@ -715,6 +719,34 @@ export default class AdService {
                   },
                 },
               },
+              ...(entityName && entityValue
+                ? [
+                    {
+                      nested: {
+                        path: 'entity',
+                        query: {
+                          term: {
+                            'entity.name': {
+                              value: entityName,
+                            },
+                          },
+                        },
+                      },
+                    },
+                    {
+                      nested: {
+                        path: 'entity',
+                        query: {
+                          term: {
+                            'entity.value': {
+                              value: entityValue,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  ]
+                : []),
             ],
           },
         },

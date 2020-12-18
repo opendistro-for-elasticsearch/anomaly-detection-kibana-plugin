@@ -189,8 +189,8 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
           {props.isHCDetector &&
           props.onHeatmapCellSelected &&
           props.detectorCategoryField &&
-          props.onDisplayOptionChanged &&
-          props.entityAnomalySummaries ? (
+          (props.showAlerts !== true ||
+            (props.onDisplayOptionChanged && props.entityAnomalySummaries)) ? (
             <EuiFlexGroup style={{ padding: '20px' }}>
               <EuiFlexItem style={{ margin: '0px' }}>
                 <div
@@ -231,7 +231,6 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                         onHeatmapCellSelected={props.onHeatmapCellSelected}
                         entityAnomalySummaries={props.entityAnomalySummaries}
                         onDisplayOptionChanged={props.onDisplayOptionChanged}
-                        //@ts-ignore
                         heatmapDisplayOption={props.heatmapDisplayOption}
                       />,
                       props.showAlerts !== true

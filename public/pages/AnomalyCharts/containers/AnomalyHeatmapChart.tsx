@@ -58,9 +58,9 @@ interface AnomalyHeatmapChartProps {
   detectorInterval?: number;
   unit?: string;
   onHeatmapCellSelected(cell: HeatmapCell | undefined): void;
-  onDisplayOptionChanged(option: HeatmapDisplayOption | undefined): void;
-  heatmapDisplayOption: HeatmapDisplayOption;
-  entityAnomalySummaries: EntityAnomalySummaries[];
+  onDisplayOptionChanged?(option: HeatmapDisplayOption | undefined): void;
+  heatmapDisplayOption?: HeatmapDisplayOption;
+  entityAnomalySummaries?: EntityAnomalySummaries[];
 }
 
 export interface HeatmapCell {
@@ -80,13 +80,6 @@ const COMBINED_OPTIONS = {
     { label: 'Top 20', value: 20 },
     { label: 'Top 30', value: 30 },
   ],
-};
-
-export const isCombinedViewEntityOption = (inputOption: any) => {
-  const combinedOptionsLabels = COMBINED_OPTIONS.options.map((option) =>
-    get(option, 'label', '')
-  );
-  return combinedOptionsLabels.includes(get(inputOption, 'label', ''));
 };
 
 export const INITIAL_HEATMAP_DISPLAY_OPTION = {
@@ -139,25 +132,22 @@ export const AnomalyHeatmapChart = React.memo(
       ];
     };
 
-    // const [originalHeatmapData, setOriginalHeatmapData] = useState(
-    //   getAnomaliesHeatmapData(
-    //     props.anomalies,
-    //     props.dateRange,
-    //     AnomalyHeatmapSortType.SEVERITY,
-    //     COMBINED_OPTIONS.options[0].value
-    //   )
-    // );
-
     const [originalHeatmapData, setOriginalHeatmapData] = useState(
-      getEnitytAnomaliesHeatmapData(
-        props.dateRange,
-        props.entityAnomalySummaries,
-        props.heatmapDisplayOption.entityOption.value
-      )
+      props.showAlerts
+        ? // use anomaly summary data in case of realtime result
+          getEnitytAnomaliesHeatmapData(
+            props.dateRange,
+            props.entityAnomalySummaries,
+            props.heatmapDisplayOption.entityOption.value
+          )
+        : // use anomalies data in case of sample result
+          getAnomaliesHeatmapData(
+            props.anomalies,
+            props.dateRange,
+            AnomalyHeatmapSortType.SEVERITY,
+            COMBINED_OPTIONS.options[0].value
+          )
     );
-
-    // console.log('originalHeatmapData', originalHeatmapData);
-    // console.log('originalHeatmapDataCopy', originalHeatmapDataCopy);
 
     const [heatmapData, setHeatmapData] = useState<PlotData[]>(
       originalHeatmapData
@@ -165,7 +155,11 @@ export const AnomalyHeatmapChart = React.memo(
 
     const [sortByFieldValue, setSortByFieldValue] = useState<
       AnomalyHeatmapSortType
-    >(props.heatmapDisplayOption.sortType);
+    >(
+      props.showAlerts
+        ? props.heatmapDisplayOption.sortType
+        : SORT_BY_FIELD_OPTIONS[0].value
+    );
 
     const [currentViewOptions, setCurrentViewOptions] = useState([
       getViewEntityOptions(originalHeatmapData)[0].options[0],
@@ -262,22 +256,25 @@ export const AnomalyHeatmapChart = React.memo(
       if (isEmpty(selectedViewOptions)) {
         // when `clear` is hit for combo box
         setCurrentViewOptions([COMBINED_OPTIONS.options[0]]);
-        const displayTopEntityNum = get(COMBINED_OPTIONS.options[0], 'value');
 
-        props.onDisplayOptionChanged({
-          sortType: sortByFieldValue,
-          entityOption: COMBINED_OPTIONS.options[0],
-        });
-        // const updateHeatmapPlotData = getAnomaliesHeatmapData(
-        //   props.anomalies,
-        //   props.dateRange,
-        //   sortByFieldValue,
-        //   displayTopEntityNum
-        // );
-        // setOriginalHeatmapData(updateHeatmapPlotData);
-        // setHeatmapData(updateHeatmapPlotData);
-        // setNumEntities(updateHeatmapPlotData[0].y.length);
-        // setEntityViewOptions(getViewEntityOptions(updateHeatmapPlotData));
+        if (props.showAlerts) {
+          props.onDisplayOptionChanged({
+            sortType: sortByFieldValue,
+            entityOption: COMBINED_OPTIONS.options[0],
+          });
+        } else {
+          const displayTopEntityNum = get(COMBINED_OPTIONS.options[0], 'value');
+          const updateHeatmapPlotData = getAnomaliesHeatmapData(
+            props.anomalies,
+            props.dateRange,
+            sortByFieldValue,
+            displayTopEntityNum
+          );
+          setOriginalHeatmapData(updateHeatmapPlotData);
+          setHeatmapData(updateHeatmapPlotData);
+          setNumEntities(updateHeatmapPlotData[0].y.length);
+          setEntityViewOptions(getViewEntityOptions(updateHeatmapPlotData));
+        }
         return;
       }
       const nonCombinedOptions = [] as any[];
@@ -291,21 +288,26 @@ export const AnomalyHeatmapChart = React.memo(
         if (isCombinedViewEntityOption(option)) {
           // only allow 1 combined option
           setCurrentViewOptions([option]);
-          const displayTopEntityNum = get(option, 'value');
-          const updateHeatmapPlotData = getAnomaliesHeatmapData(
-            props.anomalies,
-            props.dateRange,
-            sortByFieldValue,
-            displayTopEntityNum
-          );
-          props.onDisplayOptionChanged({
-            sortType: sortByFieldValue,
-            entityOption: option,
-          });
-          // setOriginalHeatmapData(updateHeatmapPlotData);
-          // setHeatmapData(updateHeatmapPlotData);
-          // setNumEntities(updateHeatmapPlotData[0].y.length);
-          // setEntityViewOptions(getViewEntityOptions(updateHeatmapPlotData));
+          if (props.showAlerts) {
+            props.onDisplayOptionChanged({
+              sortType: sortByFieldValue,
+              entityOption: option,
+            });
+          } else {
+            const displayTopEntityNum = get(option, 'value');
+            const updateHeatmapPlotData = getAnomaliesHeatmapData(
+              props.anomalies,
+              props.dateRange,
+              sortByFieldValue,
+              displayTopEntityNum
+            );
+
+            setOriginalHeatmapData(updateHeatmapPlotData);
+            setHeatmapData(updateHeatmapPlotData);
+            setNumEntities(updateHeatmapPlotData[0].y.length);
+            setEntityViewOptions(getViewEntityOptions(updateHeatmapPlotData));
+          }
+
           return;
         } else {
           nonCombinedOptions.push(option);
@@ -329,10 +331,18 @@ export const AnomalyHeatmapChart = React.memo(
       setHeatmapData([selectedHeatmapData]);
     };
 
+    const isCombinedViewEntityOption = (inputOption: any) => {
+      const combinedOptionsLabels = COMBINED_OPTIONS.options.map((option) =>
+        get(option, 'label', '')
+      );
+      return combinedOptionsLabels.includes(get(inputOption, 'label', ''));
+    };
+
     const handleSortByFieldChange = (value: any) => {
       setSortByFieldValue(value);
       props.onHeatmapCellSelected(undefined);
       if (
+        props.showAlerts &&
         currentViewOptions.length === 1 &&
         isCombinedViewEntityOption(currentViewOptions[0])
       ) {

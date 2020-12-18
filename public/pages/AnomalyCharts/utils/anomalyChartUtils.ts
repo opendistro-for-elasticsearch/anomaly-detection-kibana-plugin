@@ -32,6 +32,7 @@ import {
   EntityAnomalySummaries,
   EntityAnomalySummary,
 } from '../../../../server/models/interfaces';
+import { toFixedNumberForAnomaly } from '../../../../server/utils/helpers';
 
 export const convertAlerts = (response: any): MonitorAlert[] => {
   const alerts = get(response, 'response.alerts', []);
@@ -269,7 +270,7 @@ export const getAnomaliesHeatmapData = (
     numAnomalyGrades.push(numAnomalyGradesForEntity);
   });
 
-  const plotTimes = timeWindows.map((timeWindow) => timeWindow.endDate);
+  const plotTimes = timeWindows.map((timeWindow) => timeWindow.startDate);
   const plotData =
     //@ts-ignore
     {
@@ -357,7 +358,7 @@ export const getEnitytAnomaliesHeatmapData = (
       }
 
       const maxAnomalies = anomalySummaryInTimeRange.map((anomalySummary) => {
-        return get(anomalySummary, 'maxAnomaly', 0);
+        return toFixedNumberForAnomaly(get(anomalySummary, 'maxAnomaly', 0));
       });
       const countAnomalies = anomalySummaryInTimeRange.map((anomalySummary) => {
         return get(anomalySummary, 'anomalyCount', 0);

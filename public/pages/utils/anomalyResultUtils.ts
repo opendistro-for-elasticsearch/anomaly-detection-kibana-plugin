@@ -95,19 +95,22 @@ export const getLiveAnomalyResults = (
 export const buildParamsForGetAnomalyResultsWithDateRange = (
   startTime: number,
   endTime: number,
-  anomalyOnly: boolean = false
+  anomalyOnly: boolean = false,
+  entity: Entity | undefined = undefined
 ) => {
   return {
     from: 0,
     size: MAX_ANOMALIES,
     sortDirection: SORT_DIRECTION.DESC,
     sortField: AD_DOC_FIELDS.DATA_START_TIME,
-    dateRangeFilter: {
+    dateRangeFilter: JSON.stringify({
       startTime: startTime,
       endTime: endTime,
       fieldName: AD_DOC_FIELDS.DATA_START_TIME,
-    },
+    }),
     anomalyThreshold: anomalyOnly ? 0 : -1,
+    entityName: entity?.name,
+    entityValue: entity?.value,
   };
 };
 
@@ -302,7 +305,8 @@ export const RETURNED_AD_RESULT_FIELDS = [
 export const getAnomalySummaryQuery = (
   startTime: number,
   endTime: number,
-  detectorId: string
+  detectorId: string,
+  entity: Entity | undefined = undefined
 ) => {
   return {
     size: MAX_ANOMALIES,
@@ -329,6 +333,34 @@ export const getAnomalySummaryQuery = (
               detector_id: detectorId,
             },
           },
+          ...(entity
+            ? [
+                {
+                  nested: {
+                    path: ENTITY_FIELD,
+                    query: {
+                      term: {
+                        [ENTITY_VALUE_PATH_FIELD]: {
+                          value: entity.value,
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  nested: {
+                    path: ENTITY_FIELD,
+                    query: {
+                      term: {
+                        [ENTITY_NAME_PATH_FIELD]: {
+                          value: entity.name,
+                        },
+                      },
+                    },
+                  },
+                },
+              ]
+            : []),
         ],
       },
     },
@@ -374,7 +406,8 @@ export const getBucketizedAnomalyResultsQuery = (
   startTime: number,
   endTime: number,
   interval: number,
-  detectorId: string
+  detectorId: string,
+  entity: Entity | undefined = undefined
 ) => {
   const fixedInterval = Math.ceil(
     (endTime - startTime) / (interval * MIN_IN_MILLI_SECS * MAX_DATA_POINTS)
@@ -397,6 +430,34 @@ export const getBucketizedAnomalyResultsQuery = (
               detector_id: detectorId,
             },
           },
+          ...(entity
+            ? [
+                {
+                  nested: {
+                    path: ENTITY_FIELD,
+                    query: {
+                      term: {
+                        [ENTITY_VALUE_PATH_FIELD]: {
+                          value: entity.value,
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  nested: {
+                    path: ENTITY_FIELD,
+                    query: {
+                      term: {
+                        [ENTITY_NAME_PATH_FIELD]: {
+                          value: entity.name,
+                        },
+                      },
+                    },
+                  },
+                },
+              ]
+            : []),
         ],
       },
     },
@@ -1010,6 +1071,7 @@ export const getEntityAnomalySummariesQuery = (
     1
   );
   // bucket key is calculated below
+  // https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-datehistogram-aggregation.html
   // bucket_key = Math.floor(value / interval) * interval
   // if startTime is not divisible by fixedInterval, there will be remainder,
   // this can be offset for bucket_key
