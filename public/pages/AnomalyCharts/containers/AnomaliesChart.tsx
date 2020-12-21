@@ -190,7 +190,9 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
           props.onHeatmapCellSelected &&
           props.detectorCategoryField &&
           (props.showAlerts !== true ||
-            (props.onDisplayOptionChanged && props.entityAnomalySummaries)) ? (
+            (props.showAlerts &&
+              props.onDisplayOptionChanged &&
+              props.entityAnomalySummaries)) ? (
             <EuiFlexGroup style={{ padding: '20px' }}>
               <EuiFlexItem style={{ margin: '0px' }}>
                 <div

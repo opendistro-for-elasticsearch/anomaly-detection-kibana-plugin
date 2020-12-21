@@ -18,7 +18,7 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import Plotly, { PlotData } from 'plotly.js-dist';
 import plotComponentFactory from 'react-plotly.js/factory';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, uniq } from 'lodash';
 import {
   EuiFlexItem,
   EuiFlexGroup,
@@ -124,12 +124,28 @@ export const AnomalyHeatmapChart = React.memo(
       });
 
       return [
-        COMBINED_OPTIONS,
+        getCombindeOptions(
+          COMBINED_OPTIONS,
+          props.heatmapDisplayOption?.entityOption
+        ),
         {
           label: 'Individual entities',
           options: individualEntityOptions.reverse(),
         },
       ];
+    };
+
+    const getCombindeOptions = (
+      existingOptions: any,
+      selectedCombinedOption: any | undefined
+    ) => {
+      if (!selectedCombinedOption) {
+        return existingOptions;
+      }
+      return {
+        label: existingOptions.label,
+        options: uniq([selectedCombinedOption, ...existingOptions.options]),
+      };
     };
 
     const [originalHeatmapData, setOriginalHeatmapData] = useState(
@@ -257,7 +273,7 @@ export const AnomalyHeatmapChart = React.memo(
         // when `clear` is hit for combo box
         setCurrentViewOptions([COMBINED_OPTIONS.options[0]]);
 
-        if (props.showAlerts) {
+        if (props.showAlerts && props.onDisplayOptionChanged) {
           props.onDisplayOptionChanged({
             sortType: sortByFieldValue,
             entityOption: COMBINED_OPTIONS.options[0],
@@ -288,7 +304,7 @@ export const AnomalyHeatmapChart = React.memo(
         if (isCombinedViewEntityOption(option)) {
           // only allow 1 combined option
           setCurrentViewOptions([option]);
-          if (props.showAlerts) {
+          if (props.showAlerts && props.onDisplayOptionChanged) {
             props.onDisplayOptionChanged({
               sortType: sortByFieldValue,
               entityOption: option,
@@ -343,6 +359,7 @@ export const AnomalyHeatmapChart = React.memo(
       props.onHeatmapCellSelected(undefined);
       if (
         props.showAlerts &&
+        props.onDisplayOptionChanged &&
         currentViewOptions.length === 1 &&
         isCombinedViewEntityOption(currentViewOptions[0])
       ) {

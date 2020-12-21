@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { cloneDeep, get, isEmpty, orderBy } from 'lodash';
+import { cloneDeep, defaultTo, get, isEmpty, orderBy } from 'lodash';
 import {
   DateRange,
   Detector,
@@ -358,10 +358,12 @@ export const getEnitytAnomaliesHeatmapData = (
       }
 
       const maxAnomalies = anomalySummaryInTimeRange.map((anomalySummary) => {
-        return toFixedNumberForAnomaly(get(anomalySummary, 'maxAnomaly', 0));
+        return toFixedNumberForAnomaly(
+          defaultTo(get(anomalySummary, 'maxAnomaly'), 0)
+        );
       });
       const countAnomalies = anomalySummaryInTimeRange.map((anomalySummary) => {
-        return get(anomalySummary, 'anomalyCount', 0);
+        return defaultTo(get(anomalySummary, 'anomalyCount'), 0);
       });
 
       maxAnomalyGradesForEntity.push(Math.max(...maxAnomalies));
