@@ -41,7 +41,7 @@ import {
   AnomalyHeatmapSortType,
   sortHeatmapPlotData,
   filterHeatmapPlotDataByY,
-  getEnitytAnomaliesHeatmapData,
+  getEntitytAnomaliesHeatmapData,
 } from '../utils/anomalyChartUtils';
 import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
 import { EntityAnomalySummaries } from '../../../../server/models/interfaces';
@@ -61,6 +61,7 @@ interface AnomalyHeatmapChartProps {
   onDisplayOptionChanged?(option: HeatmapDisplayOption | undefined): void;
   heatmapDisplayOption?: HeatmapDisplayOption;
   entityAnomalySummaries?: EntityAnomalySummaries[];
+  isNotSample: boolean;
 }
 
 export interface HeatmapCell {
@@ -124,7 +125,7 @@ export const AnomalyHeatmapChart = React.memo(
       });
 
       return [
-        getCombindeOptions(
+        getViewableCombinedOptions(
           COMBINED_OPTIONS,
           props.heatmapDisplayOption?.entityOption
         ),
@@ -135,7 +136,7 @@ export const AnomalyHeatmapChart = React.memo(
       ];
     };
 
-    const getCombindeOptions = (
+    const getViewableCombinedOptions = (
       existingOptions: any,
       selectedCombinedOption: any | undefined
     ) => {
@@ -149,9 +150,9 @@ export const AnomalyHeatmapChart = React.memo(
     };
 
     const [originalHeatmapData, setOriginalHeatmapData] = useState(
-      props.showAlerts
+      props.isNotSample
         ? // use anomaly summary data in case of realtime result
-          getEnitytAnomaliesHeatmapData(
+          getEntitytAnomaliesHeatmapData(
             props.dateRange,
             props.entityAnomalySummaries,
             props.heatmapDisplayOption.entityOption.value
@@ -172,7 +173,7 @@ export const AnomalyHeatmapChart = React.memo(
     const [sortByFieldValue, setSortByFieldValue] = useState<
       AnomalyHeatmapSortType
     >(
-      props.showAlerts
+      props.isNotSample
         ? props.heatmapDisplayOption.sortType
         : SORT_BY_FIELD_OPTIONS[0].value
     );
@@ -273,7 +274,7 @@ export const AnomalyHeatmapChart = React.memo(
         // when `clear` is hit for combo box
         setCurrentViewOptions([COMBINED_OPTIONS.options[0]]);
 
-        if (props.showAlerts && props.onDisplayOptionChanged) {
+        if (props.isNotSample && props.onDisplayOptionChanged) {
           props.onDisplayOptionChanged({
             sortType: sortByFieldValue,
             entityOption: COMBINED_OPTIONS.options[0],
@@ -304,7 +305,7 @@ export const AnomalyHeatmapChart = React.memo(
         if (isCombinedViewEntityOption(option)) {
           // only allow 1 combined option
           setCurrentViewOptions([option]);
-          if (props.showAlerts && props.onDisplayOptionChanged) {
+          if (props.isNotSample && props.onDisplayOptionChanged) {
             props.onDisplayOptionChanged({
               sortType: sortByFieldValue,
               entityOption: option,
@@ -358,7 +359,7 @@ export const AnomalyHeatmapChart = React.memo(
       setSortByFieldValue(value);
       props.onHeatmapCellSelected(undefined);
       if (
-        props.showAlerts &&
+        props.isNotSample &&
         props.onDisplayOptionChanged &&
         currentViewOptions.length === 1 &&
         isCombinedViewEntityOption(currentViewOptions[0])

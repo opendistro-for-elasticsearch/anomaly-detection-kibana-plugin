@@ -23,6 +23,9 @@ import {
 } from '../../../server/models/interfaces';
 import {
   AD_DOC_FIELDS,
+  ENTITY_FIELD,
+  ENTITY_NAME_PATH_FIELD,
+  ENTITY_VALUE_PATH_FIELD,
   MIN_IN_MILLI_SECS,
   SORT_DIRECTION,
 } from '../../../server/utils/constants';
@@ -48,9 +51,6 @@ import { DETECTOR_INIT_FAILURES } from '../DetectorDetail/utils/constants';
 import {
   COUNT_ANOMALY_AGGS,
   ENTITY_DATE_BUCKET_ANOMALY_AGGS,
-  ENTITY_FIELD,
-  ENTITY_NAME_PATH_FIELD,
-  ENTITY_VALUE_PATH_FIELD,
   MAX_ANOMALY_AGGS,
   MAX_ANOMALY_SORT_AGGS,
   TOP_ANOMALY_GRADE_SORT_AGGS,

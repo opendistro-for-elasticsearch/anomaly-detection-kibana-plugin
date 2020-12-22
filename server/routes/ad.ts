@@ -28,7 +28,13 @@ import {
   DateRangeFilter,
 } from '../models/types';
 import { Router } from '../router';
-import { SORT_DIRECTION, AD_DOC_FIELDS } from '../utils/constants';
+import {
+  SORT_DIRECTION,
+  AD_DOC_FIELDS,
+  ENTITY_FIELD,
+  ENTITY_NAME_PATH_FIELD,
+  ENTITY_VALUE_PATH_FIELD,
+} from '../utils/constants';
 import {
   mapKeysDeep,
   toCamel,
@@ -723,10 +729,10 @@ export default class AdService {
                 ? [
                     {
                       nested: {
-                        path: 'entity',
+                        path: ENTITY_FIELD,
                         query: {
                           term: {
-                            'entity.name': {
+                            [ENTITY_NAME_PATH_FIELD]: {
                               value: entityName,
                             },
                           },
@@ -735,10 +741,10 @@ export default class AdService {
                     },
                     {
                       nested: {
-                        path: 'entity',
+                        path: ENTITY_FIELD,
                         query: {
                           term: {
-                            'entity.value': {
+                            [ENTITY_VALUE_PATH_FIELD]: {
                               value: entityValue,
                             },
                           },

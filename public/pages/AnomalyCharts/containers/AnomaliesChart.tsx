@@ -177,6 +177,17 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
     );
   };
 
+  const hasValidHCProps = () => {
+    return (
+      props.isHCDetector &&
+      props.onHeatmapCellSelected &&
+      props.detectorCategoryField &&
+      (props.showAlerts !== true ||
+        (props.showAlerts &&
+          props.onDisplayOptionChanged &&
+          props.entityAnomalySummaries))
+    );
+  };
   return (
     <React.Fragment>
       <ContentPanel
@@ -186,13 +197,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
         }
       >
         <EuiFlexGroup direction="column">
-          {props.isHCDetector &&
-          props.onHeatmapCellSelected &&
-          props.detectorCategoryField &&
-          (props.showAlerts !== true ||
-            (props.showAlerts &&
-              props.onDisplayOptionChanged &&
-              props.entityAnomalySummaries)) ? (
+          {hasValidHCProps() ? (
             <EuiFlexGroup style={{ padding: '20px' }}>
               <EuiFlexItem style={{ margin: '0px' }}>
                 <div
@@ -230,10 +235,14 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                           props.detector,
                           'detectionInterval.period.unit'
                         )}
+                        //@ts-ignore
                         onHeatmapCellSelected={props.onHeatmapCellSelected}
                         entityAnomalySummaries={props.entityAnomalySummaries}
                         onDisplayOptionChanged={props.onDisplayOptionChanged}
                         heatmapDisplayOption={props.heatmapDisplayOption}
+                        // TODO use props.isNotSample after Tyler's change is merged
+                        // https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/350#discussion_r547009140
+                        isNotSample={props.showAlerts === true}
                       />,
                       props.showAlerts !== true
                         ? [

@@ -33,6 +33,7 @@ import {
   EntityAnomalySummary,
 } from '../../../../server/models/interfaces';
 import { toFixedNumberForAnomaly } from '../../../../server/utils/helpers';
+import { ENTITY_VALUE_PATH_FIELD } from '../../../../server/utils/constants';
 
 export const convertAlerts = (response: any): MonitorAlert[] => {
   const alerts = get(response, 'response.alerts', []);
@@ -271,36 +272,52 @@ export const getAnomaliesHeatmapData = (
   });
 
   const plotTimes = timeWindows.map((timeWindow) => timeWindow.startDate);
-  const plotData =
-    //@ts-ignore
-    {
-      x: plotTimes.map((timestamp) =>
-        moment(timestamp).format(HEATMAP_X_AXIS_DATE_FORMAT)
-      ),
-      y: entityValues,
-      z: maxAnomalyGrades,
-      colorscale: ANOMALY_HEATMAP_COLORSCALE,
-      //@ts-ignore
-      zmin: 0,
-      zmax: 1,
-      type: 'heatmap',
-      showscale: false,
-      xgap: 2,
-      ygap: 2,
-      opacity: 1,
-      text: numAnomalyGrades,
-      hovertemplate:
-        '<b>Time</b>: %{x}<br>' +
-        '<b>Max anomaly grade</b>: %{z}<br>' +
-        '<b>Anomaly occurrences</b>: %{text}' +
-        '<extra></extra>',
-      cellTimeInterval: timeWindows[0].endDate - timeWindows[0].startDate,
-    } as PlotData;
+  const plotTimesInString = plotTimes.map((timestamp) =>
+    moment(timestamp).format(HEATMAP_X_AXIS_DATE_FORMAT)
+  );
+  const cellTimeInterval = timeWindows[0].endDate - timeWindows[0].startDate;
+  const plotData = buildHeatmapPlotData(
+    plotTimesInString,
+    entityValues,
+    maxAnomalyGrades,
+    numAnomalyGrades,
+    cellTimeInterval
+  );
   const resultPlotData = sortHeatmapPlotData(plotData, sortType, displayTopNum);
   return [resultPlotData];
 };
 
-export const getEnitytAnomaliesHeatmapData = (
+const buildHeatmapPlotData = (
+  x: any[],
+  y: any[],
+  z: any[],
+  text: any[],
+  cellTimeInterval: number
+): PlotData => {
+  //@ts-ignore
+  return {
+    x: x,
+    y: y,
+    z: z,
+    colorscale: ANOMALY_HEATMAP_COLORSCALE,
+    zmin: 0,
+    zmax: 1,
+    type: 'heatmap',
+    showscale: false,
+    xgap: 2,
+    ygap: 2,
+    opacity: 1,
+    text: text,
+    hovertemplate:
+      '<b>Time</b>: %{x}<br>' +
+      '<b>Max anomaly grade</b>: %{z}<br>' +
+      '<b>Anomaly occurrences</b>: %{text}' +
+      '<extra></extra>',
+    cellTimeInterval: cellTimeInterval,
+  } as PlotData;
+};
+
+export const getEntitytAnomaliesHeatmapData = (
   dateRange: DateRange,
   entitiesAnomalySummaryResult: EntityAnomalySummaries[],
   displayTopNum: number
@@ -336,7 +353,11 @@ export const getEnitytAnomaliesHeatmapData = (
     const maxAnomalyGradesForEntity = [] as number[];
     const numAnomalyGradesForEntity = [] as number[];
 
-    const entityValue = get(entityAnomalySummaries, 'entity.value', '');
+    const entityValue = get(
+      entityAnomalySummaries,
+      ENTITY_VALUE_PATH_FIELD,
+      ''
+    );
     const anomaliesSummary = get(
       entityAnomalySummaries,
       'anomalySummaries',
@@ -382,29 +403,13 @@ export const getEnitytAnomaliesHeatmapData = (
   const timeStamps = plotTimes.map((timestamp) =>
     moment(timestamp).format(HEATMAP_X_AXIS_DATE_FORMAT)
   );
-  const plotData =
-    //@ts-ignore
-    {
-      x: timeStamps,
-      y: entityValues.reverse(),
-      z: maxAnomalyGrades.reverse(),
-      colorscale: ANOMALY_HEATMAP_COLORSCALE,
-      //@ts-ignore
-      zmin: 0,
-      zmax: 1,
-      type: 'heatmap',
-      showscale: false,
-      xgap: 2,
-      ygap: 2,
-      opacity: 1,
-      text: numAnomalyGrades.reverse(),
-      hovertemplate:
-        '<b>Time</b>: %{x}<br>' +
-        '<b>Max anomaly grade</b>: %{z}<br>' +
-        '<b>Anomaly occurrences</b>: %{text}' +
-        '<extra></extra>',
-      cellTimeInterval: timeWindows[0].endDate - timeWindows[0].startDate,
-    } as PlotData;
+  const plotData = buildHeatmapPlotData(
+    timeStamps,
+    entityValues.reverse(),
+    maxAnomalyGrades.reverse(),
+    numAnomalyGrades.reverse(),
+    timeWindows[0].endDate - timeWindows[0].startDate
+  );
   return [plotData];
 };
 

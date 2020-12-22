@@ -76,9 +76,6 @@ export const GET_SAMPLE_DETECTORS_QUERY_PARAMS = {
 export const GET_SAMPLE_INDICES_QUERY = 'opendistro-sample-*';
 
 export const TOP_ENTITIES_FIELD = 'top_entities';
-export const ENTITY_FIELD = 'entity';
-export const ENTITY_VALUE_PATH_FIELD = 'entity.value';
-export const ENTITY_NAME_PATH_FIELD = 'entity.name';
 
 export const TOP_ENTITY_AGGS = 'top_entity_aggs';
 export const TOP_ANOMALY_GRADE_SORT_AGGS = 'top_anomaly_grade_sort_aggs';
