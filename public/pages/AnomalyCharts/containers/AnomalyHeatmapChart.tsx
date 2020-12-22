@@ -61,7 +61,7 @@ interface AnomalyHeatmapChartProps {
   onDisplayOptionChanged?(option: HeatmapDisplayOption | undefined): void;
   heatmapDisplayOption?: HeatmapDisplayOption;
   entityAnomalySummaries?: EntityAnomalySummaries[];
-  isNotSample: boolean;
+  isNotSample?: boolean;
 }
 
 export interface HeatmapCell {
