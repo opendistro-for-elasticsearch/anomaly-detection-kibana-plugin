@@ -127,7 +127,7 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
       core.notifications.toasts.addDanger(
         errorMessage.includes(NO_PERMISSIONS_KEY_WORD)
           ? prettifyErrorMessage(errorMessage)
-          : 'Unable to find detector'
+          : 'Unable to find the detector'
       );
       props.history.push('/detectors');
     }
@@ -199,12 +199,12 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     try {
       await dispatch(startDetector(detectorId));
       core.notifications.toasts.addSuccess(
-        `Detector job has been started successfully`
+        `Successfully started the detector job`
       );
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem starting detector job')
+          getErrorMessage(err, 'There was a problem starting the detector job')
         )
       );
     }
@@ -214,13 +214,13 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     try {
       await dispatch(stopDetector(detectorId));
       core.notifications.toasts.addSuccess(
-        'Detector job has been stopped successfully'
+        'Successfully stopped the detector job'
       );
       if (listener) listener.onSuccess();
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem stopping detector job')
+          getErrorMessage(err, 'There was a problem stopping the detector job')
         )
       );
       if (listener) listener.onException();
@@ -230,15 +230,13 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const handleDelete = useCallback(async (detectorId: string) => {
     try {
       await dispatch(deleteDetector(detectorId));
-      core.notifications.toasts.addSuccess(
-        `Detector has been deleted successfully`
-      );
+      core.notifications.toasts.addSuccess(`Successfully deleted the detector`);
       hideDeleteDetectorModal();
       props.history.push('/detectors');
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem deleting detector')
+          getErrorMessage(err, 'There was a problem deleting the detector')
         )
       );
       hideDeleteDetectorModal();
@@ -463,8 +461,8 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
         <EuiOverlayMask>
           <ConfirmModal
             title="Stop detector to proceed?"
-            description="Stop the detector before you can edit any detector
-                      configuration. After you change the detector, make sure to restart and reinitialize the detector."
+            description="You must stop the detector to change its 
+                      configuration. After you reconfigure the detector, be sure to restart it."
             callout={monitorCallout}
             confirmButtonText="Stop and proceed to edit"
             confirmButtonColor="primary"

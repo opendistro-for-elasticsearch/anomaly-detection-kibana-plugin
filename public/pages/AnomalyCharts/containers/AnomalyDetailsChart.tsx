@@ -86,6 +86,7 @@ interface AnomalyDetailsChartProps {
   dateRange: DateRange;
   isLoading: boolean;
   showAlerts?: boolean;
+  isNotSample?: boolean;
   anomalyGradeSeriesName: string;
   confidenceSeriesName: string;
   detector: Detector;
@@ -200,7 +201,7 @@ export const AnomalyDetailsChart = React.memo(
           <EuiFlexItem>
             <EuiStat
               title={isLoading ? '-' : anomalySummary.anomalyOccurrence}
-              description={getAnomalyOccurrenceWording(props.showAlerts)}
+              description={getAnomalyOccurrenceWording(props.isNotSample)}
               titleSize="s"
             />
           </EuiFlexItem>
@@ -209,8 +210,8 @@ export const AnomalyDetailsChart = React.memo(
               isLoading={isLoading}
               minValue={anomalySummary.minAnomalyGrade}
               maxValue={anomalySummary.maxAnomalyGrade}
-              description={getAnomalyGradeWording(props.showAlerts)}
-              tooltip="Indicates to what extent this data point is anomalous. The scale ranges from 0 to 1."
+              description={getAnomalyGradeWording(props.isNotSample)}
+              tooltip="Indicates the extent to which a data point is anomalous. Higher grades indicate more unusual data."
             />
           </EuiFlexItem>
           <EuiFlexItem>
@@ -218,14 +219,14 @@ export const AnomalyDetailsChart = React.memo(
               isLoading={isLoading}
               minValue={anomalySummary.minConfidence}
               maxValue={anomalySummary.maxConfidence}
-              description={getConfidenceWording(props.showAlerts)}
+              description={getConfidenceWording(props.isNotSample)}
               tooltip="Indicates the level of confidence in the anomaly result."
             />
           </EuiFlexItem>
           <EuiFlexItem>
             <EuiStat
               title={isLoading ? '' : anomalySummary.lastAnomalyOccurrence}
-              description={getLastAnomalyOccurrenceWording(props.showAlerts)}
+              description={getLastAnomalyOccurrenceWording(props.isNotSample)}
               titleSize="s"
             />
           </EuiFlexItem>

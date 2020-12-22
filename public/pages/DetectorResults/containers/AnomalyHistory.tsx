@@ -13,7 +13,13 @@
  * permissions and limitations under the License.
  */
 
-import React, { useState, useEffect, useCallback, Fragment } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  Fragment,
+  useRef,
+} from 'react';
 
 import { isEmpty, get } from 'lodash';
 import {
@@ -54,8 +60,10 @@ import { ANOMALY_HISTORY_TABS } from '../utils/constants';
 import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
 import { INITIAL_ANOMALY_SUMMARY } from '../../AnomalyCharts/utils/constants';
 import { MAX_ANOMALIES } from '../../../utils/constants';
-import { getDetectorResults } from '../../../redux/reducers/anomalyResults';
-import { searchResults } from '../../../redux/reducers/anomalyResults';
+import {
+  searchResults,
+  getDetectorResults,
+} from '../../../redux/reducers/anomalyResults';
 import { AnomalyOccurrenceChart } from '../../AnomalyCharts/containers/AnomalyOccurrenceChart';
 import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 import { getAnomalyHistoryWording } from '../../AnomalyCharts/utils/anomalyChartUtils';
@@ -64,28 +72,41 @@ import { darkModeEnabled } from '../../../utils/kibanaUtils';
 interface AnomalyHistoryProps {
   detector: Detector;
   monitor: Monitor | undefined;
-  createFeature(): void;
   isFeatureDataMissing?: boolean;
+  isHistorical?: boolean;
+  taskId?: string;
+  isNotSample?: boolean;
 }
+
+const useAsyncRef = (value: any) => {
+  const ref = useRef(value);
+  ref.current = value;
+  return ref;
+};
 
 export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   const dispatch = useDispatch();
-
+  const taskId = useAsyncRef(props.taskId);
   const [isLoading, setIsLoading] = useState(false);
-  const initialStartDate = moment().subtract(7, 'days');
-  const initialEndDate = moment();
+  const initialStartDate =
+    props.isHistorical && props.detector?.detectionDateRange
+      ? props.detector.detectionDateRange.startTime
+      : moment().subtract(7, 'days').valueOf();
+  const initialEndDate =
+    props.isHistorical && props.detector?.detectionDateRange
+      ? props.detector.detectionDateRange.endTime
+      : moment().valueOf();
   const [dateRange, setDateRange] = useState<DateRange>({
-    startDate: initialStartDate.valueOf(),
-    endDate: initialEndDate.valueOf(),
+    startDate: initialStartDate,
+    endDate: initialEndDate,
   });
   const [zoomRange, setZoomRange] = useState<DateRange>({
-    startDate: initialStartDate.valueOf(),
-    endDate: initialEndDate.valueOf(),
+    startDate: initialStartDate,
+    endDate: initialEndDate,
   });
   const [selectedTabId, setSelectedTabId] = useState<string>(
     ANOMALY_HISTORY_TABS.ANOMALY_OCCURRENCE
   );
-
   const [isLoadingAnomalyResults, setIsLoadingAnomalyResults] = useState<
     boolean
   >(false);
@@ -115,7 +136,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
             getAnomalySummaryQuery(
               dateRange.startDate,
               dateRange.endDate,
-              props.detector.id
+              props.detector.id,
+              props.isHistorical,
+              taskId.current
             )
           )
         );
@@ -129,7 +152,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
               dateRange.startDate,
               dateRange.endDate,
               1,
-              props.detector.id
+              props.detector.id,
+              props.isHistorical,
+              taskId.current
             )
           )
         );
@@ -137,7 +162,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         setBucketizedAnomalyResults(parseBucketizedAnomalyResults(result));
       } catch (err) {
         console.error(
-          `Failed to get anomaly results for ${props.detector.id}`,
+          `Failed to get anomaly results for ${props.detector?.id}`,
           err
         );
       } finally {
@@ -156,7 +181,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     } else {
       setBucketizedAnomalyResults(undefined);
     }
-  }, [dateRange]);
+  }, [dateRange, props.detector]);
 
   const detectorInterval = get(
     props.detector,
@@ -184,9 +209,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         // get anomaly only data if HC detector
         isHCDetector
       );
-      const detectorResultResponse = await dispatch(
-        getDetectorResults(props.detector.id, params)
-      );
+      const detectorResultResponse = props.isHistorical
+        ? await dispatch(getDetectorResults(taskId.current || '', params, true))
+        : await dispatch(getDetectorResults(props.detector.id, params, false));
       const rawAnomaliesData = get(detectorResultResponse, 'response', []);
       const rawAnomaliesResult = {
         anomalies: get(rawAnomaliesData, 'results', []),
@@ -329,10 +354,12 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         bucketizedAnomalies={bucketizedAnomalyResults !== undefined}
         anomalySummary={bucketizedAnomalySummary}
         isLoading={isLoading || isLoadingAnomalyResults}
-        showAlerts={true}
+        showAlerts={props.isHistorical ? false : true}
+        isNotSample={props.isNotSample}
         detector={props.detector}
         monitor={props.monitor}
         isHCDetector={isHCDetector}
+        isHistorical={props.isHistorical}
         detectorCategoryField={detectorCategoryField}
         onHeatmapCellSelected={handleHeatmapCellSelected}
         selectedHeatmapCell={selectedHeatmapCell}
@@ -343,7 +370,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         {isLoading || isLoadingAnomalyResults ? (
           <EuiFlexGroup
             justifyContent="spaceAround"
-            style={{ height: '200px', paddingTop: '100px' }}
+            style={{ height: '500px', paddingTop: '100px' }}
           >
             <EuiFlexItem grow={false}>
               <EuiLoadingSpinner size="xl" />
@@ -394,6 +421,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                         anomalyGradeSeriesName="Anomaly grade"
                         confidenceSeriesName="Confidence"
                         showAlerts={true}
+                        isNotSample={true}
                         detector={props.detector}
                         monitor={props.monitor}
                         isHCDetector={isHCDetector}

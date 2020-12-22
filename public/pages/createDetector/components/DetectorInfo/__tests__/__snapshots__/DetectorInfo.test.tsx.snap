@@ -46,7 +46,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
     >
       <div
         class="euiFormRow"
-        hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
+        hint="Specify a unique and descriptive name that is easy to recognize."
         id="random_html_id-row"
         title="Name"
       >
@@ -68,7 +68,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
               <p
                 class="sublabel"
               >
-                Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
+                Specify a unique and descriptive name that is easy to recognize.
               </p>
             </div>
           </label>
@@ -83,6 +83,7 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
+                aria-describedby="random_html_id-help"
                 class="euiFieldText"
                 id="random_html_id"
                 name="detectorName"
@@ -91,6 +92,13 @@ exports[`<DetectorInfo /> spec renders the component 1`] = `
                 value=""
               />
             </div>
+          </div>
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            id="random_html_id-help"
+          >
+            Detector name must contain 1-64 characters. Valid characters are
+                a-z, A-Z, 0-9, -(hyphen) and _(underscore)
           </div>
         </div>
       </div>

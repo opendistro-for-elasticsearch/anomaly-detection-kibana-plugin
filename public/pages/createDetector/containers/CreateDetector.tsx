@@ -118,7 +118,9 @@ export function CreateDetector(props: CreateADProps) {
   // If no detector found with ID, redirect it to list
   useEffect(() => {
     if (props.isEdit && hasError) {
-      core.notifications.toasts.addDanger('Unable to find detector for edit');
+      core.notifications.toasts.addDanger(
+        'Unable to find the detector for editing'
+      );
       props.history.push(`/detectors`);
     }
   }, [props.isEdit]);
@@ -137,7 +139,7 @@ export function CreateDetector(props: CreateADProps) {
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem updating detector')
+          getErrorMessage(err, 'There was a problem updating the detector')
         )
       );
     }
@@ -163,7 +165,7 @@ export function CreateDetector(props: CreateADProps) {
       } else {
         core.notifications.toasts.addDanger(
           prettifyErrorMessage(
-            getErrorMessage(err, 'There was a problem creating detector')
+            getErrorMessage(err, 'There was a problem creating the detector')
           )
         );
       }

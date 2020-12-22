@@ -113,7 +113,7 @@ function DataSource(props: DataSourceProps) {
       {isDifferentIndex() ? (
         <div>
           <EuiCallOut
-            title="Selecting a new index will delete the existing model configuration."
+            title="Modifying the selected index resets your detector configuration."
             color="warning"
             iconType="alert"
           />
@@ -138,7 +138,7 @@ function DataSource(props: DataSourceProps) {
               hint="Choose an index or index pattern as the data source."
               isInvalid={isInvalid(field.name, form)}
               error={getError(field.name, form)}
-              helpText="You can use a wildcard (*) in your index pattern"
+              helpText="You can use a wildcard (*) in your index pattern."
             >
               <EuiComboBox
                 id="index"
@@ -163,7 +163,7 @@ function DataSource(props: DataSourceProps) {
                   handleIndexNameChange(options);
                 }}
                 selectedOptions={field.value}
-                singleSelection={true}
+                singleSelection={{ asPlainText: true }}
                 isClearable={false}
                 renderOption={(option, searchValue, className) => (
                   <IndexOption
@@ -202,7 +202,7 @@ function DataSource(props: DataSourceProps) {
                 form.setFieldValue('timeField', get(options, '0.label'));
               }}
               selectedOptions={(field.value && [{ label: field.value }]) || []}
-              singleSelection={true}
+              singleSelection={{ asPlainText: true }}
               isClearable={false}
             />
           </FormattedFormRow>

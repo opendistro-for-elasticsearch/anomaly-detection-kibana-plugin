@@ -41,7 +41,7 @@ import { AppState } from '../../../redux/reducers';
 import { CatIndex, IndexAlias } from '../../../../server/models/types';
 import { getVisibleOptions } from '../../utils/helpers';
 import { BREADCRUMBS } from '../../../utils/constants';
-import { DETECTOR_STATE } from '../../../../server/utils/constants'
+import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import { getDetectorStateOptions } from '../../DetectorsList/utils/helpers';
 import { DashboardHeader } from '../Components/utils/DashboardHeader';
 import { EmptyDashboard } from '../Components/EmptyDashboard/EmptyDashboard';
@@ -186,7 +186,7 @@ export function DashboardOverview() {
         typeof errorGettingDetectors === 'string' &&
           errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
           ? prettifyErrorMessage(errorGettingDetectors)
-          : 'Unable to get all detectors.'
+          : 'Unable to get all detectors'
       );
       setIsLoadingDetectors(false);
     }

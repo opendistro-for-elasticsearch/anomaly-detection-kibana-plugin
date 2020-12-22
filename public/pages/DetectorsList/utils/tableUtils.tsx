@@ -29,24 +29,25 @@ import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import { stateToColorMap } from '../../utils/constants';
 
 export const DEFAULT_EMPTY_DATA = '-';
-const columnStyle = {
+
+export const columnStyle = {
   overflow: 'visible',
   whiteSpace: 'normal',
   wordBreak: 'break-word',
 } as React.CSSProperties;
 
-const renderTime = (time: number) => {
+export const renderTime = (time: number) => {
   const momentTime = moment(time);
   if (time && momentTime.isValid())
     return momentTime.format('MM/DD/YYYY h:mm A');
   return DEFAULT_EMPTY_DATA;
 };
 
-const renderIndices = (indices: string[]) => {
+export const renderIndices = (indices: string[]) => {
   return get(indices, '0', DEFAULT_EMPTY_DATA);
 };
 
-const renderState = (state: DETECTOR_STATE) => {
+export const renderState = (state: DETECTOR_STATE) => {
   return (
     //@ts-ignore
     <EuiHealth color={stateToColorMap.get(state)}>{state}</EuiHealth>

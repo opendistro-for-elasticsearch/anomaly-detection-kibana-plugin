@@ -93,7 +93,7 @@ export const AggregationSelector = (props: AggregationSelectorProps) => {
           >
             <EuiComboBox
               placeholder="Select field"
-              singleSelection
+              singleSelection={{ asPlainText: true }}
               selectedOptions={field.value}
               onCreateOption={(createdOption: string) => {
                 const normalizedOptions = createdOption.trim();

@@ -17,9 +17,9 @@ import { EuiButton, EuiEmptyPrompt, EuiText } from '@elastic/eui';
 import React from 'react';
 import { CreateDetectorButtons } from '../../../../components/CreateDetectorButtons/CreateDetectorButtons';
 
-const filterText =
+const FILTER_TEXT =
   'There are no detectors matching your applied filters. Reset your filters to view all detectors.';
-const emptyText =
+const EMPTY_TEXT =
   'Anomaly detectors take an input of information and discover patterns of anomalies. Create an anomaly detector to get started.';
 
 interface EmptyDetectorProps {
@@ -32,7 +32,7 @@ export const EmptyDetectorMessage = (props: EmptyDetectorProps) => (
     style={{ maxWidth: '45em' }}
     body={
       <EuiText>
-        <p>{props.isFilterApplied ? filterText : emptyText}</p>
+        <p>{props.isFilterApplied ? FILTER_TEXT : EMPTY_TEXT}</p>
       </EuiText>
     }
     actions={

@@ -15,7 +15,10 @@
 
 import { CatIndex, IndexAlias } from '../../../server/models/types';
 import sortBy from 'lodash/sortBy';
-import { DetectorListItem } from '../../models/interfaces';
+import {
+  DetectorListItem,
+  HistoricalDetectorListItem,
+} from '../../models/interfaces';
 import { SORT_DIRECTION } from '../../../server/utils/constants';
 import { ALL_INDICES, ALL_DETECTOR_STATES } from './constants';
 import { DETECTOR_STATE } from '../../../server/utils/constants';
@@ -115,4 +118,36 @@ export const formatNumber = (data: any) => {
   } catch (err) {
     return '';
   }
+};
+
+export const filterAndSortHistoricalDetectors = (
+  detectors: HistoricalDetectorListItem[],
+  search: string,
+  selectedDetectorStates: DETECTOR_STATE[],
+  sortField: string,
+  sortDirection: string
+) => {
+  let filteredBySearch =
+    search == ''
+      ? detectors
+      : detectors.filter((detector) => detector.name.includes(search));
+  let filteredBySearchAndState =
+    selectedDetectorStates == ALL_DETECTOR_STATES
+      ? filteredBySearch
+      : filteredBySearch.filter((detector) =>
+          selectedDetectorStates.includes(detector.curState)
+        );
+  let sorted = sortBy(filteredBySearchAndState, sortField);
+  if (sortDirection == SORT_DIRECTION.DESC) {
+    sorted = sorted.reverse();
+  }
+  return sorted;
+};
+
+export const getHistoricalDetectorsToDisplay = (
+  detectors: HistoricalDetectorListItem[],
+  page: number,
+  size: number
+) => {
+  return detectors.slice(size * page, page * size + size);
 };

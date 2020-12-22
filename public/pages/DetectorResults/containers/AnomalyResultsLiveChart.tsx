@@ -133,7 +133,7 @@ export const AnomalyResultsLiveChart = (
           detectionInterval,
           intervals
         );
-        await dispatch(getDetectorLiveResults(detectorId, queryParams));
+        await dispatch(getDetectorLiveResults(detectorId, queryParams, false));
       } catch (err) {
         console.error(
           `Failed to get live anomaly result for detector ${detectorId}`,

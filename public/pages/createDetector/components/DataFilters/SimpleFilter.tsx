@@ -189,7 +189,7 @@ export const SimpleFilter = (props: DataFilterProps) => {
                                 >
                                   <EuiComboBox
                                     id={`filters.${index}.fieldInfo`}
-                                    singleSelection={true}
+                                    singleSelection={{ asPlainText: true }}
                                     placeholder="Choose a field"
                                     async
                                     isClearable

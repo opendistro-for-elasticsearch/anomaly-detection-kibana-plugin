@@ -225,7 +225,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
 
     try {
       const detectorResultResponse = await dispatch(
-        getDetectorResults(detectorId, params)
+        getDetectorResults(detectorId, params, false)
       );
       const featuresData = get(
         detectorResultResponse,
@@ -491,10 +491,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                   <AnomalyHistory
                     detector={detector}
                     monitor={monitor}
-                    createFeature={() =>
-                      props.history.push(`/detectors/${detectorId}/features`)
-                    }
                     isFeatureDataMissing={isDetectorMissingData}
+                    isNotSample={true}
                   />
                 </Fragment>
               ) : detector ? (

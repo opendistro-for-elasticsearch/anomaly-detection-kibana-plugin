@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { SORT_DIRECTION } from '../utils/constants';
+import { SORT_DIRECTION, DETECTOR_STATE } from '../utils/constants';
 
 export type CatIndex = {
   index: string;
@@ -66,7 +66,11 @@ export type Detector = {
   enabled: boolean;
   enabledTime?: number;
   disabledTime?: number;
+  curState?: DETECTOR_STATE;
   categoryField?: string[];
+  detectionDateRange?: DetectionDateRange;
+  taskId?: string;
+  taskProgress?: number;
 };
 
 export type Monitor = {
@@ -142,4 +146,9 @@ export type DateRangeFilter = {
   startTime?: number;
   endTime?: number;
   fieldName: string;
+};
+
+export type DetectionDateRange = {
+  startTime: number;
+  endTime: number;
 };

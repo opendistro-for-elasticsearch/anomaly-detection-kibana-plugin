@@ -36,6 +36,7 @@ interface ConfirmModalProps {
   confirmButtonText: string;
   confirmButtonColor: ButtonColor;
   confirmButtonDisabled?: boolean;
+  confirmButtonIsLoading?: boolean;
   onClose(): void;
   onCancel(): void;
   onConfirm(): void;
@@ -76,6 +77,7 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
           fill
           onClick={props.onConfirm}
           disabled={!!props.confirmButtonDisabled}
+          isLoading={!!props.confirmButtonIsLoading}
         >
           {props.confirmButtonText}
         </EuiButton>

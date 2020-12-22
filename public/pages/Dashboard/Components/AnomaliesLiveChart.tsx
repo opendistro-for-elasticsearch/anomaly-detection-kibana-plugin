@@ -46,9 +46,7 @@ import {
 } from '@elastic/charts';
 import { EuiText, EuiTitle } from '@elastic/eui';
 import React from 'react';
-import {
-  TIME_NOW_LINE_STYLE
-} from '../utils/constants';
+import { TIME_NOW_LINE_STYLE } from '../utils/constants';
 import { SHOW_DECIMAL_NUMBER_THRESHOLD } from '../../../../server/utils/helpers';
 import {
   visualizeAnomalyResultForXYChart,
@@ -278,7 +276,7 @@ export const AnomaliesLiveChart = (props: AnomaliesLiveChartProps) => {
             </EuiFlexItem>
             <EuiFlexItem style={{ minWidth: '310px' }}>
               <EuiStat
-                description={'Detector with most recent anomaly occurrence'}
+                description={'Detector with the most recent anomaly'}
                 title={
                   lastAnomalyResult === undefined
                     ? '-'

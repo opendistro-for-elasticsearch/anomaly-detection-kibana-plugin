@@ -43,7 +43,7 @@ interface FeatureAccordionProps {
 }
 
 export const FeatureAccordion = (props: FeatureAccordionProps) => {
-  const initialIsOpen = get(props.feature, 'newFeature');
+  const initialIsOpen = get(props.feature, 'newFeature', false);
   const [showSubtitle, setShowSubtitle] = useState<boolean>(!initialIsOpen);
 
   const simpleAggDescription = (feature: any) => (
@@ -95,7 +95,7 @@ export const FeatureAccordion = (props: FeatureAccordionProps) => {
   };
 
   const deleteAction = (onClick: any) => (
-    <EuiButton size="s" color="danger" onClick={onClick}>
+    <EuiButton size="s" color="danger" onClick={onClick} disabled={false}>
       Delete
     </EuiButton>
   );

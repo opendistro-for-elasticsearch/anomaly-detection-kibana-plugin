@@ -25,7 +25,7 @@ import { AggregationOption } from '../../models/types';
 
 export interface FeaturesFormikValues {
   featureId: string;
-  featureName: string;
+  featureName: string | undefined;
   featureType: FEATURE_TYPE;
   featureEnabled: boolean;
   aggregationQuery: string;

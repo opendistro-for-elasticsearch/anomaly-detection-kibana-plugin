@@ -110,6 +110,9 @@ export type Detector = {
   stateError: string;
   initProgress?: InitProgress;
   categoryField?: string[];
+  detectionDateRange?: DetectionDateRange;
+  taskId?: string;
+  taskProgress?: number;
 };
 
 export type DetectorListItem = {
@@ -122,6 +125,16 @@ export type DetectorListItem = {
   lastActiveAnomaly: number;
   lastUpdateTime: number;
   enabledTime?: number;
+};
+
+export type HistoricalDetectorListItem = {
+  id: string;
+  name: string;
+  curState: DETECTOR_STATE;
+  indices: string[];
+  totalAnomalies: number;
+  dataStartTime: number;
+  dataEndTime: number;
 };
 
 export type EntityData = {
@@ -184,7 +197,20 @@ export type AnomalySummary = {
   lastAnomalyOccurrence: string;
 };
 
+export type HistoricalDetectorAnomalySummary = {
+  anomalyOccurrence: number;
+  minAnomalyGrade: number;
+  maxAnomalyGrade: number;
+  minConfidence: number;
+  maxConfidence: number;
+};
+
 export type DateRange = {
   startDate: number;
   endDate: number;
+};
+
+export type DetectionDateRange = {
+  startTime: number;
+  endTime: number;
 };
