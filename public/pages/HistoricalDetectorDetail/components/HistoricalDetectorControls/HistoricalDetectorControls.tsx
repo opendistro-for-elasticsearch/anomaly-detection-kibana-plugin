@@ -25,13 +25,17 @@ import {
 import { Detector } from '../../../../models/interfaces';
 import { Listener } from '../../../../utils/utils';
 import { DETECTOR_STATE } from '../../../../../server/utils/constants';
+import { HISTORICAL_DETECTOR_ACTION } from '../../utils/constants';
 
 interface HistoricalDetectorControlsProps {
   detector: Detector;
   isStoppingDetector: boolean;
   onEditDetector(): void;
   onStartDetector(): void;
-  onStopDetector: (isDelete: boolean, listener?: Listener) => void;
+  onStopDetector: (
+    action: HISTORICAL_DETECTOR_ACTION,
+    listener?: Listener
+  ) => void;
   onDeleteDetector(): void;
 }
 export const HistoricalDetectorControls = (
@@ -91,7 +95,9 @@ export const HistoricalDetectorControls = (
           props.detector?.curState === DETECTOR_STATE.RUNNING ? (
           <EuiButton
             data-test-subj="stopDetectorButton"
-            onClick={() => props.onStopDetector(false, undefined)}
+            onClick={() =>
+              props.onStopDetector(HISTORICAL_DETECTOR_ACTION.STOP, undefined)
+            }
             iconType={'stop'}
           >
             Stop historical detector

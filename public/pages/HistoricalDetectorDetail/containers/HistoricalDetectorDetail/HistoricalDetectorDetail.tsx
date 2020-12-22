@@ -33,7 +33,6 @@ import {
   stopDetector,
   deleteDetector,
   getDetector,
-  getHistoricalDetectorList,
 } from '../../../../redux/reducers/ad';
 import { BREADCRUMBS } from '../../../../utils/constants';
 import { DETECTOR_STATE } from '../../../../../server/utils/constants';
@@ -42,21 +41,18 @@ import { HistoricalDetectorControls } from '../../components/HistoricalDetectorC
 import { EditHistoricalDetectorModal } from '../ActionModals/EditHistoricalDetectorModal/EditHistoricalDetectorModal';
 import { DeleteHistoricalDetectorModal } from '../ActionModals/DeleteHistoricalDetectorModal/DeleteHistoricalDetectorModal';
 import { AnomalyHistory } from '../../../DetectorResults/containers/AnomalyHistory';
-import { stateToColorMap } from '../../../utils/constants';
+import {
+  stateToColorMap,
+  SINGLE_DETECTOR_NOT_FOUND_MSG,
+} from '../../../utils/constants';
 import {
   HISTORICAL_DETECTOR_RESULT_REFRESH_RATE,
   HISTORICAL_DETECTOR_ACTION,
   HISTORICAL_DETECTOR_STOP_THRESHOLD,
 } from '../../utils/constants';
-import {
-  getCallout,
-  waitForMs,
-  getRunningHistoricalDetectorCount,
-} from '../../utils/helpers';
+import { getCallout, waitForMs } from '../../utils/helpers';
 import { CoreStart } from '../../../../../../../src/core/public';
 import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
-import { getClusterStats } from '../../../../redux/reducers/elasticsearch';
-import { GET_ALL_DETECTORS_QUERY_PARAMS } from '../../../utils/constants';
 
 export interface HistoricalDetectorRouterProps {
   detectorId?: string;
@@ -82,13 +78,7 @@ export const HistoricalDetectorDetail = (
   const allDetectors = adState.detectors;
   const errorGettingDetectors = adState.errorMessage;
   const detector = allDetectors[detectorId];
-  const monitors = useSelector((state: AppState) => state.alerting.monitors);
-  const monitor = get(monitors, `${detectorId}.0`);
 
-  // TODO: look further into whether or not we need to check for missing data or not
-  const isDetectorMissingData = false;
-
-  const [isLoadingDetector, setIsLoadingDetector] = useState<boolean>(true);
   const [isStoppingDetector, setIsStoppingDetector] = useState<boolean>(false);
   const [
     historicalDetectorDetailModalState,
@@ -100,10 +90,10 @@ export const HistoricalDetectorDetail = (
   const callout = getCallout(detector, isStoppingDetector);
 
   useEffect(() => {
-    if (errorGettingDetectors) {
-      core.notifications.toasts.addDanger(
-        'Unable to get the historical detector'
-      );
+    if (
+      errorGettingDetectors &&
+      errorGettingDetectors.includes(SINGLE_DETECTOR_NOT_FOUND_MSG)
+    ) {
       props.history.push('/historical-detectors');
     }
   }, [errorGettingDetectors]);
@@ -121,10 +111,9 @@ export const HistoricalDetectorDetail = (
   const fetchDetector = async () => {
     try {
       await dispatch(getDetector(detectorId));
-      setIsLoadingDetector(false);
     } catch {
       core.notifications.toasts.addDanger(
-        'Error retrieving the historical detector'
+        'Unable to find the historical detector'
       );
     }
   };
@@ -132,12 +121,11 @@ export const HistoricalDetectorDetail = (
   // Try to get the detector initially
   useEffect(() => {
     if (detectorId) {
-      setIsLoadingDetector(true);
       fetchDetector();
     }
   }, []);
 
-  // If detector is initialiazing or running: keep fetching every second to quickly update state/results/percentage bar, etc.
+  // If detector is initializing or running: keep fetching every 10 seconds to quickly update state/results/percentage bar, etc.
   useEffect(() => {
     if (
       detector?.curState === DETECTOR_STATE.RUNNING ||
@@ -174,49 +162,34 @@ export const HistoricalDetectorDetail = (
 
   const onStartDetector = async () => {
     try {
-      // Check to make sure we can start. Current historical detector limit: 2 running per node
-      const clusterStatsResponse = await dispatch(getClusterStats());
-      const nodeCount = get(
-        clusterStatsResponse,
-        'response.nodes.count.data',
-        1
-      );
-      const historicalDetectorsResponse = await dispatch(
-        getHistoricalDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS)
-      );
-      const runningCount = getRunningHistoricalDetectorCount(
-        get(historicalDetectorsResponse, 'response.detectorList')
-      );
-
-      if (nodeCount * 2 <= runningCount) {
-        throw 'only 2 historical detectors can be running per data node in the cluster';
-      }
-
       await dispatch(startDetector(detectorId));
-      fetchDetector();
       core.notifications.toasts.addSuccess(
         `Successfully started the historical detector`
       );
     } catch (err) {
       core.notifications.toasts.addDanger(
-        `There was a problem starting the historical detector: ${err}`
+        `There was a problem starting the historical detector ${detector?.name}: ${err}`
       );
+    } finally {
+      fetchDetector();
     }
   };
 
   // We query the task state 5s after making the stop detector call. If the task is still running,
   // then it is assumed there was an error stopping this task / historical detector.
-  const onStopDetector = async (isDelete: boolean, listener?: Listener) => {
+  const onStopDetector = async (
+    action: HISTORICAL_DETECTOR_ACTION,
+    listener?: Listener
+  ) => {
     try {
       setIsStoppingDetector(true);
       await dispatch(stopDetector(detectorId));
       await waitForMs(HISTORICAL_DETECTOR_STOP_THRESHOLD);
-      setIsStoppingDetector(false);
       const resp = await dispatch(getDetector(detectorId));
       if (get(resp, 'response.curState') !== DETECTOR_STATE.DISABLED) {
         throw 'please try again.';
       }
-      if (!isDelete) {
+      if (action !== HISTORICAL_DETECTOR_ACTION.DELETE) {
         core.notifications.toasts.addSuccess(
           'Successfully stopped the historical detector'
         );
@@ -227,6 +200,9 @@ export const HistoricalDetectorDetail = (
         `There was a problem stopping the historical detector: ${err}`
       );
       if (listener) listener.onException();
+      fetchDetector();
+    } finally {
+      setIsStoppingDetector(false);
     }
   };
 
@@ -243,6 +219,7 @@ export const HistoricalDetectorDetail = (
         `There was a problem deleting the historical detector: ${err}`
       );
       handleHideModal();
+      fetchDetector();
     }
   };
 
@@ -254,7 +231,7 @@ export const HistoricalDetectorDetail = (
       },
       onException: handleHideModal,
     };
-    onStopDetector(false, listener);
+    onStopDetector(HISTORICAL_DETECTOR_ACTION.EDIT, listener);
   };
 
   const onStopDetectorForDeleting = async () => {
@@ -266,7 +243,7 @@ export const HistoricalDetectorDetail = (
         onSuccess: onDeleteDetector,
         onException: handleHideModal,
       };
-      onStopDetector(true, listener);
+      onStopDetector(HISTORICAL_DETECTOR_ACTION.DELETE, listener);
     } else {
       onDeleteDetector();
     }
@@ -315,13 +292,10 @@ export const HistoricalDetectorDetail = (
     backgroundColor: '#FFF',
   };
 
-  const isLoading = adState.requesting || isLoadingDetector;
   return (
     <React.Fragment>
-      {!isEmpty(detector) && !errorGettingDetectors
-        ? getHistoricalDetectorDetailModal()
-        : null}
-      {!isEmpty(detector) && !errorGettingDetectors ? (
+      {!isEmpty(detector) ? getHistoricalDetectorDetailModal() : null}
+      {!isEmpty(detector) ? (
         <EuiFlexGroup
           direction="column"
           style={{
@@ -391,8 +365,8 @@ export const HistoricalDetectorDetail = (
             <EuiFlexItem>
               <AnomalyHistory
                 detector={detector}
-                monitor={monitor}
-                isFeatureDataMissing={isDetectorMissingData}
+                monitor={undefined}
+                isFeatureDataMissing={false}
                 isHistorical={true}
                 taskId={detector?.taskId}
                 isNotSample={true}

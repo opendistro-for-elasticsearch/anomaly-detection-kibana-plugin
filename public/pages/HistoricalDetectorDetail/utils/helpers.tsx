@@ -124,13 +124,3 @@ export const getCallout = (detector: Detector, isStoppingDetector: boolean) => {
       return null;
   }
 };
-
-export const getRunningHistoricalDetectorCount = (
-  historicalDetectors: Detector[]
-) => {
-  return historicalDetectors.filter(
-    (detector) =>
-      detector.curState === DETECTOR_STATE.INIT ||
-      detector.curState === DETECTOR_STATE.RUNNING
-  ).length;
-};
