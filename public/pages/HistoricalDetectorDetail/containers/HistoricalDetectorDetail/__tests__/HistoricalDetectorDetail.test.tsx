@@ -22,7 +22,7 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import { HistoricalDetectorDetail } from '../HistoricalDetectorDetail';
 import configureStore from '../../../../../redux/configureStore';
 import { httpClientMock, coreServicesMock } from '../../../../../../test/mocks';
@@ -46,7 +46,7 @@ const TEST_DETECTOR = {
     endTime: 5,
   },
   description: 'test-description',
-  lastUpdated: 0,
+  lastUpdateTime: 0,
   indices: ['test-index'],
   detectionInterval: {
     period: {

@@ -31,7 +31,7 @@ const TEST_DETECTOR = {
     endTime: 5,
   },
   description: 'test-description',
-  lastUpdated: 0,
+  lastUpdateTime: 0,
   indices: ['test-index'],
   detectionInterval: {
     period: {
@@ -138,7 +138,7 @@ describe('<HistoricalDetectorControls /> spec', () => {
       expect(container.firstChild).toMatchSnapshot();
       getByText(ACTIONS_TEXT);
       getByText(STOPPING_BUTTON_TEXT);
-      fireEvent.click(getByTestId('isStoppingDetectorButton'));
+      fireEvent.click(getByTestId('stopDetectorButton'));
       expect(mockOnStartDetector).toHaveBeenCalledTimes(0);
       expect(mockOnStopDetector).toHaveBeenCalledTimes(0);
     });

@@ -33,7 +33,7 @@ const TEST_DETECTOR = {
     endTime: 5,
   },
   description: 'test-description',
-  lastUpdated: 0,
+  lastUpdateTime: 0,
   indices: ['test-index'],
   detectionInterval: {
     period: {

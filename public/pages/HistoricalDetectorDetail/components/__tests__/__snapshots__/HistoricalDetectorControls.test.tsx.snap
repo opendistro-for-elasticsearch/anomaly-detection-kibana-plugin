@@ -298,7 +298,7 @@ exports[`<HistoricalDetectorControls /> spec detector is stopping renders the co
   >
     <button
       class="euiButton euiButton--primary euiButton-isDisabled"
-      data-test-subj="isStoppingDetectorButton"
+      data-test-subj="stopDetectorButton"
       disabled=""
       type="button"
     >

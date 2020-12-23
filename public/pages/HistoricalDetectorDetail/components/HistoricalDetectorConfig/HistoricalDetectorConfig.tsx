@@ -84,9 +84,13 @@ export const HistoricalDetectorConfig = (
         <EuiFlexItem>
           {renderCell(
             'Date range',
-            renderDate(get(props, 'detector.detectionDateRange.startTime', 0)) +
+            renderDate(
+              get(props, 'detector.detectionDateRange.startTime', undefined)
+            ) +
               '-' +
-              renderDate(get(props, 'detector.detectionDateRange.endTime', 0))
+              renderDate(
+                get(props, 'detector.detectionDateRange.endTime', undefined)
+              )
           )}
         </EuiFlexItem>
         <EuiFlexItem>
@@ -95,7 +99,7 @@ export const HistoricalDetectorConfig = (
         <EuiFlexItem>
           {renderCell(
             'Last updated',
-            renderDate(get(props, 'detector.lastUpdateTime', 0))
+            renderDate(get(props, 'detector.lastUpdateTime', undefined))
           )}
         </EuiFlexItem>
         <EuiFlexItem>
