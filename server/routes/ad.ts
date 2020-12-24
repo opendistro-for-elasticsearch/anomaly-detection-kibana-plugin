@@ -46,7 +46,7 @@ import {
   isIndexNotFoundError,
   getErrorMessage,
 } from './utils/adHelpers';
-import { set } from 'lodash';
+import { isNumber, set } from 'lodash';
 import {
   RequestHandlerContext,
   KibanaRequest,
@@ -174,7 +174,8 @@ export default class AdService {
         body: requestBody,
       };
       let response;
-      if (ifSeqNo && ifPrimaryTerm) {
+
+      if (isNumber(ifSeqNo) && isNumber(ifPrimaryTerm)) {
         response = await this.client
           .asScoped(request)
           .callAsCurrentUser('ad.updateDetector', params);
