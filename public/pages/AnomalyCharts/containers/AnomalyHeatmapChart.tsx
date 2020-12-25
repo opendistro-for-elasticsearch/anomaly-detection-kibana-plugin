@@ -50,7 +50,7 @@ interface AnomalyHeatmapChartProps {
   title: string;
   detectorId: string;
   detectorName: string;
-  anomalies: any[];
+  anomalies?: any[];
   dateRange: DateRange;
   isLoading: boolean;
   showAlerts?: boolean;

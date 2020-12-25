@@ -1,0 +1,826 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AnomalyHeatmapChart /> spec AnomalyHeatmapChart with Sample anomaly data 1`] = `
+<div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 5px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <div
+        class="euiCallOut euiCallOut--primary euiCallOut--small"
+      >
+        <div
+          class="euiCallOutHeader"
+        >
+          <svg
+            aria-hidden="true"
+            class="euiIcon euiIcon--medium euiIcon-isLoading euiCallOutHeader__icon"
+            focusable="false"
+            height="16"
+            role="img"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          />
+          <span
+            class="euiCallOutHeader__title"
+          >
+            Choose a filled rectangle in the heat map for a more detailed view of anomalies within that entity.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px;"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+      style="min-width: 80px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiText euiText--medium"
+        >
+          <div
+            class="euiTextAlign euiTextAlign--right"
+          >
+            <h4>
+              test-tile
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem"
+      style="padding-left: 5px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+          style="margin-left: 0px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+              style="min-width: 300px;"
+            >
+              <div
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                class="euiComboBox"
+                role="combobox"
+              >
+                <div
+                  class="euiFormControlLayout"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <div
+                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                      data-test-subj="comboBoxInput"
+                      tabindex="-1"
+                    >
+                      <span
+                        class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                        title="Top 10"
+                        value="10"
+                      >
+                        <span
+                          class="euiBadge__content"
+                        >
+                          <span
+                            class="euiBadge__text"
+                          >
+                            Top 10
+                          </span>
+                          <button
+                            aria-label="Remove Top 10 from selection in this group"
+                            class="euiBadge__iconButton"
+                            title="Remove Top 10 from selection in this group"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="euiIcon euiIcon--small euiIcon-isLoading euiBadge__icon"
+                              focusable="false"
+                              height="16"
+                              role="img"
+                              tabindex="-1"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            />
+                          </button>
+                        </span>
+                      </span>
+                      <div
+                        class="euiComboBox__input"
+                        style="font-size: 14px; display: inline-block;"
+                      >
+                        <input
+                          aria-controls=""
+                          data-test-subj="comboBoxSearchInput"
+                          role="textbox"
+                          style="box-sizing: content-box; width: 2px;"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                    >
+                      <button
+                        aria-label="Clear input"
+                        class="euiFormControlLayoutClearButton"
+                        data-test-subj="comboBoxClearButton"
+                        type="button"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutClearButton__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        />
+                      </button>
+                      <button
+                        aria-label="Open list of options"
+                        class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                        data-test-subj="comboBoxToggleListButton"
+                        type="button"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+              style="min-width: 150px;"
+            >
+              <div
+                class="euiPopover euiPopover--anchorDownCenter euiPopover--displayBlock euiSuperSelect"
+              >
+                <div
+                  class="euiPopover__anchor"
+                >
+                  <input
+                    type="hidden"
+                    value="by_severity"
+                  />
+                  <div
+                    class="euiFormControlLayout"
+                  >
+                    <div
+                      class="euiFormControlLayout__childrenWrapper"
+                    >
+                      <span
+                        class="euiScreenReaderOnly"
+                        id="random_html_id"
+                      >
+                        Select an option: By severity, is selected
+                      </span>
+                      <button
+                        aria-haspopup="true"
+                        aria-labelledby="undefined random_html_id"
+                        class="euiSuperSelectControl"
+                        type="button"
+                      >
+                        By severity
+                      </button>
+                      <div
+                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                      >
+                        <span
+                          class="euiFormControlLayoutCustomIcon"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="padding-right: 15px;"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiFlexItem"
+                    style="margin: 0px; height: 20px;"
+                  >
+                    <div
+                      class="euiText euiText--extraSmall"
+                      style="margin: 0px;"
+                    >
+                      Anomaly grade
+                       
+                      <span
+                        class="euiToolTipAnchor"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          aria-label="Info"
+                          class="euiIcon euiIcon--medium euiIcon-isLoading"
+                          focusable="true"
+                          height="16"
+                          role="img"
+                          tabindex="0"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    class="euiFlexItem"
+                    style="margin: 0px; height: 20px; padding-left: 12px;"
+                  >
+                    <div
+                      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                    >
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          style="background-color: rgb(247, 224, 184); width: 35px; height: 8px;"
+                        />
+                      </div>
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          style="background-color: rgb(242, 197, 150); width: 35px; height: 8px;"
+                        />
+                      </div>
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          style="background-color: rgb(236, 169, 118); width: 35px; height: 8px;"
+                        />
+                      </div>
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          style="background-color: rgb(231, 140, 91); width: 35px; height: 8px;"
+                        />
+                      </div>
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          style="background-color: rgb(231, 102, 76); width: 35px; height: 8px;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="euiFlexItem"
+                    style="margin: 0px; height: 20px; padding-left: 12px;"
+                  >
+                    <div
+                      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+                    >
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <div
+                          class="euiText euiText--extraSmall"
+                        >
+                          <strong>
+                            0.0
+                          </strong>
+                           (None)
+                        </div>
+                      </div>
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <div
+                          class="euiText euiText--extraSmall"
+                        >
+                          (Critical) 
+                          <strong>
+                            1.0
+                          </strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px 0px 0px 0px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <div
+        style="width: 100%; opacity: 1;"
+      >
+        <div
+          id="HEATMAP_DIV_ID"
+          style="position: relative;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AnomalyHeatmapChart /> spec AnomalyHeatmapChart with anomaly summaries data 1`] = `
+<div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 5px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <div
+        class="euiCallOut euiCallOut--primary euiCallOut--small"
+      >
+        <div
+          class="euiCallOutHeader"
+        >
+          <svg
+            aria-hidden="true"
+            class="euiIcon euiIcon--medium euiCallOutHeader__icon"
+            focusable="false"
+            height="16"
+            role="img"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7.5 11.508L7.468 8H6.25V7h2.401l.03 3.508H9.8v1H7.5zm-.25-6.202a.83.83 0 01.207-.577c.137-.153.334-.229.59-.229.256 0 .454.076.594.23.14.152.209.345.209.576 0 .228-.07.417-.21.568-.14.15-.337.226-.593.226-.256 0-.453-.075-.59-.226a.81.81 0 01-.207-.568zM8 13A5 5 0 108 3a5 5 0 000 10zm0 1A6 6 0 118 2a6 6 0 010 12z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <span
+            class="euiCallOutHeader__title"
+          >
+            No anomalies found in the specified date range.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px;"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+      style="min-width: 80px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiText euiText--medium"
+        >
+          <div
+            class="euiTextAlign euiTextAlign--right"
+          >
+            <h4>
+              test-tile
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem"
+      style="padding-left: 5px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px;"
+      >
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+          style="margin-left: 0px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+              style="min-width: 300px;"
+            >
+              <div
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                class="euiComboBox"
+                role="combobox"
+              >
+                <div
+                  class="euiFormControlLayout"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <div
+                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                      data-test-subj="comboBoxInput"
+                      tabindex="-1"
+                    >
+                      <span
+                        class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                        title="Top 10"
+                        value="10"
+                      >
+                        <span
+                          class="euiBadge__content"
+                        >
+                          <span
+                            class="euiBadge__text"
+                          >
+                            Top 10
+                          </span>
+                          <button
+                            aria-label="Remove Top 10 from selection in this group"
+                            class="euiBadge__iconButton"
+                            title="Remove Top 10 from selection in this group"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="euiIcon euiIcon--small euiBadge__icon"
+                              focusable="false"
+                              height="16"
+                              role="img"
+                              tabindex="-1"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7.293 8L3.146 3.854a.5.5 0 11.708-.708L8 7.293l4.146-4.147a.5.5 0 01.708.708L8.707 8l4.147 4.146a.5.5 0 01-.708.708L8 8.707l-4.146 4.147a.5.5 0 01-.708-.708L7.293 8z"
+                              />
+                            </svg>
+                          </button>
+                        </span>
+                      </span>
+                      <div
+                        class="euiComboBox__input"
+                        style="font-size: 14px; display: inline-block;"
+                      >
+                        <input
+                          aria-controls=""
+                          data-test-subj="comboBoxSearchInput"
+                          role="textbox"
+                          style="box-sizing: content-box; width: 2px;"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                    >
+                      <button
+                        aria-label="Clear input"
+                        class="euiFormControlLayoutClearButton"
+                        data-test-subj="comboBoxClearButton"
+                        type="button"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiFormControlLayoutClearButton__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M7.293 8L3.146 3.854a.5.5 0 11.708-.708L8 7.293l4.146-4.147a.5.5 0 01.708.708L8.707 8l4.147 4.146a.5.5 0 01-.708.708L8 8.707l-4.146 4.147a.5.5 0 01-.708-.708L7.293 8z"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        aria-label="Open list of options"
+                        class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                        data-test-subj="comboBoxToggleListButton"
+                        type="button"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                            fill-rule="non-zero"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+              style="min-width: 150px;"
+            >
+              <div
+                class="euiPopover euiPopover--anchorDownCenter euiPopover--displayBlock euiSuperSelect"
+              >
+                <div
+                  class="euiPopover__anchor"
+                >
+                  <input
+                    type="hidden"
+                    value="by_severity"
+                  />
+                  <div
+                    class="euiFormControlLayout"
+                  >
+                    <div
+                      class="euiFormControlLayout__childrenWrapper"
+                    >
+                      <span
+                        class="euiScreenReaderOnly"
+                        id="random_html_id"
+                      >
+                        Select an option: By severity, is selected
+                      </span>
+                      <button
+                        aria-haspopup="true"
+                        aria-labelledby="undefined random_html_id"
+                        class="euiSuperSelectControl"
+                        type="button"
+                      >
+                        By severity
+                      </button>
+                      <div
+                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                      >
+                        <span
+                          class="euiFormControlLayoutCustomIcon"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M13.069 5.157L8.384 9.768a.546.546 0 01-.768 0L2.93 5.158a.552.552 0 00-.771 0 .53.53 0 000 .759l4.684 4.61c.641.631 1.672.63 2.312 0l4.684-4.61a.53.53 0 000-.76.552.552 0 00-.771 0z"
+                              fill-rule="non-zero"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="padding-right: 15px;"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiFlexItem"
+                    style="margin: 0px; height: 20px;"
+                  >
+                    <div
+                      class="euiText euiText--extraSmall"
+                      style="margin: 0px;"
+                    >
+                      Anomaly grade
+                       
+                      <span
+                        class="euiToolTipAnchor"
+                      >
+                        <svg
+                          aria-label="Info"
+                          class="euiIcon euiIcon--medium"
+                          focusable="true"
+                          height="16"
+                          role="img"
+                          tabindex="0"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M7.5 11.508L7.468 8H6.25V7h2.401l.03 3.508H9.8v1H7.5zm-.25-6.202a.83.83 0 01.207-.577c.137-.153.334-.229.59-.229.256 0 .454.076.594.23.14.152.209.345.209.576 0 .228-.07.417-.21.568-.14.15-.337.226-.593.226-.256 0-.453-.075-.59-.226a.81.81 0 01-.207-.568zM8 13A5 5 0 108 3a5 5 0 000 10zm0 1A6 6 0 118 2a6 6 0 010 12z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    class="euiFlexItem"
+                    style="margin: 0px; height: 20px; padding-left: 12px;"
+                  >
+                    <div
+                      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                    >
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          style="background-color: rgb(247, 224, 184); width: 35px; height: 8px;"
+                        />
+                      </div>
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          style="background-color: rgb(242, 197, 150); width: 35px; height: 8px;"
+                        />
+                      </div>
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          style="background-color: rgb(236, 169, 118); width: 35px; height: 8px;"
+                        />
+                      </div>
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          style="background-color: rgb(231, 140, 91); width: 35px; height: 8px;"
+                        />
+                      </div>
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          style="background-color: rgb(231, 102, 76); width: 35px; height: 8px;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="euiFlexItem"
+                    style="margin: 0px; height: 20px; padding-left: 12px;"
+                  >
+                    <div
+                      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+                    >
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <div
+                          class="euiText euiText--extraSmall"
+                        >
+                          <strong>
+                            0.0
+                          </strong>
+                           (None)
+                        </div>
+                      </div>
+                      <div
+                        class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="margin: 0px;"
+                      >
+                        <div
+                          class="euiText euiText--extraSmall"
+                        >
+                          (Critical) 
+                          <strong>
+                            1.0
+                          </strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px 0px 0px 0px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <div
+        style="width: 100%; opacity: 1;"
+      >
+        <div
+          id="HEATMAP_DIV_ID"
+          style="position: relative;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
