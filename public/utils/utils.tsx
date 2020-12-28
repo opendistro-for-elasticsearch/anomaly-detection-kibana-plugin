@@ -170,7 +170,7 @@ export function convertTimestampToString(timestamp: number | string) {
   if (typeof timestamp === 'string') {
     return timestamp;
   }
-  return moment(timestamp).format();
+  return moment(timestamp).format('MM/DD/YYYY hh:mm A');
 }
 
 export function convertTimestampToNumber(timestamp: number | string) {

@@ -92,6 +92,7 @@ interface AnomalyDetailsChartProps {
   detector: Detector;
   monitor?: Monitor;
   isHCDetector?: boolean;
+  isHistorical?: boolean;
   selectedHeatmapCell?: HeatmapCell;
   onDatePickerRangeChange?(startDate: number, endDate: number): void;
 }
@@ -214,22 +215,38 @@ export const AnomalyDetailsChart = React.memo(
               tooltip="Indicates the extent to which a data point is anomalous. Higher grades indicate more unusual data."
             />
           </EuiFlexItem>
-          <EuiFlexItem>
-            <AnomalyStatWithTooltip
-              isLoading={isLoading}
-              minValue={anomalySummary.minConfidence}
-              maxValue={anomalySummary.maxConfidence}
-              description={getConfidenceWording(props.isNotSample)}
-              tooltip="Indicates the level of confidence in the anomaly result."
-            />
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <EuiStat
-              title={isLoading ? '' : anomalySummary.lastAnomalyOccurrence}
-              description={getLastAnomalyOccurrenceWording(props.isNotSample)}
-              titleSize="s"
-            />
-          </EuiFlexItem>
+          {
+            // If historical: only show the average grade, and don't show the confidence or last anomaly occurrence stats
+          }
+          {props.isHistorical ? (
+            <EuiFlexItem>
+              <EuiStat
+                title={isLoading ? '-' : anomalySummary.avgAnomalyGrade}
+                description={'Average anomaly grade'}
+                titleSize="s"
+              />
+            </EuiFlexItem>
+          ) : null}
+          {props.isHistorical ? null : (
+            <EuiFlexItem>
+              <AnomalyStatWithTooltip
+                isLoading={isLoading}
+                minValue={anomalySummary.minConfidence}
+                maxValue={anomalySummary.maxConfidence}
+                description={getConfidenceWording(props.isNotSample)}
+                tooltip="Indicates the level of confidence in the anomaly result."
+              />
+            </EuiFlexItem>
+          )}
+          {props.isHistorical ? null : (
+            <EuiFlexItem>
+              <EuiStat
+                title={isLoading ? '' : anomalySummary.lastAnomalyOccurrence}
+                description={getLastAnomalyOccurrenceWording(props.isNotSample)}
+                titleSize="s"
+              />
+            </EuiFlexItem>
+          )}
           {props.showAlerts && !props.isHCDetector ? (
             <EuiFlexItem>
               <AlertsStat
@@ -327,15 +344,20 @@ export const AnomalyDetailsChart = React.memo(
                     domain={{ min: 0, max: 1 }}
                     showGridLines
                   />
-                  <LineSeries
-                    id="confidence"
-                    name={props.confidenceSeriesName}
-                    xScaleType={ScaleType.Time}
-                    yScaleType={ScaleType.Linear}
-                    xAccessor={CHART_FIELDS.PLOT_TIME}
-                    yAccessors={[CHART_FIELDS.CONFIDENCE]}
-                    data={zoomedAnomalies}
-                  />
+                  {
+                    // If historical: don't show the confidence line chart
+                  }
+                  {props.isHistorical ? null : (
+                    <LineSeries
+                      id="confidence"
+                      name={props.confidenceSeriesName}
+                      xScaleType={ScaleType.Time}
+                      yScaleType={ScaleType.Linear}
+                      xAccessor={CHART_FIELDS.PLOT_TIME}
+                      yAccessors={[CHART_FIELDS.CONFIDENCE]}
+                      data={zoomedAnomalies}
+                    />
+                  )}
                   <LineSeries
                     id="anomalyGrade"
                     name={props.anomalyGradeSeriesName}

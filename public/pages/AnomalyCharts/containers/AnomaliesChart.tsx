@@ -302,6 +302,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
               detector={props.detector}
               monitor={props.monitor}
               isHCDetector={props.isHCDetector}
+              isHistorical={props.isHistorical}
               onDatePickerRangeChange={handleDatePickerRangeChange}
             />
           )}

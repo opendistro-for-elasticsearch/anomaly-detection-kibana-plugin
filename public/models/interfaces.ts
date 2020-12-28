@@ -192,17 +192,10 @@ export type AnomalySummary = {
   anomalyOccurrence: number;
   minAnomalyGrade: number;
   maxAnomalyGrade: number;
+  avgAnomalyGrade?: number;
   minConfidence: number;
   maxConfidence: number;
   lastAnomalyOccurrence: string;
-};
-
-export type HistoricalDetectorAnomalySummary = {
-  anomalyOccurrence: number;
-  minAnomalyGrade: number;
-  maxAnomalyGrade: number;
-  minConfidence: number;
-  maxConfidence: number;
 };
 
 export type DateRange = {

@@ -326,6 +326,11 @@ export const getAnomalySummaryQuery = (
           field: 'anomaly_grade',
         },
       },
+      avg_anomaly_grade: {
+        avg: {
+          field: 'anomaly_grade',
+        },
+      },
       max_data_end_time: {
         max: {
           field: 'data_end_time',
@@ -466,6 +471,14 @@ export const parseAnomalySummary = (
           get(
             anomalySummaryResult,
             'response.aggregations.max_anomaly_grade.value'
+          )
+        )
+      : 0,
+    avgAnomalyGrade: anomalyCount
+      ? toFixedNumberForAnomaly(
+          get(
+            anomalySummaryResult,
+            'response.aggregations.avg_anomaly_grade.value'
           )
         )
       : 0,
