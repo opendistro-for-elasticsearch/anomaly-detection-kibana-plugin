@@ -25,7 +25,8 @@ import { get, isEmpty } from 'lodash';
 import { RouteComponentProps } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHideSideNavBar } from '../../../main/hooks/useHideSideNavBar';
-import { Listener } from '../../../../utils/utils';
+import { prettifyErrorMessage } from '../../../../../server/utils/helpers';
+import { Listener, getErrorMessage } from '../../../../utils/utils';
 import { darkModeEnabled } from '../../../../utils/kibanaUtils';
 import { AppState } from '../../../../redux/reducers';
 import {
@@ -168,7 +169,8 @@ export const HistoricalDetectorDetail = (
       );
     } catch (err) {
       core.notifications.toasts.addDanger(
-        `There was a problem starting the historical detector ${detector?.name}: ${err}`
+        `There was a problem starting the historical detector: ` +
+          prettifyErrorMessage(getErrorMessage(err, ''))
       );
     } finally {
       fetchDetector();
@@ -197,7 +199,8 @@ export const HistoricalDetectorDetail = (
       if (listener) listener.onSuccess();
     } catch (err) {
       core.notifications.toasts.addDanger(
-        `There was a problem stopping the historical detector: ${err}`
+        `There was a problem stopping the historical detector: ` +
+          prettifyErrorMessage(getErrorMessage(err, ''))
       );
       if (listener) listener.onException();
       fetchDetector();
@@ -216,7 +219,8 @@ export const HistoricalDetectorDetail = (
       props.history.push('/historical-detectors');
     } catch (err) {
       core.notifications.toasts.addDanger(
-        `There was a problem deleting the historical detector: ${err}`
+        `There was a problem deleting the historical detector: ` +
+          prettifyErrorMessage(getErrorMessage(err, ''))
       );
       handleHideModal();
       fetchDetector();
