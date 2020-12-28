@@ -567,7 +567,7 @@ exports[`<HistoricalDetectorDetail /> spec renders the component 1`] = `
                               <button
                                 class="euiDatePopoverButton euiDatePopoverButton--start"
                                 data-test-subj="superDatePickerstartDatePopoverButton"
-                                title="1969-12-31T16:00:00-08:00"
+                                title="12/31/1969 04:00 PM"
                               >
                                 ~ 51 years ago
                               </button>
@@ -591,7 +591,7 @@ exports[`<HistoricalDetectorDetail /> spec renders the component 1`] = `
                               <button
                                 class="euiDatePopoverButton euiDatePopoverButton--end"
                                 data-test-subj="superDatePickerendDatePopoverButton"
-                                title="1969-12-31T16:00:00-08:00"
+                                title="12/31/1969 04:00 PM"
                               >
                                 ~ 51 years ago
                               </button>
@@ -720,59 +720,16 @@ exports[`<HistoricalDetectorDetail /> spec renders the component 1`] = `
                   <div
                     class="euiText euiText--small euiStat__description"
                   >
-                    <p>
-                      Confidence
-                       
-                      <span
-                        class="euiToolTipAnchor"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="euiIcon euiIcon--medium euiIcon-isLoading"
-                          focusable="false"
-                          height="16"
-                          role="img"
-                          viewBox="0 0 16 16"
-                          width="16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        />
-                      </span>
-                    </p>
-                  </div>
-                  <div
-                    class="euiTitle euiTitle--small euiStat__title"
-                    style="display: inline;"
-                  >
-                    0
-                  </div>
-                </div>
-              </div>
-              <div
-                class="euiFlexItem"
-              >
-                <div
-                  class="euiStat euiStat--leftAligned"
-                >
-                  <div
-                    class="euiText euiText--small euiStat__description"
-                  >
                     <p
                       aria-hidden="true"
                     >
-                      Last anomaly occurrence
+                      Average anomaly grade
                     </p>
                   </div>
                   <p
                     aria-hidden="true"
                     class="euiTitle euiTitle--small euiStat__title"
-                  >
-                    -
-                  </p>
-                  <p
-                    class="euiScreenReaderOnly"
-                  >
-                    Last anomaly occurrence -
-                  </p>
+                  />
                 </div>
               </div>
             </div>
