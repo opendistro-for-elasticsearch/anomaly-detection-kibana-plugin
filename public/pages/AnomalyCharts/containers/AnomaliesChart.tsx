@@ -182,6 +182,10 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
       props.isHCDetector &&
       props.onHeatmapCellSelected &&
       props.detectorCategoryField &&
+      // For Non-Sample HC detector case, aka realtime HC detector(showAlert == true),
+      // we use anomaly summaries data to render heatmap
+      // we must have function onDisplayOptionChanged and entityAnomalySummaries defined
+      // so that heatmap can work as expected.
       (props.showAlerts !== true ||
         (props.showAlerts &&
           props.onDisplayOptionChanged &&
