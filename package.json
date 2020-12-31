@@ -84,7 +84,7 @@
     "eslint-plugin-cypress": "^2.11.1",
     "formik": "^1.5.8",
     "lodash": "^4.17.19",
-    "plotly.js": "^1.55.2",
+    "plotly.js-dist": "^1.57.1",
     "query-string": "^6.8.2",
     "react-plotly.js": "^2.4.0",
     "react-redux": "^7.1.0",

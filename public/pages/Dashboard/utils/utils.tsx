@@ -19,6 +19,8 @@ import {
   AD_DOC_FIELDS,
   SORT_DIRECTION,
   MIN_IN_MILLI_SECS,
+  KEY_FIELD,
+  DOC_COUNT_FIELD,
 } from '../../../../server/utils/constants';
 import {
   Detector,
@@ -624,7 +626,7 @@ export const getAnomalyDistributionForDetectorsByTimeRange = async (
 
   const finalDetectorDistributionResult = [] as object[];
   for (let detectorResult of detectorsAggResults) {
-    const detectorId = get(detectorResult, 'key', '');
+    const detectorId = get(detectorResult, KEY_FIELD, '');
     if (detectorAndIdMap.has(detectorId)) {
       const detector = detectorAndIdMap.get(detectorId);
       finalDetectorDistributionResult.push({
@@ -639,7 +641,7 @@ export const getAnomalyDistributionForDetectorsByTimeRange = async (
           AD_DOC_FIELDS.INDICES,
           ''
         ).toString(),
-        count: get(detectorResult, 'doc_count', 0),
+        count: get(detectorResult, DOC_COUNT_FIELD, 0),
       });
     }
   }

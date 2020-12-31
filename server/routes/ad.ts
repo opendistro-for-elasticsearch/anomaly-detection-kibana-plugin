@@ -31,7 +31,13 @@ import {
   DateRangeFilter,
 } from '../models/types';
 import { Router } from '../router';
-import { SORT_DIRECTION, AD_DOC_FIELDS } from '../utils/constants';
+import {
+  SORT_DIRECTION,
+  AD_DOC_FIELDS,
+  ENTITY_FIELD,
+  ENTITY_NAME_PATH_FIELD,
+  ENTITY_VALUE_PATH_FIELD,
+} from '../utils/constants';
 import {
   mapKeysDeep,
   toCamel,
@@ -593,6 +599,8 @@ const getAnomalyResults = async (
       sortField = AD_DOC_FIELDS.DATA_START_TIME,
       dateRangeFilter = undefined,
       anomalyThreshold = -1,
+      entityName = undefined,
+      entityValue = undefined,
       //@ts-ignore
     } = req.query as {
       from: number;
@@ -601,6 +609,8 @@ const getAnomalyResults = async (
       sortField?: string;
       dateRangeFilter?: string;
       anomalyThreshold: number;
+      entityName: string;
+      entityValue: string;
     };
     const { detectorId } = req.params;
 
@@ -642,6 +652,34 @@ const getAnomalyResults = async (
                 },
               },
             },
+            ...(entityName && entityValue
+              ? [
+                  {
+                    nested: {
+                      path: ENTITY_FIELD,
+                      query: {
+                        term: {
+                          [ENTITY_NAME_PATH_FIELD]: {
+                            value: entityName,
+                          },
+                        },
+                      },
+                    },
+                  },
+                  {
+                    nested: {
+                      path: ENTITY_FIELD,
+                      query: {
+                        term: {
+                          [ENTITY_VALUE_PATH_FIELD]: {
+                            value: entityValue,
+                          },
+                        },
+                      },
+                    },
+                  },
+                ]
+              : []),
           ],
         },
       },

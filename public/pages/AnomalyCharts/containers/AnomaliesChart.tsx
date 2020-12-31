@@ -24,6 +24,7 @@ import {
 import { get } from 'lodash';
 import moment, { DurationInputArg2 } from 'moment';
 import React, { useState } from 'react';
+import { EntityAnomalySummaries } from '../../../../server/models/interfaces';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { useDelayedLoader } from '../../../hooks/useDelayedLoader';
 import {
@@ -38,6 +39,7 @@ import { AnomalyDetailsChart } from '../containers/AnomalyDetailsChart';
 import {
   AnomalyHeatmapChart,
   HeatmapCell,
+  HeatmapDisplayOption,
 } from '../containers/AnomalyHeatmapChart';
 import {
   getAnomalyGradeWording,
@@ -71,10 +73,13 @@ interface AnomaliesChartProps {
   isHCDetector?: boolean;
   detectorCategoryField?: string[];
   onHeatmapCellSelected?(heatmapCell: HeatmapCell): void;
+  onDisplayOptionChanged?(heatmapDisplayOption: HeatmapDisplayOption): void;
   selectedHeatmapCell?: HeatmapCell;
   newDetector?: Detector;
   zoomRange?: DateRange;
   anomaliesResult: Anomalies | undefined;
+  heatmapDisplayOption?: HeatmapDisplayOption;
+  entityAnomalySummaries?: EntityAnomalySummaries[];
 }
 
 export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
@@ -172,6 +177,21 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
     );
   };
 
+  const hasValidHCProps = () => {
+    return (
+      props.isHCDetector &&
+      props.onHeatmapCellSelected &&
+      props.detectorCategoryField &&
+      // For Non-Sample HC detector case, aka realtime HC detector(showAlert == true),
+      // we use anomaly summaries data to render heatmap
+      // we must have function onDisplayOptionChanged and entityAnomalySummaries defined
+      // so that heatmap can work as expected.
+      (props.showAlerts !== true ||
+        (props.showAlerts &&
+          props.onDisplayOptionChanged &&
+          props.entityAnomalySummaries))
+    );
+  };
   return (
     <React.Fragment>
       <ContentPanel
@@ -181,9 +201,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
         }
       >
         <EuiFlexGroup direction="column">
-          {props.isHCDetector &&
-          props.onHeatmapCellSelected &&
-          props.detectorCategoryField ? (
+          {hasValidHCProps() ? (
             <EuiFlexGroup style={{ padding: '20px' }}>
               <EuiFlexItem style={{ margin: '0px' }}>
                 <div
@@ -221,7 +239,14 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                           props.detector,
                           'detectionInterval.period.unit'
                         )}
+                        //@ts-ignore
                         onHeatmapCellSelected={props.onHeatmapCellSelected}
+                        entityAnomalySummaries={props.entityAnomalySummaries}
+                        onDisplayOptionChanged={props.onDisplayOptionChanged}
+                        heatmapDisplayOption={props.heatmapDisplayOption}
+                        // TODO use props.isNotSample after Tyler's change is merged
+                        // https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/350#discussion_r547009140
+                        isNotSample={props.showAlerts === true}
                       />,
                       props.showAlerts !== true
                         ? [
