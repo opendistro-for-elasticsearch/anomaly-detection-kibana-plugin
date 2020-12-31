@@ -45,6 +45,10 @@ import {
   buildParamsForGetAnomalyResultsWithDateRange,
   FEATURE_DATA_CHECK_WINDOW_OFFSET,
   filterWithHeatmapFilter,
+  getTopAnomalousEntitiesQuery,
+  parseTopEntityAnomalySummaryResults,
+  getEntityAnomalySummariesQuery,
+  parseEntityAnomalySummaryResults,
 } from '../../utils/anomalyResultUtils';
 import { AnomalyResultsTable } from './AnomalyResultsTable';
 import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
@@ -57,9 +61,23 @@ import { MAX_ANOMALIES } from '../../../utils/constants';
 import { getDetectorResults } from '../../../redux/reducers/anomalyResults';
 import { searchResults } from '../../../redux/reducers/anomalyResults';
 import { AnomalyOccurrenceChart } from '../../AnomalyCharts/containers/AnomalyOccurrenceChart';
-import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
-import { getAnomalyHistoryWording } from '../../AnomalyCharts/utils/anomalyChartUtils';
+import {
+  HeatmapCell,
+  HeatmapDisplayOption,
+  INITIAL_HEATMAP_DISPLAY_OPTION,
+} from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
+import {
+  getAnomalyHistoryWording,
+  NUM_CELLS,
+} from '../../AnomalyCharts/utils/anomalyChartUtils';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
+import {
+  EntityAnomalySummaries,
+  Entity,
+} from '../../../../server/models/interfaces';
+import { CoreStart } from '../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
+import { prettifyErrorMessage } from '../../../../server/utils/helpers';
 
 interface AnomalyHistoryProps {
   detector: Detector;
@@ -70,6 +88,7 @@ interface AnomalyHistoryProps {
 
 export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   const dispatch = useDispatch();
+  const core = React.useContext(CoreServicesContext) as CoreStart;
 
   const [isLoading, setIsLoading] = useState(false);
   const initialStartDate = moment().subtract(7, 'days');
@@ -99,58 +118,69 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
 
   const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
 
+  const [entityAnomalySummaries, setEntityAnomalySummaries] = useState<
+    EntityAnomalySummaries[]
+  >();
+
+  const [heatmapDisplayOption, setHeatmapDisplayOption] = useState<
+    HeatmapDisplayOption
+  >(INITIAL_HEATMAP_DISPLAY_OPTION);
+
   const detectorCategoryField = get(props.detector, 'categoryField', []);
   const isHCDetector = !isEmpty(detectorCategoryField);
   const backgroundColor = darkModeEnabled() ? '#29017' : '#F7F7F7';
 
-  useEffect(() => {
-    // We load at most 10k AD result data points for one call. If user choose
-    // a big time range which may have more than 10k AD results, will use bucket
-    // aggregation to load data points in whole time range with larger interval.
-    async function getBucketizedAnomalyResults() {
-      try {
-        setIsLoadingAnomalyResults(true);
-        const anomalySummaryResult = await dispatch(
-          searchResults(
-            getAnomalySummaryQuery(
-              dateRange.startDate,
-              dateRange.endDate,
-              props.detector.id
-            )
+  // We load at most 10k AD result data points for one call. If user choose
+  // a big time range which may have more than 10k AD results, will use bucket
+  // aggregation to load data points in whole time range with larger interval.
+  // If entity is specified, we only query AD result data points for this entity.
+  async function getBucketizedAnomalyResults(
+    entity: Entity | undefined = undefined
+  ) {
+    try {
+      setIsLoadingAnomalyResults(true);
+      const anomalySummaryResult = await dispatch(
+        searchResults(
+          getAnomalySummaryQuery(
+            dateRange.startDate,
+            dateRange.endDate,
+            props.detector.id,
+            entity
           )
-        );
+        )
+      );
 
-        setPureAnomalies(parsePureAnomalies(anomalySummaryResult));
-        setBucketizedAnomalySummary(parseAnomalySummary(anomalySummaryResult));
+      setPureAnomalies(parsePureAnomalies(anomalySummaryResult));
+      setBucketizedAnomalySummary(parseAnomalySummary(anomalySummaryResult));
 
-        const result = await dispatch(
-          searchResults(
-            getBucketizedAnomalyResultsQuery(
-              dateRange.startDate,
-              dateRange.endDate,
-              1,
-              props.detector.id
-            )
+      const result = await dispatch(
+        searchResults(
+          getBucketizedAnomalyResultsQuery(
+            dateRange.startDate,
+            dateRange.endDate,
+            props.detector.id,
+            entity
           )
-        );
+        )
+      );
 
-        setBucketizedAnomalyResults(parseBucketizedAnomalyResults(result));
-      } catch (err) {
-        console.error(
-          `Failed to get anomaly results for ${props.detector.id}`,
-          err
-        );
-      } finally {
-        setIsLoadingAnomalyResults(false);
-      }
+      setBucketizedAnomalyResults(parseBucketizedAnomalyResults(result));
+    } catch (err) {
+      console.error(
+        `Failed to get anomaly results for ${props.detector.id}`,
+        err
+      );
+    } finally {
+      setIsLoadingAnomalyResults(false);
     }
+  }
 
+  useEffect(() => {
     fetchRawAnomalyResults(isHCDetector);
 
     if (
       !isHCDetector &&
-      dateRange.endDate - dateRange.startDate >
-        detectorInterval * MIN_IN_MILLI_SECS * MAX_ANOMALIES
+      isDateRangeOversize(dateRange, detectorInterval, MAX_ANOMALIES)
     ) {
       getBucketizedAnomalyResults();
     } else {
@@ -163,6 +193,16 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     'detectionInterval.period.interval',
     1
   );
+  const isDateRangeOversize = (
+    dateRange: DateRange,
+    intervalInMinute: number,
+    maxSize: number
+  ) => {
+    return (
+      dateRange.endDate - dateRange.startDate >
+      intervalInMinute * MIN_IN_MILLI_SECS * maxSize
+    );
+  };
 
   const fetchRawAnomalyResults = async (showLoading: boolean) => {
     if (showLoading) {
@@ -193,8 +233,11 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         featureData: get(rawAnomaliesData, 'featureResults', []),
       } as Anomalies;
       setAtomicAnomalyResults(rawAnomaliesResult);
-      setRawAnomalyResults(rawAnomaliesResult);
-      setHCDetectorAnomalyResults(getAnomalyResultForHC(rawAnomaliesResult));
+      if (isHCDetector) {
+        setHCDetectorAnomalyResults(rawAnomaliesResult);
+      } else {
+        setRawAnomalyResults(rawAnomaliesResult);
+      }
     } catch (err) {
       console.error(
         `Failed to get atomic anomaly results for ${props.detector.id}`,
@@ -207,47 +250,138 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
     }
   };
 
-  //TODO current implementation can bring in performance issue, will work issue below
-  // https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/issues/313
-  const getAnomalyResultForHC = (rawAnomalyResults: Anomalies) => {
-    const resultAnomaly = rawAnomalyResults.anomalies.filter(
-      (anomaly) => get(anomaly, 'anomalyGrade', 0) > 0
-    );
+  useEffect(() => {
+    if (isHCDetector) {
+      fetchHCAnomalySummaries();
+    }
+  }, [dateRange, heatmapDisplayOption]);
 
-    const anomaliesFeatureData = resultAnomaly.map(
-      (anomaly) => anomaly.features
-    );
+  useEffect(() => {
+    if (selectedHeatmapCell) {
+      fetchEntityAnomalyData(selectedHeatmapCell);
+    } else {
+      setAtomicAnomalyResults(hcDetectorAnomalyResults);
+    }
+  }, [selectedHeatmapCell]);
 
-    const resultAnomalyFeatureData: {
-      [key: string]: FeatureAggregationData[];
-    } = {};
-    anomaliesFeatureData.forEach((anomalyFeatureData) => {
-      if (anomalyFeatureData) {
-        for (const [featureId, featureAggData] of Object.entries(
-          anomalyFeatureData
-        )) {
-          if (!resultAnomalyFeatureData[featureId]) {
-            resultAnomalyFeatureData[featureId] = [];
-          }
-          resultAnomalyFeatureData[featureId].push(featureAggData);
-        }
-      }
+  const fetchHCAnomalySummaries = async () => {
+    setIsLoadingAnomalyResults(true);
+    const query = getTopAnomalousEntitiesQuery(
+      dateRange.startDate,
+      dateRange.endDate,
+      props.detector.id,
+      heatmapDisplayOption.entityOption.value,
+      heatmapDisplayOption.sortType
+    );
+    const result = await dispatch(searchResults(query));
+    const topEnityAnomalySummaries = parseTopEntityAnomalySummaryResults(
+      result
+    );
+    const entities = topEnityAnomalySummaries.map((summary) => summary.entity);
+
+    const promises = entities.map(async (entity: Entity) => {
+      const entityResultQuery = getEntityAnomalySummariesQuery(
+        dateRange.startDate,
+        dateRange.endDate,
+        props.detector.id,
+        NUM_CELLS,
+        get(props.detector, 'categoryField[0]', ''),
+        entity.value
+      );
+      return dispatch(searchResults(entityResultQuery));
     });
-    return {
-      anomalies: resultAnomaly,
-      featureData: resultAnomalyFeatureData,
-    } as Anomalies;
+
+    const allEntityAnomalySummaries = await Promise.all(promises).catch(
+      (error) => {
+        const errorMessage = `Error getting anomaly summaries for all entities: ${error}`;
+        console.error(errorMessage);
+        core.notifications.toasts.addDanger(prettifyErrorMessage(errorMessage));
+      }
+    );
+    const entitiesAnomalySummaries = [] as EntityAnomalySummaries[];
+
+    if (!isEmpty(allEntityAnomalySummaries)) {
+      //@ts-ignore
+      allEntityAnomalySummaries.forEach((entityResponse, i) => {
+        const entityAnomalySummariesResult = parseEntityAnomalySummaryResults(
+          entityResponse,
+          entities[i]
+        );
+        entitiesAnomalySummaries.push(entityAnomalySummariesResult);
+      });
+    }
+    setEntityAnomalySummaries(entitiesAnomalySummaries);
+    setIsLoadingAnomalyResults(false);
   };
 
+  const fetchEntityAnomalyData = async (heatmapCell: HeatmapCell) => {
+    setIsLoadingAnomalyResults(true);
+    try {
+      if (
+        isDateRangeOversize(
+          heatmapCell.dateRange,
+          detectorInterval,
+          MAX_ANOMALIES
+        )
+      ) {
+        fetchBucketizedEntityAnomalyData(heatmapCell);
+      } else {
+        fetchAllEntityAnomalyData(heatmapCell);
+        setBucketizedAnomalyResults(undefined);
+      }
+    } catch (err) {
+      console.error(
+        `Failed to get anomaly results for entity ${heatmapCell.entityValue}`,
+        err
+      );
+    } finally {
+      setIsLoadingAnomalyResults(false);
+    }
+  };
+
+  const fetchAllEntityAnomalyData = async (heatmapCell: HeatmapCell) => {
+    const params = buildParamsForGetAnomalyResultsWithDateRange(
+      heatmapCell.dateRange.startDate,
+      heatmapCell.dateRange.endDate,
+      false,
+      {
+        //@ts-ignore
+        name: props.detector.categoryField[0],
+        value: heatmapCell.entityValue,
+      }
+    );
+
+    const entityAnomalyResultResponse = await dispatch(
+      getDetectorResults(props.detector.id, params)
+    );
+
+    const entityAnomaliesData = get(
+      entityAnomalyResultResponse,
+      'response',
+      []
+    );
+    const entityAnomaliesResult = {
+      anomalies: get(entityAnomaliesData, 'results', []),
+      featureData: get(entityAnomaliesData, 'featureResults', []),
+    } as Anomalies;
+
+    setAtomicAnomalyResults(entityAnomaliesResult);
+  };
+
+  const fetchBucketizedEntityAnomalyData = async (heatmapCell: HeatmapCell) => {
+    getBucketizedAnomalyResults({
+      //@ts-ignore
+      name: props.detector.categoryField[0],
+      value: heatmapCell.entityValue,
+    });
+  };
   const [atomicAnomalyResults, setAtomicAnomalyResults] = useState<Anomalies>();
   const [rawAnomalyResults, setRawAnomalyResults] = useState<Anomalies>();
   const [hcDetectorAnomalyResults, setHCDetectorAnomalyResults] = useState<
     Anomalies
   >();
 
-  const anomalyResults = isHCDetector
-    ? hcDetectorAnomalyResults
-    : bucketizedAnomalyResults
+  const anomalyResults = bucketizedAnomalyResults
     ? bucketizedAnomalyResults
     : atomicAnomalyResults;
   const handleDateRangeChange = useCallback(
@@ -270,6 +404,13 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
   const handleHeatmapCellSelected = useCallback((heatmapCell: HeatmapCell) => {
     setSelectedHeatmapCell(heatmapCell);
   }, []);
+
+  const handleHeatmapDisplayOptionChanged = useCallback(
+    (option: HeatmapDisplayOption) => {
+      setHeatmapDisplayOption(option);
+    },
+    []
+  );
 
   const annotations = anomalyResults
     ? get(anomalyResults, 'anomalies', [])
@@ -337,6 +478,9 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
         onHeatmapCellSelected={handleHeatmapCellSelected}
         selectedHeatmapCell={selectedHeatmapCell}
         anomaliesResult={anomalyResults}
+        onDisplayOptionChanged={handleHeatmapDisplayOptionChanged}
+        heatmapDisplayOption={heatmapDisplayOption}
+        entityAnomalySummaries={entityAnomalySummaries}
       >
         <EuiTabs>{renderTabs()}</EuiTabs>
 

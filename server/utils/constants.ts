@@ -75,3 +75,10 @@ export enum SAMPLE_TYPE {
   HOST_HEALTH = 'host-health',
   ECOMMERCE = 'ecommerce',
 }
+
+export const ENTITY_FIELD = 'entity';
+export const ENTITY_VALUE_PATH_FIELD = 'entity.value';
+export const ENTITY_NAME_PATH_FIELD = 'entity.name';
+
+export const DOC_COUNT_FIELD = 'doc_count';
+export const KEY_FIELD = 'key';

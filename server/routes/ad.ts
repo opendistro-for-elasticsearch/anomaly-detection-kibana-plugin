@@ -28,7 +28,13 @@ import {
   DateRangeFilter,
 } from '../models/types';
 import { Router } from '../router';
-import { SORT_DIRECTION, AD_DOC_FIELDS } from '../utils/constants';
+import {
+  SORT_DIRECTION,
+  AD_DOC_FIELDS,
+  ENTITY_FIELD,
+  ENTITY_NAME_PATH_FIELD,
+  ENTITY_VALUE_PATH_FIELD,
+} from '../utils/constants';
 import {
   mapKeysDeep,
   toCamel,
@@ -669,6 +675,8 @@ export default class AdService {
         sortField = AD_DOC_FIELDS.DATA_START_TIME,
         dateRangeFilter = undefined,
         anomalyThreshold = -1,
+        entityName = undefined,
+        entityValue = undefined,
       } = request.query as {
         from: number;
         size: number;
@@ -676,6 +684,8 @@ export default class AdService {
         sortField?: string;
         dateRangeFilter?: string;
         anomalyThreshold: number;
+        entityName: string;
+        entityValue: string;
       };
 
       //Allowed sorting columns
@@ -716,6 +726,34 @@ export default class AdService {
                   },
                 },
               },
+              ...(entityName && entityValue
+                ? [
+                    {
+                      nested: {
+                        path: ENTITY_FIELD,
+                        query: {
+                          term: {
+                            [ENTITY_NAME_PATH_FIELD]: {
+                              value: entityName,
+                            },
+                          },
+                        },
+                      },
+                    },
+                    {
+                      nested: {
+                        path: ENTITY_FIELD,
+                        query: {
+                          term: {
+                            [ENTITY_VALUE_PATH_FIELD]: {
+                              value: entityValue,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  ]
+                : []),
             ],
           },
         },

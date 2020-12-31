@@ -17,7 +17,17 @@ import { get, isEmpty, orderBy } from 'lodash';
 import moment from 'moment';
 import { Dispatch } from 'redux';
 import {
+  EntityAnomalySummaries,
+  EntityAnomalySummary,
+  Entity,
+} from '../../../server/models/interfaces';
+import {
   AD_DOC_FIELDS,
+  DOC_COUNT_FIELD,
+  ENTITY_FIELD,
+  ENTITY_NAME_PATH_FIELD,
+  ENTITY_VALUE_PATH_FIELD,
+  KEY_FIELD,
   MIN_IN_MILLI_SECS,
   SORT_DIRECTION,
 } from '../../../server/utils/constants';
@@ -38,7 +48,17 @@ import {
   MISSING_FEATURE_DATA_SEVERITY,
 } from '../../utils/constants';
 import { HeatmapCell } from '../AnomalyCharts/containers/AnomalyHeatmapChart';
+import { AnomalyHeatmapSortType } from '../AnomalyCharts/utils/anomalyChartUtils';
 import { DETECTOR_INIT_FAILURES } from '../DetectorDetail/utils/constants';
+import {
+  COUNT_ANOMALY_AGGS,
+  ENTITY_DATE_BUCKET_ANOMALY_AGGS,
+  MAX_ANOMALY_AGGS,
+  MAX_ANOMALY_SORT_AGGS,
+  TOP_ANOMALY_GRADE_SORT_AGGS,
+  TOP_ENTITIES_FIELD,
+  TOP_ENTITY_AGGS,
+} from './constants';
 import { dateFormatter, minuteDateFormatter } from './helpers';
 
 export const getQueryParamsForLiveAnomalyResults = (
@@ -77,19 +97,22 @@ export const getLiveAnomalyResults = (
 export const buildParamsForGetAnomalyResultsWithDateRange = (
   startTime: number,
   endTime: number,
-  anomalyOnly: boolean = false
+  anomalyOnly: boolean = false,
+  entity: Entity | undefined = undefined
 ) => {
   return {
     from: 0,
     size: MAX_ANOMALIES,
     sortDirection: SORT_DIRECTION.DESC,
     sortField: AD_DOC_FIELDS.DATA_START_TIME,
-    dateRangeFilter: {
+    dateRangeFilter: JSON.stringify({
       startTime: startTime,
       endTime: endTime,
       fieldName: AD_DOC_FIELDS.DATA_START_TIME,
-    },
+    }),
     anomalyThreshold: anomalyOnly ? 0 : -1,
+    entityName: entity?.name,
+    entityValue: entity?.value,
   };
 };
 
@@ -284,7 +307,8 @@ export const RETURNED_AD_RESULT_FIELDS = [
 export const getAnomalySummaryQuery = (
   startTime: number,
   endTime: number,
-  detectorId: string
+  detectorId: string,
+  entity: Entity | undefined = undefined
 ) => {
   return {
     size: MAX_ANOMALIES,
@@ -311,6 +335,34 @@ export const getAnomalySummaryQuery = (
               detector_id: detectorId,
             },
           },
+          ...(entity
+            ? [
+                {
+                  nested: {
+                    path: ENTITY_FIELD,
+                    query: {
+                      term: {
+                        [ENTITY_VALUE_PATH_FIELD]: {
+                          value: entity.value,
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  nested: {
+                    path: ENTITY_FIELD,
+                    query: {
+                      term: {
+                        [ENTITY_NAME_PATH_FIELD]: {
+                          value: entity.name,
+                        },
+                      },
+                    },
+                  },
+                },
+              ]
+            : []),
         ],
       },
     },
@@ -355,11 +407,11 @@ export const getAnomalySummaryQuery = (
 export const getBucketizedAnomalyResultsQuery = (
   startTime: number,
   endTime: number,
-  interval: number,
-  detectorId: string
+  detectorId: string,
+  entity: Entity | undefined = undefined
 ) => {
   const fixedInterval = Math.ceil(
-    (endTime - startTime) / (interval * MIN_IN_MILLI_SECS * MAX_DATA_POINTS)
+    (endTime - startTime) / (MIN_IN_MILLI_SECS * MAX_DATA_POINTS)
   );
   return {
     size: 0,
@@ -379,6 +431,34 @@ export const getBucketizedAnomalyResultsQuery = (
               detector_id: detectorId,
             },
           },
+          ...(entity
+            ? [
+                {
+                  nested: {
+                    path: ENTITY_FIELD,
+                    query: {
+                      term: {
+                        [ENTITY_VALUE_PATH_FIELD]: {
+                          value: entity.value,
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  nested: {
+                    path: ENTITY_FIELD,
+                    query: {
+                      term: {
+                        [ENTITY_NAME_PATH_FIELD]: {
+                          value: entity.name,
+                        },
+                      },
+                    },
+                  },
+                },
+              ]
+            : []),
         ],
       },
     },
@@ -857,4 +937,246 @@ export const filterWithHeatmapFilter = (
       );
   }
   return filterWithDateRange(data, heatmapCell.dateRange, timeField);
+};
+
+export const getTopAnomalousEntitiesQuery = (
+  startTime: number,
+  endTime: number,
+  detectorId: string,
+  size: number,
+  sortType: AnomalyHeatmapSortType
+) => {
+  return {
+    size: 0,
+    query: {
+      bool: {
+        filter: [
+          {
+            range: {
+              [AD_DOC_FIELDS.ANOMALY_GRADE]: {
+                gt: 0,
+              },
+            },
+          },
+          {
+            range: {
+              data_end_time: {
+                gte: startTime,
+                lte: endTime,
+              },
+            },
+          },
+          {
+            term: {
+              detector_id: detectorId,
+            },
+          },
+        ],
+      },
+    },
+    aggs: {
+      [TOP_ENTITIES_FIELD]: {
+        nested: {
+          path: ENTITY_FIELD,
+        },
+        aggs: {
+          [TOP_ENTITY_AGGS]: {
+            terms: {
+              field: ENTITY_VALUE_PATH_FIELD,
+              size: size,
+              ...(sortType === AnomalyHeatmapSortType.SEVERITY
+                ? {
+                    order: {
+                      [TOP_ANOMALY_GRADE_SORT_AGGS]: SORT_DIRECTION.DESC,
+                    },
+                  }
+                : {}),
+            },
+            aggs: {
+              [TOP_ANOMALY_GRADE_SORT_AGGS]: {
+                reverse_nested: {},
+                aggs: {
+                  [MAX_ANOMALY_AGGS]: {
+                    max: {
+                      field: AD_DOC_FIELDS.ANOMALY_GRADE,
+                    },
+                  },
+                },
+              },
+              ...(sortType === AnomalyHeatmapSortType.SEVERITY
+                ? {
+                    [MAX_ANOMALY_SORT_AGGS]: {
+                      bucket_sort: {
+                        sort: [
+                          {
+                            [`${TOP_ANOMALY_GRADE_SORT_AGGS}.${MAX_ANOMALY_AGGS}`]: {
+                              order: SORT_DIRECTION.DESC,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  }
+                : {}),
+            },
+          },
+        },
+      },
+    },
+  };
+};
+
+export const parseTopEntityAnomalySummaryResults = (
+  result: any
+): EntityAnomalySummaries[] => {
+  const rawEntityAnomalySummaries = get(
+    result,
+    `response.aggregations.${TOP_ENTITIES_FIELD}.${TOP_ENTITY_AGGS}.buckets`,
+    []
+  ) as any[];
+  let topEntityAnomalySummaries = [] as EntityAnomalySummaries[];
+  rawEntityAnomalySummaries.forEach((item) => {
+    const anomalyCount = get(item, DOC_COUNT_FIELD, 0);
+    const entityValue = get(item, KEY_FIELD, 0);
+    const entity = {
+      value: entityValue,
+    } as Entity;
+    const maxAnomalyGrade = get(
+      item,
+      [TOP_ANOMALY_GRADE_SORT_AGGS, MAX_ANOMALY_AGGS].join('.'),
+      0
+    );
+    const enityAnomalySummary = {
+      maxAnomaly: maxAnomalyGrade,
+      anomalyCount: anomalyCount,
+    } as EntityAnomalySummary;
+    const enityAnomaliSummaries = {
+      entity: entity,
+      anomalySummaries: [enityAnomalySummary],
+    } as EntityAnomalySummaries;
+    topEntityAnomalySummaries.push(enityAnomaliSummaries);
+  });
+  return topEntityAnomalySummaries;
+};
+
+export const getEntityAnomalySummariesQuery = (
+  startTime: number,
+  endTime: number,
+  detectorId: string,
+  size: number,
+  categoryField: string,
+  entityValue: string
+) => {
+  const fixedInterval = Math.max(
+    Math.ceil((endTime - startTime) / (size * MIN_IN_MILLI_SECS)),
+    1
+  );
+  // bucket key is calculated below
+  // https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-datehistogram-aggregation.html
+  // bucket_key = Math.floor(value / interval) * interval
+  // if startTime is not divisible by fixedInterval, there will be remainder,
+  // this can be offset for bucket_key
+  const offsetInMillisec = startTime % (fixedInterval * MIN_IN_MILLI_SECS);
+  return {
+    size: 0,
+    query: {
+      bool: {
+        filter: [
+          {
+            range: {
+              [AD_DOC_FIELDS.ANOMALY_GRADE]: {
+                gt: 0,
+              },
+            },
+          },
+          {
+            range: {
+              data_end_time: {
+                gte: startTime,
+                lte: endTime,
+              },
+            },
+          },
+          {
+            term: {
+              detector_id: detectorId,
+            },
+          },
+          {
+            nested: {
+              path: ENTITY_FIELD,
+              query: {
+                term: {
+                  [ENTITY_VALUE_PATH_FIELD]: {
+                    value: entityValue,
+                  },
+                },
+              },
+            },
+          },
+          {
+            nested: {
+              path: ENTITY_FIELD,
+              query: {
+                term: {
+                  [ENTITY_NAME_PATH_FIELD]: {
+                    value: categoryField,
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+    aggs: {
+      [ENTITY_DATE_BUCKET_ANOMALY_AGGS]: {
+        date_histogram: {
+          field: AD_DOC_FIELDS.DATA_END_TIME,
+          fixed_interval: `${fixedInterval}m`,
+          offset: `${offsetInMillisec}ms`,
+        },
+        aggs: {
+          [MAX_ANOMALY_AGGS]: {
+            max: {
+              field: AD_DOC_FIELDS.ANOMALY_GRADE,
+            },
+          },
+          [COUNT_ANOMALY_AGGS]: {
+            value_count: {
+              field: AD_DOC_FIELDS.ANOMALY_GRADE,
+            },
+          },
+        },
+      },
+    },
+  };
+};
+
+export const parseEntityAnomalySummaryResults = (
+  result: any,
+  entity: Entity
+): EntityAnomalySummaries => {
+  const rawEntityAnomalySummaries = get(
+    result,
+    `response.aggregations.${ENTITY_DATE_BUCKET_ANOMALY_AGGS}.buckets`,
+    []
+  ) as any[];
+  let anomalySummaries = [] as EntityAnomalySummary[];
+  rawEntityAnomalySummaries.forEach((item) => {
+    const anomalyCount = get(item, `${COUNT_ANOMALY_AGGS}.value`, 0);
+    const startTime = get(item, 'key', 0);
+    const maxAnomalyGrade = get(item, `${MAX_ANOMALY_AGGS}.value`, 0);
+    const enityAnomalySummary = {
+      startTime: startTime,
+      maxAnomaly: maxAnomalyGrade,
+      anomalyCount: anomalyCount,
+    } as EntityAnomalySummary;
+    anomalySummaries.push(enityAnomalySummary);
+  });
+  const enityAnomalySummaries = {
+    entity: entity,
+    anomalySummaries: anomalySummaries,
+  } as EntityAnomalySummaries;
+  return enityAnomalySummaries;
 };
