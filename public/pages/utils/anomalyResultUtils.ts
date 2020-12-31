@@ -23,9 +23,11 @@ import {
 } from '../../../server/models/interfaces';
 import {
   AD_DOC_FIELDS,
+  DOC_COUNT_FIELD,
   ENTITY_FIELD,
   ENTITY_NAME_PATH_FIELD,
   ENTITY_VALUE_PATH_FIELD,
+  KEY_FIELD,
   MIN_IN_MILLI_SECS,
   SORT_DIRECTION,
 } from '../../../server/utils/constants';
@@ -405,12 +407,11 @@ export const getAnomalySummaryQuery = (
 export const getBucketizedAnomalyResultsQuery = (
   startTime: number,
   endTime: number,
-  interval: number,
   detectorId: string,
   entity: Entity | undefined = undefined
 ) => {
   const fixedInterval = Math.ceil(
-    (endTime - startTime) / (interval * MIN_IN_MILLI_SECS * MAX_DATA_POINTS)
+    (endTime - startTime) / (MIN_IN_MILLI_SECS * MAX_DATA_POINTS)
   );
   return {
     size: 0,
@@ -1035,8 +1036,8 @@ export const parseTopEntityAnomalySummaryResults = (
   ) as any[];
   let topEntityAnomalySummaries = [] as EntityAnomalySummaries[];
   rawEntityAnomalySummaries.forEach((item) => {
-    const anomalyCount = get(item, 'doc_count', 0);
-    const entityValue = get(item, 'key', 0);
+    const anomalyCount = get(item, DOC_COUNT_FIELD, 0);
+    const entityValue = get(item, KEY_FIELD, 0);
     const entity = {
       value: entityValue,
     } as Entity;

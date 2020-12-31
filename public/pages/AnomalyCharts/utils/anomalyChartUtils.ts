@@ -214,7 +214,7 @@ const buildBlankStringWithLength = (length: number) => {
 };
 
 export const getAnomaliesHeatmapData = (
-  anomalies: any[],
+  anomalies: any[] | undefined,
   dateRange: DateRange,
   sortType: AnomalyHeatmapSortType = AnomalyHeatmapSortType.SEVERITY,
   displayTopNum: number
@@ -346,7 +346,7 @@ export const getEntitytAnomaliesHeatmapData = (
       } as EntityAnomalySummaries);
     }
   } else {
-    entitiesAnomalySummaries = cloneDeep(entitiesAnomalySummaryResult);
+    entitiesAnomalySummaries = entitiesAnomalySummaryResult;
   }
 
   entitiesAnomalySummaries.forEach((entityAnomalySummaries) => {
@@ -357,7 +357,7 @@ export const getEntitytAnomaliesHeatmapData = (
       entityAnomalySummaries,
       ENTITY_VALUE_PATH_FIELD,
       ''
-    );
+    ) as string;
     const anomaliesSummary = get(
       entityAnomalySummaries,
       'anomalySummaries',
@@ -413,8 +413,13 @@ export const getEntitytAnomaliesHeatmapData = (
   return [plotData];
 };
 
-const getEntityAnomaliesMap = (anomalies: any[]): Map<string, any[]> => {
+const getEntityAnomaliesMap = (
+  anomalies: any[] | undefined
+): Map<string, any[]> => {
   const entityAnomaliesMap = new Map<string, any[]>();
+  if (anomalies == undefined) {
+    return entityAnomaliesMap;
+  }
   anomalies.forEach((anomaly) => {
     const entity = get(anomaly, 'entity', [] as EntityData[]);
     if (isEmpty(entity)) {

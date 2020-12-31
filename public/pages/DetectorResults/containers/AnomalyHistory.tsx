@@ -158,7 +158,6 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
           getBucketizedAnomalyResultsQuery(
             dateRange.startDate,
             dateRange.endDate,
-            1,
             props.detector.id,
             entity
           )
