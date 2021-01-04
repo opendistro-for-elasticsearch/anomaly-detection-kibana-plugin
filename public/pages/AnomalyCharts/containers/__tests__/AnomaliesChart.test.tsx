@@ -16,65 +16,27 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { AnomaliesChart } from '../AnomaliesChart';
-import moment from 'moment';
 import { initialState, mockedStore } from '../../../../redux/utils/testUtils';
 import { Provider } from 'react-redux';
 import { INITIAL_ANOMALY_SUMMARY } from '../../utils/constants';
 import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
-
-const initialStartTime = moment('2019-10-10T09:00:00');
-const initialEndTime = initialStartTime.clone().add(2, 'd');
-const dateRange = {
-  startDate: initialStartTime.valueOf(),
-  endDate: initialEndTime.valueOf(),
-};
-const anomalies = [
-  {
-    anomalyGrade: 0.3,
-    confidence: 0.8,
-    startTime: initialStartTime.add(1, 'minutes').valueOf(),
-    endTime: initialStartTime.add(2, 'minutes').valueOf(),
-    plotTime: initialStartTime.add(90, 'seconds').valueOf(),
-  },
-];
-const anomaliesResult = {
-  anomalies: anomalies,
-  featureData: {
-    testFeatureId: [
-      {
-        data: 10,
-        endTime: anomalies[0].endTime,
-        startTime: anomalies[0].startTime,
-        plotTime: anomalies[0].plotTime,
-      },
-    ],
-  },
-};
+import {
+  FAKE_ANOMALIES_RESULT,
+  FAKE_DATE_RANGE,
+} from '../../../../pages/utils/__tests__/constants';
 
 const renderDataFilter = () => ({
   ...render(
-    <Provider
-      store={mockedStore({
-        ...initialState,
-        elasticsearch: {
-          ...initialState.elasticsearch,
-          dataTypes: {
-            keyword: ['cityName.keyword'],
-            integer: ['age'],
-            text: ['cityName'],
-          },
-        },
-      })}
-    >
+    <Provider store={mockedStore()}>
       <AnomaliesChart
         onDateRangeChange={jest.fn()}
         onZoomRangeChange={jest.fn()}
         title="test"
         bucketizedAnomalies={true}
         anomalySummary={INITIAL_ANOMALY_SUMMARY}
-        dateRange={dateRange}
+        dateRange={FAKE_DATE_RANGE}
         isLoading={false}
-        anomaliesResult={anomaliesResult}
+        anomaliesResult={FAKE_ANOMALIES_RESULT}
         detector={getRandomDetector(true)}
       />
     </Provider>

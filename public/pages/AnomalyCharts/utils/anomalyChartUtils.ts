@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { cloneDeep, get, isEmpty, orderBy } from 'lodash';
+import { cloneDeep, defaultTo, get, isEmpty, orderBy } from 'lodash';
 import {
   DateRange,
   Detector,
@@ -28,6 +28,12 @@ import { Datum, PlotData } from 'plotly.js';
 import moment from 'moment';
 import { calculateTimeWindowsWithMaxDataPoints } from '../../utils/anomalyResultUtils';
 import { HeatmapCell } from '../containers/AnomalyHeatmapChart';
+import {
+  EntityAnomalySummaries,
+  EntityAnomalySummary,
+} from '../../../../server/models/interfaces';
+import { toFixedNumberForAnomaly } from '../../../../server/utils/helpers';
+import { ENTITY_VALUE_PATH_FIELD } from '../../../../server/utils/constants';
 
 export const convertAlerts = (response: any): MonitorAlert[] => {
   const alerts = get(response, 'data.response.alerts', []);
@@ -195,7 +201,7 @@ const getHeatmapColorByValue = (value: number) => {
   }
 };
 
-const NUM_CELLS = 20;
+export const NUM_CELLS = 20;
 
 export const HEATMAP_X_AXIS_DATE_FORMAT = 'MM-DD HH:mm YYYY';
 
@@ -208,7 +214,7 @@ const buildBlankStringWithLength = (length: number) => {
 };
 
 export const getAnomaliesHeatmapData = (
-  anomalies: any[],
+  anomalies: any[] | undefined,
   dateRange: DateRange,
   sortType: AnomalyHeatmapSortType = AnomalyHeatmapSortType.SEVERITY,
   displayTopNum: number
@@ -265,38 +271,155 @@ export const getAnomaliesHeatmapData = (
     numAnomalyGrades.push(numAnomalyGradesForEntity);
   });
 
-  const plotTimes = timeWindows.map((timeWindow) => timeWindow.endDate);
-  const plotData =
-    //@ts-ignore
-    {
-      x: plotTimes.map((timestamp) =>
-        moment(timestamp).format(HEATMAP_X_AXIS_DATE_FORMAT)
-      ),
-      y: entityValues,
-      z: maxAnomalyGrades,
-      colorscale: ANOMALY_HEATMAP_COLORSCALE,
-      //@ts-ignore
-      zmin: 0,
-      zmax: 1,
-      type: 'heatmap',
-      showscale: false,
-      xgap: 2,
-      ygap: 2,
-      opacity: 1,
-      text: numAnomalyGrades,
-      hovertemplate:
-        '<b>Time</b>: %{x}<br>' +
-        '<b>Max anomaly grade</b>: %{z}<br>' +
-        '<b>Anomaly occurrences</b>: %{text}' +
-        '<extra></extra>',
-      cellTimeInterval: timeWindows[0].endDate - timeWindows[0].startDate,
-    } as PlotData;
+  const plotTimes = timeWindows.map((timeWindow) => timeWindow.startDate);
+  const plotTimesInString = plotTimes.map((timestamp) =>
+    moment(timestamp).format(HEATMAP_X_AXIS_DATE_FORMAT)
+  );
+  const cellTimeInterval = timeWindows[0].endDate - timeWindows[0].startDate;
+  const plotData = buildHeatmapPlotData(
+    plotTimesInString,
+    entityValues,
+    maxAnomalyGrades,
+    numAnomalyGrades,
+    cellTimeInterval
+  );
   const resultPlotData = sortHeatmapPlotData(plotData, sortType, displayTopNum);
   return [resultPlotData];
 };
 
-const getEntityAnomaliesMap = (anomalies: any[]): Map<string, any[]> => {
+const buildHeatmapPlotData = (
+  x: any[],
+  y: any[],
+  z: any[],
+  text: any[],
+  cellTimeInterval: number
+): PlotData => {
+  //@ts-ignore
+  return {
+    x: x,
+    y: y,
+    z: z,
+    colorscale: ANOMALY_HEATMAP_COLORSCALE,
+    zmin: 0,
+    zmax: 1,
+    type: 'heatmap',
+    showscale: false,
+    xgap: 2,
+    ygap: 2,
+    opacity: 1,
+    text: text,
+    hovertemplate:
+      '<b>Time</b>: %{x}<br>' +
+      '<b>Max anomaly grade</b>: %{z}<br>' +
+      '<b>Anomaly occurrences</b>: %{text}' +
+      '<extra></extra>',
+    cellTimeInterval: cellTimeInterval,
+  } as PlotData;
+};
+
+export const getEntitytAnomaliesHeatmapData = (
+  dateRange: DateRange,
+  entitiesAnomalySummaryResult: EntityAnomalySummaries[],
+  displayTopNum: number
+) => {
+  const entityValues = [] as string[];
+  const maxAnomalyGrades = [] as any[];
+  const numAnomalyGrades = [] as any[];
+
+  const timeWindows = calculateTimeWindowsWithMaxDataPoints(
+    NUM_CELLS,
+    dateRange
+  );
+
+  let entitiesAnomalySummaries = [] as EntityAnomalySummaries[];
+
+  if (isEmpty(entitiesAnomalySummaryResult)) {
+    // put placeholder data so that heatmap won't look empty
+    for (let i = 0; i < displayTopNum; i++) {
+      // using blank string with different length as entity values instead of
+      // only 1 whitesapce for all entities, to avoid heatmap with single row
+      const blankStrValue = buildBlankStringWithLength(i);
+      entitiesAnomalySummaries.push({
+        entity: {
+          value: blankStrValue,
+        },
+      } as EntityAnomalySummaries);
+    }
+  } else {
+    entitiesAnomalySummaries = entitiesAnomalySummaryResult;
+  }
+
+  entitiesAnomalySummaries.forEach((entityAnomalySummaries) => {
+    const maxAnomalyGradesForEntity = [] as number[];
+    const numAnomalyGradesForEntity = [] as number[];
+
+    const entityValue = get(
+      entityAnomalySummaries,
+      ENTITY_VALUE_PATH_FIELD,
+      ''
+    ) as string;
+    const anomaliesSummary = get(
+      entityAnomalySummaries,
+      'anomalySummaries',
+      []
+    ) as EntityAnomalySummary[];
+    entityValues.push(entityValue);
+
+    timeWindows.forEach((timeWindow) => {
+      const anomalySummaryInTimeRange = anomaliesSummary.filter(
+        (singleAnomalySummary) =>
+          singleAnomalySummary.startTime >= timeWindow.startDate &&
+          singleAnomalySummary.startTime < timeWindow.endDate
+      );
+
+      if (isEmpty(anomalySummaryInTimeRange)) {
+        maxAnomalyGradesForEntity.push(0);
+        numAnomalyGradesForEntity.push(0);
+        return;
+      }
+
+      const maxAnomalies = anomalySummaryInTimeRange.map((anomalySummary) => {
+        return toFixedNumberForAnomaly(
+          defaultTo(get(anomalySummary, 'maxAnomaly'), 0)
+        );
+      });
+      const countAnomalies = anomalySummaryInTimeRange.map((anomalySummary) => {
+        return defaultTo(get(anomalySummary, 'anomalyCount'), 0);
+      });
+
+      maxAnomalyGradesForEntity.push(Math.max(...maxAnomalies));
+      numAnomalyGradesForEntity.push(
+        countAnomalies.reduce((a, b) => {
+          return a + b;
+        })
+      );
+    });
+
+    maxAnomalyGrades.push(maxAnomalyGradesForEntity);
+    numAnomalyGrades.push(numAnomalyGradesForEntity);
+  });
+
+  const plotTimes = timeWindows.map((timeWindow) => timeWindow.startDate);
+  const timeStamps = plotTimes.map((timestamp) =>
+    moment(timestamp).format(HEATMAP_X_AXIS_DATE_FORMAT)
+  );
+  const plotData = buildHeatmapPlotData(
+    timeStamps,
+    entityValues.reverse(),
+    maxAnomalyGrades.reverse(),
+    numAnomalyGrades.reverse(),
+    timeWindows[0].endDate - timeWindows[0].startDate
+  );
+  return [plotData];
+};
+
+const getEntityAnomaliesMap = (
+  anomalies: any[] | undefined
+): Map<string, any[]> => {
   const entityAnomaliesMap = new Map<string, any[]>();
+  if (anomalies == undefined) {
+    return entityAnomaliesMap;
+  }
   anomalies.forEach((anomaly) => {
     const entity = get(anomaly, 'entity', [] as EntityData[]);
     if (isEmpty(entity)) {

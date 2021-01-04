@@ -16,9 +16,9 @@
 import React, { useState } from 'react';
 
 import moment from 'moment';
-import { PlotData } from 'plotly.js';
-import Plot from 'react-plotly.js';
-import { get, isEmpty } from 'lodash';
+import Plotly, { PlotData } from 'plotly.js-dist';
+import plotComponentFactory from 'react-plotly.js/factory';
+import { get, isEmpty, uniq } from 'lodash';
 import {
   EuiFlexItem,
   EuiFlexGroup,
@@ -41,27 +41,51 @@ import {
   AnomalyHeatmapSortType,
   sortHeatmapPlotData,
   filterHeatmapPlotDataByY,
+  getEntitytAnomaliesHeatmapData,
 } from '../utils/anomalyChartUtils';
 import { MIN_IN_MILLI_SECS } from '../../../../server/utils/constants';
+import { EntityAnomalySummaries } from '../../../../server/models/interfaces';
 
 interface AnomalyHeatmapChartProps {
   title: string;
   detectorId: string;
   detectorName: string;
-  anomalies: any[];
+  anomalies?: any[];
   dateRange: DateRange;
   isLoading: boolean;
-  showAlerts?: boolean;
   monitor?: Monitor;
   detectorInterval?: number;
   unit?: string;
   onHeatmapCellSelected(cell: HeatmapCell | undefined): void;
+  onDisplayOptionChanged?(option: HeatmapDisplayOption | undefined): void;
+  heatmapDisplayOption?: HeatmapDisplayOption;
+  entityAnomalySummaries?: EntityAnomalySummaries[];
+  isNotSample?: boolean;
 }
 
 export interface HeatmapCell {
   dateRange: DateRange;
   entityValue: string;
 }
+
+export interface HeatmapDisplayOption {
+  sortType: AnomalyHeatmapSortType;
+  entityOption: { label: string; value: number };
+}
+
+const COMBINED_OPTIONS = {
+  label: 'Combined options',
+  options: [
+    { label: 'Top 10', value: 10 },
+    { label: 'Top 20', value: 20 },
+    { label: 'Top 30', value: 30 },
+  ],
+};
+
+export const INITIAL_HEATMAP_DISPLAY_OPTION = {
+  sortType: AnomalyHeatmapSortType.SEVERITY,
+  entityOption: COMBINED_OPTIONS.options[0],
+} as HeatmapDisplayOption;
 
 export const AnomalyHeatmapChart = React.memo(
   (props: AnomalyHeatmapChartProps) => {
@@ -80,14 +104,7 @@ export const AnomalyHeatmapChart = React.memo(
       },
     ];
 
-    const COMBINED_OPTIONS = {
-      label: 'Combined options',
-      options: [
-        { label: 'Top 10', value: 10 },
-        { label: 'Top 20', value: 20 },
-        { label: 'Top 30', value: 30 },
-      ],
-    };
+    const PlotComponent = plotComponentFactory(Plotly);
 
     const getViewEntityOptions = (inputHeatmapData: PlotData[]) => {
       let individualEntities = [];
@@ -107,28 +124,57 @@ export const AnomalyHeatmapChart = React.memo(
       });
 
       return [
-        COMBINED_OPTIONS,
+        getViewableCombinedOptions(
+          COMBINED_OPTIONS,
+          props.heatmapDisplayOption?.entityOption
+        ),
         {
           label: 'Individual entities',
-          options: individualEntityOptions,
+          options: individualEntityOptions.reverse(),
         },
       ];
     };
 
+    const getViewableCombinedOptions = (
+      existingOptions: any,
+      selectedCombinedOption: any | undefined
+    ) => {
+      if (!selectedCombinedOption) {
+        return existingOptions;
+      }
+      return {
+        label: existingOptions.label,
+        options: uniq([selectedCombinedOption, ...existingOptions.options]),
+      };
+    };
+
     const [originalHeatmapData, setOriginalHeatmapData] = useState(
-      getAnomaliesHeatmapData(
-        props.anomalies,
-        props.dateRange,
-        AnomalyHeatmapSortType.SEVERITY,
-        COMBINED_OPTIONS.options[0].value
-      )
+      props.isNotSample
+        ? // use anomaly summary data in case of realtime result
+          getEntitytAnomaliesHeatmapData(
+            props.dateRange,
+            props.entityAnomalySummaries,
+            props.heatmapDisplayOption.entityOption.value
+          )
+        : // use anomalies data in case of sample result
+          getAnomaliesHeatmapData(
+            props.anomalies,
+            props.dateRange,
+            AnomalyHeatmapSortType.SEVERITY,
+            COMBINED_OPTIONS.options[0].value
+          )
     );
+
     const [heatmapData, setHeatmapData] = useState<PlotData[]>(
       originalHeatmapData
     );
 
-    const [sortByFieldValue, setSortByFieldValue] = useState(
-      SORT_BY_FIELD_OPTIONS[0].value
+    const [sortByFieldValue, setSortByFieldValue] = useState<
+      AnomalyHeatmapSortType
+    >(
+      props.isNotSample
+        ? props.heatmapDisplayOption.sortType
+        : SORT_BY_FIELD_OPTIONS[0].value
     );
 
     const [currentViewOptions, setCurrentViewOptions] = useState([
@@ -191,14 +237,14 @@ export const AnomalyHeatmapChart = React.memo(
           );
           setHeatmapData([transparentHeatmapData, ...selectedHeatmapData]);
 
-          const selectedEndDate = moment(
+          const selectedStartDate = moment(
             //@ts-ignore
             heatmapData[0].x[selectedCellIndices[1]],
             HEATMAP_X_AXIS_DATE_FORMAT
           ).valueOf();
 
-          const selectedStartDate =
-            selectedEndDate -
+          const selectedEndDate =
+            selectedStartDate +
             get(selectedHeatmapData, '[0].cellTimeInterval', MIN_IN_MILLI_SECS);
           props.onHeatmapCellSelected({
             dateRange: {
@@ -226,18 +272,25 @@ export const AnomalyHeatmapChart = React.memo(
       if (isEmpty(selectedViewOptions)) {
         // when `clear` is hit for combo box
         setCurrentViewOptions([COMBINED_OPTIONS.options[0]]);
-        const displayTopEntityNum = get(COMBINED_OPTIONS.options[0], 'value');
 
-        const updateHeatmapPlotData = getAnomaliesHeatmapData(
-          props.anomalies,
-          props.dateRange,
-          sortByFieldValue,
-          displayTopEntityNum
-        );
-        setOriginalHeatmapData(updateHeatmapPlotData);
-        setHeatmapData(updateHeatmapPlotData);
-        setNumEntities(updateHeatmapPlotData[0].y.length);
-        setEntityViewOptions(getViewEntityOptions(updateHeatmapPlotData));
+        if (props.isNotSample && props.onDisplayOptionChanged) {
+          props.onDisplayOptionChanged({
+            sortType: sortByFieldValue,
+            entityOption: COMBINED_OPTIONS.options[0],
+          });
+        } else {
+          const displayTopEntityNum = get(COMBINED_OPTIONS.options[0], 'value');
+          const updateHeatmapPlotData = getAnomaliesHeatmapData(
+            props.anomalies,
+            props.dateRange,
+            sortByFieldValue,
+            displayTopEntityNum
+          );
+          setOriginalHeatmapData(updateHeatmapPlotData);
+          setHeatmapData(updateHeatmapPlotData);
+          setNumEntities(updateHeatmapPlotData[0].y.length);
+          setEntityViewOptions(getViewEntityOptions(updateHeatmapPlotData));
+        }
         return;
       }
       const nonCombinedOptions = [] as any[];
@@ -251,17 +304,26 @@ export const AnomalyHeatmapChart = React.memo(
         if (isCombinedViewEntityOption(option)) {
           // only allow 1 combined option
           setCurrentViewOptions([option]);
-          const displayTopEntityNum = get(option, 'value');
-          const updateHeatmapPlotData = getAnomaliesHeatmapData(
-            props.anomalies,
-            props.dateRange,
-            sortByFieldValue,
-            displayTopEntityNum
-          );
-          setOriginalHeatmapData(updateHeatmapPlotData);
-          setHeatmapData(updateHeatmapPlotData);
-          setNumEntities(updateHeatmapPlotData[0].y.length);
-          setEntityViewOptions(getViewEntityOptions(updateHeatmapPlotData));
+          if (props.isNotSample && props.onDisplayOptionChanged) {
+            props.onDisplayOptionChanged({
+              sortType: sortByFieldValue,
+              entityOption: option,
+            });
+          } else {
+            const displayTopEntityNum = get(option, 'value');
+            const updateHeatmapPlotData = getAnomaliesHeatmapData(
+              props.anomalies,
+              props.dateRange,
+              sortByFieldValue,
+              displayTopEntityNum
+            );
+
+            setOriginalHeatmapData(updateHeatmapPlotData);
+            setHeatmapData(updateHeatmapPlotData);
+            setNumEntities(updateHeatmapPlotData[0].y.length);
+            setEntityViewOptions(getViewEntityOptions(updateHeatmapPlotData));
+          }
+
           return;
         } else {
           nonCombinedOptions.push(option);
@@ -294,6 +356,19 @@ export const AnomalyHeatmapChart = React.memo(
 
     const handleSortByFieldChange = (value: any) => {
       setSortByFieldValue(value);
+      props.onHeatmapCellSelected(undefined);
+      if (
+        props.isNotSample &&
+        props.onDisplayOptionChanged &&
+        currentViewOptions.length === 1 &&
+        isCombinedViewEntityOption(currentViewOptions[0])
+      ) {
+        props.onDisplayOptionChanged({
+          sortType: value,
+          entityOption: currentViewOptions[0],
+        });
+        return;
+      }
       const sortedHeatmapData = sortHeatmapPlotData(
         heatmapData[0],
         value,
@@ -303,7 +378,6 @@ export const AnomalyHeatmapChart = React.memo(
         opacity: 1,
       });
       setHeatmapData([updatedHeatmapData]);
-      props.onHeatmapCellSelected(undefined);
     };
 
     return (
@@ -439,7 +513,7 @@ export const AnomalyHeatmapChart = React.memo(
                   </EuiFlexItem>
                 </EuiFlexGroup>
               ) : (
-                <Plot
+                <PlotComponent
                   data={heatmapData}
                   style={{
                     position: 'relative',

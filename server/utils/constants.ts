@@ -58,3 +58,27 @@ export enum AD_DOC_FIELDS {
 export const MAX_MONITORS = 1000;
 
 export const MAX_ALERTS = 1000;
+
+// TODO: maybe move types/interfaces/constants/helpers shared between client and server
+// side as many as possible into single place
+export enum DETECTOR_STATE {
+  DISABLED = 'Stopped',
+  INIT = 'Initializing',
+  RUNNING = 'Running',
+  FEATURE_REQUIRED = 'Feature required',
+  INIT_FAILURE = 'Initialization failure',
+  UNEXPECTED_FAILURE = 'Unexpected failure',
+}
+
+export enum SAMPLE_TYPE {
+  HTTP_RESPONSES = 'http-responses',
+  HOST_HEALTH = 'host-health',
+  ECOMMERCE = 'ecommerce',
+}
+
+export const ENTITY_FIELD = 'entity';
+export const ENTITY_VALUE_PATH_FIELD = 'entity.value';
+export const ENTITY_NAME_PATH_FIELD = 'entity.name';
+
+export const DOC_COUNT_FIELD = 'doc_count';
+export const KEY_FIELD = 'key';
