@@ -25,7 +25,6 @@ import {
   GetDetectorsQueryParams,
   ServerResponse,
   FeatureResult,
-  DateRangeFilter,
 } from '../models/types';
 import { Router } from '../router';
 import {
@@ -34,6 +33,7 @@ import {
   ENTITY_FIELD,
   ENTITY_NAME_PATH_FIELD,
   ENTITY_VALUE_PATH_FIELD,
+  DETECTOR_STATE,
 } from '../utils/constants';
 import {
   mapKeysDeep,
@@ -51,6 +51,12 @@ import {
   getDetectorInitProgress,
   isIndexNotFoundError,
   getErrorMessage,
+  getRealtimeDetectors,
+  getHistoricalDetectors,
+  getDetectorTasks,
+  appendTaskInfo,
+  getDetectorResults,
+  getHistoricalDetectorState,
 } from './utils/adHelpers';
 import { isNumber, set } from 'lodash';
 import {
@@ -75,7 +81,10 @@ export function registerADRoutes(apiRouter: Router, adService: AdService) {
   apiRouter.get('/detectors/{detectorId}', adService.getDetector);
   apiRouter.get('/detectors', adService.getDetectors);
   apiRouter.post('/detectors/{detectorId}/preview', adService.previewDetector);
-  apiRouter.get('/detectors/{detectorId}/results', adService.getAnomalyResults);
+  apiRouter.get(
+    '/detectors/{id}/results/{isHistorical}',
+    adService.getAnomalyResults
+  );
   apiRouter.delete('/detectors/{detectorId}', adService.deleteDetector);
   apiRouter.post('/detectors/{detectorId}/start', adService.startDetector);
   apiRouter.post('/detectors/{detectorId}/stop', adService.stopDetector);
@@ -85,6 +94,7 @@ export function registerADRoutes(apiRouter: Router, adService: AdService) {
   );
   apiRouter.get('/detectors/{detectorName}/_match', adService.matchDetector);
   apiRouter.get('/detectors/_count', adService.getDetectorCount);
+  apiRouter.get('/detectors/historical', adService.getHistoricalDetectors);
 }
 
 export default class AdService {
@@ -227,38 +237,88 @@ export default class AdService {
         .callAsCurrentUser('ad.getDetector', {
           detectorId,
         });
+
+      // Considering any detector with no detection date range to be a realtime detector
+      const isRealtimeDetector =
+        get(response, 'anomaly_detector.detection_date_range', null) === null;
+      const task = get(response, 'anomaly_detection_task', null);
+      const taskId = get(response, 'anomaly_detection_task.task_id', null);
+      const taskProgress = get(
+        response,
+        'anomaly_detection_task.task_progress',
+        null
+      );
+
+      // Getting detector state, depending on realtime or historical
       let detectorState;
-      try {
-        const detectorStateResp = await this.client
-          .asScoped(request)
-          .callAsCurrentUser('ad.detectorProfile', {
-            detectorId: detectorId,
-          });
-        const detectorStates = getFinalDetectorStates(
-          [detectorStateResp],
-          [convertDetectorKeysToCamelCase(response.anomaly_detector)]
-        );
-        detectorState = detectorStates[0];
-      } catch (err) {
-        console.log(
-          'Anomaly detector - Unable to retrieve detector state',
-          err
-        );
+      if (isRealtimeDetector) {
+        try {
+          const detectorStateResp = await this.client
+            .asScoped(request)
+            .callAsCurrentUser('ad.detectorProfile', {
+              detectorId: detectorId,
+            });
+          const detectorStates = getFinalDetectorStates(
+            [detectorStateResp],
+            [convertDetectorKeysToCamelCase(response.anomaly_detector)]
+          );
+          detectorState = detectorStates[0];
+        } catch (err) {
+          console.log(
+            'Anomaly detector - Unable to retrieve detector state',
+            err
+          );
+        }
+      } else {
+        detectorState = { state: getHistoricalDetectorState(task) };
       }
+
+      // Getting the detector job, depending on realtime or historical
+      let adJob = get(response, 'anomaly_detector_job', null);
+      if (task && adJob === null) {
+        adJob = {
+          name: get(response, '_id'),
+          schedule: {
+            interval: {
+              start_time: get(task, 'last_update_time'),
+              period: 1,
+              unit: 'Minutes',
+            },
+          },
+          window_delay: get(response, 'anomaly_detector.window_delay'),
+          enabled: detectorState === DETECTOR_STATE.RUNNING ? true : false,
+          enabled_time: get(task, 'execution_start_time'),
+          disabled_time: get(task, 'execution_end_time')
+            ? get(task, 'execution_end_time')
+            : get(task, 'last_update_time'),
+          last_update_time: get(task, 'last_update_time'),
+          lock_duration_seconds: 60,
+        };
+      }
+
       const resp = {
         ...response.anomaly_detector,
         id: response._id,
         primaryTerm: response._primary_term,
         seqNo: response._seq_no,
-        adJob: { ...response.anomaly_detector_job },
-        ...(detectorState !== undefined
+        adJob: { ...adJob },
+        ...(isRealtimeDetector
           ? {
               curState: detectorState.state,
               stateError: detectorState.error,
               initProgress: getDetectorInitProgress(detectorState),
             }
+          : {
+              curState: detectorState.state,
+            }),
+        ...(!isRealtimeDetector
+          ? {
+              taskId: taskId,
+              taskProgress: taskProgress,
+            }
           : {}),
       };
+
       return kibanaResponse.ok({
         body: {
           ok: true,
@@ -467,8 +527,8 @@ export default class AdService {
         mustQueries.push({
           query_string: {
             fields: ['indices'],
-            default_operator: 'OR',
-            query: `*${indices.trim().split(' ').join('* *')}*`,
+            default_operator: 'AND',
+            query: `*${indices.trim().split('-').join('* *')}*`,
           },
         });
       }
@@ -513,8 +573,16 @@ export default class AdService {
         }),
         {}
       );
+
+      const realtimeDetectors = getRealtimeDetectors(
+        Object.values(allDetectors)
+      ).reduce(
+        (acc: any, detector: any) => ({ ...acc, [detector.id]: detector }),
+        {}
+      );
+
       //Given each detector from previous result, get aggregation to power list
-      const allDetectorIds = Object.keys(allDetectors);
+      const allDetectorIds = Object.keys(realtimeDetectors);
       const aggregationResult = await this.client
         .asScoped(request)
         .callAsCurrentUser('ad.searchResults', {
@@ -535,7 +603,7 @@ export default class AdService {
         return {
           ...acc,
           [agg.key]: {
-            ...allDetectors[agg.key],
+            ...realtimeDetectors[agg.key],
             totalAnomalies: agg.total_anomalies_in_24hr.doc_count,
             lastActiveAnomaly: agg.latest_anomaly_time.value,
           },
@@ -550,7 +618,7 @@ export default class AdService {
         return {
           ...acc,
           [unusedDetector]: {
-            ...allDetectors[unusedDetector],
+            ...realtimeDetectors[unusedDetector],
             totalAnomalies: 0,
             lastActiveAnomaly: 0,
           },
@@ -666,14 +734,24 @@ export default class AdService {
     request: KibanaRequest,
     kibanaResponse: KibanaResponseFactory
   ): Promise<IKibanaResponse<any>> => {
-    const { detectorId } = request.params as { detectorId: string };
+    let { id, isHistorical } = request.params as {
+      id: string;
+      isHistorical: any;
+    };
+    isHistorical = JSON.parse(isHistorical);
+
+    // Search by task id if historical, or by detector id if realtime
+    const searchTerm = isHistorical ? { task_id: id } : { detector_id: id };
+
     try {
       const {
         from = 0,
         size = 20,
         sortDirection = SORT_DIRECTION.DESC,
         sortField = AD_DOC_FIELDS.DATA_START_TIME,
-        dateRangeFilter = undefined,
+        startTime = 0,
+        endTime = 0,
+        fieldName = '',
         anomalyThreshold = -1,
         entityName = undefined,
         entityValue = undefined,
@@ -682,7 +760,9 @@ export default class AdService {
         size: number;
         sortDirection: SORT_DIRECTION;
         sortField?: string;
-        dateRangeFilter?: string;
+        startTime: number;
+        endTime: number;
+        fieldName: string;
         anomalyThreshold: number;
         entityName: string;
         entityValue: string;
@@ -714,9 +794,7 @@ export default class AdService {
           bool: {
             filter: [
               {
-                term: {
-                  detector_id: detectorId,
-                },
+                term: searchTerm,
               },
 
               {
@@ -760,30 +838,27 @@ export default class AdService {
       };
 
       try {
-        const dateRangeFilterObj = (dateRangeFilter
-          ? JSON.parse(dateRangeFilter)
-          : undefined) as DateRangeFilter;
         const filterSize = requestBody.query.bool.filter.length;
-        if (dateRangeFilterObj && dateRangeFilterObj.fieldName) {
-          (dateRangeFilterObj.startTime || dateRangeFilterObj.endTime) &&
+        if (fieldName) {
+          (startTime || endTime) &&
             set(
               requestBody.query.bool.filter,
-              `${filterSize}.range.${dateRangeFilterObj.fieldName}.format`,
+              `${filterSize}.range.${fieldName}.format`,
               'epoch_millis'
             );
 
-          dateRangeFilterObj.startTime &&
+          startTime &&
             set(
               requestBody.query.bool.filter,
-              `${filterSize}.range.${dateRangeFilterObj.fieldName}.gte`,
-              dateRangeFilterObj.startTime
+              `${filterSize}.range.${fieldName}.gte`,
+              startTime
             );
 
-          dateRangeFilterObj.endTime &&
+          endTime &&
             set(
               requestBody.query.bool.filter,
-              `${filterSize}.range.${dateRangeFilterObj.fieldName}.lte`,
-              dateRangeFilterObj.endTime
+              `${filterSize}.range.${fieldName}.lte`,
+              endTime
             );
         }
       } catch (error) {
@@ -928,5 +1003,202 @@ export default class AdService {
       };
     });
     return featureResult;
+  };
+
+  getHistoricalDetectors = async (
+    context: RequestHandlerContext,
+    request: KibanaRequest,
+    kibanaResponse: KibanaResponseFactory
+  ): Promise<IKibanaResponse<any>> => {
+    try {
+      const {
+        from = 0,
+        size = 20,
+        search = '',
+        indices = '',
+        sortDirection = SORT_DIRECTION.DESC,
+        sortField = 'name',
+      } = request.query as GetDetectorsQueryParams;
+      const mustQueries = [];
+      if (search.trim()) {
+        mustQueries.push({
+          query_string: {
+            fields: ['name', 'description'],
+            default_operator: 'AND',
+            query: `*${search.trim().split('-').join('* *')}*`,
+          },
+        });
+      }
+      if (indices.trim()) {
+        mustQueries.push({
+          query_string: {
+            fields: ['indices'],
+            default_operator: 'AND',
+            query: `*${indices.trim().split('-').join('* *')}*`,
+          },
+        });
+      }
+      // Allowed sorting columns
+      const sortQueryMap = {
+        name: { 'name.keyword': sortDirection },
+        indices: { 'indices.keyword': sortDirection },
+        lastUpdateTime: { last_update_time: sortDirection },
+      } as { [key: string]: object };
+      let sort = {};
+      const sortQuery = sortQueryMap[sortField];
+      if (sortQuery) {
+        sort = sortQuery;
+      }
+      // Preparing search request
+      const requestBody = {
+        sort,
+        size,
+        from,
+        query: {
+          bool: {
+            must: mustQueries,
+          },
+        },
+      };
+      const response: any = await this.client
+        .asScoped(request)
+        .callAsCurrentUser('ad.searchDetector', { body: requestBody });
+
+      // Get all detectors from search detector API
+      const allDetectors = get(response, 'hits.hits', []).reduce(
+        (acc: any, detector: any) => ({
+          ...acc,
+          [detector._id]: {
+            id: detector._id,
+            description: get(detector, '_source.description', ''),
+            indices: get(detector, '_source.indices', []),
+            lastUpdateTime: get(detector, '_source.last_update_time', 0),
+            ...convertDetectorKeysToCamelCase(get(detector, '_source', {})),
+          },
+        }),
+        {}
+      );
+
+      // Filter out to just include historical detectors
+      const allHistoricalDetectors = getHistoricalDetectors(
+        Object.values(allDetectors)
+      ).reduce(
+        (acc, detector: any) => ({ ...acc, [detector.id]: detector }),
+        {}
+      ) as { [key: string]: Detector };
+
+      // Get related info for each historical detector (detector state, task info, etc.)
+      const allIds = Object.values(allHistoricalDetectors).map(
+        (detector) => detector.id
+      ) as string[];
+
+      const detectorDetailPromises = allIds.map(async (id: string) => {
+        try {
+          const detectorDetailResp = await this.client
+            .asScoped(request)
+            .callAsCurrentUser('ad.getDetector', {
+              detectorId: id,
+            });
+          return detectorDetailResp;
+        } catch (err) {
+          console.log('Error getting historical detector ', err);
+          return Promise.reject(
+            new Error(
+              'Error retrieving all historical detectors: ' +
+                getErrorMessage(err)
+            )
+          );
+        }
+      });
+
+      const detectorDetailResponses = await Promise.all(
+        detectorDetailPromises
+      ).catch((err) => {
+        throw err;
+      });
+
+      // Get the mapping from detector to task
+      const detectorTasks = getDetectorTasks(detectorDetailResponses);
+
+      // Get results for each task
+      const detectorResultPromises = Object.values(detectorTasks).map(
+        async (task) => {
+          const taskId = get(task, 'task_id', '');
+          try {
+            const reqBody = {
+              query: {
+                bool: {
+                  must: [
+                    { range: { anomaly_grade: { gt: 0 } } },
+                    {
+                      term: {
+                        task_id: {
+                          value: taskId,
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            };
+
+            const detectorResultResp = await this.client
+              .asScoped(request)
+              .callAsCurrentUser('ad.searchResults', {
+                body: reqBody,
+              });
+            return detectorResultResp;
+          } catch (err) {
+            console.log('Error getting historical detector results ', err);
+            return Promise.reject(
+              new Error(
+                'Error retrieving all historical detector results: ' +
+                  getErrorMessage(err)
+              )
+            );
+          }
+        }
+      );
+
+      const detectorResultResponses = await Promise.all(
+        detectorResultPromises
+      ).catch((err) => {
+        throw err;
+      });
+
+      // Get the mapping from detector to anomaly results
+      const detectorResults = getDetectorResults(detectorResultResponses);
+
+      // Append the task-related info for each detector.
+      // If no task: set state to DISABLED and total anomalies to 0
+      const detectorsWithTaskInfo = appendTaskInfo(
+        allHistoricalDetectors,
+        detectorTasks,
+        detectorResults
+      );
+
+      return kibanaResponse.ok({
+        body: {
+          ok: true,
+          response: {
+            totalDetectors: Object.values(detectorsWithTaskInfo).length,
+            detectorList: Object.values(detectorsWithTaskInfo),
+          },
+        },
+      });
+    } catch (err) {
+      console.log('Anomaly detector - Unable to search detectors', err);
+      if (isIndexNotFoundError(err)) {
+        return kibanaResponse.ok({
+          body: { ok: true, response: { totalDetectors: 0, detectorList: [] } },
+        });
+      }
+      return kibanaResponse.ok({
+        body: {
+          ok: false,
+          error: getErrorMessage(err),
+        },
+      });
+    }
   };
 }

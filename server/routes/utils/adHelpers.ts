@@ -14,8 +14,8 @@
  */
 
 import { get, omit, cloneDeep, isEmpty } from 'lodash';
-import { AnomalyResults } from 'server/models/interfaces';
-import { GetDetectorsQueryParams } from '../../models/types';
+import { AnomalyResults } from '../../models/interfaces';
+import { GetDetectorsQueryParams, Detector } from '../../models/types';
 import { mapKeysDeep, toCamel, toSnake } from '../../utils/helpers';
 import { DETECTOR_STATE } from '../../utils/constants';
 import { InitProgress } from '../../models/interfaces';
@@ -252,4 +252,94 @@ export const getErrorMessage = (err: any) => {
   return !isEmpty(get(err, 'body.error.reason'))
     ? get(err, 'body.error.reason')
     : get(err, 'message');
+};
+
+// Currently: detector w/ detection date range is considered a 'historical' detector
+export const getHistoricalDetectors = (detectors: Detector[]) => {
+  return detectors.filter(
+    (detector) => detector.detectionDateRange !== undefined
+  );
+};
+
+// Currently: detector w/ no detection date range is considered a 'realtime' detector
+export const getRealtimeDetectors = (detectors: Detector[]) => {
+  return detectors.filter(
+    (detector) => detector.detectionDateRange === undefined
+  );
+};
+
+export const getDetectorTasks = (detectorTaskResponses: any[]) => {
+  const detectorToTaskMap = {} as { [key: string]: any };
+  detectorTaskResponses.forEach((response) => {
+    const detectorId = get(response, '_id', '');
+    const detectorTask = get(response, 'anomaly_detection_task', null);
+    if (detectorTask !== null) {
+      detectorToTaskMap[detectorId] = detectorTask;
+    }
+  });
+  return detectorToTaskMap;
+};
+
+export const getDetectorResults = (detectorResultsResponses: any[]) => {
+  const detectorToResultsMap = {} as { [key: string]: any };
+  detectorResultsResponses.forEach((response) => {
+    const detectorId = get(response, 'hits.hits.0._source.detector_id', null);
+    if (detectorId !== null) {
+      detectorToResultsMap[detectorId] = response;
+    }
+  });
+  return detectorToResultsMap;
+};
+
+// Append task-related info - task state & anomaly results of the task.
+// If there is no related task info for a detector: set to default values of DISABLED state and 0 anomalies
+export const appendTaskInfo = (
+  detectorMap: { [key: string]: any },
+  detectorToTaskMap: { [key: string]: any },
+  detectorToResultsMap: { [key: string]: any }
+) => {
+  const detectorMapWithTaskInfo = {} as { [key: string]: Detector };
+  const detectorsWithTasks = Object.keys(detectorToTaskMap);
+  Object.keys(detectorMap).forEach((detectorId, index) => {
+    if (!detectorsWithTasks.includes(detectorId)) {
+      detectorMapWithTaskInfo[detectorId] = {
+        ...detectorMap[detectorId],
+        curState: DETECTOR_STATE.DISABLED,
+        totalAnomalies: 0,
+      };
+    } else {
+      const task = detectorToTaskMap[detectorId];
+      const state = getHistoricalDetectorState(task);
+      const totalAnomalies = get(
+        detectorToResultsMap[detectorId],
+        'hits.total.value',
+        0
+      );
+      detectorMapWithTaskInfo[detectorId] = {
+        ...detectorMap[detectorId],
+        curState: state,
+        totalAnomalies: totalAnomalies,
+      };
+    }
+  });
+  return detectorMapWithTaskInfo;
+};
+
+// Four checks/transformations need to be made here:
+// (1) set to DISABLED if there is no existing task for this detector
+// (2) set to UNEXPECTED_FAILURE if the task is in a FAILED state to stay consistent
+// (3) set to INIT if the task is in a CREATED state
+// (4) set to DISABLED if the task is in a STOPPED state
+export const getHistoricalDetectorState = (task: any) => {
+  const state = get(task, 'state', 'DISABLED');
+  const updatedState =
+    state === 'FAILED'
+      ? 'UNEXPECTED_FAILURE'
+      : state === 'CREATED'
+      ? 'INIT'
+      : state === 'STOPPED'
+      ? 'DISABLED'
+      : state;
+  //@ts-ignore
+  return DETECTOR_STATE[updatedState];
 };

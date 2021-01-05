@@ -61,13 +61,17 @@ const reducer = handleActions<Anomalies>(
 
 export const getDetectorLiveResults = (
   detectorId: string,
-  queryParams: DetectorResultsQueryParams
+  queryParams: DetectorResultsQueryParams,
+  isHistorical: boolean
 ): APIAction => ({
   type: DETECTOR_LIVE_RESULTS,
   request: (client: HttpSetup) =>
-    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/results`, {
-      query: queryParams,
-    }),
+    client.get(
+      `..${AD_NODE_API.DETECTOR}/${detectorId}/results/${isHistorical}`,
+      {
+        query: queryParams,
+      }
+    ),
 });
 
 export default reducer;

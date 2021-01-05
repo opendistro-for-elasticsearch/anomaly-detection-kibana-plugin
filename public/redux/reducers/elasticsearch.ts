@@ -88,7 +88,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          indices: action.result.response.indices,
+          indices: get(action, 'result.response.indices', []),
         };
       },
       FAILURE: (
@@ -113,7 +113,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          aliases: action.result.response.aliases,
+          aliases: get(action, 'result.response.aliases', []),
         };
       },
       FAILURE: (
@@ -138,7 +138,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          searchResult: { ...action.result.response },
+          searchResult: { ...get(action, 'result.response', {}) },
         };
       },
       FAILURE: (
@@ -163,7 +163,9 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          dataTypes: getPathsPerDataType(action.result.response.mappings),
+          dataTypes: getPathsPerDataType(
+            get(action, 'result.response.mappings', {})
+          ),
         };
       },
       FAILURE: (
@@ -187,7 +189,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          indices: action.result.response.indices,
+          indices: get(action, 'result.response.indices', []),
         };
       },
       FAILURE: (
@@ -196,7 +198,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
     [BULK]: {
@@ -218,7 +220,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
     [DELETE_INDEX]: {
@@ -232,7 +234,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          indices: action.result.response.indices,
+          indices: get(action, 'result.response.indices', []),
         };
       },
       FAILURE: (
@@ -241,7 +243,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error,
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
   },

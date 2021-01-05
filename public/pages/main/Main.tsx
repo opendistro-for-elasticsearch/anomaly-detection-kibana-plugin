@@ -20,6 +20,10 @@ import { CreateDetector } from '../createDetector';
 import { DetectorList } from '../DetectorsList';
 import { SampleData } from '../SampleData';
 import { ListRouterParams } from '../DetectorsList/containers/List/List';
+import { HistoricalDetectorList } from '../HistoricalDetectorList';
+import { HistoricalDetectorListRouterParams } from '../HistoricalDetectorList/containers/HistoricalDetectorList';
+import { CreateHistoricalDetector } from '../CreateHistoricalDetector';
+import { HistoricalDetectorDetail } from '../HistoricalDetectorDetail';
 // @ts-ignore
 import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from '@elastic/eui';
 import { useSelector } from 'react-redux';
@@ -32,14 +36,17 @@ import { CoreStart } from '../../../../../src/core/public';
 
 enum Navigation {
   AnomalyDetection = 'Anomaly detection',
+  Realtime = 'Real-time',
   Dashboard = 'Dashboard',
   Detectors = 'Detectors',
+  HistoricalDetectors = 'Historical detectors',
   SampleDetectors = 'Sample detectors',
 }
 
 enum Pathname {
   Dashboard = '/dashboard',
   Detectors = '/detectors',
+  HistoricalDetectors = '/historical-detectors',
   SampleDetectors = '/sample-detectors',
 }
 
@@ -56,20 +63,33 @@ export function Main(props: MainProps) {
       href: `#${Pathname.Dashboard}`,
       items: [
         {
-          name: Navigation.Dashboard,
+          name: Navigation.Realtime,
           id: 1,
-          href: `#${Pathname.Dashboard}`,
-          isSelected: props.location.pathname === Pathname.Dashboard,
+          forceOpen: true,
+          items: [
+            {
+              name: Navigation.Dashboard,
+              id: 2,
+              href: `#${Pathname.Dashboard}`,
+              isSelected: props.location.pathname === Pathname.Dashboard,
+            },
+            {
+              name: Navigation.Detectors,
+              id: 3,
+              href: `#${Pathname.Detectors}`,
+              isSelected: props.location.pathname === Pathname.Detectors,
+            },
+          ],
         },
         {
-          name: Navigation.Detectors,
-          id: 2,
-          href: `#${Pathname.Detectors}`,
-          isSelected: props.location.pathname === Pathname.Detectors,
+          name: Navigation.HistoricalDetectors,
+          id: 4,
+          href: `#${Pathname.HistoricalDetectors}`,
+          isSelected: props.location.pathname === Pathname.HistoricalDetectors,
         },
         {
           name: Navigation.SampleDetectors,
-          id: 3,
+          id: 5,
           href: `#${Pathname.SampleDetectors}`,
           isSelected: props.location.pathname === Pathname.SampleDetectors,
         },
@@ -128,6 +148,36 @@ export function Main(props: MainProps) {
                   path={APP_PATH.DETECTOR_DETAIL}
                   render={(props: RouteComponentProps) => (
                     <DetectorDetail {...props} />
+                  )}
+                />
+                <Route
+                  exact
+                  path={APP_PATH.LIST_HISTORICAL_DETECTORS}
+                  render={(
+                    props: RouteComponentProps<
+                      HistoricalDetectorListRouterParams
+                    >
+                  ) => <HistoricalDetectorList {...props} />}
+                />
+                <Route
+                  exact
+                  path={APP_PATH.CREATE_HISTORICAL_DETECTOR}
+                  render={(props: RouteComponentProps) => (
+                    <CreateHistoricalDetector {...props} isEdit={false} />
+                  )}
+                />
+                <Route
+                  exact
+                  path={APP_PATH.EDIT_HISTORICAL_DETECTOR}
+                  render={(props: RouteComponentProps) => (
+                    <CreateHistoricalDetector {...props} isEdit={true} />
+                  )}
+                />
+                <Route
+                  exact
+                  path={APP_PATH.HISTORICAL_DETECTOR_DETAIL}
+                  render={(props: RouteComponentProps) => (
+                    <HistoricalDetectorDetail {...props} />
                   )}
                 />
                 <Redirect from="/" to={APP_PATH.DASHBOARD} />

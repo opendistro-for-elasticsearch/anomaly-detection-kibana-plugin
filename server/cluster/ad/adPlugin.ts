@@ -83,7 +83,7 @@ export default function adPlugin(Client: any, config: any, components: any) {
   });
   ad.getDetector = ca({
     url: {
-      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>?job=true`,
+      fmt: `${API.DETECTOR_BASE}/<%=detectorId%>?job=true&task=true`,
       req: {
         detectorId: {
           type: 'string',

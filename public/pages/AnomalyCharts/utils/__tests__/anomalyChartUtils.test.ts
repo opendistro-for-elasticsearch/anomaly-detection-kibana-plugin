@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
- //@ts-ignore
+//@ts-ignore
 import moment from 'moment';
 import { getAnomalySummary } from '../anomalyChartUtils';
 
@@ -48,6 +48,7 @@ describe('anomalyChartUtils', () => {
         anomalyOccurrence: 3,
         minAnomalyGrade: 0.1,
         maxAnomalyGrade: 0.7,
+        avgAnomalyGrade: 0.4,
         minConfidence: 0.86,
         maxConfidence: 0.98,
         lastAnomalyOccurrence: moment(1589313164793).format('MM/DD/YY hh:mm A'),

@@ -156,7 +156,7 @@ export function CategoryField(props: CategoryFieldProps) {
                         selectedOptions={
                           (field.value[0] && [{ label: field.value[0] }]) || []
                         }
-                        singleSelection={true}
+                        singleSelection={{ asPlainText: true }}
                         isClearable={true}
                       />
                     </EuiFormRow>

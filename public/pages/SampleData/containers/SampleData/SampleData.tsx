@@ -165,7 +165,7 @@ export const SampleData = () => {
     setLoadingState(false);
     if (!errorDuringAction) {
       core.notifications.toasts.addSuccess(
-        'Successfully loaded sample detector'
+        'Successfully loaded the sample detector'
       );
     } else {
       core.notifications.toasts.addDanger(

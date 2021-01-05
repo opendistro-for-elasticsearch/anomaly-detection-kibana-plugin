@@ -30,7 +30,9 @@ describe('elasticsearch reducer actions', () => {
         sortDirection: SORT_DIRECTION.ASC,
         sortField: 'startTime',
       };
-      await store.dispatch(getDetectorResults(tempDetectorId, queryParams));
+      await store.dispatch(
+        getDetectorResults(tempDetectorId, queryParams, false)
+      );
       const actions = store.getActions();
 
       expect(actions[0].type).toBe('ad/DETECTOR_RESULTS_REQUEST');
@@ -46,10 +48,8 @@ describe('elasticsearch reducer actions', () => {
         anomalies: response.results,
         featureData: undefined,
       });
-      expect(
-        httpMockedClient.get
-      ).toHaveBeenCalledWith(
-        `..${AD_NODE_API.DETECTOR}/${tempDetectorId}/results`,
+      expect(httpMockedClient.get).toHaveBeenCalledWith(
+        `..${AD_NODE_API.DETECTOR}/${tempDetectorId}/results/${false}`,
         { query: queryParams }
       );
     });
@@ -66,7 +66,9 @@ describe('elasticsearch reducer actions', () => {
         sortField: 'startTime',
       };
       try {
-        await store.dispatch(getDetectorResults(tempDetectorId, queryParams));
+        await store.dispatch(
+          getDetectorResults(tempDetectorId, queryParams, false)
+        );
       } catch (e) {
         const actions = store.getActions();
         expect(actions[0].type).toBe('ad/DETECTOR_RESULTS_REQUEST');
@@ -80,10 +82,8 @@ describe('elasticsearch reducer actions', () => {
           requesting: false,
           errorMessage: 'Something went wrong',
         });
-        expect(
-          httpMockedClient.get
-        ).toHaveBeenCalledWith(
-          `..${AD_NODE_API.DETECTOR}/${tempDetectorId}/results`,
+        expect(httpMockedClient.get).toHaveBeenCalledWith(
+          `..${AD_NODE_API.DETECTOR}/${tempDetectorId}/results/${false}`,
           { query: queryParams }
         );
       }

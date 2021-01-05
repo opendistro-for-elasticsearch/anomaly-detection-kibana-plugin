@@ -193,7 +193,7 @@ export function EditFeatures(props: EditFeaturesProps) {
 
               <EuiFlexGroup
                 alignItems="center"
-                style={{ padding: '16px 24px 0px' }}
+                style={{ padding: '16px 0px 0px' }}
               >
                 <EuiFlexItem grow={false}>
                   <EuiButton
@@ -207,7 +207,7 @@ export function EditFeatures(props: EditFeaturesProps) {
                   </EuiButton>
                   <EuiText className="content-panel-subTitle">
                     <p>
-                      You can add{' '}
+                      You can add up to{' '}
                       {Math.max(MAX_FEATURE_NUM - values.featureList.length, 0)}{' '}
                       more features.
                     </p>
@@ -225,12 +225,12 @@ export function EditFeatures(props: EditFeaturesProps) {
     try {
       await dispatch(startDetector(detectorId));
       core.notifications.toasts.addSuccess(
-        `Detector job has been started successfully`
+        `Successfully started the detector job`
       );
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem starting detector job')
+          getErrorMessage(err, 'There was a problem starting the detector job')
         )
       );
     }
@@ -250,7 +250,7 @@ export function EditFeatures(props: EditFeaturesProps) {
         detector
       );
       await dispatch(updateDetector(detector.id, requestBody));
-      core.notifications.toasts.addSuccess('Feature updated');
+      core.notifications.toasts.addSuccess('Features updated');
       if (saveFeatureOption === 'start_ad_job') {
         handleStartAdJob(detector.id);
       }
@@ -259,7 +259,7 @@ export function EditFeatures(props: EditFeaturesProps) {
     } catch (err) {
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getErrorMessage(err, 'There was a problem updating feature')
+          getErrorMessage(err, 'There was a problem updating the features')
         )
       );
       setSubmitting(false);

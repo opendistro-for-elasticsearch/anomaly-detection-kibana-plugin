@@ -131,7 +131,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
       >
         <div
           class="euiFormRow"
-          hint="Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
+          hint="Specify a unique and descriptive name that is easy to recognize."
           id="random_html_id-row"
           title="Name"
         >
@@ -153,7 +153,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                 <p
                   class="sublabel"
                 >
-                  Specify a unique and descriptive name that is easy to recognize. Detector name must contain 1-64 characters.  Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)
+                  Specify a unique and descriptive name that is easy to recognize.
                 </p>
               </div>
             </label>
@@ -168,6 +168,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
+                  aria-describedby="random_html_id-help"
                   class="euiFieldText"
                   id="random_html_id"
                   name="detectorName"
@@ -176,6 +177,13 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                   value=""
                 />
               </div>
+            </div>
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              id="random_html_id-help"
+            >
+              Detector name must contain 1-64 characters. Valid characters are
+                a-z, A-Z, 0-9, -(hyphen) and _(underscore)
             </div>
           </div>
         </div>
@@ -374,7 +382,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
               class="euiFormHelpText euiFormRow__text"
               id="random_html_id-help"
             >
-              You can use a wildcard (*) in your index pattern
+              You can use a wildcard (*) in your index pattern.
             </div>
           </div>
         </div>
@@ -692,7 +700,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
           >
             <div
               class="euiFormRow euiFormRow--fullWidth"
-              hint="Define how often the detector collects data to generate anomalies. The shorter the interval is, the more real time the detector results will be, and the more computing resources the detector will need. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies."
+              hint="Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies."
               id="random_html_id-row"
               title="Detector interval"
             >
@@ -714,7 +722,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                     <p
                       class="sublabel"
                     >
-                      Define how often the detector collects data to generate anomalies. The shorter the interval is, the more real time the detector results will be, and the more computing resources the detector will need. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies.
+                      Define how often the detector collects data to generate anomalies. Shorter intervals generate more detector results and  therefore require more computing resources. The detector interval, together with data ingestion speed, also determines the preparation time of the detector. Long intervals and slow ingestion speed means the detector takes longer time to collect sufficient data to generate anomalies.
                     </p>
                   </div>
                 </label>
@@ -739,6 +747,7 @@ exports[`<CreateDetector /> spec create detector renders the component 1`] = `
                           class="euiFieldNumber"
                           data-test-subj="detectionInterval"
                           id="detectionInterval"
+                          min="1"
                           name="detectionInterval"
                           placeholder="Detector interval"
                           type="number"

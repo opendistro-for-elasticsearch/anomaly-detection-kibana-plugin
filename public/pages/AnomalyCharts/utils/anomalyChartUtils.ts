@@ -79,6 +79,15 @@ const findLatestAnomaly = (anomalies: any[]) => {
   return latestAnomaly;
 };
 
+const getAverageAnomalyGrade = (anomalyGrades: any[]) => {
+  return anomalyGrades.length > 0
+    ? toFixedNumberForAnomaly(
+        anomalyGrades.reduce((prevGrade, curGrade) => prevGrade + curGrade, 0) /
+          anomalyGrades.length
+      )
+    : 0;
+};
+
 export const getAnomalySummary = (totalAnomalies: any[]): AnomalySummary => {
   if (totalAnomalies == undefined || totalAnomalies.length === 0) {
     return DEFAULT_ANOMALY_SUMMARY;
@@ -86,24 +95,13 @@ export const getAnomalySummary = (totalAnomalies: any[]): AnomalySummary => {
   const anomalies = totalAnomalies.filter(
     (anomaly) => anomaly.anomalyGrade > 0
   );
-  const maxConfidence = Math.max(
-    ...anomalies.map((anomaly) => anomaly.confidence),
-    0.0
-  );
-  const minConfidence = Math.min(
-    ...anomalies.map((anomaly) => anomaly.confidence),
-    1.0
-  );
-
-  const maxAnomalyGrade = Math.max(
-    ...anomalies.map((anomaly) => anomaly.anomalyGrade),
-    0.0
-  );
-  const minAnomalyGrade = Math.min(
-    ...anomalies.map((anomaly) => anomaly.anomalyGrade),
-    1.0
-  );
-
+  const anomalyGrades = anomalies.map((anomaly) => anomaly.anomalyGrade);
+  const anomalyConfidences = anomalies.map((anomaly) => anomaly.confidence);
+  const maxConfidence = Math.max(...anomalyConfidences, 0.0);
+  const minConfidence = Math.min(...anomalyConfidences, 1.0);
+  const maxAnomalyGrade = Math.max(...anomalyGrades, 0.0);
+  const minAnomalyGrade = Math.min(...anomalyGrades, 1.0);
+  const avgAnomalyGrade = getAverageAnomalyGrade(anomalyGrades);
   const lastAnomalyOccurrence =
     anomalies.length > 0
       ? minuteDateFormatter(findLatestAnomaly(anomalies).endTime)
@@ -113,6 +111,7 @@ export const getAnomalySummary = (totalAnomalies: any[]): AnomalySummary => {
     anomalyOccurrence: anomalies.length,
     minAnomalyGrade: minAnomalyGrade > maxAnomalyGrade ? 0 : minAnomalyGrade,
     maxAnomalyGrade: maxAnomalyGrade,
+    avgAnomalyGrade: avgAnomalyGrade,
     minConfidence: minConfidence > maxConfidence ? 0 : minConfidence,
     maxConfidence: maxConfidence,
     lastAnomalyOccurrence: lastAnomalyOccurrence,
