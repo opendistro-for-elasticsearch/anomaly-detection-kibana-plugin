@@ -57,12 +57,16 @@ import {
 } from '../../../utils/utils';
 import { prepareDetector } from './utils/formikToFeatures';
 import { useFetchDetectorInfo } from '../../createDetector/hooks/useFetchDetectorInfo';
-import { BREADCRUMBS, MAX_FEATURE_NUM } from '../../../utils/constants';
+import {
+  BREADCRUMBS,
+  MAX_FEATURE_NUM,
+  MULTI_ENTITY_SHINGLE_SIZE,
+} from '../../../utils/constants';
 import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
 import { FeatureAccordion } from '../components/FeatureAccordion/FeatureAccordion';
 import { SaveFeaturesConfirmModal } from '../components/ConfirmModal/SaveFeaturesConfirmModal';
 import { SAVE_FEATURE_OPTIONS } from '../utils/constants';
-import { SHINGLE_SIZE } from '../../../utils/constants';
+import { SINGLE_ENTITY_SHINGLE_SIZE } from '../../../utils/constants';
 import {
   initialFeatureValue,
   generateInitialFeatures,
@@ -70,6 +74,7 @@ import {
   focusOnFirstWrongFeature,
   focusOnCategoryField,
   getCategoryFields,
+  getShingleSizeFromObject,
 } from '../utils/helpers';
 import { SampleAnomalies } from './SampleAnomalies';
 import { CategoryField } from '../components/CategoryField/CategoryField';
@@ -240,7 +245,7 @@ export function EditFeatures(props: EditFeaturesProps) {
     try {
       const requestBody = prepareDetector(
         get(values, 'featureList', []),
-        get(values, 'shingleSize', SHINGLE_SIZE),
+        getShingleSizeFromObject(values, isHCDetector),
         get(values, 'categoryField', []),
         detector
       );
@@ -363,13 +368,15 @@ export function EditFeatures(props: EditFeaturesProps) {
     </Field>
   );
 
+  const originalShingleSize = getShingleSizeFromObject(detector, isHCDetector);
+
   return (
     <Fragment>
       <Formik
         enableReinitialize
         initialValues={{
           featureList: generateInitialFeatures(detector),
-          shingleSize: get(detector, 'shingleSize', SHINGLE_SIZE),
+          shingleSize: originalShingleSize,
           categoryField: get(detector, 'categoryField', []),
         }}
         onSubmit={(values, actions) =>
@@ -407,6 +414,7 @@ export function EditFeatures(props: EditFeaturesProps) {
                 categoryFieldOptions={getCategoryFields(indexDataTypes)}
                 setIsHCDetector={setIsHCDetector}
                 isLoading={isLoading}
+                originalShingleSize={originalShingleSize}
               />
               <EuiPage>
                 <EuiPageBody>

@@ -37,6 +37,7 @@ describe('<CategoryField /> spec', () => {
                   return;
                 }}
                 isLoading={false}
+                originalShingleSize={1}
               />
             </Form>
           </Fragment>
@@ -66,6 +67,7 @@ describe('<CategoryField /> spec', () => {
                   return;
                 }}
                 isLoading={false}
+                originalShingleSize={1}
               />
             </Form>
           </Fragment>
@@ -95,6 +97,7 @@ describe('<CategoryField /> spec', () => {
                   return;
                 }}
                 isLoading={false}
+                originalShingleSize={1}
               />
             </Form>
           </Fragment>
@@ -124,6 +127,7 @@ describe('<CategoryField /> spec', () => {
                   return;
                 }}
                 isLoading={true}
+                originalShingleSize={1}
               />
             </Form>
           </Fragment>

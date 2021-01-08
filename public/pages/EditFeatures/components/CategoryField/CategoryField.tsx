@@ -30,6 +30,7 @@ import {
 } from '@elastic/eui';
 import { Field, FieldProps } from 'formik';
 import { get, isEmpty } from 'lodash';
+import { MULTI_ENTITY_SHINGLE_SIZE } from '../../../../utils/constants';
 import React, { useState, useEffect } from 'react';
 import ContentPanel from '../../../../components/ContentPanel/ContentPanel';
 import {
@@ -43,6 +44,7 @@ interface CategoryFieldProps {
   categoryFieldOptions: string[];
   setIsHCDetector(isHCDetector: boolean): void;
   isLoading: boolean;
+  originalShingleSize: number;
 }
 
 export function CategoryField(props: CategoryFieldProps) {
@@ -109,6 +111,10 @@ export function CategoryField(props: CategoryFieldProps) {
                       if (enabled) {
                         props.setIsHCDetector(false);
                         form.setFieldValue('categoryField', []);
+                        form.setFieldValue(
+                          'shingleSize',
+                          props.originalShingleSize
+                        );
                       }
                       setEnabled(!enabled);
                     }}
@@ -134,8 +140,17 @@ export function CategoryField(props: CategoryFieldProps) {
                           const selection = get(options, '0.label');
                           if (selection) {
                             form.setFieldValue('categoryField', [selection]);
+                            form.setFieldValue(
+                              'shingleSize',
+                              MULTI_ENTITY_SHINGLE_SIZE
+                            );
                           } else {
                             form.setFieldValue('categoryField', []);
+
+                            form.setFieldValue(
+                              'shingleSize',
+                              props.originalShingleSize
+                            );
                           }
                         }}
                         selectedOptions={

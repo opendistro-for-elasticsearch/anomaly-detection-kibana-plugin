@@ -27,12 +27,13 @@ import {
   FEATURE_TYPE,
   FeatureAttributes,
 } from '../../../models/interfaces';
-import { get, sortBy } from 'lodash';
-import { PLUGIN_NAME, SHINGLE_SIZE } from '../../../utils/constants';
+import { get, isEmpty, sortBy } from 'lodash';
+import { PLUGIN_NAME } from '../../../utils/constants';
 import ContentPanel from '../../../components/ContentPanel/ContentPanel';
 import { CodeModal } from '../components/CodeModal/CodeModal';
 import { getTitleWithCount } from '../../../utils/utils';
 import { AdditionalSettings } from '../components/AdditionalSettings/AdditionalSettings';
+import { getShingleSizeFromObject } from '../../../pages/EditFeatures/utils/helpers';
 
 interface FeaturesProps {
   detectorId: string;
@@ -93,7 +94,8 @@ export const Features = (props: FeaturesProps) => {
     return sorted;
   };
   const featureAttributes = get(props.detector, 'featureAttributes', []);
-  const shingleSize = get(props.detector, 'shingleSize', SHINGLE_SIZE);
+  const isHCDetector = !isEmpty(get(props.detector, 'categoryField', []));
+  const shingleSize = getShingleSizeFromObject(props.detector, isHCDetector);
 
   const sorting = {
     sort: {
