@@ -1,11 +1,9 @@
 name: Build and upload artifacts
 on:
-  # push:
-  #   tags:
-  #     - v*
   push:
-    branches:
-      - "staging-artifacts"
+    tags:
+      - v*
+
 env:
   KIBANA_VERSION: 7.10.0
 jobs:
