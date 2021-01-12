@@ -22,13 +22,12 @@ import {
   Switch,
 } from 'react-router-dom';
 import { render, fireEvent, wait } from '@testing-library/react';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
 import { CreateDetector } from '../CreateDetector';
 import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
 import configureStore from '../../../../redux/configureStore';
-import { httpClientMock } from '../../../../../test/mocks';
+import { httpClientMock, coreServicesMock } from '../../../../../test/mocks';
 import userEvent from '@testing-library/user-event';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
 
 const renderWithRouter = (isEdit: boolean = false) => ({
   ...render(
@@ -37,7 +36,9 @@ const renderWithRouter = (isEdit: boolean = false) => ({
         <Switch>
           <Route
             render={(props: RouteComponentProps) => (
-              <CreateDetector isEdit={isEdit} {...props} />
+              <CoreServicesContext.Provider value={coreServicesMock}>
+                <CreateDetector isEdit={isEdit} {...props} />
+              </CoreServicesContext.Provider>
             )}
           />
         </Switch>
@@ -53,14 +54,12 @@ describe('<CreateDetector /> spec', () => {
   describe('create detector', () => {
     test('renders the component', () => {
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            indices: [
-              { index: 'hello', health: 'green' },
-              { index: 'world', health: 'yellow' },
-            ],
-          },
+        ok: true,
+        response: {
+          indices: [
+            { index: 'hello', health: 'green' },
+            { index: 'world', health: 'yellow' },
+          ],
         },
       });
       const { container } = renderWithRouter();
@@ -69,14 +68,12 @@ describe('<CreateDetector /> spec', () => {
 
     test('validate all required field', async () => {
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            indices: [
-              { index: 'hello', health: 'green' },
-              { index: 'world', health: 'yellow' },
-            ],
-          },
+        ok: true,
+        response: {
+          indices: [
+            { index: 'hello', health: 'green' },
+            { index: 'world', health: 'yellow' },
+          ],
         },
       });
       const { getByText } = renderWithRouter();
@@ -89,11 +86,9 @@ describe('<CreateDetector /> spec', () => {
 
     test('prevent duplicate detector name', async () => {
       const randomDetector = getRandomDetector();
-      httpClientMock.post = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: { detectors: [randomDetector], totalDetectors: 1 },
-        },
+      httpClientMock.get = jest.fn().mockResolvedValue({
+        ok: true,
+        response: { count: 0, match: true },
       });
       const { getByPlaceholderText, getByText } = renderWithRouter();
       fireEvent.focus(getByPlaceholderText('Enter detector name'));
@@ -111,21 +106,17 @@ describe('<CreateDetector /> spec', () => {
       const randomDetector = getRandomDetector();
       //Mocked name validation search detector
       httpClientMock.post = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: { detectors: [randomDetector], totalDetectors: 1 },
-        },
+        ok: true,
+        response: { detectors: [randomDetector], totalDetectors: 1 },
       });
       //Mocked get indices
       httpClientMock.get = jest.fn().mockResolvedValue({
-        data: {
-          ok: true,
-          response: {
-            indices: [
-              { index: 'hello', health: 'green' },
-              { index: 'world', health: 'yellow' },
-            ],
-          },
+        ok: true,
+        response: {
+          indices: [
+            { index: 'hello', health: 'green' },
+            { index: 'world', health: 'yellow' },
+          ],
         },
       });
       const { getByPlaceholderText } = renderWithRouter();

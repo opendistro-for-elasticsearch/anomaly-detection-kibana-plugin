@@ -26,10 +26,6 @@ import {
   EuiModalHeaderTitle,
   EuiLoadingSpinner,
 } from '@elastic/eui';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { DetectorListItem } from '../../../../models/interfaces';
 import { EuiSpacer } from '@elastic/eui';
 import { getNamesGrid } from './utils/helpers';

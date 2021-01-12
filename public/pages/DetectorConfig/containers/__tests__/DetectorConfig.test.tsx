@@ -21,13 +21,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import {
-  render,
-  fireEvent,
-  wait,
-} from '@testing-library/react';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
+import { render, fireEvent, wait } from '@testing-library/react';
 import { DetectorConfig } from '../DetectorConfig';
 import {
   Detector,
@@ -38,17 +32,14 @@ import {
   UiFeature,
   FeatureAttributes,
 } from '../../../../models/interfaces';
-import {
-  getRandomDetector,
-} from '../../../../redux/reducers/__tests__/utils';
-import configureStore from '../../../../redux/configureStore';
-import { httpClientMock } from '../../../../../test/mocks';
-import userEvent from '@testing-library/user-event';
+import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
+import { coreServicesMock } from '../../../../../test/mocks';
 import { toString } from '../MetaData';
 import { DATA_TYPES } from '../../../../utils/constants';
 import { OPERATORS_MAP } from '../../../createDetector/components/DataFilters/utils/constant';
 import { displayText } from '../../../createDetector/components/DataFilters/utils/helpers';
 import { mockedStore, initialState } from '../../../../redux/utils/testUtils';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
 
 const renderWithRouter = (detector: Detector) => ({
   ...render(
@@ -67,12 +58,14 @@ const renderWithRouter = (detector: Detector) => ({
         <Switch>
           <Route
             render={(props: RouteComponentProps) => (
-              <DetectorConfig
-                detectorId={detector.id}
-                onEditDetector={jest.fn()}
-                onEditFeatures={jest.fn()}
-                {...props}
-              />
+              <CoreServicesContext.Provider value={coreServicesMock}>
+                <DetectorConfig
+                  detectorId={detector.id}
+                  onEditDetector={jest.fn()}
+                  onEditFeatures={jest.fn()}
+                  {...props}
+                />
+              </CoreServicesContext.Provider>
             )}
           />
         </Switch>
@@ -164,9 +157,7 @@ describe('<DetectorConfig /> spec', () => {
     const { getByText, queryByText } = renderWithRouter(randomDetector);
     await wait(() => {
       getByText('Model parameters are required to run a detector');
-      queryByText(
-        'Set the index fields'
-      );
+      queryByText('Set the index fields');
       getByText('Model configuration');
       getByText(randomDetector.name);
       getByText(randomDetector.indices[0]);
@@ -177,9 +168,7 @@ describe('<DetectorConfig /> spec', () => {
       getByText(randomDetector.description);
       // filter should be -
       getByText('-');
-      queryByText(
-        'Set the index fields'
-      );
+      queryByText('Set the index fields');
     });
   });
 

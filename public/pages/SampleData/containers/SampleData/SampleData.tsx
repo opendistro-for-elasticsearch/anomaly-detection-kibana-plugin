@@ -23,11 +23,8 @@ import {
 } from '@elastic/eui';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-//@ts-ignore
-import chrome from 'ui/chrome';
-//@ts-ignore
-import { toastNotifications } from 'ui/notify';
-import { BREADCRUMBS, SAMPLE_TYPE } from '../../../../utils/constants';
+import { BREADCRUMBS } from '../../../../utils/constants';
+import { SAMPLE_TYPE } from '../../../../../server/utils/constants';
 import {
   GET_SAMPLE_DETECTORS_QUERY_PARAMS,
   GET_SAMPLE_INDICES_QUERY,
@@ -53,8 +50,12 @@ import {
 } from '../../utils/helpers';
 import { SampleDataBox } from '../../components/SampleDataBox/SampleDataBox';
 import { SampleDetailsFlyout } from '../../components/SampleDetailsFlyout/SampleDetailsFlyout';
+import { prettifyErrorMessage } from '../../../../../server/utils/helpers';
+import { CoreStart } from '../../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
 
 export const SampleData = () => {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   const visibleIndices = useSelector(
     (state: AppState) => state.elasticsearch.indices
@@ -98,7 +99,7 @@ export const SampleData = () => {
 
   // Set breadcrumbs on page initialization
   useEffect(() => {
-    chrome.breadcrumbs.set([
+    core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.SAMPLE_DETECTORS,
     ]);
@@ -125,8 +126,9 @@ export const SampleData = () => {
     if (!containsSampleIndex(visibleIndices, sampleType)) {
       await dispatch(createIndex(indexConfig)).catch((error: any) => {
         errorDuringAction = true;
-        errorMessage = 'Error creating sample index.';
-        console.error('Error creating sample index: ', error);
+        errorMessage =
+          'Error creating sample index. ' + prettifyErrorMessage(error);
+        console.error(errorMessage);
       });
     }
 
@@ -134,8 +136,8 @@ export const SampleData = () => {
     if (!errorDuringAction) {
       await dispatch(createSampleData(sampleType)).catch((error: any) => {
         errorDuringAction = true;
-        errorMessage = error;
-        console.error('Error bulk inserting data: ', error);
+        errorMessage = prettifyErrorMessage(error.message);
+        console.error('Error bulk inserting data: ', errorMessage);
       });
     }
 
@@ -143,18 +145,18 @@ export const SampleData = () => {
     if (!errorDuringAction) {
       await dispatch(createDetector(detectorConfig))
         .then(function (response: any) {
-          const detectorId = response.data.response.id;
+          const detectorId = response.response.id;
           // Start the detector
           dispatch(startDetector(detectorId)).catch((error: any) => {
             errorDuringAction = true;
-            errorMessage = error.data.message;
-            console.error('Error starting sample detector: ', error);
+            errorMessage = prettifyErrorMessage(error.message);
+            console.error('Error starting sample detector: ', errorMessage);
           });
         })
         .catch((error: any) => {
           errorDuringAction = true;
-          errorMessage = error;
-          console.error('Error creating sample detector: ', error);
+          errorMessage = prettifyErrorMessage(error.message);
+          console.error('Error creating sample detector: ', errorMessage);
         });
     }
 
@@ -162,9 +164,11 @@ export const SampleData = () => {
     getAllSampleIndices();
     setLoadingState(false);
     if (!errorDuringAction) {
-      toastNotifications.addSuccess('Successfully loaded sample detector');
+      core.notifications.toasts.addSuccess(
+        'Successfully loaded sample detector'
+      );
     } else {
-      toastNotifications.addDanger(
+      core.notifications.toasts.addDanger(
         `Unable to load all sample data, please try again. ${errorMessage}`
       );
     }

@@ -14,7 +14,7 @@
  */
 
 import { EuiComboBox, EuiCallOut, EuiSpacer } from '@elastic/eui';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, FormikProps } from 'formik';
 import { debounce, get, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,16 +30,23 @@ import { getError, isInvalid, required } from '../../../../utils/utils';
 import { IndexOption } from '../../components/Datasource/IndexOption';
 import { getVisibleOptions, sanitizeSearchText } from '../../../utils/helpers';
 import { validateIndex } from '../../../utils/validate';
-import {
-  DataFilterProps,
-  DataFilter,
-} from '../../components/DataFilters/DataFilter';
+import { DataFilter } from '../../components/DataFilters/DataFilter';
 import { FormattedFormRow } from '../../components/FormattedFormRow/FormattedFormRow';
+import { ADFormikValues } from '../../containers/models/interfaces';
 
-function DataSource(props: DataFilterProps) {
+interface DataSourceProps {
+  formikProps: FormikProps<ADFormikValues>;
+  origIndex: string;
+  setNewIndexSelected: (isNew: boolean) => void;
+  isEdit: boolean;
+}
+
+function DataSource(props: DataSourceProps) {
   const dispatch = useDispatch();
   const [queryText, setQueryText] = useState('');
-  const [indexName, setIndexName] = useState(undefined);
+  const [indexName, setIndexName] = useState<string>(
+    props.formikProps.values.index[0]?.label
+  );
   const elasticsearchState = useSelector(
     (state: AppState) => state.elasticsearch
   );
@@ -49,6 +56,10 @@ function DataSource(props: DataFilterProps) {
     };
     getInitialIndices();
   }, []);
+
+  useEffect(() => {
+    setIndexName(props.formikProps.values.index[0]?.label);
+  }, [props.formikProps]);
 
   const handleSearchChange = debounce(async (searchValue: string) => {
     if (searchValue !== queryText) {
@@ -64,6 +75,11 @@ function DataSource(props: DataFilterProps) {
     if (indexName !== '') {
       dispatch(getMappings(indexName));
     }
+    if (indexName !== props.origIndex) {
+      props.setNewIndexSelected(true);
+    } else {
+      props.setNewIndexSelected(false);
+    }
   };
 
   const dateFields = Array.from(
@@ -72,7 +88,7 @@ function DataSource(props: DataFilterProps) {
 
   const timeStampFieldOptions = isEmpty(dateFields)
     ? []
-    : dateFields.map(dateField => ({ label: dateField }));
+    : dateFields.map((dateField) => ({ label: dateField }));
 
   const visibleIndices = get(elasticsearchState, 'indices', []) as CatIndex[];
   const visibleAliases = get(elasticsearchState, 'aliases', []) as IndexAlias[];
@@ -88,8 +104,22 @@ function DataSource(props: DataFilterProps) {
       : initialIndex.includes(':');
   };
 
+  const isDifferentIndex = () => {
+    return props.isEdit && indexName !== props.origIndex;
+  };
+
   return (
     <ContentPanel title="Data Source" titleSize="s">
+      {isDifferentIndex() ? (
+        <div>
+          <EuiCallOut
+            title="Selecting a new index will delete the existing model configuration."
+            color="warning"
+            iconType="alert"
+          />
+          <EuiSpacer size="m" />
+        </div>
+      ) : null}
       {isRemoteIndex() ? (
         <div>
           <EuiCallOut
@@ -127,7 +157,7 @@ function DataSource(props: DataFilterProps) {
                 onBlur={() => {
                   form.setFieldTouched('index', true);
                 }}
-                onChange={options => {
+                onChange={(options) => {
                   form.setFieldValue('index', options);
                   form.setFieldValue('timeField', undefined);
                   handleIndexNameChange(options);
@@ -168,7 +198,7 @@ function DataSource(props: DataFilterProps) {
               onBlur={() => {
                 form.setFieldTouched('timeField', true);
               }}
-              onChange={options => {
+              onChange={(options) => {
                 form.setFieldValue('timeField', get(options, '0.label'));
               }}
               selectedOptions={(field.value && [{ label: field.value }]) || []}

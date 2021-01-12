@@ -21,17 +21,21 @@ import { mockedStore } from '../../../../../redux/utils/testUtils';
 import { Formik } from 'formik';
 import { FeaturesFormikValues } from '../../../../EditFeatures/containers/utils/formikToFeatures';
 import { INITIAL_VALUES } from '../../../../EditFeatures/utils/constants';
+import { CoreServicesContext } from '../../../../../components/CoreServices/CoreServices';
+import { coreServicesMock } from '../../../../../../test/mocks';
 
 const renderWithFormik = (initialValue: FeaturesFormikValues) => ({
   ...render(
     <Provider store={mockedStore()}>
-      <Formik initialValues={initialValue} onSubmit={jest.fn()}>
-        {formikProps => (
-          <div>
-            <CustomAggregation index={1}/>
-          </div>
-        )}
-      </Formik>
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <Formik initialValues={initialValue} onSubmit={jest.fn()}>
+          {(formikProps) => (
+            <div>
+              <CustomAggregation index={1} />
+            </div>
+          )}
+        </Formik>
+      </CoreServicesContext.Provider>
     </Provider>
   ),
 });

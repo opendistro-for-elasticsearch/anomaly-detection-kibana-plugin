@@ -16,7 +16,7 @@
 import {
   APIAction,
   APIResponseAction,
-  IHttpService,
+  HttpSetup,
   APIErrorAction,
   ThunkAction,
 } from '../middleware/types';
@@ -88,7 +88,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          indices: action.result.data.response.indices,
+          indices: action.result.response.indices,
         };
       },
       FAILURE: (
@@ -97,7 +97,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.data.error', action.error),
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
     [GET_ALIASES]: {
@@ -113,7 +113,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          aliases: action.result.data.response.aliases,
+          aliases: action.result.response.aliases,
         };
       },
       FAILURE: (
@@ -122,7 +122,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.data.error', action.error),
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
     [SEARCH_ES]: {
@@ -138,7 +138,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          searchResult: { ...action.result.data.response },
+          searchResult: { ...action.result.response },
         };
       },
       FAILURE: (
@@ -147,7 +147,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.data.error', action.error),
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
     [GET_MAPPINGS]: {
@@ -163,7 +163,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          dataTypes: getPathsPerDataType(action.result.data.response.mappings),
+          dataTypes: getPathsPerDataType(action.result.response.mappings),
         };
       },
       FAILURE: (
@@ -172,7 +172,7 @@ const reducer = handleActions<ElasticsearchState>(
       ): ElasticsearchState => ({
         ...state,
         requesting: false,
-        errorMessage: get(action, 'error.data.error', action.error),
+        errorMessage: get(action, 'error.error', action.error),
         dataTypes: {},
       }),
     },
@@ -187,7 +187,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          indices: action.result.data.response.indices,
+          indices: action.result.response.indices,
         };
       },
       FAILURE: (
@@ -232,7 +232,7 @@ const reducer = handleActions<ElasticsearchState>(
         return {
           ...state,
           requesting: false,
-          indices: action.result.data.response.indices,
+          indices: action.result.response.indices,
         };
       },
       FAILURE: (
@@ -250,47 +250,50 @@ const reducer = handleActions<ElasticsearchState>(
 
 export const getIndices = (searchKey: string = ''): APIAction => ({
   type: GET_INDICES,
-  request: (client: IHttpService) =>
-    client.get(`..${AD_NODE_API._INDICES}?index=${searchKey}`),
-  searchKey,
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API._INDICES}`, { query: { index: searchKey } }),
 });
 
 export const getAliases = (searchKey: string = ''): APIAction => ({
   type: GET_ALIASES,
-  request: (client: IHttpService) =>
-    client.get(`..${AD_NODE_API._ALIASES}?alias=${searchKey}`),
-  searchKey,
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API._ALIASES}`, { query: { alias: searchKey } }),
 });
 
 export const getMappings = (searchKey: string = ''): APIAction => ({
   type: GET_MAPPINGS,
-  request: (client: IHttpService) =>
-    client.get(`..${AD_NODE_API._MAPPINGS}?index=${searchKey}`),
-  searchKey,
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API._MAPPINGS}`, {
+      query: { index: searchKey },
+    }),
 });
 
 export const searchES = (requestData: any): APIAction => ({
   type: SEARCH_ES,
-  request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API._SEARCH}`, requestData),
+  request: (client: HttpSetup) =>
+    client.post(`..${AD_NODE_API._SEARCH}`, {
+      body: JSON.stringify(requestData),
+    }),
 });
 
 export const createIndex = (indexConfig: any): APIAction => ({
   type: CREATE_INDEX,
-  request: (client: IHttpService) =>
-    client.put(`..${AD_NODE_API.CREATE_INDEX}`, { indexConfig }),
+  request: (client: HttpSetup) =>
+    client.put(`..${AD_NODE_API.CREATE_INDEX}`, {
+      body: JSON.stringify(indexConfig),
+    }),
 });
 
 export const bulk = (body: any): APIAction => ({
   type: BULK,
-  request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API.BULK}`, { body }),
+  request: (client: HttpSetup) =>
+    client.post(`..${AD_NODE_API.BULK}`, { body: JSON.stringify(body) }),
 });
 
 export const deleteIndex = (index: string): APIAction => ({
   type: DELETE_INDEX,
-  request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API.DELETE_INDEX}`, { index }),
+  request: (client: HttpSetup) =>
+    client.post(`..${AD_NODE_API.DELETE_INDEX}`, { query: { index: index } }),
 });
 
 export const getPrioritizedIndices = (searchKey: string): ThunkAction => async (

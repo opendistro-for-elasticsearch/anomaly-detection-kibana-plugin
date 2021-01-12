@@ -18,7 +18,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { ALL_DETECTOR_STATES, ALL_INDICES } from '../../../../utils/constants';
 import { ListFilters } from '../ListFilters';
-import { DETECTOR_STATE } from '../../../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../../../server/utils/constants';
 
 describe('<ListFilters /> spec', () => {
   const defaultProps = {

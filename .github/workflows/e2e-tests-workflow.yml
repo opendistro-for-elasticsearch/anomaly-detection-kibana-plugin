@@ -4,8 +4,9 @@ on:
     branches:
       - master
 env:
-  KIBANA_VERSION: 7.9.1
-  ODFE_VERSION: 1.10.1
+  KIBANA_VERSION: 7.10.0
+  ODFE_VERSION: 1.12.0
+  AD_KIBANA_PLUGIN_NAME: opendistroAnomalyDetectionKibana
 jobs:
   test-with-security:
     name: Run e2e tests with security
@@ -63,15 +64,16 @@ jobs:
           plugin_version=$(node -pe "require('./package.json').version")
           echo odfe version: $odfe_version
           echo plugin version: $plugin_version
+          echo plugin name: $AD_KIBANA_PLUGIN_NAME
           if docker pull opendistroforelasticsearch/opendistroforelasticsearch:$odfe_version
           then
             ## Populate the Dockerfiles
             echo "FROM opendistroforelasticsearch/opendistroforelasticsearch:$odfe_version" >> Dockerfile-AD
             echo "FROM opendistroforelasticsearch/opendistroforelasticsearch-kibana:$odfe_version" >> Dockerfile-AD-Kibana
-            echo "COPY build/opendistro-anomaly-detection-kibana-$plugin_version.zip ." >> Dockerfile-AD-Kibana
+            echo "COPY build/$AD_KIBANA_PLUGIN_NAME-$plugin_version.zip ." >> Dockerfile-AD-Kibana
             ## Uninstall existing AD artifact and install new one
-            echo "RUN if [ -d /usr/share/kibana/plugins/opendistro-anomaly-detection-kibana ]; then /usr/share/kibana/bin/kibana-plugin remove opendistro-anomaly-detection-kibana; fi" >> Dockerfile-AD-Kibana
-            echo "RUN bin/kibana-plugin install file:///usr/share/kibana/opendistro-anomaly-detection-kibana-$plugin_version.zip;" >> Dockerfile-AD-Kibana
+            echo "RUN if [ -d /usr/share/kibana/plugins/$AD_KIBANA_PLUGIN_NAME ]; then /usr/share/kibana/bin/kibana-plugin remove $AD_KIBANA_PLUGIN_NAME; fi" >> Dockerfile-AD-Kibana
+            echo "RUN bin/kibana-plugin install file:///usr/share/kibana/$AD_KIBANA_PLUGIN_NAME-$plugin_version.zip;" >> Dockerfile-AD-Kibana
 
             ## Create the tagged images
             docker build -f ./Dockerfile-AD -t odfe-ad:test .
@@ -88,7 +90,7 @@ jobs:
           sleep 180
 
       - name: Run e2e tests
-        uses: cypress-io/github-action@v1
+        uses: cypress-io/github-action@v2.5.0
         with:
           working-directory: kibana/plugins/anomaly-detection-kibana-plugin
           command: yarn cy:run --env SECURITY_ENABLED=true
@@ -149,7 +151,7 @@ jobs:
           cd kibana/plugins/anomaly-detection-kibana-plugin
           yarn kbn bootstrap
       - name: Run e2e tests
-        uses: cypress-io/github-action@v1
+        uses: cypress-io/github-action@v2.5.0
         with:
           working-directory: kibana/plugins/anomaly-detection-kibana-plugin
           command: yarn test:e2e

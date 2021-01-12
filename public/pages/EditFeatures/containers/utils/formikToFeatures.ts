@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { snakeCase, cloneDeep } from 'lodash';
+import { snakeCase, cloneDeep, isEmpty } from 'lodash';
 import {
   Detector,
   FeatureAttributes,
@@ -37,6 +37,7 @@ export interface FeaturesFormikValues {
 export function prepareDetector(
   featureValues: FeaturesFormikValues[],
   shingleSizeValue: number,
+  categoryFields: string[],
   ad: Detector,
   forPreview: boolean = false
 ): Detector {
@@ -47,6 +48,7 @@ export function prepareDetector(
     ...detector,
     featureAttributes: [...featureAttributes],
     shingleSize: shingleSizeValue,
+    categoryField: isEmpty(categoryFields) ? undefined : categoryFields,
     uiMetadata: {
       ...detector.uiMetadata,
       features: { ...formikToUIMetadata(featureValues) },
@@ -98,7 +100,7 @@ export function formikToUIMetadata(values: FeaturesFormikValues[]) {
   let features: {
     [key: string]: UiFeature;
   } = {};
-  values.forEach(value => {
+  values.forEach((value) => {
     if (value.featureType === FEATURE_TYPE.SIMPLE) {
       features[value.featureName] = {
         featureType: value.featureType,
@@ -121,7 +123,7 @@ function formikToFeatureAttributes(
   values: FeaturesFormikValues[],
   forPreview: boolean
 ): FeatureAttributes[] {
-  return values.map(function(value) {
+  return values.map(function (value) {
     const id = forPreview
       ? value.featureId
       : value.newFeature

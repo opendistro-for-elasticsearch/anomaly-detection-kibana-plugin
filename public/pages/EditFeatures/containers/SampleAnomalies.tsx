@@ -14,47 +14,56 @@
  */
 
 import {
-  EuiPageBody,
-  EuiFlexItem,
-  EuiFlexGroup,
-  EuiText,
-  EuiLink,
-  EuiPage,
   EuiButton,
   EuiCallOut,
-  EuiSpacer,
-  EuiLoadingSpinner,
+  EuiFlexGroup,
+  EuiFlexItem,
   EuiIcon,
+  EuiLink,
+  EuiLoadingSpinner,
+  EuiPage,
+  EuiPageBody,
+  EuiSpacer,
+  EuiText,
 } from '@elastic/eui';
+import { get, isEmpty } from 'lodash';
 import moment from 'moment';
-import { get } from 'lodash';
-import React, { Fragment, useState, useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { previewDetector } from '../../../redux/reducers/anomalies';
-import { AppState } from '../../../redux/reducers';
-import ContentPanel from '../../../components/ContentPanel/ContentPanel';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
-import { Detector, DateRange } from '../../../models/interfaces';
 import {
-  FeaturesFormikValues,
-  prepareDetector,
-} from './utils/formikToFeatures';
+  getAnomalyHistoryWording,
+  getFeatureBreakdownWording,
+  getFeatureDataWording,
+} from '../../AnomalyCharts/utils/anomalyChartUtils';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ContentPanel from '../../../components/ContentPanel/ContentPanel';
+import { DateRange, Detector } from '../../../models/interfaces';
+import { AppState } from '../../../redux/reducers';
+import { previewDetector } from '../../../redux/reducers/previewAnomalies';
 import { AnomaliesChart } from '../../AnomalyCharts/containers/AnomaliesChart';
+import { HeatmapCell } from '../../AnomalyCharts/containers/AnomalyHeatmapChart';
 import { FeatureBreakDown } from '../../AnomalyCharts/containers/FeatureBreakDown';
 import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
 import { generateAnomalyAnnotations } from '../../utils/anomalyResultUtils';
 import { focusOnFirstWrongFeature } from '../utils/helpers';
+import {
+  FeaturesFormikValues,
+  prepareDetector,
+} from './utils/formikToFeatures';
+import { prettifyErrorMessage } from '../../../../server/utils/helpers';
+import { CoreStart } from '../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 
 interface SampleAnomaliesProps {
   detector: Detector;
   featureList: FeaturesFormikValues[];
   shingleSize: number;
+  categoryFields: string[];
   errors: any;
   setFieldTouched: any;
 }
 
 export function SampleAnomalies(props: SampleAnomaliesProps) {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   useHideSideNavBar(true, false);
 
@@ -73,6 +82,10 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
     startDate: initialStartDate.valueOf(),
     endDate: initialEndDate.valueOf(),
   });
+
+  const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<HeatmapCell>();
+
+  const isHCDetector = !isEmpty(get(newDetector, 'categoryField', []));
 
   useEffect(() => {
     if (!firstPreview) {
@@ -95,6 +108,10 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
       startDate: startDate,
       endDate: endDate,
     });
+  }, []);
+
+  const handleHeatmapCellSelected = useCallback((heatmapCell: HeatmapCell) => {
+    setSelectedHeatmapCell(heatmapCell);
   }, []);
 
   const anomaliesResult = useSelector(
@@ -128,17 +145,21 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
     } catch (err) {
       console.error(`Fail to preview detector ${detector.id}`, err);
       setIsLoading(false);
-      toastNotifications.addDanger(
-        getPreviewErrorMessage(err, 'There was a problem previewing detector')
+      core.notifications.toasts.addDanger(
+        prettifyErrorMessage(
+          getPreviewErrorMessage(err, 'There was a problem previewing detector')
+        )
       );
     }
   }
 
   const getSampleAnomalies = () => {
+    setSelectedHeatmapCell(undefined);
     try {
       const updatedDetector = prepareDetector(
         props.featureList,
         props.shingleSize,
+        props.categoryFields,
         newDetector,
         true
       );
@@ -172,8 +193,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                     href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
                     target="_blank"
                   >
-                    Learn more
-                    <EuiIcon size="s" type="popout" />
+                    Learn more <EuiIcon size="s" type="popout" />
                   </EuiLink>
                 </EuiText>
               </EuiFlexItem>
@@ -204,9 +224,9 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
           <EuiSpacer />
           {previewDone && !anomaliesResult.anomalies.length ? (
             <EuiCallOut
-              title={
-                'No sample anomaly result generated. Please check detector interval and make sure you have >400 data points during preview date range'
-              }
+              title={`No sample anomaly result generated. Please check detector interval and make sure you have >400 data points${
+                isHCDetector ? ' for some entities ' : ' '
+              }during preview date range`}
               color="warning"
               iconType="alert"
             ></EuiCallOut>
@@ -214,16 +234,20 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
           {!firstPreview ? (
             <Fragment>
               <AnomaliesChart
-                title="Sample anomaly history"
+                title={getAnomalyHistoryWording(false)}
                 onDateRangeChange={handleDateRangeChange}
                 onZoomRangeChange={handleZoomChange}
-                anomalies={anomaliesResult.anomalies}
                 isLoading={isLoading}
                 dateRange={dateRange}
-                anomalyGradeSeriesName="Sample anomaly grade"
-                confidenceSeriesName="Sample confidence"
-                detectorId={props.detector.id}
-                detectorName={props.detector.name}
+                detector={props.detector}
+                isHCDetector={isHCDetector}
+                detectorCategoryField={newDetector.categoryField}
+                onHeatmapCellSelected={handleHeatmapCellSelected}
+                selectedHeatmapCell={selectedHeatmapCell}
+                newDetector={newDetector}
+                zoomRange={zoomRange}
+                anomaliesResult={anomaliesResult}
+                showAlerts={false}
               />
               <EuiSpacer />
               {isLoading ? (
@@ -235,9 +259,9 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                     <EuiLoadingSpinner size="xl" />
                   </EuiFlexItem>
                 </EuiFlexGroup>
-              ) : (
+              ) : isHCDetector ? null : (
                 <FeatureBreakDown
-                  title="Sample feature breakdown"
+                  title={getFeatureBreakdownWording(false)}
                   detector={newDetector}
                   anomaliesResult={anomaliesResult}
                   annotations={generateAnomalyAnnotations(
@@ -245,7 +269,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                   )}
                   isLoading={isLoading}
                   dateRange={zoomRange}
-                  featureDataSeriesName="Sample feature output"
+                  featureDataSeriesName={getFeatureDataWording(false)}
                 />
               )}
             </Fragment>

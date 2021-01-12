@@ -19,6 +19,8 @@ import {
   AD_DOC_FIELDS,
   SORT_DIRECTION,
   MIN_IN_MILLI_SECS,
+  KEY_FIELD,
+  DOC_COUNT_FIELD,
 } from '../../../../server/utils/constants';
 import {
   Detector,
@@ -34,7 +36,7 @@ import { get, orderBy, isEmpty } from 'lodash';
 import { APIAction } from 'public/redux/middleware/types';
 import { Dispatch } from 'redux';
 import { EuiBasicTableColumn } from '@elastic/eui';
-import { SHOW_DECIMAL_NUMBER_THRESHOLD } from './constants';
+import { SHOW_DECIMAL_NUMBER_THRESHOLD } from '../../../../server/utils/helpers';
 import { MAX_DETECTORS } from '../../../pages/utils/constants';
 
 /**
@@ -357,7 +359,7 @@ export const anomalousDetectorsStaticColumn = [
     truncateText: false,
     textOnly: true,
     render: (featureAttributes: FeatureAttributes[]) => {
-      return featureAttributes.map(feature => {
+      return featureAttributes.map((feature) => {
         return <p>{feature.featureName}</p>;
       });
     },
@@ -392,9 +394,6 @@ export const buildGetAnomalyResultQueryByRange = (
   checkLastIndexOnly: boolean
 ) => {
   return {
-    index: checkLastIndexOnly
-      ? ANOMALY_RESULT_INDEX
-      : `${ANOMALY_RESULT_INDEX}*`,
     size: size,
     from: from,
     query: {
@@ -453,7 +452,8 @@ export const getLatestAnomalyResultsByTimeRange = async (
         )
       )
     );
-    const searchAnomalyResponse = searchResponse.data.response;
+
+    const searchAnomalyResponse = searchResponse.response;
 
     const numHits = get(searchAnomalyResponse, 'hits.total.value', 0);
     if (numHits === 0) {
@@ -504,7 +504,7 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
         )
       )
     );
-    const searchAnomalyResponse = searchResponse.data.response;
+    const searchAnomalyResponse = searchResponse.response;
 
     const numHits = get(searchAnomalyResponse, 'hits.total.value', 0);
     if (numHits === 0) {
@@ -532,14 +532,14 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
     numSingleBatchResults = anomalies.length;
   } while (numSingleBatchResults === MAX_ANOMALIES);
 
-  const filteredAnomalyResults = anomalyResults.filter(anomaly =>
+  const filteredAnomalyResults = anomalyResults.filter((anomaly) =>
     detectorAndIdMap.has(get(anomaly, AD_DOC_FIELDS.DETECTOR_ID, ''))
   );
 
   const orderedLiveAnomalyData = orderBy(
     filteredAnomalyResults,
     // sort by data start time in desc order
-    anomalyData => get(anomalyData, AD_DOC_FIELDS.DATA_START_TIME, ''),
+    (anomalyData) => get(anomalyData, AD_DOC_FIELDS.DATA_START_TIME, ''),
     SORT_DIRECTION.DESC
   );
   const latestAnomalousDetectorIds = selectLatestAnomalousDetectorIds(
@@ -547,10 +547,11 @@ export const getLatestAnomalyResultsForDetectorsByTimeRange = async (
     detectorNum
   );
   if (!isEmpty(latestAnomalousDetectorIds)) {
-    const finalLiveAnomalyResult = orderedLiveAnomalyData.filter(anomalyData =>
-      latestAnomalousDetectorIds.has(
-        get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
-      )
+    const finalLiveAnomalyResult = orderedLiveAnomalyData.filter(
+      (anomalyData) =>
+        latestAnomalousDetectorIds.has(
+          get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, '')
+        )
     );
     return finalLiveAnomalyResult;
   }
@@ -564,7 +565,7 @@ const buildDetectorAndIdMap = (
 ): Map<string, DetectorListItem> => {
   const detectorAndIdMap = new Map<string, DetectorListItem>();
   if (selectedDetectors) {
-    selectedDetectors.forEach(detector => {
+    selectedDetectors.forEach((detector) => {
       detectorAndIdMap.set(detector.id, detector);
     });
   }
@@ -578,9 +579,9 @@ const selectLatestAnomalousDetectorIds = (
   const anomalousDetectorIds = new Set(
     orderedAnomalyData
       .filter(
-        anomalyData => get(anomalyData, AD_DOC_FIELDS.ANOMALY_GRADE, 0) > 0
+        (anomalyData) => get(anomalyData, AD_DOC_FIELDS.ANOMALY_GRADE, 0) > 0
       )
-      .map(anomalyData => get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, ''))
+      .map((anomalyData) => get(anomalyData, AD_DOC_FIELDS.DETECTOR_ID, ''))
   );
 
   return new Set(Array.from(anomalousDetectorIds).slice(0, neededDetectorNum));
@@ -620,13 +621,13 @@ export const getAnomalyDistributionForDetectorsByTimeRange = async (
 
   const detectorsAggResults = get(
     result,
-    `data.response.aggregations.${aggregationName}.buckets`,
+    `response.aggregations.${aggregationName}.buckets`,
     []
   );
 
   const finalDetectorDistributionResult = [] as object[];
   for (let detectorResult of detectorsAggResults) {
-    const detectorId = get(detectorResult, 'key', '');
+    const detectorId = get(detectorResult, KEY_FIELD, '');
     if (detectorAndIdMap.has(detectorId)) {
       const detector = detectorAndIdMap.get(detectorId);
       finalDetectorDistributionResult.push({
@@ -641,7 +642,7 @@ export const getAnomalyDistributionForDetectorsByTimeRange = async (
           AD_DOC_FIELDS.INDICES,
           ''
         ).toString(),
-        count: get(detectorResult, 'doc_count', 0),
+        count: get(detectorResult, DOC_COUNT_FIELD, 0),
       });
     }
   }

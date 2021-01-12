@@ -13,14 +13,11 @@
  * permissions and limitations under the License.
  */
 
-import {
-  APIAction,
-  APIResponseAction,
-  IHttpService,
-} from '../middleware/types';
+import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
-import { SAMPLE_TYPE } from '../../utils/constants';
+import { SAMPLE_TYPE } from '../../../server/utils/constants';
+import { get } from 'lodash';
 
 const CREATE_SAMPLE_DATA = 'ad/CREATE_SAMPLE_DATA';
 
@@ -54,7 +51,7 @@ const reducer = handleActions<SampleDataState>(
       ): SampleDataState => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
   },
@@ -63,10 +60,8 @@ const reducer = handleActions<SampleDataState>(
 
 export const createSampleData = (sampleDataType: SAMPLE_TYPE): APIAction => ({
   type: CREATE_SAMPLE_DATA,
-  request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API.CREATE_SAMPLE_DATA}`, {
-      type: sampleDataType,
-    }),
+  request: (client: HttpSetup) =>
+    client.post(`..${AD_NODE_API.CREATE_SAMPLE_DATA}/${sampleDataType}`),
 });
 
 export default reducer;

@@ -28,8 +28,8 @@ import {
   EuiFieldText,
   EuiLoadingSpinner,
 } from '@elastic/eui';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
+import { CoreStart } from '../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 import { get, isEmpty } from 'lodash';
 import { RouteComponentProps, Switch, Route, Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -41,10 +41,9 @@ import {
   stopDetector,
 } from '../../../redux/reducers/ad';
 import { getErrorMessage, Listener } from '../../../utils/utils';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { darkModeEnabled } from '../../../utils/kibanaUtils';
-import { BREADCRUMBS, DETECTOR_STATE } from '../../../utils/constants';
+import { BREADCRUMBS } from '../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import { DetectorControls } from '../components/DetectorControls';
 import moment from 'moment';
 import { ConfirmModal } from '../components/ConfirmModal/ConfirmModal';
@@ -54,6 +53,10 @@ import { DETECTOR_DETAIL_TABS } from '../utils/constants';
 import { DetectorConfig } from '../../DetectorConfig/containers/DetectorConfig';
 import { AnomalyResults } from '../../DetectorResults/containers/AnomalyResults';
 import { DETECTOR_STATE_COLOR } from '../../utils/constants';
+import {
+  NO_PERMISSIONS_KEY_WORD,
+  prettifyErrorMessage,
+} from '../../../../server/utils/helpers';
 
 export interface DetectorRouterProps {
   detectorId?: string;
@@ -89,11 +92,15 @@ interface DetectorDetailModel {
 }
 
 export const DetectorDetail = (props: DetectorDetailProps) => {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   const detectorId = get(props, 'match.params.detectorId', '') as string;
-  const { detector, hasError, isLoadingDetector } = useFetchDetectorInfo(
-    detectorId
-  );
+  const {
+    detector,
+    hasError,
+    isLoadingDetector,
+    errorMessage,
+  } = useFetchDetectorInfo(detectorId);
   const { monitor, fetchMonitorError, isLoadingMonitor } = useFetchMonitorInfo(
     detectorId
   );
@@ -117,14 +124,18 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
 
   useEffect(() => {
     if (hasError) {
-      toastNotifications.addDanger('Unable to find detector');
+      core.notifications.toasts.addDanger(
+        errorMessage.includes(NO_PERMISSIONS_KEY_WORD)
+          ? prettifyErrorMessage(errorMessage)
+          : 'Unable to find detector'
+      );
       props.history.push('/detectors');
     }
   }, [hasError]);
 
   useEffect(() => {
     if (detector) {
-      chrome.breadcrumbs.set([
+      core.chrome.setBreadcrumbs([
         BREADCRUMBS.ANOMALY_DETECTOR,
         BREADCRUMBS.DETECTORS,
         { text: detector ? detector.name : '' },
@@ -187,12 +198,14 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const handleStartAdJob = async (detectorId: string) => {
     try {
       await dispatch(startDetector(detectorId));
-      toastNotifications.addSuccess(
+      core.notifications.toasts.addSuccess(
         `Detector job has been started successfully`
       );
     } catch (err) {
-      toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem starting detector job')
+      core.notifications.toasts.addDanger(
+        prettifyErrorMessage(
+          getErrorMessage(err, 'There was a problem starting detector job')
+        )
       );
     }
   };
@@ -200,13 +213,15 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const handleStopAdJob = async (detectorId: string, listener?: Listener) => {
     try {
       await dispatch(stopDetector(detectorId));
-      toastNotifications.addSuccess(
+      core.notifications.toasts.addSuccess(
         'Detector job has been stopped successfully'
       );
       if (listener) listener.onSuccess();
     } catch (err) {
-      toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem stopping detector job')
+      core.notifications.toasts.addDanger(
+        prettifyErrorMessage(
+          getErrorMessage(err, 'There was a problem stopping detector job')
+        )
       );
       if (listener) listener.onException();
     }
@@ -215,12 +230,16 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
   const handleDelete = useCallback(async (detectorId: string) => {
     try {
       await dispatch(deleteDetector(detectorId));
-      toastNotifications.addSuccess(`Detector has been deleted successfully`);
+      core.notifications.toasts.addSuccess(
+        `Detector has been deleted successfully`
+      );
       hideDeleteDetectorModal();
       props.history.push('/detectors');
     } catch (err) {
-      toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem deleting detector')
+      core.notifications.toasts.addDanger(
+        prettifyErrorMessage(
+          getErrorMessage(err, 'There was a problem deleting detector')
+        )
       );
       hideDeleteDetectorModal();
     }
@@ -259,6 +278,8 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
     ></EuiCallOut>
   ) : null;
 
+  const isHCDetector = !isEmpty(get(detector, 'categoryField', []));
+
   return (
     <React.Fragment>
       {!isEmpty(detector) && !hasError ? (
@@ -290,7 +311,8 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
                   ) : detector.enabled &&
                     detector.curState === DETECTOR_STATE.INIT ? (
                     <EuiHealth color={DETECTOR_STATE_COLOR.INIT}>
-                      {detector.initProgress?.estimatedMinutesLeft
+                      {detector.initProgress?.estimatedMinutesLeft &&
+                      !isHCDetector
                         ? //@ts-ignore
                           `Initializing (${detector.initProgress.percentageStr} complete)`
                         : 'Initializing'}
@@ -475,9 +497,9 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
         <Route
           exact
           path="/detectors/:detectorId/results"
-          render={(props) => (
+          render={(resultsProps) => (
             <AnomalyResults
-              {...props}
+              {...resultsProps}
               detectorId={detectorId}
               onStartDetector={() => handleStartAdJob(detectorId)}
               onSwitchToConfiguration={handleSwitchToConfigurationTab}
@@ -487,9 +509,9 @@ export const DetectorDetail = (props: DetectorDetailProps) => {
         <Route
           exact
           path="/detectors/:detectorId/configurations"
-          render={(props) => (
+          render={(configProps) => (
             <DetectorConfig
-              {...props}
+              {...configProps}
               detectorId={detectorId}
               onEditFeatures={handleEditFeature}
               onEditDetector={handleEditDetector}

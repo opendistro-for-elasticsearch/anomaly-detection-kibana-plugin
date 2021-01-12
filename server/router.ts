@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -13,16 +13,20 @@
  * permissions and limitations under the License.
  */
 
-import { Request, ResponseToolkit } from 'hapi';
-import { CLUSTER } from './utils/constants';
-//TODO: Fix types
-// import { CallClusterWithRequest, ElasticsearchPlugin } from '../../../kibana/src/legacy/core_plugins/elasticsearch/index'
+import {
+  IRouter,
+  RequestHandlerContext,
+  KibanaRequest,
+  KibanaResponseFactory,
+  IKibanaResponse,
+} from '../../../src/core/server';
+import { schema } from '@kbn/config-schema';
 
 type RouteHandler = (
-  req: Request,
-  responseToolkit: ResponseToolkit,
-  callWithRequest: any
-) => Promise<any>;
+  context: RequestHandlerContext,
+  request: KibanaRequest,
+  response: KibanaResponseFactory
+) => Promise<IKibanaResponse<any>>;
 
 type Route = (path: string, handler: RouteHandler) => Router;
 
@@ -33,19 +37,17 @@ export interface Router {
   delete: Route;
 }
 // Router factory
-export default (server: any, basePath: String, elasticsearch: any): Router => {
+export default (iRouter: IRouter, basePath: String): Router => {
   if (basePath == null || basePath == '') {
     throw new TypeError('Base path is null');
   }
   const requestHandler = (handler: RouteHandler) => async (
-    req: Request,
-    h: ResponseToolkit
+    context: RequestHandlerContext,
+    request: KibanaRequest,
+    response: KibanaResponseFactory
   ) => {
     try {
-      //TODO :: See, if we need to pass on entire cluster or not.
-      const callWithRequest = elasticsearch.getCluster(CLUSTER.AES_AD)
-        .callWithRequest;
-      return await handler(req, h, callWithRequest);
+      return await handler(context, request, response);
     } catch (e) {
       throw e;
     }
@@ -53,11 +55,67 @@ export default (server: any, basePath: String, elasticsearch: any): Router => {
   return ['get', 'put', 'post', 'delete'].reduce(
     (router: any, method: string) => {
       router[method] = (path: String, handler: RouteHandler) => {
-        server.route({
-          path: `${basePath}${path}`,
-          method: method.toUpperCase(),
-          handler: requestHandler(handler),
-        });
+        switch (method) {
+          case 'get': {
+            iRouter.get(
+              {
+                path: `${basePath}${path}`,
+                validate: {
+                  params: schema.any(),
+                  query: schema.any(),
+                  body: schema.any(),
+                },
+              },
+              requestHandler(handler)
+            );
+            break;
+          }
+          case 'put': {
+            iRouter.put(
+              {
+                path: `${basePath}${path}`,
+                validate: {
+                  params: schema.any(),
+                  query: schema.any(),
+                  body: schema.any(),
+                },
+              },
+              requestHandler(handler)
+            );
+            break;
+          }
+          case 'post': {
+            iRouter.post(
+              {
+                path: `${basePath}${path}`,
+                validate: {
+                  params: schema.any(),
+                  query: schema.any(),
+                  body: schema.any(),
+                },
+              },
+              requestHandler(handler)
+            );
+            break;
+          }
+          case 'delete': {
+            iRouter.delete(
+              {
+                path: `${basePath}${path}`,
+                validate: {
+                  params: schema.any(),
+                  query: schema.any(),
+                  body: schema.any(),
+                },
+              },
+              requestHandler(handler)
+            );
+            break;
+          }
+          default: {
+            break;
+          }
+        }
       };
       return router;
     },

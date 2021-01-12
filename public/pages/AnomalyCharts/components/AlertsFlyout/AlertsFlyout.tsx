@@ -26,8 +26,6 @@ import {
   EuiSteps,
 } from '@elastic/eui';
 import React from 'react';
-//@ts-ignore
-import { toastNotifications } from 'ui/notify';
 import { EuiIcon } from '@elastic/eui';
 import { Monitor } from '../../../../models/interfaces';
 import { AlertsButton } from '../AlertsButton/AlertsButton';

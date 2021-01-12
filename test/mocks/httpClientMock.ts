@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { IHttpService } from 'angular';
+import { HttpSetup } from '../../../../src/core/public';
 
 const httpClientMock = jest.fn() as any;
 
@@ -23,4 +23,4 @@ httpClientMock.head = jest.fn();
 httpClientMock.post = jest.fn();
 httpClientMock.put = jest.fn();
 
-export default httpClientMock as IHttpService;
+export default httpClientMock as HttpSetup;

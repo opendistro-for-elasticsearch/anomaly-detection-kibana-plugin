@@ -13,12 +13,12 @@
  * permissions and limitations under the License.
  */
 
-import { get, omit, cloneDeep } from 'lodash';
+import { get, omit, cloneDeep, isEmpty } from 'lodash';
 import { AnomalyResults } from 'server/models/interfaces';
 import { GetDetectorsQueryParams } from '../../models/types';
 import { mapKeysDeep, toCamel, toSnake } from '../../utils/helpers';
-import { DETECTOR_STATE } from '../../../public/utils/constants';
-import { InitProgress } from 'public/models/interfaces';
+import { DETECTOR_STATE } from '../../utils/constants';
+import { InitProgress } from '../../models/interfaces';
 
 export const convertDetectorKeysToSnakeCase = (payload: any) => {
   return {
@@ -74,6 +74,7 @@ export const convertDetectorKeysToCamelCase = (response: object) => {
     enabled: get(response, 'adJob.enabled', false),
     enabledTime: get(response, 'adJob.enabled_time'),
     disabledTime: get(response, 'adJob.disabled_time'),
+    categoryField: get(response, 'category_field'),
   };
 };
 
@@ -151,6 +152,7 @@ export const anomalyResultMapper = (anomalyResults: any[]): AnomalyResults => {
       startTime: rest.dataStartTime,
       endTime: rest.dataEndTime,
       plotTime: rest.dataEndTime,
+      ...(rest.entity !== undefined ? { entity: rest.entity } : {}),
     });
     featureData.forEach((feature: any) => {
       resultData.featureData[feature.featureId].push({
@@ -244,4 +246,10 @@ export const isIndexNotFoundError = (err: any) => {
     err.statusCode === 404 &&
     get<string>(err, 'body.error.type', '') === 'index_not_found_exception'
   );
+};
+
+export const getErrorMessage = (err: any) => {
+  return !isEmpty(get(err, 'body.error.reason'))
+    ? get(err, 'body.error.reason')
+    : get(err, 'message');
 };

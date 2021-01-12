@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 import {
   APIAction,
   APIResponseAction,
-  IHttpService,
+  HttpSetup,
   APIErrorAction,
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
@@ -25,7 +25,7 @@ import { AD_NODE_API } from '../../../utils/constants';
 import { GetDetectorsQueryParams } from '../../../server/models/types';
 import { cloneDeep } from 'lodash';
 import moment from 'moment';
-import { DETECTOR_STATE } from '../../utils/constants';
+import { DETECTOR_STATE } from '../../../server/utils/constants';
 
 const CREATE_DETECTOR = 'ad/CREATE_DETECTOR';
 const GET_DETECTOR = 'ad/GET_DETECTOR';
@@ -36,6 +36,8 @@ const DELETE_DETECTOR = 'ad/DELETE_DETECTOR';
 const START_DETECTOR = 'ad/START_DETECTOR';
 const STOP_DETECTOR = 'ad/STOP_DETECTOR';
 const GET_DETECTOR_PROFILE = 'ad/GET_DETECTOR_PROFILE';
+const MATCH_DETECTOR = 'ad/MATCH_DETECTOR';
+const GET_DETECTOR_COUNT = 'ad/GET_DETECTOR_COUNT';
 
 export interface Detectors {
   requesting: boolean;
@@ -66,7 +68,7 @@ const reducer = handleActions<Detectors>(
         requesting: false,
         detectors: {
           ...state.detectors,
-          [action.result.data.response.id]: action.result.data.response,
+          [action.result.response.id]: action.result.response,
         },
       }),
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
@@ -87,7 +89,7 @@ const reducer = handleActions<Detectors>(
         detectors: {
           ...state.detectors,
           [action.detectorId]: {
-            ...cloneDeep(action.result.data.response),
+            ...cloneDeep(action.result.response),
           },
         },
       }),
@@ -160,7 +162,7 @@ const reducer = handleActions<Detectors>(
         requesting: false,
         detectors: {
           ...state.detectors,
-          ...action.result.data.response.detectors.reduce(
+          ...action.result.response.detectors.reduce(
             (acc: any, detector: Detector) => ({
               ...acc,
               [detector.id]: detector,
@@ -169,9 +171,10 @@ const reducer = handleActions<Detectors>(
           ),
         },
       }),
-      FAILURE: (state: Detectors): Detectors => ({
+      FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
         requesting: false,
+        errorMessage: action.error,
       }),
     },
     [GET_DETECTOR_LIST]: {
@@ -183,14 +186,14 @@ const reducer = handleActions<Detectors>(
       SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
         requesting: false,
-        detectorList: action.result.data.response.detectorList.reduce(
+        detectorList: action.result.response.detectorList.reduce(
           (acc: any, detector: DetectorListItem) => ({
             ...acc,
             [detector.id]: detector,
           }),
           {}
         ),
-        totalDetectors: action.result.data.response.totalDetectors,
+        totalDetectors: action.result.response.totalDetectors,
       }),
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
         ...state,
@@ -210,7 +213,7 @@ const reducer = handleActions<Detectors>(
           ...state.detectors,
           [action.detectorId]: {
             ...state.detectors[action.detectorId],
-            ...action.result.data.response,
+            ...action.result.response,
             lastUpdateTime: moment().valueOf(),
           },
         },
@@ -254,11 +257,45 @@ const reducer = handleActions<Detectors>(
           ...state.detectorList,
           [action.detectorId]: {
             ...state.detectorList[action.detectorId],
-            curState: action.result.data.response.state,
+            curState: action.result.response.state,
           },
         },
       }),
       FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
+      }),
+    },
+    [MATCH_DETECTOR]: {
+      REQUEST: (state: Detectors): Detectors => ({
+        ...state,
+        requesting: true,
+        errorMessage: '',
+      }),
+      SUCCESS: (state: Detectors): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: '',
+      }),
+      FAILURE: (state: Detectors, action: APIResponseAction): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
+      }),
+    },
+    [GET_DETECTOR_COUNT]: {
+      REQUEST: (state: Detectors): Detectors => ({
+        ...state,
+        requesting: true,
+        errorMessage: '',
+      }),
+      SUCCESS: (state: Detectors): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: '',
+      }),
+      FAILURE: (state: Detectors, action: APIResponseAction): Detectors => ({
         ...state,
         requesting: false,
         errorMessage: action.error,
@@ -270,13 +307,15 @@ const reducer = handleActions<Detectors>(
 
 export const createDetector = (requestBody: Detector): APIAction => ({
   type: CREATE_DETECTOR,
-  request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API.DETECTOR}`, requestBody),
+  request: (client: HttpSetup) =>
+    client.post(`..${AD_NODE_API.DETECTOR}`, {
+      body: JSON.stringify(requestBody),
+    }),
 });
 
 export const getDetector = (detectorId: string): APIAction => ({
   type: GET_DETECTOR,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}`),
   detectorId,
 });
@@ -285,14 +324,16 @@ export const getDetectorList = (
   queryParams: GetDetectorsQueryParams
 ): APIAction => ({
   type: GET_DETECTOR_LIST,
-  request: (client: IHttpService) =>
-    client.get(`..${AD_NODE_API.DETECTOR}`, { params: queryParams }),
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API.DETECTOR}`, { query: queryParams }),
 });
 
 export const searchDetector = (requestBody: any): APIAction => ({
   type: SEARCH_DETECTOR,
-  request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/_search`, requestBody),
+  request: (client: HttpSetup) =>
+    client.post(`..${AD_NODE_API.DETECTOR}/_search`, {
+      body: JSON.stringify(requestBody),
+    }),
 });
 
 export const updateDetector = (
@@ -300,48 +341,51 @@ export const updateDetector = (
   requestBody: Detector
 ): APIAction => ({
   type: UPDATE_DETECTOR,
-  request: (client: IHttpService) =>
-    client.put(`..${AD_NODE_API.DETECTOR}/${detectorId}`, requestBody, {
-      params: {
-        ifPrimaryTerm: requestBody.primaryTerm,
-        ifSeqNo: requestBody.seqNo,
-      },
+  request: (client: HttpSetup) =>
+    client.put(`..${AD_NODE_API.DETECTOR}/${detectorId}`, {
+      body: JSON.stringify(requestBody),
     }),
   detectorId,
 });
 
 export const deleteDetector = (detectorId: string): APIAction => ({
   type: DELETE_DETECTOR,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.delete(`..${AD_NODE_API.DETECTOR}/${detectorId}`),
   detectorId,
 });
 
 export const startDetector = (detectorId: string): APIAction => ({
   type: START_DETECTOR,
-  request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/start`, {
-      detectorId: detectorId,
-    }),
+  request: (client: HttpSetup) =>
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/start`),
   detectorId,
 });
 
 export const stopDetector = (detectorId: string): APIAction => ({
   type: STOP_DETECTOR,
-  request: (client: IHttpService) =>
-    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/stop`, {
-      detectorId: detectorId,
-    }),
+  request: (client: HttpSetup) =>
+    client.post(`..${AD_NODE_API.DETECTOR}/${detectorId}/stop`),
   detectorId,
 });
 
 export const getDetectorProfile = (detectorId: string): APIAction => ({
   type: GET_DETECTOR_PROFILE,
-  request: (client: IHttpService) =>
-    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/_profile`, {
-      params: detectorId,
-    }),
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/_profile`),
   detectorId,
+});
+
+export const matchDetector = (detectorName: string): APIAction => ({
+  type: MATCH_DETECTOR,
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API.DETECTOR}/${detectorName}/_match`),
+});
+
+export const getDetectorCount = (): APIAction => ({
+  type: GET_DETECTOR_COUNT,
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API.DETECTOR}/_count`, {}),
 });
 
 export default reducer;

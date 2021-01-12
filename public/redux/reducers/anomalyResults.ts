@@ -13,16 +13,14 @@
  * permissions and limitations under the License.
  */
 
-import {
-  APIAction,
-  APIResponseAction,
-  IHttpService,
-} from '../middleware/types';
+import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
 import { AnomalyData } from '../../models/interfaces';
+import { get } from 'lodash';
 
 const DETECTOR_RESULTS = 'ad/DETECTOR_RESULTS';
+const SEARCH_ANOMALY_RESULTS = 'ad/SEARCH_ANOMALY_RESULTS';
 
 export interface Anomalies {
   requesting: boolean;
@@ -50,14 +48,27 @@ const reducer = handleActions<Anomalies>(
       SUCCESS: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
         requesting: false,
-        total: action.result.data.response.totalAnomalies,
-        anomalies: action.result.data.response.results,
-        featureData: action.result.data.response.featureResults,
+        total: action.result.response.totalAnomalies,
+        anomalies: action.result.response.results,
+        featureData: action.result.response.featureResults,
       }),
       FAILURE: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessage: get(action, 'error.error', action.error),
+      }),
+    },
+
+    //TODO: add requesting and errorMessage
+    [SEARCH_ANOMALY_RESULTS]: {
+      REQUEST: (state: Anomalies): Anomalies => ({
+        ...state,
+      }),
+      SUCCESS: (state: Anomalies, action: APIResponseAction): Anomalies => ({
+        ...state,
+      }),
+      FAILURE: (state: Anomalies): Anomalies => ({
+        ...state,
       }),
     },
   },
@@ -69,9 +80,17 @@ export const getDetectorResults = (
   queryParams: any
 ): APIAction => ({
   type: DETECTOR_RESULTS,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/results`, {
-      params: queryParams,
+      query: queryParams,
+    }),
+});
+
+export const searchResults = (requestBody: any): APIAction => ({
+  type: SEARCH_ANOMALY_RESULTS,
+  request: (client: HttpSetup) =>
+    client.post(`..${AD_NODE_API.DETECTOR}/results/_search`, {
+      body: JSON.stringify(requestBody),
     }),
 });
 

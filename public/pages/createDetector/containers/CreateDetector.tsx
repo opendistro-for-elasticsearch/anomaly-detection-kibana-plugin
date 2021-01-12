@@ -31,20 +31,18 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
-//@ts-ignore
-import chrome from 'ui/chrome';
-//@ts-ignore
-import { toastNotifications } from 'ui/notify';
+import { CoreStart } from '../../../../../../src/core/public';
 import { APIAction } from '../../../redux/middleware/types';
 import {
   createDetector,
-  searchDetector,
   updateDetector,
+  matchDetector,
+  getDetectorCount,
 } from '../../../redux/reducers/ad';
 import { getIndices } from '../../../redux/reducers/elasticsearch';
 import { AppState } from '../../../redux/reducers';
 import { BREADCRUMBS, MAX_DETECTORS } from '../../../utils/constants';
-import { getErrorMessage, validateName } from '../../../utils/utils';
+import { getErrorMessage, validateDetectorName } from '../../../utils/utils';
 import { DetectorInfo } from '../components/DetectorInfo';
 import { useFetchDetectorInfo } from '../hooks/useFetchDetectorInfo';
 import { DataSource } from './DataSource/index';
@@ -57,6 +55,9 @@ import { useHideSideNavBar } from '../../main/hooks/useHideSideNavBar';
 import { CatIndex } from '../../../../server/models/types';
 import { SampleDataCallout } from '../../SampleData/components/SampleDataCallout/SampleDataCallout';
 import { containsDetectorsIndex } from '../../SampleData/utils/helpers';
+import { clearModelConfiguration } from './utils/helpers';
+import { prettifyErrorMessage } from '../../../../server/utils/helpers';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 
 interface CreateRouterProps {
   detectorId?: string;
@@ -67,6 +68,7 @@ interface CreateADProps extends RouteComponentProps<CreateRouterProps> {
 }
 
 export function CreateDetector(props: CreateADProps) {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   useHideSideNavBar(true, false);
   const dispatch = useDispatch<Dispatch<APIAction>>();
   const detectorId: string = get(props, 'match.params.detectorId', '');
@@ -79,6 +81,7 @@ export function CreateDetector(props: CreateADProps) {
   const visibleIndices = useSelector(
     (state: AppState) => state.elasticsearch.indices
   ) as CatIndex[];
+  const [newIndexSelected, setNewIndexSelected] = useState<boolean>(false);
 
   // Getting all initial indices
   useEffect(() => {
@@ -110,54 +113,58 @@ export function CreateDetector(props: CreateADProps) {
         href: `#/detectors/${detectorId}`,
       });
     }
-    chrome.breadcrumbs.set(breadCrumbs);
+    core.chrome.setBreadcrumbs(breadCrumbs);
   });
   // If no detector found with ID, redirect it to list
   useEffect(() => {
     if (props.isEdit && hasError) {
-      toastNotifications.addDanger('Unable to find detector for edit');
+      core.notifications.toasts.addDanger('Unable to find detector for edit');
       props.history.push(`/detectors`);
     }
   }, [props.isEdit]);
 
   const handleUpdate = async (detectorToBeUpdated: Detector) => {
     try {
-      await dispatch(updateDetector(detectorId, detectorToBeUpdated));
-      toastNotifications.addSuccess(
-        `Detector updated: ${detectorToBeUpdated.name}`
+      // If a new index was selected: clear any existing features and category fields
+      const preparedDetector = newIndexSelected
+        ? clearModelConfiguration(detectorToBeUpdated)
+        : detectorToBeUpdated;
+      await dispatch(updateDetector(detectorId, preparedDetector));
+      core.notifications.toasts.addSuccess(
+        `Detector updated: ${preparedDetector.name}`
       );
       props.history.push(`/detectors/${detectorId}/configurations/`);
     } catch (err) {
-      toastNotifications.addDanger(
-        getErrorMessage(err, 'There was a problem updating detector')
+      core.notifications.toasts.addDanger(
+        prettifyErrorMessage(
+          getErrorMessage(err, 'There was a problem updating detector')
+        )
       );
     }
   };
   const handleCreate = async (detectorToBeCreated: Detector) => {
     try {
       const detectorResp = await dispatch(createDetector(detectorToBeCreated));
-      toastNotifications.addSuccess(
-        `Detector created: ${detectorResp.data.response.name}`
+      core.notifications.toasts.addSuccess(
+        `Detector created: ${detectorToBeCreated.name}`
       );
       props.history.push(
-        `/detectors/${detectorResp.data.response.id}/configurations/`
+        `/detectors/${detectorResp.response.id}/configurations/`
       );
     } catch (err) {
-      const resp = await dispatch(
-        searchDetector({
-          query: { bool: { must_not: { match: { name: '' } } } },
-        })
-      );
-      const totalDetectors = resp.data.response.totalDetectors;
+      const resp = await dispatch(getDetectorCount());
+      const totalDetectors = get(resp, 'response.count', 0);
       if (totalDetectors === MAX_DETECTORS) {
-        toastNotifications.addDanger(
+        core.notifications.toasts.addDanger(
           'Cannot create detector - limit of ' +
             MAX_DETECTORS +
             ' detectors reached'
         );
       } else {
-        toastNotifications.addDanger(
-          getErrorMessage(err, 'There was a problem creating detector')
+        core.notifications.toasts.addDanger(
+          prettifyErrorMessage(
+            getErrorMessage(err, 'There was a problem creating detector')
+          )
         );
       }
     }
@@ -184,38 +191,26 @@ export function CreateDetector(props: CreateADProps) {
   };
 
   const handleValidateName = async (detectorName: string) => {
-    const {
-      isEdit,
-      match: {
-        params: { detectorId },
-      },
-    } = props;
     if (isEmpty(detectorName)) {
-      throw 'Detector name cannot be empty';
+      return 'Detector name cannot be empty';
     } else {
-      const error = validateName(detectorName);
+      const error = validateDetectorName(detectorName);
       if (error) {
-        throw error;
+        return error;
       }
       //TODO::Avoid making call if value is same
-      const resp = await dispatch(
-        searchDetector({ query: { term: { 'name.keyword': detectorName } } })
-      );
-      const totalDetectors = resp.data.response.totalDetectors;
-      if (totalDetectors === 0) {
+      const resp = await dispatch(matchDetector(detectorName));
+      const match = get(resp, 'response.match', false);
+      if (!match) {
         return undefined;
       }
       //If more than one detectors found, duplicate exists.
-      if (!isEdit && totalDetectors > 0) {
-        throw 'Duplicate detector name';
+      if (!props.isEdit && match) {
+        return 'Duplicate detector name';
       }
       // if it is in edit mode
-      if (
-        isEdit &&
-        (totalDetectors > 1 ||
-          get(resp, 'data.response.detectors.0.id', '') !== detectorId)
-      ) {
-        throw 'Duplicate detector name';
+      if (props.isEdit && detectorName !== detector?.name) {
+        return 'Duplicate detector name';
       }
     }
   };
@@ -253,7 +248,12 @@ export function CreateDetector(props: CreateADProps) {
             <Fragment>
               <DetectorInfo onValidateDetectorName={handleValidateName} />
               <EuiSpacer />
-              <DataSource formikProps={formikProps} />
+              <DataSource
+                formikProps={formikProps}
+                origIndex={props.isEdit ? get(detector, 'indices.0', '') : null}
+                setNewIndexSelected={setNewIndexSelected}
+                isEdit={props.isEdit}
+              />
               <EuiSpacer />
               <Settings />
               <EuiSpacer />
@@ -267,6 +267,7 @@ export function CreateDetector(props: CreateADProps) {
                   <EuiButton
                     fill
                     type="submit"
+                    data-test-subj="createOrSaveDetectorButton"
                     isLoading={formikProps.isSubmitting}
                     //@ts-ignore
                     onClick={formikProps.handleSubmit}

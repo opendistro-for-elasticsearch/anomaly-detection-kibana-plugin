@@ -13,15 +13,12 @@
  * permissions and limitations under the License.
  */
 
-import {
-  APIAction,
-  APIResponseAction,
-  IHttpService,
-} from '../middleware/types';
+import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { AD_NODE_API } from '../../../utils/constants';
 import { DetectorResultsQueryParams } from '../../../server/models/types';
 import { Anomaly } from '../../../server/models/interfaces';
+import { get } from 'lodash';
 
 const DETECTOR_LIVE_RESULTS = 'ad/DETECTOR_LIVE_RESULTS';
 
@@ -49,13 +46,13 @@ const reducer = handleActions<Anomalies>(
       SUCCESS: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
         requesting: false,
-        totalLiveAnomalies: action.result.data.response.totalAnomalies,
-        liveAnomalies: action.result.data.response.results,
+        totalLiveAnomalies: action.result.response.totalAnomalies,
+        liveAnomalies: action.result.response.results,
       }),
       FAILURE: (state: Anomalies, action: APIResponseAction): Anomalies => ({
         ...state,
         requesting: false,
-        errorMessage: action.error.data.error,
+        errorMessage: get(action, 'error.error', action.error),
       }),
     },
   },
@@ -67,9 +64,9 @@ export const getDetectorLiveResults = (
   queryParams: DetectorResultsQueryParams
 ): APIAction => ({
   type: DETECTOR_LIVE_RESULTS,
-  request: (client: IHttpService) =>
+  request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/${detectorId}/results`, {
-      params: queryParams,
+      query: queryParams,
     }),
 });
 

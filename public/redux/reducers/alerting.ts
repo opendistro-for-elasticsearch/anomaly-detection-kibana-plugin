@@ -13,17 +13,14 @@
  * permissions and limitations under the License.
  */
 
-import {
-  APIAction,
-  APIResponseAction,
-  IHttpService,
-} from '../middleware/types';
+import { APIAction, APIResponseAction, HttpSetup } from '../middleware/types';
 import handleActions from '../utils/handleActions';
 import { ALERTING_NODE_API } from '../../../utils/constants';
 import { Monitor } from '../../../server/models/types';
 import { get } from 'lodash';
 
 const SEARCH_MONITORS = 'alerting/SEARCH_MONITORS';
+const SEARCH_ALERTS = 'alerting/SEARCH_ALERTS';
 
 export interface Monitors {
   requesting: boolean;
@@ -56,7 +53,7 @@ const reducer = handleActions<Monitors>(
         let totalAdMonitors = 0;
         const monitors = get(
           action,
-          'result.data.response.monitors',
+          'result.response.monitors',
           []
           // @ts-ignore
         ).reduce((map, obj) => {
@@ -73,7 +70,7 @@ const reducer = handleActions<Monitors>(
         return {
           ...state,
           requesting: false,
-          totalMonitors: get(action, 'result.data.response.totalMonitors', 0),
+          totalMonitors: get(action, 'result.response.totalMonitors', 0),
           totalAdMonitors: totalAdMonitors,
           monitors: monitors,
         };
@@ -84,14 +81,42 @@ const reducer = handleActions<Monitors>(
         errorMessage: action.error,
       }),
     },
+
+    //TODO: add requesting and errorMessage
+    [SEARCH_ALERTS]: {
+      REQUEST: (state: Monitors): Monitors => ({
+        ...state,
+      }),
+      SUCCESS: (state: Monitors, action: APIResponseAction): Monitors => ({
+        ...state,
+      }),
+      FAILURE: (state: Monitors, action: APIResponseAction): Monitors => ({
+        ...state,
+      }),
+    },
   },
   initialDetectorsState
 );
 
 export const searchMonitors = (): APIAction => ({
   type: SEARCH_MONITORS,
-  request: (client: IHttpService) =>
-    client.post(`..${ALERTING_NODE_API._SEARCH}`, {}),
+  request: (client: HttpSetup) => client.post(`..${ALERTING_NODE_API._SEARCH}`),
+});
+
+export const searchAlerts = (
+  monitorId: string,
+  startTime: number,
+  endTime: number
+): APIAction => ({
+  type: SEARCH_ALERTS,
+  request: (client: HttpSetup) =>
+    client.get(`..${ALERTING_NODE_API.ALERTS}`, {
+      query: {
+        monitorId: monitorId,
+        startTime: startTime,
+        endTime: endTime,
+      },
+    }),
 });
 
 export default reducer;

@@ -14,7 +14,7 @@
  */
 
 import { SORT_DIRECTION } from '../../../server/utils/constants';
-import { DETECTOR_STATE } from '../../utils/constants';
+import { DETECTOR_STATE } from '../../../server/utils/constants';
 
 export const customSubduedColor = '#98A2B3';
 export const customSuccessColor = '#7DE2D1';
@@ -74,3 +74,12 @@ export const GET_SAMPLE_DETECTORS_QUERY_PARAMS = {
 };
 
 export const GET_SAMPLE_INDICES_QUERY = 'opendistro-sample-*';
+
+export const TOP_ENTITIES_FIELD = 'top_entities';
+
+export const TOP_ENTITY_AGGS = 'top_entity_aggs';
+export const TOP_ANOMALY_GRADE_SORT_AGGS = 'top_anomaly_grade_sort_aggs';
+export const MAX_ANOMALY_AGGS = 'max_anomaly_aggs';
+export const COUNT_ANOMALY_AGGS = 'count_anomaly_aggs';
+export const MAX_ANOMALY_SORT_AGGS = 'max_anomaly_sort_aggs';
+export const ENTITY_DATE_BUCKET_ANOMALY_AGGS = 'entity_date_bucket_anomaly';

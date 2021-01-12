@@ -13,9 +13,11 @@
  * permissions and limitations under the License.
  */
 
-//@ts-ignore
-import chrome from 'ui/chrome';
+import React from 'react';
+import { CoreStart } from '../../../../src/core/public';
+import { CoreServicesContext } from '../components/CoreServices/CoreServices';
 
 export const darkModeEnabled = (): boolean => {
-  return chrome.getUiSettingsClient().get('theme:darkMode') || false;
+  const core = React.useContext(CoreServicesContext) as CoreStart;
+  return core.uiSettings.get('theme:darkMode') || false;
 };

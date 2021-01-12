@@ -13,7 +13,9 @@
  * permissions and limitations under the License.
  */
 
-import { DATA_TYPES, DETECTOR_STATE } from '../utils/constants';
+import { InitProgress } from '../../server/models/interfaces';
+import { DATA_TYPES } from '../utils/constants';
+import { DETECTOR_STATE } from '../../server/utils/constants';
 
 export type FieldInfo = {
   label: string;
@@ -86,11 +88,6 @@ export type UiMetaData = {
   };
 };
 
-export type InitProgress = {
-  percentageStr: string;
-  estimatedMinutesLeft: number;
-  neededShingles: number;
-};
 export type Detector = {
   primaryTerm: number;
   seqNo: number;
@@ -112,6 +109,7 @@ export type Detector = {
   curState: DETECTOR_STATE;
   stateError: string;
   initProgress?: InitProgress;
+  categoryField?: string[];
 };
 
 export type DetectorListItem = {
@@ -126,6 +124,11 @@ export type DetectorListItem = {
   enabledTime?: number;
 };
 
+export type EntityData = {
+  name: string;
+  value: string;
+};
+
 export type AnomalyData = {
   anomalyGrade: number;
   anomalyScore?: number;
@@ -134,6 +137,8 @@ export type AnomalyData = {
   endTime: number;
   startTime: number;
   plotTime?: number;
+  entity?: EntityData[];
+  features?: { [key: string]: FeatureAggregationData };
 };
 
 export type FeatureAggregationData = {

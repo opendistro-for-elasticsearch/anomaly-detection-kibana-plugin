@@ -27,19 +27,17 @@ import {
   EuiText,
   EuiLoadingSpinner,
 } from '@elastic/eui';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React, { useEffect, Fragment, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { AppState } from '../../../redux/reducers';
 import {
   BREADCRUMBS,
-  DETECTOR_STATE,
   FEATURE_DATA_POINTS_WINDOW,
   MISSING_FEATURE_DATA_SEVERITY,
 } from '../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import { AnomalyResultsLiveChart } from './AnomalyResultsLiveChart';
 import { AnomalyHistory } from './AnomalyHistory';
 import { DetectorStateDetails } from './DetectorStateDetails';
@@ -68,6 +66,8 @@ import {
   getAssociatedIndex,
 } from '../../SampleData/utils/helpers';
 import { SampleIndexDetailsCallout } from '../../SampleData/components/SampleIndexDetailsCallout/SampleIndexDetailsCallout';
+import { CoreStart } from '../../../../../../src/core/public';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 
 interface AnomalyResultsProps extends RouteComponentProps {
   detectorId: string;
@@ -76,6 +76,7 @@ interface AnomalyResultsProps extends RouteComponentProps {
 }
 
 export function AnomalyResults(props: AnomalyResultsProps) {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
   const dispatch = useDispatch();
   const detectorId = props.detectorId;
   const detector = useSelector(
@@ -83,7 +84,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   );
 
   useEffect(() => {
-    chrome.breadcrumbs.set([
+    core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.DETECTORS,
       { text: detector ? detector.name : '' },
@@ -199,6 +200,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
     isDetectorMissingData != undefined &&
     !isDetectorMissingData;
 
+  const isHCDetector = !isEmpty(get(detector, 'categoryField', []));
+
   const checkLatestFeatureDataPoints = async () => {
     const featureDataPointsRange = {
       startDate: Math.max(
@@ -226,7 +229,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       );
       const featuresData = get(
         detectorResultResponse,
-        'data.response.featureResults',
+        'response.featureResults',
         []
       );
       const featureDataPoints = getFeatureDataPointsForDetector(
@@ -266,7 +269,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
       return get(
         getFeatureDataMissingMessageAndActionItem(
           featureMissingSeverity,
-          featureNamesAtHighSev
+          featureNamesAtHighSev,
+          isHCDetector
         ),
         'message',
         ''
@@ -334,6 +338,7 @@ export function AnomalyResults(props: AnomalyResultsProps) {
   const getInitProgressMessage = () => {
     return detector &&
       isDetectorInitializing &&
+      !isHCDetector &&
       get(detector, 'initProgress.estimatedMinutesLeft')
       ? `The detector needs ${get(
           detector,
@@ -354,7 +359,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
         {get(
           getFeatureDataMissingMessageAndActionItem(
             featureMissingSeverity,
-            featureNamesAtHighSev
+            featureNamesAtHighSev,
+            isHCDetector
           ),
           'actionItem',
           ''
@@ -401,9 +407,10 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     </Fragment>
                   ) : null}
                   {isDetectorUpdated ||
-                  isDetectorMissingData ||
+                  // don't show miss feature callout for HC detector
+                  (isDetectorMissingData && !isHCDetector) ||
                   isInitializingNormally ||
-                  isInitOvertime ||
+                  (isInitOvertime && !isHCDetector) ||
                   isDetectorFailed ? (
                     <EuiCallOut
                       title={getCalloutTitle()}
@@ -419,7 +426,8 @@ export function AnomalyResults(props: AnomalyResultsProps) {
                     >
                       {getCalloutContent()}
                       {isPerformingColdStart ? null : isDetectorInitializing &&
-                        detector.initProgress ? (
+                        detector.initProgress &&
+                        !isHCDetector ? (
                         <div>
                           <EuiFlexGroup alignItems="center">
                             <EuiFlexItem

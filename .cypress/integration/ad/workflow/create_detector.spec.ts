@@ -37,7 +37,9 @@ context('Create detector', () => {
     });
 
     cy.mockCreateDetectorOnAction('post_detector_response.json', () => {
-      cy.get('.euiButton--primary.euiButton--fill').click({ force: true });
+      cy.get('[data-test-subj=createOrSaveDetectorButton]').click({
+        force: true,
+      });
     });
 
     cy.contains('h1', detectorName);

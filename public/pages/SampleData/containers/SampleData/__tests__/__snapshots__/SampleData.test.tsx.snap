@@ -127,7 +127,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                     type="button"
                   >
                     <span
-                      class="euiButton__content"
+                      class="euiButtonContent euiButton__content"
                     >
                       <span
                         class="euiButton__text"
@@ -251,7 +251,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                     type="button"
                   >
                     <span
-                      class="euiButton__content"
+                      class="euiButtonContent euiButton__content"
                     >
                       <span
                         class="euiButton__text"
@@ -375,7 +375,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                     type="button"
                   >
                     <span
-                      class="euiButton__content"
+                      class="euiButtonContent euiButton__content"
                     >
                       <span
                         class="euiButton__text"
@@ -398,6 +398,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
       class="euiSpacer euiSpacer--m"
     />
   </div>
+   
 </div>
 `;
 
@@ -532,7 +533,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                     type="button"
                   >
                     <span
-                      class="euiButton__content"
+                      class="euiButtonContent euiButton__content"
                     >
                       <span
                         class="euiButton__text"
@@ -660,7 +661,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                     type="button"
                   >
                     <span
-                      class="euiButton__content"
+                      class="euiButtonContent euiButton__content"
                     >
                       <span
                         class="euiButton__text"
@@ -788,7 +789,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                     type="button"
                   >
                     <span
-                      class="euiButton__content"
+                      class="euiButtonContent euiButton__content"
                     >
                       <span
                         class="euiButton__text"
@@ -811,6 +812,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
       class="euiSpacer euiSpacer--m"
     />
   </div>
+   
 </div>
 `;
 
@@ -949,14 +951,14 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                   class="euiFlexItem euiFlexItem--flexGrowZero"
                 >
                   <button
-                    class="euiButton euiButton--primary"
+                    class="euiButton euiButton--primary euiButton-isDisabled"
                     data-test-subj="loadDataButton"
                     disabled=""
                     style="width: 300px;"
                     type="button"
                   >
                     <span
-                      class="euiButton__content"
+                      class="euiButtonContent euiButton__content"
                     >
                       <span
                         class="euiButton__text"
@@ -1092,7 +1094,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                     type="button"
                   >
                     <span
-                      class="euiButton__content"
+                      class="euiButtonContent euiButton__content"
                     >
                       <span
                         class="euiButton__text"
@@ -1220,7 +1222,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                     type="button"
                   >
                     <span
-                      class="euiButton__content"
+                      class="euiButtonContent euiButton__content"
                     >
                       <span
                         class="euiButton__text"
@@ -1243,5 +1245,6 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
       class="euiSpacer euiSpacer--m"
     />
   </div>
+   
 </div>
 `;

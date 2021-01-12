@@ -59,21 +59,6 @@ export const MAX_DETECTORS = 1000;
 
 export const MAX_ANOMALIES = 10000;
 
-export enum DETECTOR_STATE {
-  DISABLED = 'Stopped',
-  INIT = 'Initializing',
-  RUNNING = 'Running',
-  FEATURE_REQUIRED = 'Feature required',
-  INIT_FAILURE = 'Initialization failure',
-  UNEXPECTED_FAILURE = 'Unexpected failure',
-}
-
-export enum SAMPLE_TYPE {
-  HTTP_RESPONSES = 'http-responses',
-  HOST_HEALTH = 'host-health',
-  ECOMMERCE = 'ecommerce',
-}
-
 export const MAX_FEATURE_NUM = 5;
 
 export const MAX_FEATURE_NAME_SIZE = 64;

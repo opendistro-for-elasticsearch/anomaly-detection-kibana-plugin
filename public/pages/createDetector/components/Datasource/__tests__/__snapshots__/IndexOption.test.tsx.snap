@@ -73,9 +73,11 @@ exports[`<IndexOptions /> spec renders with highlight 1`] = `
       >
         <span>
           
-          <strong>
+          <mark
+            class="euiMark"
+          >
             logs
-          </strong>
+          </mark>
           tash-1234
         </span>
       </span>

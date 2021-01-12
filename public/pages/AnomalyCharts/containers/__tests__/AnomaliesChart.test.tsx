@@ -16,56 +16,33 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { AnomaliesChart } from '../AnomaliesChart';
-import moment from 'moment';
 import { initialState, mockedStore } from '../../../../redux/utils/testUtils';
 import { Provider } from 'react-redux';
-
-const initialStartTime = moment('2019-10-10T09:00:00');
-const initialEndTime = initialStartTime.clone().add(2, 'd');
-const dateRange = {
-  startDate: initialStartTime.valueOf(),
-  endDate: initialEndTime.valueOf(),
-};
-const anomalies = [
-  {
-    anomalyGrade: 0.3,
-    confidence: 0.8,
-    startTime: initialStartTime.add(1, 'minutes').valueOf(),
-    endTime: initialStartTime.add(2, 'minutes').valueOf(),
-    plotTime: initialStartTime.add(90, 'seconds').valueOf(),
-  },
-];
+import { INITIAL_ANOMALY_SUMMARY } from '../../utils/constants';
+import { getRandomDetector } from '../../../../redux/reducers/__tests__/utils';
+import { CoreServicesContext } from '../../../../components/CoreServices/CoreServices';
+import { coreServicesMock } from '../../../../../test/mocks';
+import {
+  FAKE_ANOMALIES_RESULT,
+  FAKE_DATE_RANGE,
+} from '../../../../pages/utils/__tests__/constants';
 
 const renderDataFilter = () => ({
   ...render(
-    <Provider
-      store={mockedStore({
-        ...initialState,
-        elasticsearch: {
-          ...initialState.elasticsearch,
-          dataTypes: {
-            keyword: ['cityName.keyword'],
-            integer: ['age'],
-            text: ['cityName'], 
-          },
-        },
-      })}
-    >
-      <AnomaliesChart
-        onDateRangeChange={jest.fn()}
-        onZoomRangeChange={jest.fn()}
-        title="test"
-        anomalies={anomalies}
-        atomicAnomalies={true}
-        anomalySummary={undefined}
-        dateRange={dateRange}
-        isLoading={false}
-        anomalyGradeSeriesName="anomaly grade"
-        confidenceSeriesName="confidence"
-        detectorId="testDetectorId"
-        detectorName="testDetectorName"
-        annotations={[]}
-      />
+    <Provider store={mockedStore()}>
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <AnomaliesChart
+          onDateRangeChange={jest.fn()}
+          onZoomRangeChange={jest.fn()}
+          title="test"
+          bucketizedAnomalies={true}
+          anomalySummary={INITIAL_ANOMALY_SUMMARY}
+          dateRange={FAKE_DATE_RANGE}
+          isLoading={false}
+          anomaliesResult={FAKE_ANOMALIES_RESULT}
+          detector={getRandomDetector(true)}
+        />
+      </CoreServicesContext.Provider>
     </Provider>
   ),
 });

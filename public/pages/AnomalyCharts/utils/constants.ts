@@ -22,11 +22,6 @@ export const INITIAL_ANOMALY_SUMMARY = {
   lastAnomalyOccurrence: '',
 };
 
-export enum ANOMALY_CHART_TITLE {
-  SAMPLE_ANOMALY_HISTORY = 'Sample anomaly history',
-  ANOMALY_HISTORY = 'Sample anomaly history',
-}
-
 export enum CHART_FIELDS {
   PLOT_TIME = 'plotTime',
   ANOMALY_GRADE = 'anomalyGrade',

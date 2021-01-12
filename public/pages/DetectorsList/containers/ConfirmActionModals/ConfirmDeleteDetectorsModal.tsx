@@ -29,16 +29,12 @@ import {
   EuiModalHeaderTitle,
   EuiLoadingSpinner,
 } from '@elastic/eui';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
 import { get, isEmpty } from 'lodash';
-//@ts-ignore
-import chrome from 'ui/chrome';
 import { Monitor } from '../../../../models/interfaces';
 import { DetectorListItem } from '../../../../models/interfaces';
 import { Listener } from '../../../../utils/utils';
 import { EuiSpacer } from '@elastic/eui';
-import { DETECTOR_STATE } from '../../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../../server/utils/constants';
 import {
   getNamesAndMonitorsAndStatesGrid,
   containsEnabledDetectors,
@@ -61,15 +57,15 @@ export const ConfirmDeleteDetectorsModal = (
   const containsEnabled = containsEnabledDetectors(props.detectors);
   const detectorsToDisplay = containsEnabled
     ? props.detectors
-        .sort(detector =>
+        .sort((detector) =>
           detector.curState === DETECTOR_STATE.INIT ||
           detector.curState === DETECTOR_STATE.RUNNING
             ? -1
             : 1
         )
-        .sort(detector => (get(props.monitors, `${detector.id}`) ? -1 : 1))
+        .sort((detector) => (get(props.monitors, `${detector.id}`) ? -1 : 1))
     : containsMonitors
-    ? props.detectors.sort(detector =>
+    ? props.detectors.sort((detector) =>
         get(props.monitors, `${detector.id}`) ? -1 : 1
       )
     : props.detectors;
@@ -138,7 +134,7 @@ export const ConfirmDeleteDetectorsModal = (
             data-test-subj="typeDeleteField"
             fullWidth={true}
             placeholder="delete"
-            onChange={e => {
+            onChange={(e) => {
               if (e.target.value === 'delete') {
                 setDeleteTyped(true);
               } else {

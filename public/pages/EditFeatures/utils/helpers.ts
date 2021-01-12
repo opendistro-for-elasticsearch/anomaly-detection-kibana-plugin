@@ -22,17 +22,18 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { get, forOwn } from 'lodash';
 import { FeaturesFormikValues } from '../containers/utils/formikToFeatures';
+import { DataTypes } from '../../../redux/reducers/elasticsearch';
 
 export const getFieldOptions = (
   allFields: { [key: string]: string[] },
   validTypes: DATA_TYPES[]
 ) =>
   validTypes
-    .map(dataType =>
+    .map((dataType) =>
       allFields[dataType]
         ? {
             label: dataType,
-            options: allFields[dataType].map(field => ({
+            options: allFields[dataType].map((field) => ({
               label: field,
               type: dataType,
             })),
@@ -56,8 +57,8 @@ export const getCountableFieldOptions = (allFields: {
   return getFieldOptions(
     allFields,
     Object.keys(allFields)
-      .map(field => field as DATA_TYPES)
-      .filter(field => countableDataTypes.includes(field))
+      .map((field) => field as DATA_TYPES)
+      .filter((field) => countableDataTypes.includes(field))
   );
 };
 
@@ -111,7 +112,7 @@ export const validateFeatures = (values: any) => {
       hasError = true;
       // @ts-ignore
       return {
-        featureName: 'Required',
+        featureName: 'You must enter a feature name',
       };
     }
   });
@@ -152,12 +153,13 @@ export const generateInitialFeatures = (
 export const focusOnFirstWrongFeature = (errors: any, setFieldTouched: any) => {
   if (
     //@ts-ignore
-    !!get(errors, 'featureList', []).filter(featureError => featureError).length
+    !!get(errors, 'featureList', []).filter((featureError) => featureError)
+      .length
   ) {
     const featureList = get(errors, 'featureList', []);
     for (let i = featureList.length - 1; i >= 0; i--) {
       if (featureList[i]) {
-        forOwn(featureList[i], function(value, key) {
+        forOwn(featureList[i], function (value, key) {
           setFieldTouched(`featureList.${i}.${key}`, true);
         });
         focusOnFeatureAccordion(i);
@@ -184,4 +186,15 @@ export const focusOnFeatureAccordion = (index: number) => {
     //@ts-ignore
     featureAccordion.click();
   }
+};
+
+export const focusOnCategoryField = () => {
+  const component = document.getElementById('categoryFieldCheckbox');
+  component?.focus();
+};
+
+export const getCategoryFields = (dataTypes: DataTypes) => {
+  const keywordFields = get(dataTypes, 'keyword', []);
+  const ipFields = get(dataTypes, 'ip', []);
+  return keywordFields.concat(ipFields);
 };

@@ -30,10 +30,6 @@ import {
   EuiLoadingSpinner,
   EuiSpacer,
 } from '@elastic/eui';
-//@ts-ignore
-import chrome from 'ui/chrome';
-// @ts-ignore
-import { toastNotifications } from 'ui/notify';
 import { AnomalousDetectorsList } from '../Components/AnomalousDetectorsList';
 import {
   GET_ALL_DETECTORS_QUERY_PARAMS,
@@ -44,12 +40,21 @@ import {
 import { AppState } from '../../../redux/reducers';
 import { CatIndex, IndexAlias } from '../../../../server/models/types';
 import { getVisibleOptions } from '../../utils/helpers';
-import { DETECTOR_STATE, BREADCRUMBS } from '../../../utils/constants';
+import { BREADCRUMBS } from '../../../utils/constants';
+import { DETECTOR_STATE } from '../../../../server/utils/constants'
 import { getDetectorStateOptions } from '../../DetectorsList/utils/helpers';
 import { DashboardHeader } from '../Components/utils/DashboardHeader';
 import { EmptyDashboard } from '../Components/EmptyDashboard/EmptyDashboard';
+import {
+  prettifyErrorMessage,
+  NO_PERMISSIONS_KEY_WORD,
+} from '../../../../server/utils/helpers';
+import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
+import { CoreStart } from '../../../../../../src/core/public';
 
 export function DashboardOverview() {
+  const core = React.useContext(CoreServicesContext) as CoreStart;
+
   const dispatch = useDispatch();
 
   const adState = useSelector((state: AppState) => state.ad);
@@ -177,13 +182,18 @@ export function DashboardOverview() {
   useEffect(() => {
     if (errorGettingDetectors) {
       console.error(errorGettingDetectors);
-      toastNotifications.addDanger('Unable to get all detectors');
+      core.notifications.toasts.addDanger(
+        typeof errorGettingDetectors === 'string' &&
+          errorGettingDetectors.includes(NO_PERMISSIONS_KEY_WORD)
+          ? prettifyErrorMessage(errorGettingDetectors)
+          : 'Unable to get all detectors.'
+      );
       setIsLoadingDetectors(false);
     }
   }, [errorGettingDetectors]);
 
   useEffect(() => {
-    chrome.breadcrumbs.set([
+    core.chrome.setBreadcrumbs([
       BREADCRUMBS.ANOMALY_DETECTOR,
       BREADCRUMBS.DASHBOARD,
     ]);

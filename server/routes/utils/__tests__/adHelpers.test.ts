@@ -28,73 +28,71 @@ describe('adHelpers', () => {
         periodStart: 1596309273336,
         periodEnd: 1596914073336,
         detector: {
-          name: "test2",
-          description: "test",
-          timeField: "@timestamp",
-          indices: [
-            "metricbeat-7.8.1"
-          ],
+          name: 'test2',
+          description: 'test',
+          timeField: '@timestamp',
+          indices: ['metricbeat-7.8.1'],
           detectionInterval: {
             period: {
               interval: 1,
-              unit: "Minutes"
-            }
+              unit: 'Minutes',
+            },
           },
           windowDelay: {
             period: {
               interval: 1,
-              unit: "Minutes"
-            }
+              unit: 'Minutes',
+            },
           },
           filterQuery: {
             bool: {
               filter: [
                 {
                   term: {
-                    "host.name": {
-                      value: "myserver"
-                    }
-                  }
-                }
-              ]
-            }
+                    'host.name': {
+                      value: 'myserver',
+                    },
+                  },
+                },
+              ],
+            },
           },
           featureAttributes: [
             {
-              featureId: "9lAlx3MBdAn13oNrKKPk",
-              featureName: "F1",
+              featureId: '9lAlx3MBdAn13oNrKKPk',
+              featureName: 'F1',
               featureEnabled: true,
               importance: 1,
               aggregationQuery: {
                 f_1: {
                   avg: {
-                    field: "system.cpu.total.pct"
-                  }
-                }
-              }
-            }
+                    field: 'system.cpu.total.pct',
+                  },
+                },
+              },
+            },
           ],
           uiMetadata: {
             features: {
               F1: {
-                featureType: "simple_aggs",
-                aggregationBy: "avg",
-                aggregationOf: "system.cpu.total.pct"
-              }
+                featureType: 'simple_aggs',
+                aggregationBy: 'avg',
+                aggregationOf: 'system.cpu.total.pct',
+              },
             },
             filters: [
               {
                 fieldInfo: [
                   {
-                    label: "host.name",
-                    type: "keyword"
-                  }
+                    label: 'host.name',
+                    type: 'keyword',
+                  },
                 ],
-                fieldValue: "myserver",
-                operator: "is"
-              }
+                fieldValue: 'myserver',
+                operator: 'is',
+              },
             ],
-            filterType: "simple_filter"
+            filterType: 'simple_filter',
           },
         },
       });
@@ -102,75 +100,73 @@ describe('adHelpers', () => {
         period_start: 1596309273336,
         period_end: 1596914073336,
         detector: {
-          name: "test2",
-          description: "test",
-          time_field: "@timestamp",
-          indices: [
-            "metricbeat-7.8.1"
-          ],
+          name: 'test2',
+          description: 'test',
+          time_field: '@timestamp',
+          indices: ['metricbeat-7.8.1'],
           detection_interval: {
             period: {
               interval: 1,
-              unit: "Minutes"
-            }
+              unit: 'Minutes',
+            },
           },
           window_delay: {
             period: {
               interval: 1,
-              unit: "Minutes"
-            }
+              unit: 'Minutes',
+            },
           },
           filter_query: {
             bool: {
               filter: [
                 {
                   term: {
-                    "host.name": {
-                      value: "myserver"
-                    }
-                  }
-                }
-              ]
-            }
+                    'host.name': {
+                      value: 'myserver',
+                    },
+                  },
+                },
+              ],
+            },
           },
           feature_attributes: [
             {
-              feature_id: "9lAlx3MBdAn13oNrKKPk",
-              feature_name: "F1",
+              feature_id: '9lAlx3MBdAn13oNrKKPk',
+              feature_name: 'F1',
               feature_enabled: true,
               importance: 1,
               aggregation_query: {
                 f_1: {
                   avg: {
-                    field: "system.cpu.total.pct"
-                  }
-                }
-              }
-            }
+                    field: 'system.cpu.total.pct',
+                  },
+                },
+              },
+            },
           ],
           ui_metadata: {
             features: {
               F1: {
-                featureType: "simple_aggs",
-                aggregationBy: "avg",
-                aggregationOf: "system.cpu.total.pct"
-              }
+                featureType: 'simple_aggs',
+                aggregationBy: 'avg',
+                aggregationOf: 'system.cpu.total.pct',
+              },
             },
             filters: [
               {
                 fieldInfo: [
                   {
-                    label: "host.name",
-                    type: "keyword"
-                  }
+                    label: 'host.name',
+                    type: 'keyword',
+                  },
                 ],
-                fieldValue: "myserver",
-                operator: "is"
-              }
+                fieldValue: 'myserver',
+                operator: 'is',
+              },
             ],
-            filterType: "simple_filter"
+            filterType: 'simple_filter',
           },
-        }
+        },
       });
     });
   });
@@ -330,6 +326,7 @@ describe('adHelpers', () => {
         enabled: false,
         disabledTime: undefined,
         enabledTime: undefined,
+        categoryField: undefined,
       });
     });
     test('should not convert keys to camelCase for filterQuery', () => {
@@ -381,9 +378,7 @@ describe('adHelpers', () => {
           },
         },
         uiMetadata: {},
-        enabled: false,
-        disabledTime: undefined,
-        enabledTime: undefined,
+        categoryField: undefined,
       });
     });
 
@@ -409,6 +404,7 @@ describe('adHelpers', () => {
         enabled: false,
         disabledTime: undefined,
         enabledTime: undefined,
+        categoryField: undefined,
       });
     });
   });

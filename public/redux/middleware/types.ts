@@ -13,12 +13,13 @@
  * permissions and limitations under the License.
  */
 
-import { IHttpService, IHttpPromise, IHttpResponse } from 'angular';
+import { HttpSetup, HttpResponse } from '../../../../../src/core/public';
 import { Action, Dispatch } from 'redux';
 import { AppState } from '../reducers';
 
 interface APIAction extends Action {
-  request: (client: IHttpService) => IHttpPromise<IHttpResponse<any>>;
+  // NOTE: there is no HttpPromise equivalent in core, using TypeScript's default Promise. Will need to confirm this still works as expected
+  request: (client: HttpSetup) => Promise<HttpResponse<any>>;
   [key: string]: any;
 }
 
@@ -38,9 +39,8 @@ type ThunkAction<State = AppState> = (
 ) => void;
 
 export {
-  IHttpPromise,
-  IHttpResponse,
-  IHttpService,
+  HttpSetup,
+  HttpResponse,
   APIAction,
   APIResponseAction,
   APIErrorAction,

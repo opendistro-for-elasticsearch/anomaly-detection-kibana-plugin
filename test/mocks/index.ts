@@ -15,5 +15,6 @@
 
 import httpClientMock from './httpClientMock';
 import styleMock from './styleMock';
+import coreServicesMock from './coreServicesMock';
 
-export { httpClientMock, styleMock };
+export { httpClientMock, styleMock, coreServicesMock };
