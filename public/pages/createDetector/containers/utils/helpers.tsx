@@ -14,7 +14,7 @@
  */
 
 import { Detector } from '../../../../models/interfaces';
-import { SHINGLE_SIZE } from '../../../../utils/constants';
+import { SINGLE_ENTITY_SHINGLE_SIZE } from '../../../../utils/constants';
 
 export function clearModelConfiguration(ad: Detector): Detector {
   return {
@@ -25,6 +25,6 @@ export function clearModelConfiguration(ad: Detector): Detector {
       features: {},
     },
     categoryField: undefined,
-    shingleSize: SHINGLE_SIZE,
+    shingleSize: SINGLE_ENTITY_SHINGLE_SIZE,
   };
 }

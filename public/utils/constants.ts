@@ -66,7 +66,9 @@ export const MAX_FEATURE_NAME_SIZE = 64;
 export const NAME_REGEX = RegExp('^[a-zA-Z0-9._-]+$');
 
 //https://github.com/opendistro-for-elasticsearch/anomaly-detection/blob/master/src/main/java/com/amazon/opendistroforelasticsearch/ad/settings/AnomalyDetectorSettings.java#L186
-export const SHINGLE_SIZE = 8;
+export const SINGLE_ENTITY_SHINGLE_SIZE = 8;
+
+export const MULTI_ENTITY_SHINGLE_SIZE = 4;
 
 export const FEATURE_DATA_POINTS_WINDOW = 3;
 

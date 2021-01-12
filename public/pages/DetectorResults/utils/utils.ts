@@ -18,7 +18,7 @@ import {
   NO_DATA_IN_WINDOW_ERROR_MESSAGE,
   NO_RCF_MODEL_ERROR_MESSAGE,
 } from './constants';
-import { SHINGLE_SIZE } from '../../../utils/constants';
+import { SINGLE_ENTITY_SHINGLE_SIZE } from '../../../utils/constants';
 import { DETECTOR_STATE } from '../../../../server/utils/constants';
 import moment, { Moment } from 'moment';
 import { get } from 'lodash';
@@ -52,7 +52,7 @@ const isDetectorInitOverTime = (currentTime: Moment, detector: Detector) => {
     //@ts-ignore
     currentTime
       .subtract(
-        get(detector, 'shingleSize', SHINGLE_SIZE) *
+        get(detector, 'shingleSize', SINGLE_ENTITY_SHINGLE_SIZE) *
           detector.detectionInterval.period.interval,
         detector.detectionInterval.period.unit.toLowerCase()
       )

@@ -13,7 +13,11 @@
  * permissions and limitations under the License.
  */
 
-import { DATA_TYPES } from '../../../utils/constants';
+import {
+  DATA_TYPES,
+  MULTI_ENTITY_SHINGLE_SIZE,
+  SINGLE_ENTITY_SHINGLE_SIZE,
+} from '../../../utils/constants';
 import {
   FEATURE_TYPE,
   FeatureAttributes,
@@ -197,4 +201,15 @@ export const getCategoryFields = (dataTypes: DataTypes) => {
   const keywordFields = get(dataTypes, 'keyword', []);
   const ipFields = get(dataTypes, 'ip', []);
   return keywordFields.concat(ipFields);
+};
+
+export const getShingleSizeFromObject = (
+  obj: object,
+  isHCDetector: boolean
+) => {
+  return get(
+    obj,
+    'shingleSize',
+    isHCDetector ? MULTI_ENTITY_SHINGLE_SIZE : SINGLE_ENTITY_SHINGLE_SIZE
+  );
 };

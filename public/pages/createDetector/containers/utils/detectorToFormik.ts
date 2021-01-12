@@ -17,7 +17,7 @@ import { cloneDeep, isEmpty, get } from 'lodash';
 import { Detector, FILTER_TYPES } from '../../../../models/interfaces';
 import { ADFormikValues } from '../models/interfaces';
 import { INITIAL_VALUES } from './constant';
-import { SHINGLE_SIZE } from '../../../../utils/constants'
+import { getShingleSizeFromObject } from '../../../../pages/EditFeatures/utils/helpers';
 
 export function detectorToFormik(ad: Detector): ADFormikValues {
   const initialValues = cloneDeep(INITIAL_VALUES);
@@ -41,6 +41,9 @@ export function detectorToFormik(ad: Detector): ADFormikValues {
     timeField: ad.timeField,
     detectionInterval: get(ad, 'detectionInterval.period.interval', 10),
     windowDelay: get(ad, 'windowDelay.period.interval', 0),
-    shingleSize: get(ad, 'shingleSize', SHINGLE_SIZE),
+    shingleSize: getShingleSizeFromObject(
+      ad,
+      !isEmpty(get(ad, 'categoryField', []))
+    ),
   };
 }

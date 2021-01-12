@@ -14,7 +14,10 @@
  */
 
 import { INITIAL_VALUES } from '../constant';
-import { SHINGLE_SIZE } from '../../../../../utils/constants';
+import {
+  MULTI_ENTITY_SHINGLE_SIZE,
+  SINGLE_ENTITY_SHINGLE_SIZE,
+} from '../../../../../utils/constants';
 import { getRandomDetector } from '../../../../../redux/reducers/__tests__/utils';
 import { detectorToFormik } from '../detectorToFormik';
 import { Detector, FILTER_TYPES } from '../../../../../models/interfaces';
@@ -35,7 +38,7 @@ describe('adToFormik', () => {
       filterType: FILTER_TYPES.SIMPLE,
       filterQuery: JSON.stringify(randomDetector.filterQuery || {}, null, 4),
       index: [{ label: randomDetector.indices[0] }], // Currently we support only one index
-      shingleSize: SHINGLE_SIZE,
+      shingleSize: SINGLE_ENTITY_SHINGLE_SIZE,
       timeField: randomDetector.timeField,
       detectionInterval: randomDetector.detectionInterval.period.interval,
       windowDelay: randomDetector.windowDelay.period.interval,
@@ -53,7 +56,24 @@ describe('adToFormik', () => {
       filterType: FILTER_TYPES.CUSTOM,
       filterQuery: JSON.stringify(randomDetector.filterQuery || {}, null, 4),
       index: [{ label: randomDetector.indices[0] }], // Currently we support only one index
-      shingleSize: SHINGLE_SIZE,
+      shingleSize: SINGLE_ENTITY_SHINGLE_SIZE,
+      timeField: randomDetector.timeField,
+      detectionInterval: randomDetector.detectionInterval.period.interval,
+      windowDelay: randomDetector.windowDelay.period.interval,
+    });
+  });
+  test('should return if detector has categoryField', () => {
+    let randomDetector = getRandomDetector();
+    randomDetector.categoryField = ['field'];
+    const adFormikValues = detectorToFormik(randomDetector);
+    expect(adFormikValues).toEqual({
+      detectorName: randomDetector.name,
+      detectorDescription: randomDetector.description,
+      filters: [],
+      filterType: FILTER_TYPES.SIMPLE,
+      filterQuery: JSON.stringify(randomDetector.filterQuery || {}, null, 4),
+      index: [{ label: randomDetector.indices[0] }], // Currently we support only one index
+      shingleSize: MULTI_ENTITY_SHINGLE_SIZE,
       timeField: randomDetector.timeField,
       detectionInterval: randomDetector.detectionInterval.period.interval,
       windowDelay: randomDetector.windowDelay.period.interval,
