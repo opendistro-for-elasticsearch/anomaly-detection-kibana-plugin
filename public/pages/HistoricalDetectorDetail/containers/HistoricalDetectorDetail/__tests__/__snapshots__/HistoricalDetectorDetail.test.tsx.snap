@@ -1017,37 +1017,7 @@ exports[`<HistoricalDetectorDetail /> spec renders the component 1`] = `
                               aria-live="polite"
                               aria-sort="none"
                               class="euiTableHeaderCell"
-                              data-test-subj="tableHeaderCell_confidence_2"
-                              role="columnheader"
-                              scope="col"
-                            >
-                              <button
-                                class="euiTableHeaderButton"
-                                data-test-subj="tableHeaderSortButton"
-                                type="button"
-                              >
-                                <span
-                                  class="euiTableCellContent euiTableCellContent--alignRight"
-                                >
-                                  <span
-                                    class="euiTableCellContent__text"
-                                    title="Data confidence"
-                                  >
-                                    Data confidence
-                                  </span>
-                                  <span
-                                    class="euiScreenReaderOnly"
-                                  >
-                                    Click to sort in ascending order
-                                  </span>
-                                </span>
-                              </button>
-                            </th>
-                            <th
-                              aria-live="polite"
-                              aria-sort="none"
-                              class="euiTableHeaderCell"
-                              data-test-subj="tableHeaderCell_anomalyGrade_3"
+                              data-test-subj="tableHeaderCell_anomalyGrade_2"
                               role="columnheader"
                               scope="col"
                             >
@@ -1081,7 +1051,7 @@ exports[`<HistoricalDetectorDetail /> spec renders the component 1`] = `
                           >
                             <td
                               class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                              colspan="4"
+                              colspan="3"
                             >
                               <div
                                 class="euiTableCellContent euiTableCellContent--alignCenter"
