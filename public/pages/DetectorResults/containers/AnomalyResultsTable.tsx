@@ -36,6 +36,7 @@ import { getTitleWithCount } from '../../../utils/utils';
 interface AnomalyResultsTableProps {
   anomalies: AnomalyData[];
   isHCDetector?: boolean;
+  isHistorical?: boolean;
 }
 
 interface ListState {
@@ -153,6 +154,8 @@ export function AnomalyResultsTable(props: AnomalyResultsTableProps) {
                 entityValueColumn,
                 ...staticColumn.slice(2),
               ]
+            : props.isHistorical
+            ? [...staticColumn.slice(0, 2), ...staticColumn.slice(3)]
             : staticColumn
         }
         onChange={handleTableChange}

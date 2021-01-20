@@ -595,6 +595,7 @@ export const AnomalyHistory = (props: AnomalyHistoryProps) => {
                     'plotTime'
                   )}
                   isHCDetector={isHCDetector}
+                  isHistorical={props.isHistorical}
                 />,
               ]
             )}
