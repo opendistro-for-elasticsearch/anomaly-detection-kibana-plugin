@@ -72,10 +72,8 @@ export const getQueryParamsForLiveAnomalyResults = (
     size: intervals,
     sortDirection: SORT_DIRECTION.DESC,
     sortField: AD_DOC_FIELDS.DATA_START_TIME,
-    dateRangeFilter: {
-      startTime: startTime.valueOf(),
-      fieldName: AD_DOC_FIELDS.DATA_START_TIME,
-    },
+    startTime: startTime.valueOf(),
+    fieldName: AD_DOC_FIELDS.DATA_START_TIME,
   };
   return updatedParams;
 };
@@ -99,6 +97,7 @@ export const buildParamsForGetAnomalyResultsWithDateRange = (
   anomalyOnly: boolean = false,
   entity: Entity | undefined = undefined
 ) => {
+  console.log('getting regular anomaly results');
   return {
     from: 0,
     size: MAX_ANOMALIES,
