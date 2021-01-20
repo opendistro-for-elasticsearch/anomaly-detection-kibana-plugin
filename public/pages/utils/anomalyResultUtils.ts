@@ -97,7 +97,6 @@ export const buildParamsForGetAnomalyResultsWithDateRange = (
   anomalyOnly: boolean = false,
   entity: Entity | undefined = undefined
 ) => {
-  console.log('getting regular anomaly results');
   return {
     from: 0,
     size: MAX_ANOMALIES,
