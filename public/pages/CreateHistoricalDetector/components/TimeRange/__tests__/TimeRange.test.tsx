@@ -20,7 +20,7 @@ import { Formik } from 'formik';
 
 describe('<TimeRange /> spec', () => {
   test('renders the component (loading state)', () => {
-    const { container } = render(
+    const { getByText } = render(
       <Formik
         initialValues={{ startTime: 0, endTime: 100 }}
         onSubmit={jest.fn()}
@@ -32,10 +32,11 @@ describe('<TimeRange /> spec', () => {
         )}
       </Formik>
     );
-    expect(container.firstChild).toMatchSnapshot();
+    getByText('Time range');
+    getByText('Time range for historical analysis');
   });
   test('renders the component', () => {
-    const { container } = render(
+    const { getByText } = render(
       <Formik
         initialValues={{ startTime: 0, endTime: 100 }}
         onSubmit={jest.fn()}
@@ -47,6 +48,7 @@ describe('<TimeRange /> spec', () => {
         )}
       </Formik>
     );
-    expect(container.firstChild).toMatchSnapshot();
+    getByText('Time range');
+    getByText('Time range for historical analysis');
   });
 });

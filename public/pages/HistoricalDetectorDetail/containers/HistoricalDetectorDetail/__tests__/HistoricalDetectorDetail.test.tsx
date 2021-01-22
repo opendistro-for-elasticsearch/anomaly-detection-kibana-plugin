@@ -104,9 +104,8 @@ describe('<HistoricalDetectorDetail /> spec', () => {
         ...TEST_DETECTOR,
       },
     });
-    const { container, getByText, getAllByText } = renderWithRouter();
+    const { getByText, getAllByText } = renderWithRouter();
     await wait();
-    expect(container.firstChild).toMatchSnapshot();
     await wait();
     getByText(CONFIGURATION_TITLE);
     getByText(ANOMALY_HISTORY_TITLE);

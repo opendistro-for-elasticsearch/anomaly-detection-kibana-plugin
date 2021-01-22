@@ -47,14 +47,13 @@ describe('<HistoricalDetectorConfig /> spec', () => {
   });
   describe('detector is not stopping', () => {
     test('renders the component', () => {
-      const { container, getByText } = render(
+      const { getByText } = render(
         <HistoricalDetectorConfig
           detector={TEST_DETECTOR}
           isStoppingDetector={false}
           onEditDetector={mockOnEditDetector}
         />
       );
-      expect(container.firstChild).toMatchSnapshot();
       getByText(TITLE_TEXT);
       getByText(TEST_DETECTOR.id);
       getByText(TEST_DETECTOR.name);
@@ -79,14 +78,13 @@ describe('<HistoricalDetectorConfig /> spec', () => {
   });
   describe('detector is stopping', () => {
     test('renders the component', () => {
-      const { container, getByText } = render(
+      const { getByText } = render(
         <HistoricalDetectorConfig
           detector={TEST_DETECTOR}
           isStoppingDetector={true}
           onEditDetector={mockOnEditDetector}
         />
       );
-      expect(container.firstChild).toMatchSnapshot();
       getByText(TITLE_TEXT);
       getByText(TEST_DETECTOR.id);
       getByText(TEST_DETECTOR.name);
