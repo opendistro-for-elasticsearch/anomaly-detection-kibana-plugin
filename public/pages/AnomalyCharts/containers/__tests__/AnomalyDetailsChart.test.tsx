@@ -43,6 +43,7 @@ const renderAnomalyOccurenceChart = (
           dateRange={FAKE_DATE_RANGE}
           isLoading={false}
           showAlerts={isNotSample}
+          isNotSample={isNotSample}
           isHCDetector={isHCDetector}
           anomalyGradeSeriesName={'testAnomalyGradeSeriesName'}
           confidenceSeriesName={'testConfidenceSeriesName'}

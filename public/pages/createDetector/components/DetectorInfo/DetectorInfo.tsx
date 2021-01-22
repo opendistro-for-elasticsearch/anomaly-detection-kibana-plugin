@@ -32,10 +32,11 @@ function DetectorInfo(props: DetectorInfoProps) {
           <FormattedFormRow
             title="Name"
             hint="Specify a unique and descriptive name that is easy to
-          recognize. Detector name must contain 1-64 characters. 
-          Valid characters are a-z, A-Z, 0-9, -(hyphen) and _(underscore)"
+          recognize."
             isInvalid={isInvalid(field.name, form)}
             error={getError(field.name, form)}
+            helpText={`Detector name must contain 1-64 characters. Valid characters are
+                a-z, A-Z, 0-9, -(hyphen) and _(underscore)`}
           >
             <EuiFieldText
               name="detectorName"

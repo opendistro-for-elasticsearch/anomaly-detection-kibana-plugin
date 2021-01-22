@@ -41,9 +41,8 @@ export const Settings = () => {
                 fullWidth
                 title="Detector interval"
                 hint="Define how often the detector collects data to generate
-                anomalies. The shorter the interval is, the more real time
-                the detector results will be, and the more computing resources
-                the detector will need. The detector interval,
+                anomalies. Shorter intervals generate more detector results and 
+                therefore require more computing resources. The detector interval,
                 together with data ingestion speed, also determines the
                 preparation time of the detector. Long intervals and slow
                 ingestion speed means the detector takes longer time to
@@ -58,6 +57,7 @@ export const Settings = () => {
                       id="detectionInterval"
                       placeholder="Detector interval"
                       data-test-subj="detectionInterval"
+                      min={1}
                       {...field}
                     />
                   </EuiFlexItem>

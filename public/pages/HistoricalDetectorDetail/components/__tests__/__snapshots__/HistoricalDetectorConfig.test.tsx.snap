@@ -1,0 +1,612 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HistoricalDetectorConfig /> spec detector is not stopping renders the component 1`] = `
+<div
+  class="euiPanel euiPanel--paddingMedium"
+  style="padding: 20px; margin: 0px;"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <h3
+        class="euiTitle euiTitle--small"
+      >
+        Historical detector configuration
+      </h3>
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        />
+      </div>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <button
+            class="euiButton euiButton--primary"
+            data-test-subj="editDetectorButton"
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              <span
+                class="euiButton__text"
+              >
+                Edit
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr
+    class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+  />
+  <div
+    style="padding: 10px 0px;"
+  >
+    <div
+      class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--thirds euiFlexGrid--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Name
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                test-name
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              ID
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                test-id
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Date range
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                12/31/1969 04:00 PM-12/31/1969 04:00 PM
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Description
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                test-description
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Last updated
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                12/31/1969 04:00 PM
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Data source index
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                test-index
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Detection interval
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                10 Minutes
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<HistoricalDetectorConfig /> spec detector is stopping renders the component 1`] = `
+<div
+  class="euiPanel euiPanel--paddingMedium"
+  style="padding: 20px; margin: 0px;"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <h3
+        class="euiTitle euiTitle--small"
+      >
+        Historical detector configuration
+      </h3>
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        />
+      </div>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <button
+            class="euiButton euiButton--primary euiButton-isDisabled"
+            data-test-subj="editDetectorButton"
+            disabled=""
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              <span
+                class="euiButton__text"
+              >
+                Edit
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr
+    class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+  />
+  <div
+    style="padding: 10px 0px;"
+  >
+    <div
+      class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--thirds euiFlexGrid--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Name
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                test-name
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              ID
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                test-id
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Date range
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                12/31/1969 04:00 PM-12/31/1969 04:00 PM
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Description
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                test-description
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Last updated
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                12/31/1969 04:00 PM
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Data source index
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                test-index
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormRow"
+          id="random_html_id-row"
+          style="width: 250px;"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="random_html_id"
+            >
+              Detection interval
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiText euiText--medium"
+              id="random_html_id"
+            >
+              <p
+                class="enabled"
+              >
+                10 Minutes
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

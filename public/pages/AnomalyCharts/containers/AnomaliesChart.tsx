@@ -53,6 +53,7 @@ import {
 } from '../utils/constants';
 import { AnomalyOccurrenceChart } from './AnomalyOccurrenceChart';
 import { FeatureBreakDown } from './FeatureBreakDown';
+import { convertTimestampToString } from '../../../utils/utils';
 
 interface AnomaliesChartProps {
   onDateRangeChange(
@@ -67,10 +68,12 @@ interface AnomaliesChartProps {
   dateRange: DateRange;
   isLoading: boolean;
   showAlerts?: boolean;
+  isNotSample?: boolean;
   detector: Detector;
   monitor?: Monitor;
   children: React.ReactNode | React.ReactNode[];
   isHCDetector?: boolean;
+  isHistorical?: boolean;
   detectorCategoryField?: string[];
   onHeatmapCellSelected?(heatmapCell: HeatmapCell): void;
   onDisplayOptionChanged?(heatmapDisplayOption: HeatmapDisplayOption): void;
@@ -84,8 +87,12 @@ interface AnomaliesChartProps {
 
 export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
   const [datePickerRange, setDatePickerRange] = useState({
-    start: 'now-7d',
-    end: 'now',
+    start: props.isHistorical
+      ? convertTimestampToString(props.dateRange.startDate)
+      : 'now-7d',
+    end: props.isHistorical
+      ? convertTimestampToString(props.dateRange.endDate)
+      : 'now',
   });
 
   const anomalies = get(props.anomaliesResult, 'anomalies', []);
@@ -244,9 +251,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                         entityAnomalySummaries={props.entityAnomalySummaries}
                         onDisplayOptionChanged={props.onDisplayOptionChanged}
                         heatmapDisplayOption={props.heatmapDisplayOption}
-                        // TODO use props.isNotSample after Tyler's change is merged
-                        // https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/350#discussion_r547009140
-                        isNotSample={props.showAlerts === true}
+                        isNotSample={props.isNotSample}
                       />,
                       props.showAlerts !== true
                         ? [
@@ -265,12 +270,13 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                               anomalySummary={INITIAL_ANOMALY_SUMMARY}
                               isLoading={props.isLoading}
                               anomalyGradeSeriesName={getAnomalyGradeWording(
-                                props.showAlerts
+                                props.isNotSample
                               )}
                               confidenceSeriesName={getConfidenceWording(
-                                props.showAlerts
+                                props.isNotSample
                               )}
                               showAlerts={props.showAlerts}
+                              isNotSample={props.isNotSample}
                               detector={props.detector}
                               isHCDetector={props.isHCDetector}
                               selectedHeatmapCell={props.selectedHeatmapCell}
@@ -278,7 +284,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                             <EuiSpacer size="m" />,
                             <FeatureBreakDown
                               title={getFeatureBreakdownWording(
-                                props.showAlerts
+                                props.isNotSample
                               )}
                               //@ts-ignore
                               detector={props.newDetector}
@@ -291,7 +297,7 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
                               //@ts-ignore
                               dateRange={props.zoomRange}
                               featureDataSeriesName={getFeatureDataWording(
-                                props.showAlerts
+                                props.isNotSample
                               )}
                               isHCDetector={props.isHCDetector}
                               selectedHeatmapCell={props.selectedHeatmapCell}
@@ -312,12 +318,14 @@ export const AnomaliesChart = React.memo((props: AnomaliesChartProps) => {
               bucketizedAnomalies={props.bucketizedAnomalies}
               anomalySummary={props.anomalySummary}
               isLoading={props.isLoading}
-              anomalyGradeSeriesName={getAnomalyGradeWording(props.showAlerts)}
-              confidenceSeriesName={getConfidenceWording(props.showAlerts)}
+              anomalyGradeSeriesName={getAnomalyGradeWording(props.isNotSample)}
+              confidenceSeriesName={getConfidenceWording(props.isNotSample)}
               showAlerts={props.showAlerts}
+              isNotSample={props.isNotSample}
               detector={props.detector}
               monitor={props.monitor}
               isHCDetector={props.isHCDetector}
+              isHistorical={props.isHistorical}
               onDatePickerRangeChange={handleDatePickerRangeChange}
             />
           )}

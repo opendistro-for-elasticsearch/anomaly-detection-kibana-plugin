@@ -20,10 +20,14 @@ import {
   APIErrorAction,
 } from '../middleware/types';
 import handleActions from '../utils/handleActions';
-import { Detector, DetectorListItem } from '../../models/interfaces';
+import {
+  Detector,
+  DetectorListItem,
+  HistoricalDetectorListItem,
+} from '../../models/interfaces';
 import { AD_NODE_API } from '../../../utils/constants';
 import { GetDetectorsQueryParams } from '../../../server/models/types';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, get } from 'lodash';
 import moment from 'moment';
 import { DETECTOR_STATE } from '../../../server/utils/constants';
 
@@ -38,11 +42,13 @@ const STOP_DETECTOR = 'ad/STOP_DETECTOR';
 const GET_DETECTOR_PROFILE = 'ad/GET_DETECTOR_PROFILE';
 const MATCH_DETECTOR = 'ad/MATCH_DETECTOR';
 const GET_DETECTOR_COUNT = 'ad/GET_DETECTOR_COUNT';
+const GET_HISTORICAL_DETECTOR_LIST = 'ad/GET_HISTORICAL_DETECTOR_LIST';
 
 export interface Detectors {
   requesting: boolean;
   detectors: { [key: string]: Detector };
   detectorList: { [key: string]: DetectorListItem };
+  historicalDetectorList: { [key: string]: HistoricalDetectorListItem };
   totalDetectors: number;
   errorMessage: string;
 }
@@ -50,6 +56,7 @@ export const initialDetectorsState: Detectors = {
   requesting: false,
   detectors: {},
   detectorList: {},
+  historicalDetectorList: {},
   errorMessage: '',
   totalDetectors: 0,
 };
@@ -301,6 +308,34 @@ const reducer = handleActions<Detectors>(
         errorMessage: action.error,
       }),
     },
+    [GET_HISTORICAL_DETECTOR_LIST]: {
+      REQUEST: (state: Detectors): Detectors => ({
+        ...state,
+        requesting: true,
+        errorMessage: '',
+      }),
+      SUCCESS: (state: Detectors, action: APIResponseAction): Detectors => ({
+        ...state,
+        requesting: false,
+        historicalDetectorList: action.result.response.detectorList.reduce(
+          (acc: any, detector: Detector) => ({
+            ...acc,
+            [detector.id]: {
+              ...detector,
+              dataStartTime: get(detector, 'detectionDateRange.startTime', 0),
+              dataEndTime: get(detector, 'detectionDateRange.endTime', 0),
+            },
+          }),
+          {}
+        ),
+        totalDetectors: action.result.response.totalDetectors,
+      }),
+      FAILURE: (state: Detectors, action: APIErrorAction): Detectors => ({
+        ...state,
+        requesting: false,
+        errorMessage: action.error,
+      }),
+    },
   },
   initialDetectorsState
 );
@@ -386,6 +421,14 @@ export const getDetectorCount = (): APIAction => ({
   type: GET_DETECTOR_COUNT,
   request: (client: HttpSetup) =>
     client.get(`..${AD_NODE_API.DETECTOR}/_count`, {}),
+});
+
+export const getHistoricalDetectorList = (
+  queryParams: GetDetectorsQueryParams
+): APIAction => ({
+  type: GET_HISTORICAL_DETECTOR_LIST,
+  request: (client: HttpSetup) =>
+    client.get(`..${AD_NODE_API.DETECTOR}/historical`, { query: queryParams }),
 });
 
 export default reducer;

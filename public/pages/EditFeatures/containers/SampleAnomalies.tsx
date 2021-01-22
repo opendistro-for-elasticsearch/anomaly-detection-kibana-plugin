@@ -147,7 +147,10 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
       setIsLoading(false);
       core.notifications.toasts.addDanger(
         prettifyErrorMessage(
-          getPreviewErrorMessage(err, 'There was a problem previewing detector')
+          getPreviewErrorMessage(
+            err,
+            'There was a problem previewing the detector'
+          )
         )
       );
     }
@@ -248,6 +251,7 @@ export function SampleAnomalies(props: SampleAnomaliesProps) {
                 zoomRange={zoomRange}
                 anomaliesResult={anomaliesResult}
                 showAlerts={false}
+                isNotSample={false}
               />
               <EuiSpacer />
               {isLoading ? (

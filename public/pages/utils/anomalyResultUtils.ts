@@ -41,7 +41,6 @@ import {
   FeatureAggregationData,
   FeatureAttributes,
 } from '../../models/interfaces';
-import { getDetectorResults } from '../../redux/reducers/anomalyResults';
 import { getDetectorLiveResults } from '../../redux/reducers/liveAnomalyResults';
 import {
   MAX_ANOMALIES,
@@ -73,10 +72,8 @@ export const getQueryParamsForLiveAnomalyResults = (
     size: intervals,
     sortDirection: SORT_DIRECTION.DESC,
     sortField: AD_DOC_FIELDS.DATA_START_TIME,
-    dateRangeFilter: {
-      startTime: startTime.valueOf(),
-      fieldName: AD_DOC_FIELDS.DATA_START_TIME,
-    },
+    startTime: startTime.valueOf(),
+    fieldName: AD_DOC_FIELDS.DATA_START_TIME,
   };
   return updatedParams;
 };
@@ -91,7 +88,7 @@ export const getLiveAnomalyResults = (
     detectionInterval,
     intervals
   );
-  dispatch(getDetectorLiveResults(detectorId, queryParams));
+  dispatch(getDetectorLiveResults(detectorId, queryParams, false));
 };
 
 export const buildParamsForGetAnomalyResultsWithDateRange = (
@@ -105,28 +102,13 @@ export const buildParamsForGetAnomalyResultsWithDateRange = (
     size: MAX_ANOMALIES,
     sortDirection: SORT_DIRECTION.DESC,
     sortField: AD_DOC_FIELDS.DATA_START_TIME,
-    dateRangeFilter: JSON.stringify({
-      startTime: startTime,
-      endTime: endTime,
-      fieldName: AD_DOC_FIELDS.DATA_START_TIME,
-    }),
+    startTime: startTime,
+    endTime: endTime,
+    fieldName: AD_DOC_FIELDS.DATA_START_TIME,
     anomalyThreshold: anomalyOnly ? 0 : -1,
     entityName: entity?.name,
     entityValue: entity?.value,
   };
-};
-
-export const getAnomalyResultsWithDateRange = (
-  dispatch: Dispatch<any>,
-  startTime: number,
-  endTime: number,
-  detectorId: string
-) => {
-  const params = buildParamsForGetAnomalyResultsWithDateRange(
-    startTime,
-    endTime
-  );
-  dispatch(getDetectorResults(detectorId, params));
 };
 
 const MAX_DATA_POINTS = 1000;
@@ -308,8 +290,12 @@ export const getAnomalySummaryQuery = (
   startTime: number,
   endTime: number,
   detectorId: string,
-  entity: Entity | undefined = undefined
+  entity: Entity | undefined = undefined,
+  isHistorical?: boolean,
+  taskId?: string
 ) => {
+  const termField =
+    isHistorical && taskId ? { task_id: taskId } : { detector_id: detectorId };
   return {
     size: MAX_ANOMALIES,
     query: {
@@ -331,9 +317,7 @@ export const getAnomalySummaryQuery = (
             },
           },
           {
-            term: {
-              detector_id: detectorId,
-            },
+            term: termField,
           },
           ...(entity
             ? [
@@ -392,6 +376,11 @@ export const getAnomalySummaryQuery = (
           field: 'anomaly_grade',
         },
       },
+      avg_anomaly_grade: {
+        avg: {
+          field: 'anomaly_grade',
+        },
+      },
       max_data_end_time: {
         max: {
           field: 'data_end_time',
@@ -408,8 +397,12 @@ export const getBucketizedAnomalyResultsQuery = (
   startTime: number,
   endTime: number,
   detectorId: string,
-  entity: Entity | undefined = undefined
+  entity: Entity | undefined = undefined,
+  isHistorical?: boolean,
+  taskId?: string
 ) => {
+  const termField =
+    isHistorical && taskId ? { task_id: taskId } : { detector_id: detectorId };
   const fixedInterval = Math.ceil(
     (endTime - startTime) / (MIN_IN_MILLI_SECS * MAX_DATA_POINTS)
   );
@@ -427,9 +420,7 @@ export const getBucketizedAnomalyResultsQuery = (
             },
           },
           {
-            term: {
-              detector_id: detectorId,
-            },
+            term: termField,
           },
           ...(entity
             ? [
@@ -558,6 +549,14 @@ export const parseAnomalySummary = (
           get(
             anomalySummaryResult,
             'response.aggregations.max_anomaly_grade.value'
+          )
+        )
+      : 0,
+    avgAnomalyGrade: anomalyCount
+      ? toFixedNumberForAnomaly(
+          get(
+            anomalySummaryResult,
+            'response.aggregations.avg_anomaly_grade.value'
           )
         )
       : 0,

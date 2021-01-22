@@ -39,6 +39,7 @@ interface AnomalyOccurrenceChartProps {
   dateRange: DateRange;
   isLoading: boolean;
   showAlerts?: boolean;
+  isNotSample?: boolean;
   anomalyGradeSeriesName: string;
   confidenceSeriesName: string;
   detector: Detector;
@@ -94,6 +95,7 @@ export const AnomalyOccurrenceChart = React.memo(
           anomalyGradeSeriesName={props.anomalyGradeSeriesName}
           confidenceSeriesName={props.confidenceSeriesName}
           showAlerts={props.showAlerts}
+          isNotSample={props.isNotSample}
           detector={props.detector}
           monitor={props.monitor}
           isHCDetector={props.isHCDetector}

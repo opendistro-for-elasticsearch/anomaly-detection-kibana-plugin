@@ -21,6 +21,8 @@ import { ALERTING_PLUGIN_NAME, NAME_REGEX } from './constants';
 import { MAX_FEATURE_NAME_SIZE } from './constants';
 import { CoreStart } from '../../../../src/core/public';
 import { CoreServicesContext } from '../components/CoreServices/CoreServices';
+import datemath from '@elastic/datemath';
+import moment from 'moment';
 
 export const validateFeatureName = (
   featureName: string
@@ -163,3 +165,17 @@ export const getTitleWithCount = (title: string, count: number | string) => {
     </EuiTitle>
   );
 };
+
+export function convertTimestampToString(timestamp: number | string) {
+  if (typeof timestamp === 'string') {
+    return timestamp;
+  }
+  return moment(timestamp).format('MM/DD/YYYY hh:mm A');
+}
+
+export function convertTimestampToNumber(timestamp: number | string) {
+  if (typeof timestamp === 'string') {
+    return datemath.parse(timestamp)?.valueOf();
+  }
+  return timestamp;
+}

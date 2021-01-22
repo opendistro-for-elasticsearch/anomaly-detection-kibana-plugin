@@ -53,11 +53,14 @@ export const getURLQueryParams = (location: {
   };
 };
 
+// For realtime detectors: cannot have 'Completed' state
 export const getDetectorStateOptions = () => {
-  return Object.values(DETECTOR_STATE).map((detectorState) => ({
-    label: detectorState,
-    text: detectorState,
-  }));
+  return Object.values(DETECTOR_STATE)
+    .map((detectorState) => ({
+      label: detectorState,
+      text: detectorState,
+    }))
+    .filter((option) => option.label !== DETECTOR_STATE.FINISHED);
 };
 
 export const getDetectorsForAction = (
