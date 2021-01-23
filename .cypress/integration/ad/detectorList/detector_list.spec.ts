@@ -115,7 +115,7 @@ context('Detector list', () => {
         cy.get('[data-test-subj=confirmButton]').click({ force: true });
       }
     );
-    cy.contains('All selected detectors have been started successfully');
+    cy.contains('Successfully started all selected detectors');
   });
 
   it('Stop single detector', () => {
@@ -136,7 +136,7 @@ context('Detector list', () => {
         cy.get('[data-test-subj=confirmButton]').click({ force: true });
       }
     );
-    cy.contains('All selected detectors have been stopped successfully');
+    cy.contains('Successfully stopped all selected detectors');
   });
 
   it('Delete single detector', () => {
@@ -164,7 +164,7 @@ context('Detector list', () => {
         cy.get('[data-test-subj=confirmButton]').click({ force: true });
       }
     );
-    cy.contains('All selected detectors have been deleted successfully');
+    cy.contains('Successfully deleted all selected detectors');
   });
 
   it('Filter by detector search', () => {
