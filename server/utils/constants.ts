@@ -69,6 +69,7 @@ export enum DETECTOR_STATE {
   FEATURE_REQUIRED = 'Feature required',
   INIT_FAILURE = 'Initialization failure',
   UNEXPECTED_FAILURE = 'Unexpected failure',
+  NO_DATA = 'No data',
 }
 
 export enum SAMPLE_TYPE {
@@ -83,3 +84,5 @@ export const ENTITY_NAME_PATH_FIELD = 'entity.name';
 
 export const DOC_COUNT_FIELD = 'doc_count';
 export const KEY_FIELD = 'key';
+
+export const NO_DATA_ERROR_MSG = 'There is no data in the detection date range';

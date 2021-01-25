@@ -88,7 +88,6 @@ export const HistoricalDetectorDetail = (
     isOpen: false,
     action: undefined,
   });
-  const callout = getCallout(detector, isStoppingDetector);
 
   useEffect(() => {
     if (
@@ -298,6 +297,8 @@ export const HistoricalDetectorDetail = (
   const lightStyles = {
     backgroundColor: '#FFF',
   };
+
+  const callout = getCallout(detector, isStoppingDetector, handleEditAction);
 
   return (
     <React.Fragment>
