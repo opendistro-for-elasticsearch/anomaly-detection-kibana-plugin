@@ -134,9 +134,9 @@ export const getCallout = (
             </EuiText>
           }
           iconType="alert"
-          color="warning"
+          color="danger"
         >
-          <EuiButton color="warning" onClick={() => onEdit()}>
+          <EuiButton color="danger" onClick={() => onEdit()}>
             Edit historical detector
           </EuiButton>
         </EuiCallOut>

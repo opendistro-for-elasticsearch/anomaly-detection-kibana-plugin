@@ -29,7 +29,7 @@ export enum DETECTOR_STATE_COLOR {
   FEATURE_REQUIRED = '#98A2B3',
   INIT_FAILURE = '#F66',
   UNEXPECTED_FAILURE = '#F66',
-  NO_DATA = '#98A2B3',
+  NO_DATA = '#F66',
 }
 
 export const stateToColorMap = new Map<DETECTOR_STATE, DETECTOR_STATE_COLOR>()
