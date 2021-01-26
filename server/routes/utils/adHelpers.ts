@@ -325,7 +325,7 @@ export const appendTaskInfo = (
   return detectorMapWithTaskInfo;
 };
 
-// Five checks/transformations need to be made here:
+// Following checks/transformations need to be made here:
 // (1) set to DISABLED if there is no existing task for this detector
 // (2) set to NO_DATA if the task failed with NO_DATA_ERROR_MSG
 // (3) set to UNEXPECTED_FAILURE if the task is in a FAILED state to stay consistent
