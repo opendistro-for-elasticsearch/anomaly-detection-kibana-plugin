@@ -130,7 +130,9 @@ export const getCallout = (
         <EuiCallOut
           title={
             <EuiText>
-              <p>No data available in the selected date range.</p>
+              <p>
+                No data available in the selected date range for the detector.
+              </p>
             </EuiText>
           }
           iconType="alert"
