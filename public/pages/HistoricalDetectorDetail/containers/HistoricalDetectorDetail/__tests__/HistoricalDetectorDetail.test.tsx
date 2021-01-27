@@ -35,8 +35,7 @@ const ACTIONS_BUTTON_TEXT = 'Actions';
 const STOPPED_CALLOUT_TEXT = 'The historical detector is stopped';
 const INIT_CALLOUT_TEXT = 'Initializing the historical detector';
 const RUNNING_CALLOUT_TEXT = 'Running the historical detector';
-const NO_DATA_CALLOUT_TEXT =
-  'No data available in the selected detection date range.';
+const NO_DATA_CALLOUT_TEXT = 'No data available in the selected date range.';
 const START_DETECTOR_BUTTON_TEXT = 'Start historical detector';
 const STOP_DETECTOR_BUTTON_TEXT = 'Stop historical detector';
 
