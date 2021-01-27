@@ -23,6 +23,7 @@ import {
   EuiText,
   EuiFlexItem,
   EuiProgress,
+  EuiButton,
 } from '@elastic/eui';
 import { Detector } from '../../../models/interfaces';
 import { DETECTOR_STATE } from '../../../../server/utils/constants';
@@ -30,7 +31,11 @@ import { DETECTOR_STATE } from '../../../../server/utils/constants';
 export const waitForMs = (ms: number) =>
   new Promise((res) => setTimeout(res, ms));
 
-export const getCallout = (detector: Detector, isStoppingDetector: boolean) => {
+export const getCallout = (
+  detector: Detector,
+  isStoppingDetector: boolean,
+  onEdit: () => any
+) => {
   if (!detector || !detector.curState) {
     return null;
   }
@@ -119,6 +124,24 @@ export const getCallout = (detector: Detector, isStoppingDetector: boolean) => {
           }
           color="primary"
         />
+      );
+    case DETECTOR_STATE.NO_DATA:
+      return (
+        <EuiCallOut
+          title={
+            <EuiText>
+              <p>
+                No data available in the selected date range for the detector.
+              </p>
+            </EuiText>
+          }
+          iconType="alert"
+          color="danger"
+        >
+          <EuiButton color="danger" onClick={() => onEdit()}>
+            Edit historical detector
+          </EuiButton>
+        </EuiCallOut>
       );
     default:
       return null;

@@ -17,7 +17,7 @@ import { get, omit, cloneDeep, isEmpty } from 'lodash';
 import { AnomalyResults } from '../../models/interfaces';
 import { GetDetectorsQueryParams, Detector } from '../../models/types';
 import { mapKeysDeep, toCamel, toSnake } from '../../utils/helpers';
-import { DETECTOR_STATE } from '../../utils/constants';
+import { DETECTOR_STATE, NO_DATA_ERROR_MSG } from '../../utils/constants';
 import { InitProgress } from '../../models/interfaces';
 
 export const convertDetectorKeysToSnakeCase = (payload: any) => {
@@ -325,15 +325,18 @@ export const appendTaskInfo = (
   return detectorMapWithTaskInfo;
 };
 
-// Four checks/transformations need to be made here:
+// Following checks/transformations need to be made here:
 // (1) set to DISABLED if there is no existing task for this detector
-// (2) set to UNEXPECTED_FAILURE if the task is in a FAILED state to stay consistent
-// (3) set to INIT if the task is in a CREATED state
-// (4) set to DISABLED if the task is in a STOPPED state
+// (2) set to NO_DATA if the task failed with NO_DATA_ERROR_MSG
+// (3) set to UNEXPECTED_FAILURE if the task is in a FAILED state to stay consistent
+// (4) set to INIT if the task is in a CREATED state
+// (5) set to DISABLED if the task is in a STOPPED state
 export const getHistoricalDetectorState = (task: any) => {
   const state = get(task, 'state', 'DISABLED');
   const updatedState =
-    state === 'FAILED'
+    state === 'FAILED' && task.error === NO_DATA_ERROR_MSG
+      ? 'NO_DATA'
+      : state === 'FAILED'
       ? 'UNEXPECTED_FAILURE'
       : state === 'CREATED'
       ? 'INIT'
