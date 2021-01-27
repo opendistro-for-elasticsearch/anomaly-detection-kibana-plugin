@@ -17,7 +17,7 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:run-with-security": "cypress run --env SECURITY_ENABLED=true",
-    "test:e2e": "CHOKIDAR_USEPOLLING=1 CYPRESS_responseTimeout=180000 WAIT_ON_TIMEOUT=900000 start-server-and-test 'cd ../../ && yarn start --no-base-path --oss && cd plugins/anomaly-detection-kibana-plugin' http-get://localhost:5601/app/opendistro-anomaly-detection-kibana 'echo sleeping to wait for server to get ready && sleep 180 && yarn cy:run'"
+    "test:e2e": "CHOKIDAR_USEPOLLING=1 CYPRESS_responseTimeout=180000 WAIT_ON_TIMEOUT=900000 start-server-and-test 'cd ../../ && yarn start --no-base-path --oss && cd plugins/anomaly-detection-kibana-plugin' http-get://localhost:5601/app/opendistro-anomaly-detection-kibana 'echo sleeping to wait for server to get ready && sleep 360 && yarn cy:run'"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,md}": [
