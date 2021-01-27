@@ -106,9 +106,8 @@ export const AnomalyResultsLiveChart = (
         .filter((anomaly: AnomalyData) => anomaly.anomalyGrade > 0)
         .map((anomaly: AnomalyData) => ({
           coordinates: {
-            x0:
-              anomaly.startTime + (anomaly.endTime - anomaly.startTime) * 0.08,
-            x1: anomaly.endTime - (anomaly.endTime - anomaly.startTime) * 0.08,
+            x0: anomaly.startTime + (anomaly.endTime - anomaly.startTime) * 0.5,
+            x1: anomaly.endTime - (anomaly.endTime - anomaly.startTime) * 0.5,
             y0: 0,
             y1: anomaly.anomalyGrade,
           },
@@ -307,12 +306,13 @@ export const AnomalyResultsLiveChart = (
                     id="annotations"
                     style={{
                       stroke: darkModeEnabled()
-                        ? 'red'
-                        : CHART_COLORS.ANOMALY_GRADE_COLOR,
-                      opacity: 0.8,
+                        ? CHART_COLORS.DARK_BACKGROUND
+                        : CHART_COLORS.LIGHT_BACKGROUND,
+                      opacity: 1.0,
                       fill: darkModeEnabled()
                         ? 'red'
                         : CHART_COLORS.ANOMALY_GRADE_COLOR,
+                      strokeWidth: 3,
                     }}
                     renderTooltip={customAnomalyTooltip}
                   />
