@@ -57,6 +57,7 @@ import {
   appendTaskInfo,
   getDetectorResults,
   getHistoricalDetectorState,
+  processTaskError,
 } from './utils/adHelpers';
 import { isNumber, set } from 'lodash';
 import {
@@ -248,6 +249,9 @@ export default class AdService {
         'anomaly_detection_task.task_progress',
         null
       );
+      const taskError = processTaskError(
+        get(response, 'anomaly_detection_task.error', '')
+      );
 
       // Getting detector state, depending on realtime or historical
       let detectorState;
@@ -315,6 +319,7 @@ export default class AdService {
           ? {
               taskId: taskId,
               taskProgress: taskProgress,
+              taskError: taskError,
             }
           : {}),
       };

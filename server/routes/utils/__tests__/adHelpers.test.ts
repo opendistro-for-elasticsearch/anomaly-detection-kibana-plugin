@@ -13,12 +13,13 @@
  * permissions and limitations under the License.
  */
 
-import { SORT_DIRECTION } from '../../../utils/constants';
+import { SORT_DIRECTION, ES_EXCEPTION_PREFIX } from '../../../utils/constants';
 import {
   convertDetectorKeysToCamelCase,
   convertDetectorKeysToSnakeCase,
   getResultAggregationQuery,
   convertPreviewInputKeysToSnakeCase,
+  processTaskError,
 } from '../adHelpers';
 
 describe('adHelpers', () => {
@@ -571,6 +572,19 @@ describe('adHelpers', () => {
           },
         },
       });
+    });
+  });
+  describe('processTaskError', () => {
+    test('should add punctuation if none exists', () => {
+      expect(processTaskError('Some failure')).toEqual('Some failure.');
+    });
+    test('should not add punctuation if it exists', () => {
+      expect(processTaskError('Some failure.')).toEqual('Some failure.');
+    });
+    test('should remove ES exception prefix if it exists', () => {
+      expect(processTaskError(ES_EXCEPTION_PREFIX + 'Some failure.')).toEqual(
+        'Some failure.'
+      );
     });
   });
 });

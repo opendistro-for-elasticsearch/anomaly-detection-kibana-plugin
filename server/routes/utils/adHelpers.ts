@@ -17,7 +17,11 @@ import { get, omit, cloneDeep, isEmpty } from 'lodash';
 import { AnomalyResults } from '../../models/interfaces';
 import { GetDetectorsQueryParams, Detector } from '../../models/types';
 import { mapKeysDeep, toCamel, toSnake } from '../../utils/helpers';
-import { DETECTOR_STATE, NO_DATA_ERROR_MSG } from '../../utils/constants';
+import {
+  DETECTOR_STATE,
+  STACK_TRACE_PATTERN,
+  ES_EXCEPTION_PREFIX,
+} from '../../utils/constants';
 import { InitProgress } from '../../models/interfaces';
 
 export const convertDetectorKeysToSnakeCase = (payload: any) => {
@@ -326,17 +330,15 @@ export const appendTaskInfo = (
 };
 
 // Following checks/transformations need to be made here:
-// (1) set to DISABLED if there is no existing task for this detector
-// (2) set to NO_DATA if the task failed with NO_DATA_ERROR_MSG
-// (3) set to UNEXPECTED_FAILURE if the task is in a FAILED state to stay consistent
-// (4) set to INIT if the task is in a CREATED state
-// (5) set to DISABLED if the task is in a STOPPED state
+// - set to DISABLED if there is no existing task for this detector
+// - set to UNEXPECTED_FAILURE if the task is in a FAILED state & the error message is unreadable / is a stack trace
+// - set to INIT if the task is in a CREATED state
+// - set to DISABLED if the task is in a STOPPED state
 export const getHistoricalDetectorState = (task: any) => {
   const state = get(task, 'state', 'DISABLED');
+  const errorMessage = processTaskError(get(task, 'error', ''));
   const updatedState =
-    state === 'FAILED' && task.error === NO_DATA_ERROR_MSG
-      ? 'NO_DATA'
-      : state === 'FAILED'
+    state === 'FAILED' && errorMessage.includes(STACK_TRACE_PATTERN)
       ? 'UNEXPECTED_FAILURE'
       : state === 'CREATED'
       ? 'INIT'
@@ -345,4 +347,11 @@ export const getHistoricalDetectorState = (task: any) => {
       : state;
   //@ts-ignore
   return DETECTOR_STATE[updatedState];
+};
+
+export const processTaskError = (error: string) => {
+  const errorWithPrefixRemoved = error.replace(ES_EXCEPTION_PREFIX, '');
+  return errorWithPrefixRemoved.endsWith('.')
+    ? errorWithPrefixRemoved
+    : errorWithPrefixRemoved + '.';
 };

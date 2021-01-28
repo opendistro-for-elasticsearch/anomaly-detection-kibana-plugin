@@ -298,7 +298,7 @@ export const HistoricalDetectorDetail = (
     backgroundColor: '#FFF',
   };
 
-  const callout = getCallout(detector, isStoppingDetector, handleEditAction);
+  const callout = getCallout(detector, isStoppingDetector);
 
   return (
     <React.Fragment>

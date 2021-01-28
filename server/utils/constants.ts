@@ -69,7 +69,7 @@ export enum DETECTOR_STATE {
   FEATURE_REQUIRED = 'Feature required',
   INIT_FAILURE = 'Initialization failure',
   UNEXPECTED_FAILURE = 'Unexpected failure',
-  NO_DATA = 'No data',
+  FAILED = 'Failed',
 }
 
 export enum SAMPLE_TYPE {
@@ -85,4 +85,5 @@ export const ENTITY_NAME_PATH_FIELD = 'entity.name';
 export const DOC_COUNT_FIELD = 'doc_count';
 export const KEY_FIELD = 'key';
 
-export const NO_DATA_ERROR_MSG = 'There is no data in the detection date range';
+export const STACK_TRACE_PATTERN = '.java:';
+export const ES_EXCEPTION_PREFIX = 'org.elasticsearch.ElasticsearchException: ';
