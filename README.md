@@ -51,7 +51,7 @@ Ultimately, your directory structure should look like this:
 
 To build the plugin's distributable zip simply run `yarn build`.
 
-Example output: `./build/opendistroAnomalyDetectionKibana-1.12.0.0.zip`
+Example output: `./build/opendistroAnomalyDetectionKibana-1.13.0.0.zip`
 
 ## Run
 

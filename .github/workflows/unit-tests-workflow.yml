@@ -4,7 +4,7 @@ on:
     branches:
       - master
 env:
-  KIBANA_VERSION: 7.10.0
+  KIBANA_VERSION: 7.10.2
 jobs:
   tests:
     name: Run unit tests
