@@ -13,13 +13,18 @@
  * permissions and limitations under the License.
  */
 
-import { SORT_DIRECTION, ES_EXCEPTION_PREFIX } from '../../../utils/constants';
+import {
+  SORT_DIRECTION,
+  ES_EXCEPTION_PREFIX,
+  DETECTOR_STATE,
+} from '../../../utils/constants';
 import {
   convertDetectorKeysToCamelCase,
   convertDetectorKeysToSnakeCase,
   getResultAggregationQuery,
   convertPreviewInputKeysToSnakeCase,
   processTaskError,
+  getHistoricalDetectorState,
 } from '../adHelpers';
 
 describe('adHelpers', () => {
@@ -572,6 +577,52 @@ describe('adHelpers', () => {
           },
         },
       });
+    });
+  });
+  describe('getHistoricalDetectorState', () => {
+    test('should convert to disabled if no task', () => {
+      const task = null;
+      expect(getHistoricalDetectorState(task)).toEqual(DETECTOR_STATE.DISABLED);
+    });
+    test('should convert to unexpected failure if failed and error message is stack trace', () => {
+      const task = {
+        state: 'FAILED',
+        error: `at some.stack.trace(SomeFile.java:50)`,
+      };
+      expect(getHistoricalDetectorState(task)).toEqual(
+        DETECTOR_STATE.UNEXPECTED_FAILURE
+      );
+    });
+    test('should convert to failed if failed and error message is not stack trace', () => {
+      const task = {
+        state: 'FAILED',
+        error: 'Some regular error message',
+      };
+      expect(getHistoricalDetectorState(task)).toEqual(DETECTOR_STATE.FAILED);
+    });
+    test('should convert to initializing if in created state', () => {
+      const task = {
+        state: 'CREATED',
+      };
+      expect(getHistoricalDetectorState(task)).toEqual(DETECTOR_STATE.INIT);
+    });
+    test('should convert to disabled if in stopped state', () => {
+      const task = {
+        state: 'STOPPED',
+      };
+      expect(getHistoricalDetectorState(task)).toEqual(DETECTOR_STATE.DISABLED);
+    });
+    test('should not convert if in running state', () => {
+      const task = {
+        state: 'RUNNING',
+      };
+      expect(getHistoricalDetectorState(task)).toEqual(DETECTOR_STATE.RUNNING);
+    });
+    test('should not convert if in finished state', () => {
+      const task = {
+        state: 'FINISHED',
+      };
+      expect(getHistoricalDetectorState(task)).toEqual(DETECTOR_STATE.FINISHED);
     });
   });
   describe('processTaskError', () => {

@@ -23,7 +23,6 @@ import {
   EuiText,
   EuiFlexItem,
   EuiProgress,
-  EuiSpacer,
 } from '@elastic/eui';
 import { Detector } from '../../../models/interfaces';
 import { DETECTOR_STATE } from '../../../../server/utils/constants';
@@ -129,7 +128,7 @@ export const getCallout = (detector: Detector, isStoppingDetector: boolean) => {
           color="danger"
         >
           <EuiText size="s">
-            Consider editing the configuration and restarting the detector.
+            Try editing the configuration and restarting the detector.
           </EuiText>
         </EuiCallOut>
       );

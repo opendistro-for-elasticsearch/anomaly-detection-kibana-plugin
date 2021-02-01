@@ -35,8 +35,10 @@ const ACTIONS_BUTTON_TEXT = 'Actions';
 const STOPPED_CALLOUT_TEXT = 'The historical detector is stopped';
 const INIT_CALLOUT_TEXT = 'Initializing the historical detector';
 const RUNNING_CALLOUT_TEXT = 'Running the historical detector';
-const FAILURE_ERROR_MESSAGE = 'Some failure.';
-const UNEXPECTED_FAILURE_ERROR_MESSAGE =
+const FAILED_CALLOUT_TEXT = 'Some failure.';
+const FAILED_CALLOUT_DETAIL_TEXT =
+  'Try editing the configuration and restarting the detector.';
+const UNEXPECTED_FAILURE_CALLOUT_TEXT =
   'The historical detector has failed unexpectedly. Try restarting the detector.';
 const FAILURE_STACK_TRACE = `at some.stack.trace(SomeFile.java:50)`;
 const START_DETECTOR_BUTTON_TEXT = 'Start historical detector';
@@ -171,19 +173,19 @@ describe('<HistoricalDetectorDetail /> spec', () => {
     getByText('Finished');
     getByText(START_DETECTOR_BUTTON_TEXT);
   });
-  // TODO: add unexpected failure case, fix this one once the design has been finalized
   test('shows correct callout when detector failed', async () => {
     httpClientMock.get = jest.fn().mockResolvedValue({
       ok: true,
       response: {
         ...TEST_DETECTOR,
         curState: DETECTOR_STATE.FAILED,
-        taskError: FAILURE_ERROR_MESSAGE,
+        taskError: FAILED_CALLOUT_TEXT,
       },
     });
     const { getByText } = renderWithRouter();
     await wait();
-    getByText(FAILURE_ERROR_MESSAGE);
+    getByText(FAILED_CALLOUT_TEXT);
+    getByText(FAILED_CALLOUT_DETAIL_TEXT);
     getByText(START_DETECTOR_BUTTON_TEXT);
   });
   test('shows correct callout when detector unexpectedly failed', async () => {
@@ -198,7 +200,7 @@ describe('<HistoricalDetectorDetail /> spec', () => {
     const { getByText, queryByText } = renderWithRouter();
     await wait();
     expect(queryByText(FAILURE_STACK_TRACE)).toBeNull();
-    getByText(UNEXPECTED_FAILURE_ERROR_MESSAGE);
+    getByText(UNEXPECTED_FAILURE_CALLOUT_TEXT);
     getByText(START_DETECTOR_BUTTON_TEXT);
   });
 });
