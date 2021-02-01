@@ -1,10 +1,10 @@
 {
   "name": "opendistro-anomaly-detection-kibana",
-  "version": "1.12.0.0",
+  "version": "1.13.0.0",
   "description": "Open Distro for Elasticsearch Anomaly Detection Kibana plugin",
   "main": "index.js",
   "config": {
-    "odfe_version": "1.12.0.0",
+    "odfe_version": "1.13.0.0",
     "odfe_name": "opendistroAnomalyDetectionKibana"
   },
   "scripts": {
