@@ -156,7 +156,7 @@ export const sampleEcommerce = {
   indexName: ecommerceIndexName,
   detectorName: ecommerceDetectorName,
   description:
-    'Detect any unual increase or decrease of orders in an index containing online order data.',
+    'Detect any unusual increase or decrease of orders in an index containing online order data.',
   icon: <EuiIcon type="package" size="l" />,
   fieldMappings: ecommerceFieldMappings,
   indexConfig: {
