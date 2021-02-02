@@ -308,7 +308,8 @@ export const AnomalyDetailsChart = React.memo(
                     }
                     theme={ANOMALY_CHART_THEME}
                   />
-                  {props.isHCDetector && !props.selectedHeatmapCell ? null : (
+                  {(props.isHCDetector && !props.selectedHeatmapCell) ||
+                  props.isHistorical ? null : (
                     <RectAnnotation
                       dataValues={disabledHistoryAnnotations(
                         zoomRange,
