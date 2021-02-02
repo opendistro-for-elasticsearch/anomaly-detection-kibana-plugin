@@ -54,23 +54,17 @@ import { CoreStart } from '../../../../../../src/core/public';
 
 export function DashboardOverview() {
   const core = React.useContext(CoreServicesContext) as CoreStart;
-
   const dispatch = useDispatch();
-
   const adState = useSelector((state: AppState) => state.ad);
-
   const allDetectorList = adState.detectorList;
-
+  const totalRealtimeDetectors = Object.values(allDetectorList).length;
   const errorGettingDetectors = adState.errorMessage;
-
-  const [isLoadingDetectors, setIsLoadingDetectors] = useState(true);
+  const isLoadingDetectors = adState.requesting;
 
   const [currentDetectors, setCurrentDetectors] = useState(
     Object.values(allDetectorList)
   );
-
   const [allDetectorsSelected, setAllDetectorsSelected] = useState(true);
-
   const [selectedDetectorsName, setSelectedDetectorsName] = useState(
     [] as string[]
   );
@@ -169,7 +163,6 @@ export function DashboardOverview() {
   };
 
   const intializeDetectors = async () => {
-    setIsLoadingDetectors(true);
     dispatch(getDetectorList(GET_ALL_DETECTORS_QUERY_PARAMS));
     dispatch(getIndices(''));
     dispatch(getAliases(''));
@@ -188,7 +181,6 @@ export function DashboardOverview() {
           ? prettifyErrorMessage(errorGettingDetectors)
           : 'Unable to get all detectors'
       );
-      setIsLoadingDetectors(false);
     }
   }, [errorGettingDetectors]);
 
@@ -201,7 +193,6 @@ export function DashboardOverview() {
 
   useEffect(() => {
     setCurrentDetectors(Object.values(allDetectorList));
-    setIsLoadingDetectors(false);
   }, [allDetectorList]);
 
   useEffect(() => {
@@ -215,7 +206,7 @@ export function DashboardOverview() {
   return (
     <div style={{ height: '1200px' }}>
       <Fragment>
-        <DashboardHeader hasDetectors={adState.totalDetectors > 0} />
+        <DashboardHeader hasDetectors={totalRealtimeDetectors > 0} />
         {isLoadingDetectors ? (
           <div>
             <EuiLoadingSpinner size="s" />
@@ -226,7 +217,7 @@ export function DashboardOverview() {
             &nbsp;&nbsp;
             <EuiLoadingSpinner size="xl" />
           </div>
-        ) : adState.totalDetectors === 0 ? (
+        ) : totalRealtimeDetectors === 0 ? (
           <EmptyDashboard />
         ) : (
           <Fragment>
