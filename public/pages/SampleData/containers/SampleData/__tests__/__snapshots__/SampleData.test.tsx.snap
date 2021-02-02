@@ -234,7 +234,7 @@ exports[`<SampleData /> spec No sample detectors created renders component 1`] =
                 <p
                   style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
-                  Detect any unual increase or decrease of orders in an index containing online order data.
+                  Detect any unusual increase or decrease of orders in an index containing online order data.
                 </p>
               </div>
               <div
@@ -644,7 +644,7 @@ exports[`<SampleData /> spec Some detectors created renders component with non-s
                 <p
                   style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
-                  Detect any unual increase or decrease of orders in an index containing online order data.
+                  Detect any unusual increase or decrease of orders in an index containing online order data.
                 </p>
               </div>
               <div
@@ -1077,7 +1077,7 @@ exports[`<SampleData /> spec Some detectors created renders component with sampl
                 <p
                   style="text-align: left; line-height: 1.4; max-height: 4.2px;"
                 >
-                  Detect any unual increase or decrease of orders in an index containing online order data.
+                  Detect any unusual increase or decrease of orders in an index containing online order data.
                 </p>
               </div>
               <div
