@@ -71,6 +71,7 @@ export type Detector = {
   detectionDateRange?: DetectionDateRange;
   taskId?: string;
   taskProgress?: number;
+  taskError?: string;
 };
 
 export type Monitor = {

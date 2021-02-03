@@ -63,7 +63,7 @@ export const getDetectorStateOptions = () => {
     .filter(
       (option) =>
         option.label !== DETECTOR_STATE.FINISHED &&
-        option.label !== DETECTOR_STATE.NO_DATA
+        option.label !== DETECTOR_STATE.FAILED
     );
 };
 

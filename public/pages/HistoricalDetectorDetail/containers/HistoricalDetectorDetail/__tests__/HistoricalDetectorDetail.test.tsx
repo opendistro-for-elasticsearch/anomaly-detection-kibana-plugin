@@ -35,8 +35,12 @@ const ACTIONS_BUTTON_TEXT = 'Actions';
 const STOPPED_CALLOUT_TEXT = 'The historical detector is stopped';
 const INIT_CALLOUT_TEXT = 'Initializing the historical detector';
 const RUNNING_CALLOUT_TEXT = 'Running the historical detector';
-const NO_DATA_CALLOUT_TEXT =
-  'No data available in the selected date range for the detector.';
+const FAILED_CALLOUT_TEXT = 'Some failure.';
+const FAILED_CALLOUT_DETAIL_TEXT =
+  'Try editing the configuration and restarting the detector.';
+const UNEXPECTED_FAILURE_CALLOUT_TEXT =
+  'The historical detector has failed unexpectedly. Try restarting the detector.';
+const FAILURE_STACK_TRACE = `at some.stack.trace(SomeFile.java:50)`;
 const START_DETECTOR_BUTTON_TEXT = 'Start historical detector';
 const STOP_DETECTOR_BUTTON_TEXT = 'Stop historical detector';
 
@@ -169,17 +173,34 @@ describe('<HistoricalDetectorDetail /> spec', () => {
     getByText('Finished');
     getByText(START_DETECTOR_BUTTON_TEXT);
   });
-  test('shows correct callout when detector has no data', async () => {
+  test('shows correct callout when detector failed', async () => {
     httpClientMock.get = jest.fn().mockResolvedValue({
       ok: true,
       response: {
         ...TEST_DETECTOR,
-        curState: DETECTOR_STATE.NO_DATA,
+        curState: DETECTOR_STATE.FAILED,
+        taskError: FAILED_CALLOUT_TEXT,
       },
     });
     const { getByText } = renderWithRouter();
     await wait();
-    getByText(NO_DATA_CALLOUT_TEXT);
+    getByText(FAILED_CALLOUT_TEXT);
+    getByText(FAILED_CALLOUT_DETAIL_TEXT);
+    getByText(START_DETECTOR_BUTTON_TEXT);
+  });
+  test('shows correct callout when detector unexpectedly failed', async () => {
+    httpClientMock.get = jest.fn().mockResolvedValue({
+      ok: true,
+      response: {
+        ...TEST_DETECTOR,
+        curState: DETECTOR_STATE.UNEXPECTED_FAILURE,
+        taskError: FAILURE_STACK_TRACE,
+      },
+    });
+    const { getByText, queryByText } = renderWithRouter();
+    await wait();
+    expect(queryByText(FAILURE_STACK_TRACE)).toBeNull();
+    getByText(UNEXPECTED_FAILURE_CALLOUT_TEXT);
     getByText(START_DETECTOR_BUTTON_TEXT);
   });
 });
