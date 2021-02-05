@@ -35,6 +35,7 @@ Compatible with Kibana 7.10.2
 - Update draft release notes config to use URL ([#358](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/358))
 - Remove copyright year for newly added files ([#367](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/367))
 - Add release notes for version 1.13.0.0 ([#375](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/375))
+- Fix link to LICENSE.txt ([#376](https://github.com/opendistro-for-elasticsearch/anomaly-detection-kibana-plugin/pull/376))
 
 ### Maintenance
 
