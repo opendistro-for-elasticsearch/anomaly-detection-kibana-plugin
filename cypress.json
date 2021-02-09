@@ -7,9 +7,9 @@
   "screenshotsFolder": ".cypress/screenshots",
   "supportFile": ".cypress/support/index.js",
   "videosFolder": ".cypress/videos",
-  "requestTimeout": 90000,
-  "responseTimeout": 90000,
-  "defaultCommandTimeout": 90000,
+  "requestTimeout": 180000,
+  "responseTimeout": 180000,
+  "defaultCommandTimeout": 180000,
   "experimentalNetworkStubbing": true,
   "env": {
     "SECURITY_ENABLED": false
