@@ -139,7 +139,7 @@ context('Detector list', () => {
     cy.contains('Successfully stopped all selected detectors');
   });
 
-  it('Delete single detector', () => {
+  it.skip('Delete single detector', () => {
     cy.mockGetDetectorOnAction('single_stopped_detector_response.json', () => {
       cy.visit(buildAdAppUrl(DETECTORS));
     });
