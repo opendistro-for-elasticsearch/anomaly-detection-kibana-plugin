@@ -2,7 +2,7 @@ name: E2E tests workflow
 on:
   push:
     branches:
-      - master
+      - main
 env:
   KIBANA_VERSION: 7.10.2
   ODFE_VERSION: 1.13.0
