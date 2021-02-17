@@ -2,7 +2,7 @@ name: Unit tests workflow
 on:
   push:
     branches:
-      - master
+      - main
 env:
   KIBANA_VERSION: 7.10.2
 jobs:
