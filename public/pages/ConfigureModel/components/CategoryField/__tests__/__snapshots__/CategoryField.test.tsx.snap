@@ -1,0 +1,623 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CategoryField /> spec hides callout if component is loading 1`] = `
+<div>
+  <form
+    action="#"
+  >
+    <div
+      class="euiPage"
+    >
+      <main
+        class="euiPageBody"
+      >
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="padding: 20px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="padding: 0px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <h2
+                    class="euiTitle euiTitle--small"
+                  >
+                    Category field 
+                  </h2>
+                </div>
+              </div>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium content-panel-subTitle"
+                  >
+                    Categorize anomalies based on unique partitions. For example, with clickstream data you can categorize anomalies into a given day, week, or month.
+                     
+                    <a
+                      class="euiLink euiLink--primary"
+                      href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more 
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--small"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13 8.5a.5.5 0 111 0V12a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2h3.5a.5.5 0 010 1H4a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8.5zm-5.12.339a.5.5 0 11-.706-.707L13.305 2H10.5a.5.5 0 110-1H14a1 1 0 011 1v3.5a.5.5 0 11-1 0V2.72L7.88 8.838z"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+          />
+          <div
+            style="padding: 10px 0px;"
+          >
+            <div
+              class="euiSpacer euiSpacer--m"
+            />
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <div
+                  class="euiCheckbox"
+                >
+                  <input
+                    checked=""
+                    class="euiCheckbox__input"
+                    disabled=""
+                    id="categoryFieldCheckbox"
+                    type="checkbox"
+                  />
+                  <div
+                    class="euiCheckbox__square"
+                  />
+                  <label
+                    class="euiCheckbox__label"
+                    for="categoryFieldCheckbox"
+                  >
+                    Enable category field
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<CategoryField /> spec renders the component when disabled 1`] = `
+<div>
+  <form
+    action="#"
+  >
+    <div
+      class="euiPage"
+    >
+      <main
+        class="euiPageBody"
+      >
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="padding: 20px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="padding: 0px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <h2
+                    class="euiTitle euiTitle--small"
+                  >
+                    Category field 
+                  </h2>
+                </div>
+              </div>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium content-panel-subTitle"
+                  >
+                    Categorize anomalies based on unique partitions. For example, with clickstream data you can categorize anomalies into a given day, week, or month.
+                     
+                    <a
+                      class="euiLink euiLink--primary"
+                      href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more 
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--small euiIcon-isLoading"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+          />
+          <div
+            style="padding: 10px 0px;"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <div
+                  class="euiCheckbox"
+                >
+                  <input
+                    class="euiCheckbox__input"
+                    id="categoryFieldCheckbox"
+                    type="checkbox"
+                  />
+                  <div
+                    class="euiCheckbox__square"
+                  />
+                  <label
+                    class="euiCheckbox__label"
+                    for="categoryFieldCheckbox"
+                  >
+                    Enable category field
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<CategoryField /> spec renders the component when enabled 1`] = `
+<div>
+  <form
+    action="#"
+  >
+    <div
+      class="euiPage"
+    >
+      <main
+        class="euiPageBody"
+      >
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="padding: 20px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="padding: 0px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <h2
+                    class="euiTitle euiTitle--small"
+                  >
+                    Category field 
+                  </h2>
+                </div>
+              </div>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium content-panel-subTitle"
+                  >
+                    Categorize anomalies based on unique partitions. For example, with clickstream data you can categorize anomalies into a given day, week, or month.
+                     
+                    <a
+                      class="euiLink euiLink--primary"
+                      href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more 
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--small"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13 8.5a.5.5 0 111 0V12a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2h3.5a.5.5 0 010 1H4a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8.5zm-5.12.339a.5.5 0 11-.706-.707L13.305 2H10.5a.5.5 0 110-1H14a1 1 0 011 1v3.5a.5.5 0 11-1 0V2.72L7.88 8.838z"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+          />
+          <div
+            style="padding: 10px 0px;"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <div
+                  class="euiCheckbox"
+                >
+                  <input
+                    checked=""
+                    class="euiCheckbox__input"
+                    id="categoryFieldCheckbox"
+                    type="checkbox"
+                  />
+                  <div
+                    class="euiCheckbox__square"
+                  />
+                  <label
+                    class="euiCheckbox__label"
+                    for="categoryFieldCheckbox"
+                  >
+                    Enable category field
+                  </label>
+                </div>
+              </div>
+              <div
+                class="euiFlexItem"
+              >
+                <div
+                  class="euiFormRow"
+                  id="random_html_id-row"
+                >
+                  <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      aria-invalid="false"
+                      class="euiFormLabel euiFormRow__label"
+                      for="random_html_id"
+                    >
+                      Field
+                    </label>
+                  </div>
+                  <div
+                    class="euiFormRow__fieldWrapper"
+                  >
+                    <div
+                      aria-describedby="random_html_id-help"
+                      aria-expanded="false"
+                      aria-haspopup="listbox"
+                      class="euiComboBox"
+                      data-test-subj="categoryFieldComboBox"
+                      role="combobox"
+                    >
+                      <div
+                        class="euiFormControlLayout"
+                      >
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <div
+                            class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                            data-test-subj="comboBoxInput"
+                            tabindex="-1"
+                          >
+                            <p
+                              class="euiComboBoxPlaceholder"
+                            >
+                              Select your category field
+                            </p>
+                            <div
+                              class="euiComboBox__input"
+                              style="font-size: 14px; display: inline-block;"
+                            >
+                              <input
+                                aria-controls=""
+                                data-test-subj="comboBoxSearchInput"
+                                id="random_html_id"
+                                role="textbox"
+                                style="box-sizing: content-box; width: 2px;"
+                                value=""
+                              />
+                              <div
+                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                          >
+                            <button
+                              aria-label="Open list of options"
+                              class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                              data-test-subj="comboBoxToggleListButton"
+                              type="button"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                                focusable="false"
+                                height="16"
+                                role="img"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFormHelpText euiFormRow__text"
+                      id="random_html_id-help"
+                    >
+                      You can only apply the category field to the 'ip' and 'keyword' Elasticsearch data types.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<CategoryField /> spec shows callout when there are no available category fields 1`] = `
+<div>
+  <form
+    action="#"
+  >
+    <div
+      class="euiPage"
+    >
+      <main
+        class="euiPageBody"
+      >
+        <div
+          class="euiPanel euiPanel--paddingMedium"
+          style="padding: 20px;"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            style="padding: 0px;"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <h2
+                    class="euiTitle euiTitle--small"
+                  >
+                    Category field 
+                  </h2>
+                </div>
+              </div>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium content-panel-subTitle"
+                  >
+                    Categorize anomalies based on unique partitions. For example, with clickstream data you can categorize anomalies into a given day, week, or month.
+                     
+                    <a
+                      class="euiLink euiLink--primary"
+                      href="https://opendistro.github.io/for-elasticsearch-docs/docs/ad/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more 
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--small"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13 8.5a.5.5 0 111 0V12a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2h3.5a.5.5 0 010 1H4a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8.5zm-5.12.339a.5.5 0 11-.706-.707L13.305 2H10.5a.5.5 0 110-1H14a1 1 0 011 1v3.5a.5.5 0 11-1 0V2.72L7.88 8.838z"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                />
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+          />
+          <div
+            style="padding: 10px 0px;"
+          >
+            <div
+              class="euiCallOut euiCallOut--warning"
+              data-test-subj="noCategoryFieldsCallout"
+            >
+              <div
+                class="euiCallOutHeader"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="euiIcon euiIcon--medium euiIcon-isLoading euiCallOutHeader__icon"
+                  focusable="false"
+                  height="16"
+                  role="img"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                />
+                <span
+                  class="euiCallOutHeader__title"
+                >
+                  There are no available category fields for the selected index
+                </span>
+              </div>
+            </div>
+            <div
+              class="euiSpacer euiSpacer--m"
+            />
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <div
+                  class="euiCheckbox"
+                >
+                  <input
+                    checked=""
+                    class="euiCheckbox__input"
+                    disabled=""
+                    id="categoryFieldCheckbox"
+                    type="checkbox"
+                  />
+                  <div
+                    class="euiCheckbox__square"
+                  />
+                  <label
+                    class="euiCheckbox__label"
+                    for="categoryFieldCheckbox"
+                  >
+                    Enable category field
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </form>
+</div>
+`;
