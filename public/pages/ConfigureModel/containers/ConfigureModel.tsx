@@ -135,52 +135,48 @@ export function ConfigureModel(props: ConfigureModelProps) {
   const handleFormValidation = async (
     formikProps: FormikProps<ModelConfigurationFormikValues>
   ) => {
-    try {
-      if (props.isEdit && detector.curState === DETECTOR_STATE.RUNNING) {
-        core.notifications.toasts.addDanger(
-          'Detector cannot be updated while it is running'
-        );
-      } else {
-        formikProps.setSubmitting(true);
-        formikProps.setFieldTouched('featureList');
-        formikProps.setFieldTouched('categoryField', isHCDetector);
-        formikProps.setFieldTouched('shingleSize');
-        formikProps.validateForm().then((errors) => {
-          if (isEmpty(errors)) {
-            if (props.isEdit) {
-              // TODO: possibly add logic to also start RT and/or historical from here. Need to think
-              // about adding similar logic from edit detector definition page
-              const detectorToUpdate = formikToModelConfiguration(
-                formikProps.values,
-                detector
-              );
-              handleUpdateDetector(detectorToUpdate);
-            } else {
-              optionallySaveValues({
-                ...formikProps.values,
-                categoryFieldEnabled: isHCDetector,
-              });
-              //@ts-ignore
-              props.setStep(3);
-            }
-          } else {
-            // TODO: can add focus to all components or possibly customize error message too
-            if (get(errors, 'featureList')) {
-              focusOnFirstWrongFeature(errors, formikProps.setFieldTouched);
-            } else if (get(errors, 'categoryField')) {
-              focusOnCategoryField();
-            }
-
-            core.notifications.toasts.addDanger(
-              'One or more input fields is invalid'
+    if (props.isEdit && detector.curState === DETECTOR_STATE.RUNNING) {
+      core.notifications.toasts.addDanger(
+        'Detector cannot be updated while it is running'
+      );
+    } else {
+      formikProps.setSubmitting(true);
+      formikProps.setFieldTouched('featureList');
+      formikProps.setFieldTouched('categoryField', isHCDetector);
+      formikProps.setFieldTouched('shingleSize');
+      formikProps.validateForm().then((errors) => {
+        if (isEmpty(errors)) {
+          if (props.isEdit) {
+            // TODO: possibly add logic to also start RT and/or historical from here. Need to think
+            // about adding similar logic from edit detector definition page
+            const detectorToUpdate = formikToModelConfiguration(
+              formikProps.values,
+              detector
             );
+            handleUpdateDetector(detectorToUpdate);
+          } else {
+            optionallySaveValues({
+              ...formikProps.values,
+              categoryFieldEnabled: isHCDetector,
+            });
+            //@ts-ignore
+            props.setStep(3);
           }
-        });
-      }
-    } catch (e) {
-    } finally {
-      formikProps.setSubmitting(false);
+        } else {
+          // TODO: can add focus to all components or possibly customize error message too
+          if (get(errors, 'featureList')) {
+            focusOnFirstWrongFeature(errors, formikProps.setFieldTouched);
+          } else if (get(errors, 'categoryField')) {
+            focusOnCategoryField();
+          }
+
+          core.notifications.toasts.addDanger(
+            'One or more input fields is invalid'
+          );
+        }
+      });
     }
+    formikProps.setSubmitting(false);
   };
 
   const handleUpdateDetector = async (detectorToUpdate: Detector) => {
@@ -299,7 +295,6 @@ export function ConfigureModel(props: ConfigureModelProps) {
                   iconType="arrowLeft"
                   fill={false}
                   data-test-subj="configureModelPreviousButton"
-                  //isLoading={formikProps.isSubmitting}
                   //@ts-ignore
                   onClick={() => {
                     optionallySaveValues({

@@ -246,8 +246,6 @@ export function modelConfigurationToFormik(
     ...initialValues,
     featureList: featuresToFormik(detector),
     categoryFieldEnabled: !isEmpty(get(detector, 'categoryField', []))
-      ? true
-      : false,
     categoryField: get(detector, 'categoryField', []),
     shingleSize: get(detector, 'shingleSize', 4),
   };
