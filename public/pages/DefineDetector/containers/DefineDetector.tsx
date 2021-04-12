@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -39,7 +39,7 @@ import { APIAction } from '../../../redux/middleware/types';
 import { CoreServicesContext } from '../../../components/CoreServices/CoreServices';
 import { BREADCRUMBS } from '../../../utils/constants';
 import { getErrorMessage, validateDetectorName } from '../../../utils/utils';
-import { DetectorInfo } from '../components/DetectorInfo';
+import { NameAndDescription } from '../components/NameAndDescription';
 import { DataSource } from '../components/Datasource/DataSource';
 import { Timestamp } from '../components/Timestamp';
 import { Settings } from '../components/Settings';
@@ -132,45 +132,41 @@ export const DefineDetector = (props: DefineDetectorProps) => {
   const handleFormValidation = async (
     formikProps: FormikProps<DetectorDefinitionFormikValues>
   ) => {
-    try {
-      if (props.isEdit && detector.curState === DETECTOR_STATE.RUNNING) {
-        core.notifications.toasts.addDanger(
-          'Detector cannot be updated while it is running'
-        );
-      } else {
-        formikProps.setSubmitting(true);
-        formikProps.setFieldTouched('name');
-        formikProps.setFieldTouched('description');
-        formikProps.setFieldTouched('index');
-        formikProps.setFieldTouched('filters');
-        formikProps.setFieldTouched('timeField');
-        formikProps.setFieldTouched('interval');
-        formikProps.setFieldTouched('windowDelay');
-        formikProps.validateForm().then((errors) => {
-          if (isEmpty(errors)) {
-            if (props.isEdit) {
-              const detectorToUpdate = formikToDetectorDefinition(
-                formikProps.values,
-                detector
-              );
-              handleUpdateDetector(detectorToUpdate);
-            } else {
-              optionallySaveValues(formikProps.values);
-              //@ts-ignore
-              props.setStep(2);
-            }
-          } else {
-            // TODO: can add focus to all components or possibly customize error message too
-            core.notifications.toasts.addDanger(
-              'One or more input fields is invalid'
+    if (props.isEdit && detector.curState === DETECTOR_STATE.RUNNING) {
+      core.notifications.toasts.addDanger(
+        'Detector cannot be updated while it is running'
+      );
+    } else {
+      formikProps.setSubmitting(true);
+      formikProps.setFieldTouched('name');
+      formikProps.setFieldTouched('description');
+      formikProps.setFieldTouched('index');
+      formikProps.setFieldTouched('filters');
+      formikProps.setFieldTouched('timeField');
+      formikProps.setFieldTouched('interval');
+      formikProps.setFieldTouched('windowDelay');
+      formikProps.validateForm().then((errors) => {
+        if (isEmpty(errors)) {
+          if (props.isEdit) {
+            const detectorToUpdate = formikToDetectorDefinition(
+              formikProps.values,
+              detector
             );
+            handleUpdateDetector(detectorToUpdate);
+          } else {
+            optionallySaveValues(formikProps.values);
+            //@ts-ignore
+            props.setStep(2);
           }
-        });
-      }
-    } catch (e) {
-    } finally {
-      formikProps.setSubmitting(false);
+        } else {
+          // TODO: can add focus to all components or possibly customize error message too
+          core.notifications.toasts.addDanger(
+            'One or more input fields is invalid'
+          );
+        }
+      });
     }
+    formikProps.setSubmitting(false);
   };
 
   const handleUpdateDetector = async (detectorToUpdate: Detector) => {
@@ -227,7 +223,9 @@ export const DefineDetector = (props: DefineDetectorProps) => {
                 </EuiPageHeaderSection>
               </EuiPageHeader>
               <Fragment>
-                <DetectorInfo onValidateDetectorName={handleValidateName} />
+                <NameAndDescription
+                  onValidateDetectorName={handleValidateName}
+                />
                 <EuiSpacer />
                 <DataSource
                   formikProps={formikProps}

@@ -13,6 +13,6 @@
  * permissions and limitations under the License.
  */
 
-import DetectorInfo from './DetectorInfo';
+import NameAndDescription from './NameAndDescription';
 
-export { DetectorInfo };
+export { NameAndDescription };

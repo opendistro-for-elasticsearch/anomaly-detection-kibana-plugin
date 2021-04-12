@@ -15,17 +15,17 @@
 
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import DetectorInfo from '../DetectorInfo';
+import NameAndDescription from '../NameAndDescription';
 
 import { Formik } from 'formik';
 
-describe('<DetectorInfo /> spec', () => {
+describe('<NameAndDescription /> spec', () => {
   test('renders the component', () => {
     const { container } = render(
       <Formik initialValues={{ detectorName: '' }} onSubmit={jest.fn()}>
         {() => (
           <div>
-            <DetectorInfo onValidateDetectorName={jest.fn()} />
+            <NameAndDescription onValidateDetectorName={jest.fn()} />
           </div>
         )}
       </Formik>
@@ -40,7 +40,7 @@ describe('<DetectorInfo /> spec', () => {
       <Formik initialValues={{ detectorName: '' }} onSubmit={jest.fn()}>
         {() => (
           <div>
-            <DetectorInfo onValidateDetectorName={handleValidateName} />
+            <NameAndDescription onValidateDetectorName={handleValidateName} />
           </div>
         )}
       </Formik>
@@ -61,7 +61,7 @@ describe('<DetectorInfo /> spec', () => {
       >
         {() => (
           <div>
-            <DetectorInfo onValidateDetectorName={jest.fn()} />
+            <NameAndDescription onValidateDetectorName={jest.fn()} />
           </div>
         )}
       </Formik>

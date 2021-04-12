@@ -24,7 +24,7 @@ import React from 'react';
 import { getError, isInvalid } from '../../../../../utils/utils';
 import { UIFilter } from '../../../../../models/interfaces';
 import { DetectorDefinitionFormikValues } from '../../../models/interfaces';
-import { validFilterQuery } from '../utils/helpers';
+import { validateFilterQuery } from '../utils/helpers';
 
 interface CustomFilterProps {
   filter: UIFilter;
@@ -45,7 +45,7 @@ export const CustomFilter = (props: CustomFilterProps) => {
           <EuiFlexItem>
             <Field
               name={`filters.${props.index}.query`}
-              validate={validFilterQuery}
+              validate={validateFilterQuery}
             >
               {({ field, form }: FieldProps) => (
                 <EuiFormRow

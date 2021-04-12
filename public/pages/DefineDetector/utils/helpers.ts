@@ -47,10 +47,6 @@ export function detectorDefinitionToFormik(
     timeField: ad.timeField,
     interval: get(ad, 'detectionInterval.period.interval', 10),
     windowDelay: get(ad, 'windowDelay.period.interval', 0),
-    // shingleSize: getShingleSizeFromObject(
-    //   ad,
-    //   !isEmpty(get(ad, 'categoryField', []))
-    // ),
   };
 }
 

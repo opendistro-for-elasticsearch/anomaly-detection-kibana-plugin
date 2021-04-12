@@ -21,10 +21,10 @@ import { getError, isInvalid } from '../../../../utils/utils';
 import { validateDetectorDesc } from './utils/validation';
 import { FormattedFormRow } from '../../../../components/FormattedFormRow/FormattedFormRow';
 
-interface DetectorInfoProps {
+interface NameAndDescriptionProps {
   onValidateDetectorName: (detectorName: string) => Promise<any>;
 }
-function DetectorInfo(props: DetectorInfoProps) {
+function NameAndDescription(props: NameAndDescriptionProps) {
   return (
     <ContentPanel title="Detector details" titleSize="s">
       <Field name="name" validate={props.onValidateDetectorName}>
@@ -75,4 +75,4 @@ function DetectorInfo(props: DetectorInfoProps) {
   );
 }
 
-export default DetectorInfo;
+export default NameAndDescription;

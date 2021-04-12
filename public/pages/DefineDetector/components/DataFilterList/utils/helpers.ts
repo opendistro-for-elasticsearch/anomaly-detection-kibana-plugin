@@ -104,7 +104,7 @@ export const validateEnd = (endVal: number | string, startVal: number) => {
   }
 };
 
-export const validFilterQuery = (value: string) => {
+export const validateFilterQuery = (value: string) => {
   try {
     JSON.parse(value);
   } catch (err) {

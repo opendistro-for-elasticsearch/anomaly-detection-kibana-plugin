@@ -35,64 +35,74 @@ interface CreateDetectorStepsProps extends RouteComponentProps {}
 export const CreateDetectorSteps = (props: CreateDetectorStepsProps) => {
   useHideSideNavBar(true, false);
 
-  const [step1Status, setStep1Status] = useState<STEP_STATUS>(undefined);
-  const [step2Status, setStep2Status] = useState<STEP_STATUS>('disabled');
-  const [step3Status, setStep3Status] = useState<STEP_STATUS>('disabled');
-  const [step4Status, setStep4Status] = useState<STEP_STATUS>('disabled');
+  const [step1DefineDetectorStatus, setStep1DefineDetectorStatus] = useState<
+    STEP_STATUS
+  >(undefined);
+  const [step2ConfigureModelStatus, setStep2ConfigureModelStatus] = useState<
+    STEP_STATUS
+  >('disabled');
+  const [step3JobsStatus, setStep3JobsStatus] = useState<STEP_STATUS>(
+    'disabled'
+  );
+  const [step4ReviewCreateStatus, setStep4ReviewCreateStatus] = useState<
+    STEP_STATUS
+  >('disabled');
 
-  const [step1Fields, setStep1Fields] = useState<
+  const [step1DefineDetectorFields, setStep1DefineDetectorFields] = useState<
     DetectorDefinitionFormikValues
   >(INITIAL_DETECTOR_DEFINITION_VALUES);
-  const [step2Fields, setStep2Fields] = useState<
+  const [step2ConfigureModelFields, setStep2ConfigureModelFields] = useState<
     ModelConfigurationFormikValues
   >(INITIAL_MODEL_CONFIGURATION_VALUES);
-  const [step3Fields, setStep3Fields] = useState<DetectorJobsFormikValues>(
-    INITIAL_DETECTOR_JOB_VALUES
-  );
-  const [step4Fields, setStep4Fields] = useState<CreateDetectorFormikValues>({
-    ...step1Fields,
-    ...step2Fields,
-    ...step3Fields,
+  const [step3JobsFields, setStep3JobsFields] = useState<
+    DetectorJobsFormikValues
+  >(INITIAL_DETECTOR_JOB_VALUES);
+  const [step4ReviewCreateFields, setStep4ReviewCreateFields] = useState<
+    CreateDetectorFormikValues
+  >({
+    ...step1DefineDetectorFields,
+    ...step2ConfigureModelFields,
+    ...step3JobsFields,
   });
 
   const [curStep, setCurStep] = useState<number>(1);
 
   // Hook to update the field values needed for the review step
   useEffect(() => {
-    setStep4Fields({
-      ...step1Fields,
-      ...step2Fields,
-      ...step3Fields,
+    setStep4ReviewCreateFields({
+      ...step1DefineDetectorFields,
+      ...step2ConfigureModelFields,
+      ...step3JobsFields,
     });
-  }, [step1Fields, step2Fields, step3Fields]);
+  }, [step1DefineDetectorFields, step2ConfigureModelFields, step3JobsFields]);
 
   // Hook to update the progress of the steps - undefined = blue, disabled = grey
   useEffect(() => {
     switch (curStep) {
       case 1:
       default:
-        setStep1Status(undefined);
-        setStep2Status('disabled');
-        setStep3Status('disabled');
-        setStep4Status('disabled');
+        setStep1DefineDetectorStatus(undefined);
+        setStep2ConfigureModelStatus('disabled');
+        setStep3JobsStatus('disabled');
+        setStep4ReviewCreateStatus('disabled');
         break;
       case 2:
-        setStep1Status(undefined);
-        setStep2Status(undefined);
-        setStep3Status('disabled');
-        setStep4Status('disabled');
+        setStep1DefineDetectorStatus(undefined);
+        setStep2ConfigureModelStatus(undefined);
+        setStep3JobsStatus('disabled');
+        setStep4ReviewCreateStatus('disabled');
         break;
       case 3:
-        setStep1Status(undefined);
-        setStep2Status(undefined);
-        setStep3Status(undefined);
-        setStep4Status('disabled');
+        setStep1DefineDetectorStatus(undefined);
+        setStep2ConfigureModelStatus(undefined);
+        setStep3JobsStatus(undefined);
+        setStep4ReviewCreateStatus('disabled');
         break;
       case 4:
-        setStep1Status(undefined);
-        setStep2Status(undefined);
-        setStep3Status(undefined);
-        setStep4Status(undefined);
+        setStep1DefineDetectorStatus(undefined);
+        setStep2ConfigureModelStatus(undefined);
+        setStep3JobsStatus(undefined);
+        setStep4ReviewCreateStatus(undefined);
         break;
     }
   }, [curStep]);
@@ -100,22 +110,22 @@ export const CreateDetectorSteps = (props: CreateDetectorStepsProps) => {
   const createSteps = [
     {
       title: 'Define detector',
-      status: step1Status,
+      status: step1DefineDetectorStatus,
       children: undefined,
     },
     {
       title: 'Configure model',
-      status: step2Status,
+      status: step2ConfigureModelStatus,
       children: undefined,
     },
     {
       title: 'Set up detector jobs',
-      status: step3Status,
+      status: step3JobsStatus,
       children: undefined,
     },
     {
       title: 'Review and create',
-      status: step4Status,
+      status: step4ReviewCreateStatus,
       children: undefined,
     },
   ];
@@ -131,30 +141,30 @@ export const CreateDetectorSteps = (props: CreateDetectorStepsProps) => {
             <DefineDetector
               isEdit={false}
               setStep={setCurStep}
-              initialValues={step1Fields}
-              setInitialValues={setStep1Fields}
+              initialValues={step1DefineDetectorFields}
+              setInitialValues={setStep1DefineDetectorFields}
               {...props}
             />
           ) : curStep === 2 ? (
             <ConfigureModel
               isEdit={false}
               setStep={setCurStep}
-              initialValues={step2Fields}
-              setInitialValues={setStep2Fields}
-              detectorDefinitionValues={step1Fields}
+              initialValues={step2ConfigureModelFields}
+              setInitialValues={setStep2ConfigureModelFields}
+              detectorDefinitionValues={step1DefineDetectorFields}
               {...props}
             />
           ) : curStep === 3 ? (
             <DetectorJobs
               setStep={setCurStep}
-              initialValues={step3Fields}
-              setInitialValues={setStep3Fields}
+              initialValues={step3JobsFields}
+              setInitialValues={setStep3JobsFields}
               {...props}
             />
           ) : curStep === 4 ? (
             <ReviewAndCreate
               setStep={setCurStep}
-              values={step4Fields}
+              values={step4ReviewCreateFields}
               {...props}
             />
           ) : null}
