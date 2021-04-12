@@ -25,6 +25,7 @@ import { CodeModal } from '../../../../components/CodeModal/CodeModal';
 import { AdditionalSettings } from '../AdditionalSettings/AdditionalSettings';
 import { getTitleWithCount } from '../../../../utils/utils';
 import { getShingleSizeFromObject } from '../../../ConfigureModel/utils/helpers';
+import { SORT_DIRECTION } from '../../../../../server/utils/constants';
 
 interface ModelConfigurationFieldsProps {
   detector: Detector;
@@ -34,7 +35,7 @@ interface ModelConfigurationFieldsProps {
 interface ModelConfigurationFieldsState {
   showCodeModel: boolean[];
   sortField: string;
-  sortDirection: 'asc' | 'desc';
+  sortDirection: SORT_DIRECTION;
 }
 
 export const ModelConfigurationFields = (
@@ -47,7 +48,7 @@ export const ModelConfigurationFields = (
       () => false
     ),
     sortField: 'name',
-    sortDirection: 'asc',
+    sortDirection: SORT_DIRECTION.ASC,
   });
 
   const closeModal = (index: number) => {
@@ -82,7 +83,7 @@ export const ModelConfigurationFields = (
 
   const getSortedItems = (items: Array<any>) => {
     let sorted = sortBy(items, featuresState.sortField);
-    if (featuresState.sortDirection == 'desc') {
+    if (featuresState.sortDirection == SORT_DIRECTION.DESC) {
       sorted = sorted.reverse();
     }
     return sorted;

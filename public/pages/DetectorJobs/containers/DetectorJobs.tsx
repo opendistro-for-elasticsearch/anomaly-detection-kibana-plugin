@@ -71,40 +71,36 @@ export function DetectorJobs(props: DetectorJobsProps) {
   const handleFormValidation = async (
     formikProps: FormikProps<DetectorJobsFormikValues>
   ) => {
-    try {
-      formikProps.setSubmitting(true);
-      formikProps.validateForm().then((errors) => {
-        // We need some custom logic to check the validity here. The EUI date range validity
-        // is limited and can only be checked on selection changes. Since a user may go back
-        // and forth without changing the selection, we still need to prevent moving to the
-        // next step without checking time range validity.
-        const isValid =
-          isEmpty(errors) &&
-          (historical
-            ? //@ts-ignore
-              convertTimestampToNumber(formikProps.values.startTime) <
-              //@ts-ignore
-              convertTimestampToNumber(formikProps.values.endTime)
-            : true);
-        if (isValid) {
-          optionallySaveValues({
-            ...formikProps.values,
-            realTime: realTime,
-            historical: historical,
-          });
-          //@ts-ignore
-          props.setStep(4);
-        } else {
-          // TODO: can add focus to all components or possibly customize error message too
-          core.notifications.toasts.addDanger(
-            'One or more input fields is invalid'
-          );
-        }
-      });
-    } catch (e) {
-    } finally {
+    formikProps.setSubmitting(true);
+    formikProps.validateForm().then((errors) => {
+      // We need some custom logic to check the validity here. The EUI date range validity
+      // is limited and can only be checked on selection changes. Since a user may go back
+      // and forth without changing the selection, we still need to prevent moving to the
+      // next step without checking time range validity.
+      const isValid =
+        isEmpty(errors) &&
+        (historical
+          ? //@ts-ignore
+            convertTimestampToNumber(formikProps.values.startTime) <
+            //@ts-ignore
+            convertTimestampToNumber(formikProps.values.endTime)
+          : true);
+      if (isValid) {
+        optionallySaveValues({
+          ...formikProps.values,
+          realTime: realTime,
+          historical: historical,
+        });
+        //@ts-ignore
+        props.setStep(4);
+      } else {
+        // TODO: can add focus to all components or possibly customize error message too
+        core.notifications.toasts.addDanger(
+          'One or more input fields is invalid'
+        );
+      }
       formikProps.setSubmitting(false);
-    }
+    });
   };
 
   const optionallySaveValues = (values: DetectorJobsFormikValues) => {

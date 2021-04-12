@@ -63,14 +63,12 @@ export function RealTimeJob(props: RealTimeJobProps) {
               id={'realTimeCheckbox'}
               label="Start real-time detector automatically (recommended)"
               checked={enabled}
-              //disabled={noCategoryFields}
               onChange={() => {
                 if (!enabled) {
                   props.setRealTime(true);
                 }
                 if (enabled) {
                   props.setRealTime(false);
-                  //form.setFieldValue('realTime', true);
                 }
                 setEnabled(!enabled);
               }}
