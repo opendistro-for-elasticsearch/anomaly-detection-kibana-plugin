@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IndexOptions /> spec renders the component 1`] = `
+<div
+  class="euiHealth"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <svg
+        aria-hidden="true"
+        class="euiIcon euiIcon--medium euiIcon-isLoading"
+        focusable="false"
+        height="16"
+        role="img"
+        style="fill: #7DE2D1;"
+        viewBox="0 0 16 16"
+        width="16"
+        xmlns="http://www.w3.org/2000/svg"
+      />
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <span
+        class=""
+      >
+        <span>
+          logstash-1234
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<IndexOptions /> spec renders with highlight 1`] = `
+<div
+  class="euiHealth"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <svg
+        aria-hidden="true"
+        class="euiIcon euiIcon--medium"
+        focusable="false"
+        height="16"
+        role="img"
+        style="fill: #7DE2D1;"
+        viewBox="0 0 16 16"
+        width="16"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="8"
+          cy="8"
+          r="4"
+        />
+      </svg>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <span
+        class=""
+      >
+        <span>
+          
+          <mark
+            class="euiMark"
+          >
+            logs
+          </mark>
+          tash-1234
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
