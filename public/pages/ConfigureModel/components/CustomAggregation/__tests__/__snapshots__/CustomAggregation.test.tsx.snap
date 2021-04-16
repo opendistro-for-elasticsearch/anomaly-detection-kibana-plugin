@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomAggregation /> spec renders the component 1`] = `
+<div>
+  <div
+    class="euiFormRow euiFormRow--fullWidth"
+    id="random_html_id-row"
+  >
+    <div
+      class="euiFormRow__labelWrapper"
+    >
+      <label
+        aria-invalid="false"
+        class="euiFormLabel euiFormRow__label"
+        for="random_html_id"
+      >
+        Expression
+      </label>
+    </div>
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiCodeEditorWrapper"
+        data-test-subj="codeEditorContainer"
+        style="width: 100%; height: 300px;"
+      >
+        <div
+          class="euiCodeEditorKeyboardHint"
+          data-test-subj="codeEditorHint"
+          id="random_html_id"
+          role="button"
+          tabindex="0"
+        >
+          <p
+            class="euiText"
+          >
+            Press Enter to start editing.
+          </p>
+          <p
+            class="euiText"
+          >
+            When you're done, press Escape to stop editing.
+          </p>
+        </div>
+        <div
+          class=" ace_editor ace-tm"
+          id="featureList.1.aggregationQuery"
+          style="width: 100%; height: 300px;"
+        >
+          <textarea
+            aria-describedby="random_html_id-help"
+            autocapitalize="off"
+            autocorrect="off"
+            class="ace_text-input"
+            spellcheck="false"
+            style="opacity: 0;"
+            tabindex="-1"
+            wrap="off"
+          />
+          <div
+            aria-hidden="true"
+            class="ace_gutter"
+            style="display: none;"
+          >
+            <div
+              class="ace_layer ace_gutter-layer ace_folding-enabled"
+            />
+            <div
+              class="ace_gutter-active-line"
+            />
+          </div>
+          <div
+            class="ace_scroller"
+          >
+            <div
+              class="ace_content"
+            >
+              <div
+                class="ace_layer ace_print-margin-layer"
+              >
+                <div
+                  class="ace_print-margin"
+                  style="left: 4px; visibility: hidden;"
+                />
+              </div>
+              <div
+                class="ace_layer ace_marker-layer"
+              />
+              <div
+                class="ace_layer ace_text-layer"
+                style="padding: 0px 4px;"
+              />
+              <div
+                class="ace_layer ace_marker-layer"
+              />
+              <div
+                class="ace_layer ace_cursor-layer ace_hidden-cursors"
+              >
+                <div
+                  class="ace_cursor"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="ace_scrollbar ace_scrollbar-v"
+            style="display: none; width: 20px;"
+          >
+            <div
+              class="ace_scrollbar-inner"
+              style="width: 20px;"
+            />
+          </div>
+          <div
+            class="ace_scrollbar ace_scrollbar-h"
+            style="display: none; height: 20px;"
+          >
+            <div
+              class="ace_scrollbar-inner"
+              style="height: 20px;"
+            />
+          </div>
+          <div
+            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
+          >
+            <div
+              style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+            />
+            <div
+              style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+            >
+              XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFormHelpText euiFormRow__text"
+        id="random_html_id-help"
+      >
+        Custom expression uses the Elasticsearch query DSL.
+      </div>
+    </div>
+  </div>
+</div>
+`;
