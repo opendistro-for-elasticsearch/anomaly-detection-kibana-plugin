@@ -37,7 +37,7 @@
     "eslint-plugin-no-unsanitized": "^3.0.2",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "lint-staged": "^9.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "redux-mock-store": "^1.5.3",
     "start-server-and-test": "^1.11.7"
   },
